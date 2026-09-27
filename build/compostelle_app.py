@@ -717,6 +717,9 @@ function vueAccueil(){
     return `<div class="case-w"><button class="case${pro && pro.id === e.id ? ' courante' : ''}" onclick="aller('jour/${e.id}')" aria-label="Halte ${e.n} : ${E(e.lieu)}"><span>${e.n}</span></button>${nom}</div>`;
   }).join('');
   app.innerHTML = `
+  ${prepFaites() === D.prep.seances.length && !((S.prep || {}).test || {}).passages ? `<button class="carte-prep" onclick="aller('prep/test')">
+    <span class="surtitre">Avant de partir · les huit séances sont faites</span><b>Le test de la maison : prêt${S.genre === 'f' ? 'e' : ''} à partir ?</b>
+    <span class="muted">Un quart d'heure pour savoir où vous en êtes — et le refaire la veille du départ.</span></button>` : ''}
   ${prepFaites() < D.prep.seances.length ? `<button class="carte-prep" onclick="aller('prep${prepProchaine() ? '/' + prepProchaine().id : ''}')">
     <span class="surtitre">Avant de partir · ${prepFaites()} séance${prepFaites() > 1 ? 's' : ''} sur ${D.prep.seances.length}</span>
     <b>${prepFaites() ? 'Continuer' : 'Commencer'} : ${E(prepProchaine().titre)}</b>
@@ -765,7 +768,7 @@ function vueJour(et){
   <div class="bandeau">${et.vignette ? `<img src="${BASE}etapes/${et.img}.jpg?v=${D.v}" alt="">` : ''}</div>
   <p class="surtitre" style="margin-top:12px">Halte ${et.n} · ${E(et.region)} · km ${et.km}</p>
   <h1>${E(et.lieu)}</h1><p class="muted">${E(et.titre)}</p>
-  ${OUTILLE[et.id] ? `<p class="avis-local" style="margin:4px 0 0">Les outils de cette halte : <a href="#prep/${OUTILLE[et.id]}">séance ${numSeance(seanceParId(OUTILLE[et.id]))}, ${E(seanceParId(OUTILLE[et.id]).titre.toLowerCase())}</a>.</p>` : ''}
+  ${OUTILLE[et.id] ? `<p class="avis-local" style="margin:4px 0 0">Les outils de cette halte : ${OUTILLE[et.id].map(id => `<a href="#prep/${id}">séance ${numSeance(seanceParId(id))}, ${E(seanceParId(id).titre.toLowerCase())}</a>`).join(' · ')}.</p>` : ''}
   <div class="bande-borne">${borneImg(KM_TOTAL - et.km, true)}<p>Encore <b>${(KM_TOTAL - et.km).toLocaleString('fr-CA')} km</b> jusqu'à Santiago<br><span>${marche(et)}</span></p></div>
   <div class="objectif"><b>Aujourd'hui :</b> ${E(et.objectif)}</div>
   ${j.tampon ? `<div class="retro ok">✓ Tamponné le ${E(j.tampon)}. Vous pouvez rejouer chaque temps.</div>` :
@@ -1338,8 +1341,8 @@ const PREP_TEMPS = [['ecoute', 'J’écoute', 'Les phrases et les mots, avec leu
                     ['quiz', 'Je reconnais', 'J’entends, je choisis'],
                     ['dire', 'Je le dis', 'Au micro, puis le modèle']];
 // La séance qui outille chaque halte (audit tour 1, D1/F3).
-const OUTILLE = {'roncesvalles': 'p4', 'pamplona': 'p5', 'puente-la-reina': 'p8', 'logrono': 'p5', 'burgos': 'p6',
-                 'carrion': 'p7', 'leon': 'p7', 'o-cebreiro': 'p4', 'sarria': 'p3', 'santiago': 'p7'};
+const OUTILLE = {'roncesvalles': ['p4', 'p3'], 'pamplona': ['p5', 'p3'], 'puente-la-reina': ['p8', 'p2'], 'logrono': ['p5'], 'burgos': ['p8', 'p6'],
+                 'carrion': ['p7'], 'leon': ['p7', 'p8'], 'sarria': ['p3'], 'santiago': ['p7']};
 function prepEtat(id){ if (!S.prep) S.prep = {}; return S.prep[id] || (S.prep[id] = {faits:{}, fin:null}); }
 const seanceParId = id => D.prep.seances.find(x => x.id === id);
 const prepFaites = () => D.prep.seances.filter(x => prepEtat(x.id).fin).length;
@@ -1359,7 +1362,7 @@ function vuePrep(){
   ${pro ? `<button class="btn btn--pri btn--large" style="margin:6px 0 4px" onclick="aller('prep/${pro.id}')">${n ? 'Continuer' : 'Commencer'} : ${E(pro.titre)}</button>` : ''}
   <ul class="etapes-j">${liste}</ul>
   <h2>Le test de la maison : « Prêt${S.genre === 'f' ? 'e' : ''} à partir ? »</h2>
-  <p class="muted">Quinze questions, dont huit au micro, pour savoir où vous en êtes après les séances. Il vous situe, il ne vous note pas.
+  <p class="muted">${D.prep.test[0].length} questions, dont ${D.prep.test[0].filter(it => it.type === 'oral').length} au micro, pour savoir où vous en êtes après les séances. Il vous situe, il ne vous note pas.
   Refaites-le la veille du départ : ce sera l'autre forme.${t.dernier ? ' Dernier passage : ' + E(t.dernier) + '.' : ''}</p>
   <button class="btn btn--large" onclick="aller('prep/test')">${ICO.test} Faire le test de la maison</button>
   <p class="avis-local" style="margin-top:10px">À ne pas confondre avec « Suis-je prêt${S.genre === 'f' ? 'e' : ''} ? », le test du chemin, à faire après les haltes.</p>
@@ -1416,7 +1419,7 @@ function seanceEcoute(x){
 }
 /* Une question à choix, jouée jusqu'à la bonne réponse : chaque mauvais choix
    dit pourquoi (E1), et la place de la bonne tourne (D4). */
-function questionPrep(it, fichier, graine, surFin, rappel){
+function questionPrep(it, fichier, graine, surFin, rappel, une){
   const p = it.qui ? D.perso[it.qui] : null, estEs = it.type !== 'rep';
   const o = ordre(it.choix.length, graine);
   let erreurs = 0, fini = false;
@@ -1424,10 +1427,12 @@ function questionPrep(it, fichier, graine, surFin, rappel){
   const haut = it.type === 'dire' ? `<div class="carte"><p style="font-size:18px;font-weight:800;margin:0">${E(g(it.fr))}</p></div>`
     : `${p ? `<div class="scene-tete">${p.portrait ? `<img src="${BASE}portraits/${it.qui}.jpg?v=${D.v}" alt="">` : ''}<div><b>${E(p.nom)}</b><div class="muted" style="font-size:14px">${E(p.qui)}</div></div></div>` : ''}
        <div class="gros-son"><button class="btn btn--son" aria-label="Réécouter" id="rejouer">${ICO.son}</button></div>`;
-  const html = `${rappel ? `<span class="rappel">${E(rappel)}</span>` : ''}<h2 style="margin-top:6px">${titre}</h2>${haut}
+  const html = `${rappel ? `<span class="rappel">${E(rappel)}</span>` : ''}${une ? '<span class="rappel">Une seule écoute, comme au comptoir</span>' : ''}<h2 style="margin-top:6px">${titre}</h2>${haut}
     <div class="choix">${o.map(i => `<button data-i="${i}" ${estEs ? 'lang="es"' : ''}>${E(g(it.choix[i][0]))}</button>`).join('')}</div><div id="r"></div>`;
   function brancher(){
-    if ($('#rejouer')) { $('#rejouer').onclick = () => jouer(fichier); setTimeout(() => jouer(fichier), 250); }
+    if ($('#rejouer')) {
+      const jouerUne = () => { if (une) $('#rejouer').disabled = true; jouer(fichier, une).then(ok => { if (!ok && une) $('#rejouer').disabled = false; }); };
+      $('#rejouer').onclick = jouerUne; setTimeout(jouerUne, 250); }
     app.querySelectorAll('.choix button').forEach(b => b.onclick = () => {
       if (fini || b.disabled) return; const i = +b.dataset.i;
       if (i === 0) {
@@ -1443,21 +1448,24 @@ function questionPrep(it, fichier, graine, surFin, rappel){
 }
 function seanceQuiz(x){
   // Audit tour 1 (D1/F3) : deux questions de la séance précédente ouvrent le quiz.
-  const idx = D.prep.seances.indexOf(x), prec = idx > 0 ? D.prep.seances[idx - 1] : null;
-  const items = [...(prec ? prec.quiz.slice(0, 2).map((it, k) => ({it, sid:prec.id, k, rappel:'Rappel · séance ' + idx})) : []),
-                 ...x.quiz.map((it, k) => ({it, sid:x.id, k}))];
+  const idx = D.prep.seances.indexOf(x);
+  const vues = D.prep.seances.slice(0, idx).flatMap((y, j) => y.quiz.map((it, k) => ({it, sid:y.id, k, rappel:'Rappel · séance ' + (j + 1)})));
+  const tires = []; while (vues.length && tires.length < 2) tires.push(vues.splice(Math.floor(Math.random() * vues.length), 1)[0]);
+  // Tour 2 (D2) : aux séances 3, 4 et 8, les deux dernières questions ne s'écoutent qu'une fois, comme au comptoir.
+  const unefois = ['p3', 'p4', 'p8'].includes(x.id);
+  const items = [...tires, ...x.quiz.map((it, k) => ({it, sid:x.id, k, une: unefois && k >= x.quiz.length - 2}))];
   let n = 0, erreurs = 0;
   function tour(){
     if (n >= items.length) {
       app.innerHTML = `${teteSeance(x, 'quiz')}<div class="retro ok">✓ ${items.length} questions${erreurs ? ', ' + erreurs + ' essai' + (erreurs > 1 ? 's' : '') + ' de trop — c’est ainsi qu’on apprend' : ', toutes du premier coup'}.</div>
         <div style="margin-top:12px">${finTemps(x, 'quiz')}</div>`; return;
     }
-    const {it, sid, k, rappel} = items[n];
+    const {it, sid, k, rappel, une} = items[n];
     const fichier = sonDe(`prep/${sid}/q${k}` + (it.type === 'dire' ? '-c0' : ''), it.type === 'dire' ? it.choix[0][0] : it.es);
     // Audit tour 1 (D4) : la graine dépend aussi de la séance — plus de motif commun.
     const [html, brancher] = questionPrep(it, fichier, ((n + 1) * 7919 + (idx + 1) * 104729) % 97, e => {
       erreurs += e; const b = document.createElement('button'); b.className = 'btn btn--pri btn--large'; b.textContent = 'Suivant';
-      b.onclick = () => { n++; tour(); }; $('#r').appendChild(b); }, rappel);
+      b.onclick = () => { n++; tour(); }; $('#r').appendChild(b); }, rappel, une);
     app.innerHTML = `${teteSeance(x, 'quiz')}<div class="progres"><i style="width:${100 * n / items.length}%"></i></div>${html}`;
     brancher();
   }
@@ -1477,7 +1485,9 @@ function seanceDire(x){
       app.innerHTML = `${teteSeance(x, 'dire')}<div class="retro ${assez ? 'ok' : 'info'}">${assez ? '✓' : '→'} ${dites} phrase${dites > 1 ? 's' : ''} dite${dites > 1 ? 's' : ''} sur ${x.dire.length}${Reco ? `, dont ${comprises} comprise${comprises > 1 ? 's' : ''} au micro du premier ou du deuxième coup` : ''}. ${assez ? 'Le plus dur est fait : oser.' : 'Dites-en au moins la moitié à voix haute pour terminer la séance.'}</div>
         <div style="margin-top:12px">${assez ? finTemps(x, 'dire') : `<button class="btn btn--pri btn--large" onclick="rendre()">Recommencer</button>`}</div>`; return;
     }
-    const [fr, es, cles] = x.dire[n], fichier = sonDe(`prep/${x.id}/d${n}`, es);
+    let [fr, es, cles] = x.dire[n], fichier = sonDe(`prep/${x.id}/d${n}`, es);
+    // Tour 2 (A3) : sans allergie déclarée, on ne fait pas dire une allergie inventée.
+    if (x.dire[n][3] && !S.alergia) { [fr, es, cles] = x.dire[n][3].sans; fichier = sonDe(`prep/${x.id}/d${n}-sans`, es); }
     let tente = false, essais = 0, modeleVu = false;
     app.innerHTML = `${teteSeance(x, 'dire')}<div class="progres"><i style="width:${100 * n / x.dire.length}%"></i></div>
       <div class="carte"><p class="surtitre">À vous</p><p style="font-size:19px;font-weight:800;color:var(--text-strong);margin:4px 0 0">${E(g(fr))}</p></div>
@@ -1486,7 +1496,8 @@ function seanceDire(x){
       <button class="btn btn--large" id="dit" style="margin:6px 0">Je l'ai dit à voix haute</button><div id="r"></div>
       <div class="rangee" style="margin-top:10px"><button class="btn" id="modele" disabled>${ICO.son} Le modèle</button>
        <button class="btn btn--pri" id="suite" style="flex:1" disabled>Suivant</button></div>
-      <p class="avis-local" style="margin-top:8px">Le modèle s'ouvre après votre essai : on cherche d'abord, on compare ensuite. <a href="#" id="passer">Passer</a></p>`;
+      <p class="avis-local" style="margin-top:8px">Le modèle s'ouvre après votre essai : on cherche d'abord, on compare ensuite.</p>
+      <button class="btn btn--petit" id="passer" style="margin-top:4px">Passer cette phrase</button>`;
     // La zone de CETTE phrase : un modèle différé ne doit jamais tomber sur la suivante.
     const zone = $('#r');
     const montrer = () => { if (modeleVu || !document.body.contains(zone)) return; modeleVu = true; $('#modele').disabled = true;
@@ -1494,7 +1505,7 @@ function seanceDire(x){
     const essaye = () => { if (!tente) { tente = true; dites++; } $('#modele').disabled = modeleVu; $('#suite').disabled = false; };
     $('#modele').onclick = montrer;
     $('#suite').onclick = () => { n++; tour(); };
-    $('#passer').onclick = ev => { ev.preventDefault(); n++; tour(); };
+    $('#passer').onclick = () => { n++; tour(); };
     $('#dit').onclick = () => { essaye(); montrer(); };
     if (Reco) $('#mic').onclick = () => {
       const mic = $('#mic'); if (recoActive) { arreterMicro(); return; }
@@ -1504,7 +1515,8 @@ function seanceDire(x){
         if (!final) { $('#r').innerHTML = `<div class="retro info">Je n'ai rien entendu. Vérifiez que le micro est permis, ou dites-le et touchez « Je l'ai dit ».</div>`; return; }
         essais++;
         const manque = cles.map(c => g(algDe(c))).filter(c => !trouve(final, c));
-        const alg = cles.some(c => /\{alg:/.test(c)) && manque.includes(g(algDe(cles.find(c => /\{alg:/.test(c)))));
+        const algCle = cles.find(c => /\{alg:/.test(c));
+        const alg = algCle && manque.length === 1 && manque[0] === g(algDe(algCle));
         if (!manque.length) { if (essais <= 2 && !modeleVu) comprises++;
           $('#r').innerHTML = `<div class="retro ok">✓ ¡Muy bien! On vous a compris.</div>`; essaye(); setTimeout(montrer, 600); return; }
         const presque = manque.length <= cles.length / 2;
@@ -1521,7 +1533,7 @@ function seanceDire(x){
 function vuePrepTest(){
   if (!S.prep) S.prep = {}; const T = S.prep.test || (S.prep.test = {});
   const f = T.prochaine != null ? T.prochaine : Math.floor(Math.random() * 2);
-  const items = D.prep.test[f]; let k = 0; const res = {}, nonVerif = {};
+  const items = D.prep.test[f]; let k = 0; const res = {}, nonVerif = {}, manquees = {};
   const prete = S.genre === 'f' ? 'prête' : 'prêt';
   function intro(){
     app.innerHTML = `${retour('prep', 'Avant de partir')}<p class="surtitre">Le test de la maison</p><h1>${prete[0].toUpperCase() + prete.slice(1)} à partir ?</h1>
@@ -1534,8 +1546,10 @@ function vuePrepTest(){
   }
   function tour(){
     if (k >= items.length) return bilan();
-    const it = items[k]; let compte = false;
-    const noter = ok => { if (compte) return; compte = true; const r = res[it.obj] || (res[it.obj] = [0, 0]); r[1]++; if (ok) r[0]++; };
+    let it = items[k]; let compte = false;
+    const sansAlg = it.sans && !S.alergia; if (sansAlg) it = {...it, ...it.sans};
+    const noter = ok => { if (compte) return; compte = true; const r = res[it.obj] || (res[it.obj] = [0, 0]); r[1]++; if (ok) r[0]++;
+      else (manquees[it.obj] || (manquees[it.obj] = [])).push(g(algDe(it.es || it.modele || it.choix[0][0]))); };
     const suite = () => { const b = document.createElement('button'); b.className = 'btn btn--pri btn--large'; b.textContent = 'Suivant'; b.onclick = () => { k++; tour(); }; $('#r').appendChild(b); };
     const tete2 = `${retour('prep', 'Avant de partir')}<p class="surtitre">Question ${k + 1} sur ${items.length}</p><div class="progres"><i style="width:${100 * k / items.length}%"></i></div>`;
     if (it.type === 'oral') {
@@ -1544,10 +1558,10 @@ function vuePrepTest(){
         ${Reco ? `<div class="micro"><button class="btn-micro" id="mic" aria-label="Parler">${ICO.micro}</button><div class="muted" id="micEtat" style="font-size:14px">Deux essais.</div><div class="entendu" id="entendu"></div></div>` : ''}
         <div id="r"></div><button class="btn btn--large" id="sansmic" style="margin-top:8px">${Reco ? 'Le micro ne marche pas : je l’ai dit' : 'Je l’ai dit à voix haute'}</button>`;
       const fin = (ok, verifie) => { if (verifie) noter(ok); else { compte = true; nonVerif[it.obj] = (nonVerif[it.obj] || 0) + 1; }
-        $('#sansmic').remove(); if ($('#mic')) $('#mic').disabled = true;
+        if ($('#sansmic')) $('#sansmic').remove(); if ($('#mic')) $('#mic').disabled = true;
         $('#r').insertAdjacentHTML('beforeend', `<div class="retro ${!verifie ? 'info' : ok ? 'ok' : 'no'}">${!verifie ? 'Non vérifié : cette question ne compte pas.' : ok ? '✓ On vous a compris.' : 'Deux essais sans qu’on vous comprenne tout à fait.'}</div>
           <div class="retro info"><span class="surtitre">Le modèle</span><div class="phrase-es">${E(g(it.modele))}</div></div>`);
-        jouer(sonDe(`prep/test/${f}-${k}-m`, it.modele)); suite(); };
+        jouer(sonDe(`prep/test/${f}-${k}-m${sansAlg ? '-sans' : ''}`, it.modele)); suite(); };
       $('#sansmic').onclick = () => fin(false, false);
       if (Reco) $('#mic').onclick = () => { const mic = $('#mic'); if (recoActive) { arreterMicro(); return; }
         mic.classList.add('ecoute'); mic.innerHTML = ICO.stop;
@@ -1556,7 +1570,9 @@ function vuePrepTest(){
           if (!final) { $('#r').innerHTML = `<div class="retro info">Je n'ai rien entendu. Vérifiez que le micro est permis et réessayez — ou touchez « je l'ai dit ».</div>`; return; }
           const manque = it.cles.map((c, i) => [g(algDe(c)), i]).filter(([c]) => !trouve(final, c));
           prises++;
-          if (!manque.length) return fin(true, true);
+          // Tour 2 (F1) : une fois le micro entendu, « le micro ne marche pas » n'est plus une issue.
+          if ($('#sansmic')) $('#sansmic').remove();
+          if (!manque.length) { $('#r').innerHTML = ''; return fin(true, true); }
           const quoi = it.parties ? 'Il manque : ' + manque.map(([, i]) => E(g(algDe(it.parties[i])))).join(', ') + '.' : `J'ai entendu « ${E(final)} ».`;
           if (prises >= 2) { $('#r').innerHTML = `<div class="retro no">${quoi}</div>`; return fin(false, true); }
           $('#r').innerHTML = `<div class="retro no">${quoi} Réessayez (dernier essai).</div>`;
@@ -1575,7 +1591,8 @@ function vuePrepTest(){
       <div class="choix">${o.map(i => `<button data-i="${i}" ${estEs ? 'lang="es"' : ''}>${E(g(it.choix[i][0]))}</button>`).join('')}</div><div id="r"></div>`;
     if (it.type !== 'dire') {
       let joue = false;
-      const une = () => { if (unefois && joue) return; jouer(fichier, unefois).then(ok => { if (ok) { joue = true; if (unefois) { $('#ecoute1').disabled = true; } } }); };
+      const une = () => { if (unefois && joue) return; if (unefois) { joue = true; $('#ecoute1').disabled = true; }
+        jouer(fichier, unefois).then(ok => { if (!ok && unefois) { joue = false; $('#ecoute1').disabled = false; } }); };
       $('#ecoute1').onclick = une; setTimeout(une, 250);
     }
     app.querySelectorAll('.choix button').forEach(b => b.onclick = () => {
@@ -1594,6 +1611,7 @@ function vuePrepTest(){
       const etat = r >= .8 ? ['ok', '✓ Solide'] : r >= .5 ? ['info', '→ En route'] : ['no', '— À reprendre'];
       return `<div class="carte" style="margin:8px 0"><b>${E(D.prep.objectifs[o])}</b><div class="retro ${etat[0]}" style="margin:6px 0">${etat[1]} — ${ok} sur ${tot}${nv ? ` (et ${nv} non vérifiée${nv > 1 ? 's' : ''} au micro)` : ''}</div>
         ${r < .8 ? `<p class="muted" style="margin:0;font-size:15px">${E(D.prep.conseils[o])}</p>` : ''}
+        ${(manquees[o] || []).length ? `<p class="muted" style="margin:4px 0 0;font-size:14px">À revoir : ${manquees[o].map(t => '<i lang="es">' + E(t) + '</i>').join(' · ')}</p>` : ''}
         ${h ? `<p class="muted" style="margin:4px 0 0;font-size:14px">Vous en aurez besoin dès la halte ${h.n}, ${E(h.lieu)}.</p>` : ''}</div>`;
     }).join('');
     T.prochaine = 1 - f; T.passages = (T.passages || 0) + 1; T.dernier = aujourdhui(); sauver();
@@ -1778,7 +1796,7 @@ function vueTest(){
       const modele = () => `<div class="retro info"><span class="surtitre">Le modèle</span><div class="phrase-es">${E(g(it.modele || ''))}</div></div>`;
       const fin = (ok, verifie) => {
         if (verifie) { if (it.obj === 'O2') it.elim = true; noter(ok); } else { tentee = true; if (it.obj === 'O2') nonVerifie = true; }
-        $('#sansmic').remove(); if ($('#mic')) $('#mic').disabled = true;
+        if ($('#sansmic')) $('#sansmic').remove(); if ($('#mic')) $('#mic').disabled = true;
         $('#r').innerHTML = `<div class="retro ${!verifie ? 'info' : ok ? 'ok' : 'no'}">${!verifie ? 'Non vérifié : cette question ne compte pas.' : ok ? '✓ On vous a compris.' : 'Trois essais sans qu’on vous comprenne.'}</div>${modele()}`;
         if (it.obj === 'O2') jouer(sonDe('leon/dire-0', 'Soy alérgic{o|a} {alg:a}.'));
         suite(); };

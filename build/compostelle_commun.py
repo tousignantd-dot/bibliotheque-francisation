@@ -87,13 +87,17 @@ def extraits():
                 yield from _pour(f"{d}/q{i}-c0", q["choix"][0][0], "narratrice")
             else:
                 yield from _pour(f"{d}/q{i}", q["es"], q.get("qui", "narratrice"))
-        for i, (_, es, _) in enumerate(se["dire"]):
-            yield from _pour(f"{d}/d{i}", es, "narratrice")
+        for i, di in enumerate(se["dire"]):
+            yield from _pour(f"{d}/d{i}", di[1], "narratrice")
+            if len(di) > 3:   # la variante du pèlerin sans allergie (tour 2, A3)
+                yield from _pour(f"{d}/d{i}-sans", di[3]["sans"][1], "narratrice")
     for f, forme in enumerate(PR.TEST):
         for i, it in enumerate(forme):
             base = f"prep/test/{f}-{i}"
             if it["type"] == "oral":
                 yield from _pour(base + "-m", it["modele"], "narratrice")
+                if "sans" in it:
+                    yield from _pour(base + "-m-sans", it["sans"]["modele"], "narratrice")
             elif it["type"] == "dire":
                 yield from _pour(base + "-c0", it["choix"][0][0], "narratrice")
             else:
