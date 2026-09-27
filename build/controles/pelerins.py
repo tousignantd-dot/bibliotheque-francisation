@@ -58,10 +58,10 @@ code = envoi["metadata"]["code"]
 ok(P.est_code(code) and len(code) == 8, f"le code est tiré avant le paiement ({code})")
 ok(code in envoi["payment_intent_data"]["description"], "le code est dans la description (donc sur le reçu)")
 ok(envoi["success_url"].endswith("/modules-autonomes/compostelle/#achat/{CHECKOUT_SESSION_ID}"), "le retour mène à l'application")
-ok(envoi["line_items"][0]["price_data"]["unit_amount"] == 1999, "19,99 $")
+ok(envoi["line_items"][0]["price_data"]["unit_amount"] == 999, "prix de lancement : 9,99 $ facturés")
 ok(envoi["line_items"][0]["price_data"]["currency"] == "cad", "en dollars canadiens")
 plat = dict(P._aplatir(envoi))
-ok(plat.get("line_items[0][price_data][unit_amount]") == "1999" and plat.get("metadata[code]") == code,
+ok(plat.get("line_items[0][price_data][unit_amount]") == "999" and plat.get("metadata[code]") == code,
    "le formulaire envoyé à Stripe a la forme attendue (line_items[0][…])")
 p = R.trouver(code)
 ok(p and p["etat"] == "reserve", "le code est réservé, pas actif")
@@ -127,6 +127,16 @@ vieux = [{"code": "PCAAAAAA", "etat": "actif", "expire": "2000-01-01"},
 ok(R.menage(vieux) == 2 and [x["code"] for x in vieux] == ["PCBBBBBB", "PCDDDDDD"],
    "un code expiré depuis plus d'un an et une réservation de plus de 7 jours sont effacés")
 ok(P.offre()["conservation"] == 365, "la durée de conservation est lue par l'offre (365 jours)")
+
+print("Le prix de lancement")
+o = P.offre(); ok(o["prix"] == 999 and o["prixRegulier"] == 1999 and o["promo"], "9,99 $ au lieu de 19,99 $")
+os.environ["COMPOSTELLE_PROMO_FIN"] = "2000-01-01"
+o = P.offre(); ok(o["prix"] == 1999 and not o["promo"] and o["promoFin"] == "", "la promotion finie, le prix régulier revient seul")
+os.environ["COMPOSTELLE_PROMO_FIN"] = "2999-12-31"
+ok(P.offre()["prix"] == 999 and P.offre()["promoFin"] == "2999-12-31", "avant la fin, la promotion tient")
+os.environ["COMPOSTELLE_PROMO_CENTS"] = "0"
+ok(P.offre()["prix"] == 1999, "COMPOSTELLE_PROMO_CENTS=0 coupe la promotion")
+del os.environ["COMPOSTELLE_PROMO_FIN"], os.environ["COMPOSTELLE_PROMO_CENTS"]
 
 print("Les codes")
 ok(not P.est_code("ABC123") and not P.est_code("S" + "X" * 16), "un code d'élève ou un jeton de séance n'est pas un code de pèlerin")

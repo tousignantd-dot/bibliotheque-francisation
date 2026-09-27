@@ -162,6 +162,8 @@ h2{{font-size:clamp(26px,3.6vw,36px);line-height:1.1;margin:0 0 8px;color:var(--
 .offre .montant{{font-size:46px;font-weight:900;color:var(--bleu-f);line-height:1.1;margin:4px 0 2px}}
 .offre .montant small{{font-size:16px;color:var(--doux);font-weight:700}}
 .offre ul{{margin:12px 0 0;padding-left:20px;font-size:15.5px}}
+.offre .barre{{font-size:26px;color:var(--doux);font-weight:700}}
+.lancement{{display:inline-block;background:#FBEFC4;color:#5C4400;border:1px solid #E7C75A;border-radius:99px;padding:4px 12px;font-size:14px;font-weight:800;margin:4px 0 0}}
 .besoin{{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0;padding:0;list-style:none}}
 .besoin li{{background:#fff;border:1px solid var(--filet);border-radius:12px;padding:10px 14px;font-size:15px}}
 .besoin b{{color:var(--bleu-f)}}
@@ -332,7 +334,8 @@ footer{{text-align:center;font-size:13px;color:var(--doux);padding:26px 0 40px}}
     </div>
     <div class="offre plus">
       <p class="etiq">En option · Parler librement</p>
-      <p class="montant">{prix(o["prix"])} <small>une fois, pour {o["jours"] // 30} mois</small></p>
+      <p class="montant">{f'<s class="barre">{prix(o["prixRegulier"])}</s> ' if o["promo"] else ""}{prix(o["prix"])} <small>une fois, pour {o["jours"] // 30} mois</small></p>
+      {f'<p class="lancement">Prix de lancement, pour un temps limité{" — jusqu’au " + o["promoFin"] if o["promoFin"] else ""}.</p>' if o["promo"] else ""}
       <ul><li>{o["conversations"]} conversations libres avec les personnages du chemin, sur le sujet de votre choix ;</li>
       <li>ils vous répondent et vous relancent, comme sur le chemin ;</li>
       <li>au besoin, {o["rechargeConversations"]} conversations de plus pour {prix(o["recharge"])}.</li></ul>

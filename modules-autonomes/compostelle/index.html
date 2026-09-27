@@ -77,6 +77,8 @@ svg.tampon{opacity:.9}
   border-left:5px solid var(--accent);border-radius:14px;padding:12px 14px;margin-bottom:12px;font:inherit;color:var(--text-body)}
 .carte-prep b{font-size:17px;color:var(--text-strong)}
 .carte-prep .muted{font-size:14px}
+.prix-barre{color:var(--text-muted);font-weight:600}
+.promo-lancement{background:#FBEFC4;border:1px solid #E7C75A;border-radius:10px;padding:8px 12px;margin:0 0 10px;color:#5C4400}
 .pied{max-width:720px;margin:24px auto 0;padding:14px 16px 28px;text-align:center;font-size:13.5px;color:var(--text-muted)}
 .pied a{color:var(--text-muted)}
 .a-remplir{background:#FDF0CF;color:#7A4A00;border:1px dashed #D9A43A;border-radius:6px;padding:0 6px;font-weight:800}
@@ -1261,8 +1263,12 @@ async function afficherCompte(code){
 async function afficherOffre(ouvrir){
   const o = await offreServeur(), z = $('#offre');
   if (!z || !o || !o.ouverte) return;
-  z.innerHTML = `<details class="rub" style="margin-top:16px"${ouvrir ? ' open' : ''}><summary>Pas encore de code ? <span>${dollars(o.prix)}</span></summary>
+  // Le prix de lancement : l'ancien prix barré, et la date de fin s'il y en a une.
+  const promo = o.promo && o.prixRegulier > o.prix;
+  const prixHtml = promo ? `<s class="prix-barre">${dollars(o.prixRegulier)}</s> <b>${dollars(o.prix)}</b>` : dollars(o.prix);
+  z.innerHTML = `<details class="rub" style="margin-top:16px"${ouvrir ? ' open' : ''}><summary>Pas encore de code ? <span>${prixHtml}</span></summary>
     <div style="padding:0 14px 14px;font-size:15.5px">
+     ${promo ? `<p class="promo-lancement">Prix de lancement : <b>${dollars(o.prix)}</b> au lieu de ${dollars(o.prixRegulier)}, pour un temps limité${o.promoFin ? ` — jusqu'au ${dateFr(o.promoFin)} inclusivement` : ''}.</p>` : ''}
      <p style="margin:0 0 8px"><b>${o.conversations} conversations</b> avec les gens du chemin, pendant <b>${Math.round(o.jours / 30.4)} mois</b> :
      la même personne qu'à l'étape, qui vous répond vraiment, puis un bilan en français.</p>
      <p class="muted" style="font-size:14px;margin:0 0 10px">Les dix haltes, la trousse et le test restent gratuits. Paiement par carte chez Stripe ;

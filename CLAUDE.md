@@ -3364,6 +3364,10 @@ Décidée le 26 septembre 2026 (formule B de
 `assets/presentations/compostelle-prix.html`) : le chemin reste gratuit et sans
 code ; seul « Parler librement » se paie — 19,99 $ pour 12 mois et 100
 conversations, recharge de 50 à 4,99 $. Stripe Checkout, sans dépendance.
+Prix de lancement (27 sept. 2026) : 9,99 $ facturés au lieu de 19,99 $
+(`COMPOSTELLE_PROMO_CENTS`, 0 la coupe), jusqu'à `COMPOSTELLE_PROMO_FIN`
+(AAAA-MM-JJ inclus) ; après, le prix régulier revient seul. `offre()["prix"]`
+est toujours le montant facturé ; `prixRegulier` sert à l'affichage barré.
 
 - **Un code de pèlerin n'est pas un code d'élève.** « PC » + six caractères :
   `validate_student_code` ne le connaît pas, donc les autres routes d'IA le

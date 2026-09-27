@@ -45,7 +45,7 @@ ol.etapes>li::before{content:counter(e);position:absolute;left:14px;top:12px;wid
 <a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
 <p class="eyebrow">Voyage &middot; grand public &middot; chemin de Saint-Jacques</p>
 <h1>Compostelle &mdash; la vente, et où tout voir</h1>
-<p class="chapeau">La formule B est branchée : le chemin gratuit, « Parler librement » à <strong>{d(o["prix"])}</strong> pour
+<p class="chapeau">La formule B est branchée : le chemin gratuit, « Parler librement » à <strong>{d(o["prix"])}</strong>{f' (prix de lancement ; prix régulier {d(o["prixRegulier"])}, qui revient seul à la date posée dans <code>COMPOSTELLE_PROMO_FIN</code>)' if o["promo"] else ""} pour
 {o["jours"] // 30} mois et {o["conversations"]} conversations, recharge de {o["rechargeConversations"]} à {d(o["recharge"])}.
 État aujourd'hui : <span class="etat">en ligne, vente fermée</span> — elle s'ouvre dès que les clés Stripe sont posées.</p>
 

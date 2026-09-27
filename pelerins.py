@@ -51,8 +51,18 @@ def _entier(nom, defaut):
 def offre():
     """Les conditions en vigueur. Réglables par variables d'environnement, pour
     qu'un changement de prix ne demande pas de déployer du code."""
+    # Le prix de lancement (Daniel, 27 sept. 2026) : 9,99 $ au lieu de 19,99 $,
+    # pour un temps limité. COMPOSTELLE_PROMO_FIN (AAAA-MM-JJ, inclus) borne la
+    # promotion : passée cette date, le prix régulier revient tout seul.
+    # COMPOSTELLE_PROMO_CENTS=0 la coupe. `prix` est TOUJOURS le montant facturé.
+    regulier = _entier("COMPOSTELLE_PRIX_CENTS", 1999)
+    promo, fin = _entier("COMPOSTELLE_PROMO_CENTS", 999), os.environ.get("COMPOSTELLE_PROMO_FIN", "").strip()
+    en_promo = 0 < promo < regulier and (not fin or _aujourdhui() <= fin)
     return {
-        "prix": _entier("COMPOSTELLE_PRIX_CENTS", 1999),
+        "prix": promo if en_promo else regulier,
+        "prixRegulier": regulier,
+        "promo": en_promo,
+        "promoFin": fin if en_promo else "",
         "recharge": _entier("COMPOSTELLE_RECHARGE_CENTS", 499),
         "devise": os.environ.get("COMPOSTELLE_DEVISE", "cad").lower(),
         "conversations": _entier("COMPOSTELLE_CONVERSATIONS", 100),
