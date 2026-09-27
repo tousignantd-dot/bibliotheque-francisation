@@ -59,8 +59,11 @@ import unicodedata as _ud
 
 # Le choix des lettres à l'oreille (build/hotel_lettres.py, page hotel-lettres) :
 # « a » (nom écrit) par défaut ; l'export de Daniel se recopie ici.
-CHOIX_LETTRES = {"fr:E": "b", "fr:L": "b", "es:K": "b", "es:P": "b", "es:V": "b", "es:X": "b", "en:O": "b", "en:N": "b", "en:Y": "b"}   # export du 27 sept. 2026 (les « a » sont le défaut)
-# « Aucune » à l'écoute du 27 sept. 2026 : reprises à choisir (hotel_lettres.py --reprises).
+CHOIX_LETTRES = {"fr:E": "b", "fr:L": "b", "es:K": "b", "es:P": "b", "es:V": "b", "es:X": "b", "en:O": "b", "en:N": "b", "en:Y": "b",
+                 # reprises du 27 sept. 2026 (hotel-lettres-reprises) : e/f = voix neurale
+                 "fr:A": "e", "fr:I": "e", "fr:Q": "e", "fr:R": "e", "fr:T": "e", "en:M": "f", "en:V": "e"}
+# (export du 27 sept. 2026 ; les lettres absentes gardent « a »)
+# « Aucune » à la première écoute, tranchées aux reprises (hotel_lettres.py --reprises).
 LETTRES_A_REPRENDRE = ["en:M", "en:V", "fr:A", "fr:I", "fr:Q", "fr:R", "fr:T"]
 GARDE_LETTRE, GARDE_GROUPE = 0.12, 0.35   # secondes : débit d'un client, pas d'une dictée
 

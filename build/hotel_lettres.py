@@ -17,6 +17,7 @@ Sortie : assets/interactive/hotel/sons/x/lettres/<langue>/<L>-<a|b>.mp3 et
 assets/presentations/hotel-lettres.html (produite, jamais éditée).
 
     python3 build/hotel_lettres.py --reprises   # les lettres « Aucune » : cinq candidats de plus
+    python3 build/hotel_lettres.py --noms       # page d'écoute des noms assemblés
 
 Reprises (HA.LETTRES_A_REPRENDRE, écoute du 27 sept. 2026) : c = nouveau tirage HD
 du nom écrit ; d = HD, autre graphie ; e = voix neurale (non HD, déterministe), nom
@@ -36,6 +37,7 @@ PAGE = RACINE / "assets" / "presentations" / "hotel-lettres.html"
 NOM_L = {"fr": "Français — Thierry", "es": "Espagnol — Jorge", "en": "Anglais — Andrew"}
 
 
+HP_V = "12"   # = MEDIA_V de hotel_planches.py au dernier assemblage
 NEURALE = {"fr": "fr-CA-ThierryNeural", "en": "en-US-AndrewNeural", "es": "es-MX-JorgeNeural"}
 AUTRE_GRAPHIE = {"fr:A": "ah", "fr:I": "î", "fr:Q": "cu", "fr:R": "ère", "fr:T": "thé",
                  "en:M": "em", "en:V": "vee"}
@@ -98,6 +100,38 @@ document.getElementById('exporter').onclick=function(){{var o={{page:'hotel-lett
  var t=JSON.stringify(o,null,2);(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){{document.getElementById('etat').textContent='Copié — recolle-le-moi.'}},function(){{prompt('Copiez :',t)}});}};
 p();}})();
 </script></body></html>'''.replace("{lignes}", lignes), encoding="utf-8")
+
+
+PAGE_N = RACINE / "assets" / "presentations" / "hotel-noms-epeles.html"
+
+
+def page_noms():
+    """Les noms tels qu'ils sortent de l'assemblage : exercices, puis test (partie B)."""
+    s = importlib.util.spec_from_file_location("hotel_test", RACINE / "build/contenu/entreprise-hotel/test.py")
+    T = importlib.util.module_from_spec(s); s.loader.exec_module(T)
+    racine = "/assets/interactive/hotel/sons/"
+    lignes = ""
+    for l in ("fr", "en", "es"):
+        lignes += f"<h2>{NOM_L[l].split(' —')[0]}</h2><table>"
+        for nom in EX.NOMS:
+            lignes += (f'<tr><td class="L">{html.escape(nom)}{" <small>(téléphone)</small>" if nom in EX.TELEPHONE else ""}'
+                       f'<br><small>exercices</small></td><td><audio controls preload="none" '
+                       f'src="{racine}x/epeler/{l}/{HA.slug_nom(nom)}.mp3?v={HP_V}"></audio></td></tr>')
+        for forme in (1, 2):
+            for item in T.B[forme]:
+                if item[1] == "nom":
+                    lignes += (f'<tr><td class="L">{html.escape(item[2])}<br><small>test, forme {forme}</small></td>'
+                               f'<td><audio controls preload="none" src="{racine}test/b/{l}/{item[0]}.mp3?v={HP_V}"></audio></td></tr>')
+        lignes += "</table>"
+    PAGE_N.write_text(f'''<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Noms épelés assemblés</title>
+<style>body{{font-family:Nunito,system-ui,sans-serif;max-width:760px;margin:0 auto;padding:16px;background:#fff;color:#17181A}}
+table{{width:100%;border-collapse:collapse}}td{{padding:6px;border-bottom:1px solid #ddd;vertical-align:middle}}td.L{{width:45%;font-weight:700}}
+small{{color:#555;font-weight:400}}audio{{width:100%;height:34px}}</style></head>
+<body><h1>Les noms épelés, assemblés</h1>
+<p>Chaque nom est maintenant monté à partir des lettres que vous avez choisies à l'oreille (27 septembre 2026).
+Si un nom sonne faux, dites-moi lequel et dans quelle langue : on remontera à la lettre en cause.</p>
+{{lignes}}</body></html>'''.replace("{lignes}", lignes), encoding="utf-8")
 
 
 def taches():
@@ -171,6 +205,8 @@ if __name__ == "__main__":
                 return
         print(f"  {f.name} ({t[0]}) reste à {duree(f):.1f} s après quatre tirages")
 
+    if "--noms" in sys.argv:
+        page_noms(); print(PAGE_N.relative_to(RACINE)); sys.exit(0)
     if "--reprises" in sys.argv:
         faire = [t for t in taches_reprises() if not (DEST / t[0] / f"{t[1]}-{t[2]}.mp3").exists()]
 
