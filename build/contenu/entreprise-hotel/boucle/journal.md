@@ -96,3 +96,25 @@ mêle les employés (le guide du formateur le dira).
 Mineurs traités : jeton de partie (course), 401 sans perte de la conversation et erreurs dans la langue de l'employé, saisie collante à 375 px, « sans lire » par défaut au téléphone et à l'aise, « Débutant » présélectionné, durée annoncée, doublon « Au téléphone » retiré, facture Castillo recalculée (taxe d'hébergement 3,5 %, TPS et TVQ 14,975 %), heure du déjeuner à l'écran de Bélanger, « mieux » sans information ajoutée et « déjeuner » en français, portrait d'Okafor refait avec sa carnation, poches de détourage de Hoang effacées, bas des bustes rogné et posé sous le rebord.
 
 Reste hors révision : la remontée des résultats au portail (le pilote la branchera, comme pour Francœur).
+
+## Comptoir joué — révision après le tour 2 de son audit (1/3/9), 26 sept. 2026
+
+Les 13 constats corrigés (décision de Daniel : « corriger » partout).
+
+| Id | Avant | Après | Code |
+|---|---|---|---|
+| t2-01 | le serveur lisait `content[0]` ; un bloc de réflexion en tête perdait le bilan (12 sur 14) | lecture des blocs de texte ; effort « low » ; corrigé le jour même | E1 |
+| t2-02 | 2000 jetons mangés par la réflexion | 4000 ; si la réflexion épuise le budget sans texte, seconde tentative réflexion coupée | E1 |
+| t2-03 | « tous les gestes sauf un » : on sautait le geste enseigné | un geste CLÉ par client (★), obligatoire ; « sauf un » pour les autres seulement ; promesse ⇒ relais non fait | F1 |
+| t2-04 | « saisie » jugée sans savoir quoi saisir | ce qui est à saisir est écrit client par client (A_SAISIR) ; ce que l'employé attribue n'en est pas ; « confirmer » exige deux éléments justes | E1 |
+| t2-05 | FIN dans une question | la consigne l'interdit ; la page ignore un FIN dans une réplique qui contient « ? » | D2 |
+| t2-06 | répliques citées en français, dites telles quelles en anglais | écrites en intentions ; « toute phrase citée est une intention, dans ta langue » | D2 |
+| t2-07 | écran en un paragraphe ; l'heure du déjeuner collée à Boulanger | une ligne par élément ; déjeuner à part ; chambre 312 attribuée à Bélanger | C3 |
+| t2-08 | à 375 px, invite et barre hors écran | barre de parole fixe en bas ; défilement vers l'invite ; règle repliée sur la liste | G1 |
+| t2-09 | fin tirée de l'humeur, contraire au verdict | fin tirée du résultat | E2 |
+| t2-10 | chaque bilan écrasait le précédent ; date UTC | premier essai ET meilleur essai gardés ; le compte suit le meilleur ; date locale | F1 |
+| t2-11 | « proposer » attendu chez Leblanc sans rien à proposer | offre permise à l'écran (table au restaurant, carte de félicitations) | A3 |
+| t2-12 | doublon « Au téléphone » | retiré de la carte | C5 |
+| t2-13 | « accueillez-le » pour les clientes | invite par genre | C5 |
+
+Vérifié : la page au faux serveur (clé manquante ⇒ à reprendre, heure fausse ⇒ à reprendre, promesse ⇒ relais annulé, meilleur et premier essais) ; le vrai juge sur trois cas (Bélanger parfait : saisie juste ; Nakamura 7 h 30 : saisie fausse, confirmer non fait ; Hoang : saisie nulle, proposer fait).

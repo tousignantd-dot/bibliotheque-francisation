@@ -112,7 +112,7 @@ def donnees():
     portraits = RACINE / "assets" / "interactive" / "hotel" / "clients"
     jeu = {"clients": [{"id": i, "g": g, "nom": {l: f"{CL.TITRE[g][l]} {nom}" for l in CL.LANGUES},
                         "paliers": pal, "tel": lieu == "telephone", "gestes": ge, "carte": carte, "ecran": ecran,
-                        "voix": CL.VOIX[g], "p": bool(portrait) and (portraits / f"{i}-neutre.webp").exists()}
+                        "voix": CL.VOIX[g], "cles": CL.CLES[i], "p": bool(portrait) and (portraits / f"{i}-neutre.webp").exists()}
                        for i, g, nom, pal, lieu, ge, carte, ecran, portrait, _f in CL.CLIENTS],
            "gestes": CL.GESTES, "debit": CL.DEBIT_JEU, "humeurs": CL.HUMEURS,
            "ouverture": CL.OUVERTURE, "ui": CL.UI_JEU}
@@ -334,8 +334,10 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .compte{background:var(--surface-card);border:1px solid var(--line-200);border-radius:12px;padding:10px 12px;max-width:640px}
 .compte b{font-size:24px;color:var(--text-strong);margin-right:6px}
 .compte small{display:block;color:var(--text-muted);margin-top:2px}
+.ecran-f .l{display:block}
 @media (max-width:760px){
-  .parole{position:sticky;bottom:0;background:var(--surface-page);padding:8px 0;z-index:2;border-top:1px solid var(--line-200)}
+  .parole{position:fixed;left:0;right:0;bottom:0;background:var(--surface-page);padding:8px 16px;z-index:5;border-top:1px solid var(--line-200)}
+  .jeu{padding-bottom:84px}
   .jeu .decor{max-width:420px}
   .ecran-f{font-size:13px}}
 .carte-jeu{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:16px;align-items:center;cursor:pointer;
@@ -1018,12 +1020,14 @@ function ecranJeu(){
   // Sans test, « Débutant » est présélectionné ET marqué (audit t1, G2).
   niveauJeu = niveauJeu || duTest || 'debutant';
   const dispo = D.jeu.clients.filter(c => c.paliers.includes(niveauJeu));
-  const res = resultatsJeu(), nOk = D.jeu.clients.filter(c => (res[c.id] || {}).ok).length;
-  const marqueRes = c => { const r = res[c.id]; if (!r) return '';
-    return r.promesse ? `<span class="res ko">✕ ${E(TJ('elimine'))}</span>` : r.ok ? `<span class="res ok">✓ ${E(TJ('reussie'))}</span>` : `<span class="res">→ ${E(TJ('a_reprendre'))}</span>`; };
+  const res = resultatsJeu(), nOk = D.jeu.clients.filter(c => ((res[c.id] || {}).meilleur || {}).ok).length;
+  const signe = r => r.promesse ? `<span class="res ko">✕ ${E(TJ('elimine'))}</span>` : r.ok ? `<span class="res ok">✓ ${E(TJ('reussie'))}</span>` : `<span class="res">→ ${E(TJ('a_reprendre'))}</span>`;
+  // Le meilleur essai fait le compte ; le premier reste visible (t2-10).
+  const marqueRes = c => { const r = res[c.id]; if (!r || !r.meilleur) return '';
+    return signe(r.meilleur) + (r.essais > 1 ? `<span class="res">${E(TJ('premier_essai'))} ${r.premier.ok ? '✓' : r.premier.promesse ? '✕' : '→'} · ${r.essais} ${E(TJ('essais'))}</span>` : ''); };
   return tete + `<p class="chapeau">${E(TJ('jeu_carte'))} ${E(TJ('duree'))}</p>
     <p class="alerte">${E(TJ('eliminatoire'))}</p>
-    <div class="regle"><b>${E(TJ('regle_tit'))}</b><p style="margin:4px 0 0">${E(D.ex.regle[L.parle])}</p></div>
+    <details class="regle"><summary><b>${E(TJ('regle_tit'))}</b></summary><p style="margin:4px 0 0">${E(D.ex.regle[L.parle])}</p></details>
     <p class="compte"><b>${nOk}</b> ${E(TJ('reussies'))}<small>${E(TJ('reussite_regle'))}</small></p>
     <p style="margin:12px 0 0"><b>${E(TJ('niveau'))}</b> — ${E(duTest ? TJ('niveau_test') : TJ('niveau_sans'))}</p>
     <div class="niv">${D.test.paliers.map(p => `<button type="button" class="btn" data-jniv="${p}" aria-pressed="${p === niveauJeu}">${E(D.test.ui[p][L.parle])}</button>`).join('')}</div>
@@ -1040,18 +1044,18 @@ function sceneJeu(){
         <img class="personne" id="jperso" src="${imgClient(c, J.humeur)}" alt="">
         <img class="devant" src="/assets/interactive/hotel/croquis/comptoir.jpg?v=${D.v}" alt=""></div>`;
   const phrases = D.jeu.gestes.filter(g => c.gestes.includes(g.id)).concat(D.jeu.gestes.filter(g => !c.gestes.includes(g.id)))
-    .map(g => `<li><b>${E(g.nom[L.parle])}</b><br><span lang="${A}">« ${E(g.phrase[A])} »</span></li>`).join('');
+    .map(g => `<li><b>${c.cles.includes(g.id) ? '★ ' : ''}${E(g.nom[L.parle])}</b><br><span lang="${A}">« ${E(g.phrase[A])} »</span></li>`).join('');
   return `<div class="barre-haut"><button type="button" class="btn" data-jquitter="1">${ICO.retour}${E(T('retour'))}</button></div>
     <p class="enseigne">${E(D.hotel)}${c.tel ? ' · ' + E(TJ('au_tel')) : ''}</p><h1 lang="${A}">${E(c.nom[A])}</h1>
     <p class="consigne">${E(c.carte[L.parle])}</p>
     <p class="alerte">${E(TJ('eliminatoire'))}</p>
     <div class="jeu"><div>${decor}<p class="humeur-txt" id="jhum" aria-live="polite">${E(humeurJ(J.humeur))}</p>
-      <div class="ecran-f" lang="${A}"><b>${E(TJ('ecran'))}</b>${E(c.ecran[A])}</div></div>
+      <div class="ecran-f" lang="${A}"><b>${E(TJ('ecran'))}</b>${c.ecran[A].split('|').map(l => `<span class="l">${E(l.trim())}</span>`).join('')}</div></div>
     <div><div class="ecoute"><button type="button" class="btn" data-jsanslire="1" aria-pressed="${J.sansLire}">${E(TJ('sans_lire'))}</button>
       <button type="button" class="btn btn--son" data-jreecouter="1">${ICO.son}${E(TJ('reecouter'))}</button></div>
       <details class="phrases-j"><summary>${E(TJ('gestes_tit'))}</summary><ul>${phrases}</ul>
         <p><b>${E(TJ('regle_tit'))}</b> — ${E(D.ex.regle[L.parle])}</p></details>
-      <div class="fil${J.sansLire ? ' cache' : ''}" id="jfil" aria-live="polite">${J.fil.length ? J.fil.map(bulleHTML).join('') : `<p class="attente" id="jinvite">${E(TJ(c.tel ? 'sonne' : 'a_vous'))}</p>`}</div>
+      <div class="fil${J.sansLire ? ' cache' : ''}" id="jfil" aria-live="polite">${J.fil.length ? J.fil.map(bulleHTML).join('') : `<p class="attente" id="jinvite">${E(TJ(c.tel ? 'sonne' : 'a_vous_' + c.g))}</p>`}</div>
       <p class="ko-txt" id="jerr">${E(J.err || '')}</p>
       <div class="parole"><button type="button" class="btn btn--son" id="jmicro" ${J.fini ? 'disabled' : ''}>${E(TJ('parler'))}</button>
         <input id="jtxt" lang="${A}" placeholder="${E(TJ('ecrire'))}" ${J.fini ? 'disabled' : ''}>
@@ -1072,7 +1076,7 @@ function lireHumeur(t){
   if (m) { h = m[1].toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/e?$/, 'e'); t = t.slice(m[0].length); }
   if (!D.jeu.humeurs.includes(h)) h = 'neutre';
   t = t.replace(/\[[^\]]*\]/g, '').replace(/\*[^*]*\*/g, '').trim();
-  if (/\bFIN\.?\s*$/.test(t)) { fin = true; t = t.replace(/\s*\bFIN\.?\s*$/, '').trim(); }
+  if (/\bFIN\.?\s*$/.test(t)) { t = t.replace(/\s*\bFIN\.?\s*$/, '').trim(); fin = !t.includes('?'); }
   return {h, t, fin};
 }
 function montrerHumeur(h){
@@ -1092,6 +1096,7 @@ function commencerJeu(id){
   J = {vue: 'scene', c, hist: [], fil: [], humeur: 'neutre', fini: false, err: '', dernier: '',
        sansLire: c.tel || niveauJeu === 'aise', jeton: ++jetonJeu};
   rendre(); window.scrollTo(0, 0);
+  if (innerWidth < 760) { const f = document.getElementById('jfil'); if (f) f.scrollIntoView({block: 'center'}); }
 }
 let jetonJeu = 0;
 const CLE_JEU = () => `hotel-comptoir-${L.apprend}`;
@@ -1099,13 +1104,27 @@ function resultatsJeu(){ try { return JSON.parse(localStorage.getItem(CLE_JEU())
 // Une situation RÉUSSIE (O3, « 6 sur 8 ») : aucune promesse hors règle, aucune
 // erreur de saisie, et les gestes attendus faits, sauf un au plus. La règle est
 // écrite à l'écran (reussite_regle) et appliquée ici seulement.
+// Tour 2 (F1) : le geste CLÉ de la situation est obligatoire ; « sauf un » ne vaut
+// que pour les autres gestes attendus. Une promesse annule le relais.
+function faitsDe(B){
+  const promesse = !!(B.promesse && B.promesse.faite);
+  const f = new Set((B.gestes || []).filter(g => g.fait && !(promesse && g.id === 'relais')).map(g => g.id));
+  return {f, promesse};
+}
+const dateLocale = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`; };
 function garderResultat(B){
-  const att = J.c.gestes, faits = (B.gestes || []).filter(g => att.includes(g.id) && g.fait).length;
-  const promesse = !!(B.promesse && B.promesse.faite), saisieKo = B.saisie && B.saisie.juste === false;
-  const r = {date: new Date().toISOString().slice(0, 10), niveau: niveauJeu, faits, attendus: att.length,
-             promesse, saisie: saisieKo ? false : (B.saisie ? B.saisie.juste : null),
-             ok: !promesse && !saisieKo && faits >= att.length - 1};
-  const tout = resultatsJeu(); tout[J.c.id] = r;
+  const {f, promesse} = faitsDe(B), c = J.c;
+  const autres = c.gestes.filter(g => !c.cles.includes(g));
+  const clesOk = c.cles.every(g => f.has(g)), autresFaits = autres.filter(g => f.has(g)).length;
+  const saisieKo = B.saisie && B.saisie.juste === false;
+  const r = {date: dateLocale(), niveau: niveauJeu, faits: c.gestes.filter(g => f.has(g)).length, attendus: c.gestes.length,
+             promesse, cles: clesOk, saisie: saisieKo ? false : (B.saisie ? B.saisie.juste : null),
+             ok: !promesse && !saisieKo && clesOk && autresFaits >= autres.length - 1};
+  const tout = resultatsJeu(), avant = tout[c.id];
+  const rang = x => x.ok ? 2 : x.promesse ? 0 : 1;
+  tout[c.id] = avant && avant.premier
+    ? {premier: avant.premier, meilleur: rang(r) >= rang(avant.meilleur) ? r : avant.meilleur, essais: (avant.essais || 1) + 1}
+    : {premier: r, meilleur: r, essais: 1};
   try { localStorage.setItem(CLE_JEU(), JSON.stringify(tout)); } catch (e) {}
   return r;
 }
@@ -1210,16 +1229,19 @@ function bilanJeuHTML(){
     const nomG = id => ((D.jeu.gestes.find(g => g.id === id) || {}).nom || {})[L.parle] || id;
     // Les gestes ATTENDUS sont ceux du client (clients.py), pas ce que le juge en pense.
     const parId = Object.fromEntries((B.gestes || []).map(g => [g.id, g]));
-    const G = c.gestes.map(id => Object.assign({id, fait: false, citation: '', conseil: ''}, parId[id] || {}, {necessaire: true}));
-    const promis = B.promesse && B.promesse.faite, relais = c.gestes.includes('relais') && (parId.relais || {}).fait;
-    fin = TJ(promis ? 'fin_promesse_' + c.g : relais ? 'fin_relais' : (J.humeur === 'contente' ? 'fin_ok_' : 'fin_ko_') + c.g);
+    const promis = !!(B.promesse && B.promesse.faite);
+    const G = c.gestes.map(id => Object.assign({id, fait: false, citation: '', conseil: ''}, parId[id] || {}, {necessaire: true},
+      promis && id === 'relais' ? {fait: false} : {}));
+    const r = J.resultat || {}, relais = c.gestes.includes('relais') && !promis && (parId.relais || {}).fait;
+    // La fin suit le RÉSULTAT, jamais l'humeur seule (t2-09).
+    fin = TJ(promis ? 'fin_promesse_' + c.g : r.ok ? (relais ? 'fin_relais' : 'fin_ok_' + c.g) : 'fin_ko_' + c.g);
     corps = (B.resume ? `<p>${E(B.resume)}</p>` : '')
       + (B.saisie && B.saisie.juste === false ? `<p class="alerte"><b>${E(TJ('saisie_ko'))}</b> ${E(B.saisie.detail || '')}</p>`
          : B.saisie && B.saisie.juste === true ? `<p class="ok-txt">✓ ${E(TJ('saisie_ok'))}</p>` : '')
       + (B.promesse && B.promesse.faite ? `<p class="alerte"><b>${E(TJ('promesse_tit'))}</b>${B.promesse.citation ? ` — « <span lang="${L.apprend}">${E(B.promesse.citation)}</span> »` : ''}<br>${E(D.ex.promesse[L.parle])}</p>`
          : `<p class="ok-txt">✓ ${E(TJ('sans_promesse'))}</p>`)
       + `<ul class="gestes-bilan">${G.map(g => { const e = !g.necessaire ? 'inutile' : g.fait ? 'fait' : 'manque';
-          return `<li class="${e}"><span class="m">${e === 'fait' ? '✓' : e === 'manque' ? '→' : '·'}</span><span><b>${E(nomG(g.id))}</b> — ${E(TJ(e))}`
+          return `<li class="${e}"><span class="m">${e === 'fait' ? '✓' : e === 'manque' ? '→' : '·'}</span><span><b>${c.cles.includes(g.id) ? '★ ' : ''}${E(nomG(g.id))}</b> — ${E(TJ(e))}`
             + (g.citation ? `<small lang="${L.apprend}">« ${E(g.citation)} »</small>` : '')
             + (g.conseil ? `<small>${E(g.conseil)}</small>` : '')
             // Le modèle rend parfois la phrase à dire dans un champ à part.

@@ -21496,6 +21496,26 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         # images a été écrit pour corriger.
         _noter(result.get("usage"))
 
+        # La réflexion a mangé tout le budget sans rendre de texte (audit du
+        # comptoir joué, tour 2) : on redemande UNE fois, réflexion coupée.
+        if (modele and result.get("stop_reason") == "max_tokens"
+                and not any(b.get("type") == "text" and b.get("text", "").strip()
+                            for b in result.get("content", []))):
+            corps.pop("output_config", None)
+            corps["thinking"] = {"type": "disabled"}
+            req2 = urllib.request.Request(
+                "https://api.anthropic.com/v1/messages", data=json.dumps(corps).encode("utf-8"),
+                headers={"x-api-key": api_key, "anthropic-version": "2023-06-01",
+                         "content-type": "application/json"}, method="POST")
+            try:
+                with urllib.request.urlopen(req2, timeout=timeout) as resp:
+                    result = json.loads(resp.read().decode("utf-8"))
+                _noter(result.get("usage"))
+            except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError) as e:
+                print(f"[WARN] Anthropic API, seconde tentative : {e}", flush=True)
+                _noter(statut="echec")
+                return None, ("Le service de correction est momentanément indisponible", 502)
+
         try:
             # Le premier bloc peut être une réflexion : on lit les blocs de TEXTE
             # (audit du comptoir joué, tour 2, bloquant — le bilan était perdu
