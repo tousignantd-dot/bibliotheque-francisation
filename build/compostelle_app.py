@@ -281,6 +281,11 @@ svg.tampon{opacity:.9}
 .ariane li.ici .rond{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);box-shadow:0 0 0 4px rgba(242,194,48,.3)}
 .ariane li.ferme .rond{border-color:var(--line-300);color:var(--text-muted);background:#F3F0E8}
 .ariane li.ferme .lib{color:var(--text-muted);font-weight:700}
+.ariane--7 .rond{width:30px;height:30px;font-size:14px}
+.ariane--7 li+li::before{top:14px;right:calc(50% + 16px);left:calc(-50% + 16px)}
+.ariane--7 .lib{font-size:11.5px;font-weight:700;padding:0 2px;white-space:nowrap}
+.ariane--7 li.ici .lib{font-weight:900}
+@media (max-width:360px){.ariane--7 .lib{font-size:10px;padding:0}}
 .fil-legende{font-size:14.5px;color:var(--text-muted);margin:-4px 0 12px;text-align:center}
 .pied{max-width:720px;margin:24px auto 0;padding:14px 16px 28px;text-align:center;font-size:13.5px;color:var(--text-muted)}
 .pied a{color:var(--text-muted)}
@@ -748,6 +753,8 @@ function rendre(){
   if (p[0] === 'jour' && etapeParId(p[1])) {
     const et = etapeParId(p[1]);
     if (!p[2]) return vueJour(et);
+    const jt = TEMPS.findIndex(([t]) => t === p[2]);
+    if (jt > 0 && !tempsEtapeOuvert(et, jt)) { const f = TEMPS.find(([t]) => !jour(et.id).faits[t]); history.replaceState(null, '', '#jour/' + et.id + '/' + f[0]); p[2] = f[0]; }
     const f = {lieu: vueLieu, mots: vueMotsJour, entends: vueEntends, repond: vueRepond, dire: vueDire,
                scene: (e) => vueScene(e, 'scene'), soir: (e) => vueScene(e, 'soir'),
                libre: (e) => D.jeuLibre ? vueLibre(e) : vueJour(e)}[p[2]];
@@ -806,26 +813,26 @@ function vueGuide(){
   const ph = phases.map(([nom, sous, ks]) => `<div class="g-phase"><p class="surtitre">${nom} <span>· ${sous}</span></p><ol>${
     ks.map(k => { const i = TEMPS.findIndex(t => t[0] === k), t = TEMPS[i];
       return `<li value="${i + 1}"><b>${E(t[1])}</b>${TAMP.includes(k) ? ' <span class="g-tamp" title="compte pour le tampon">✓ tampon</span>' : ''}<br><span class="muted">${E(t[2])}</span></li>`; }).join('')}</ol></div>`).join('');
-  const jours = D.etapes.map(e => `<li><b>Halte ${e.n} · ${E(e.lieu)}</b> <span class="muted">km ${e.km} · ${marche(e)}</span><br>${E(e.objectif)}</li>`).join('');
+  const jours = D.etapes.map(e => `<li><b>Étape ${e.n} · ${E(e.lieu)}</b> <span class="muted">km ${e.km} · ${marche(e)}</span><br>${E(e.objectif)}</li>`).join('');
   app.innerHTML = `${retour(S.genre ? 'accueil' : '', S.genre ? 'La credencial' : 'Retour')}
   <p class="surtitre">Le mode d'emploi</p><h1>Comment ça marche ?</h1>
-  <p>Dix haltes sur le Camino francés, de Roncesvalles à Santiago — environ ${D.etapes.reduce((t, e) => t + joursMarche(e), 0)} jours de marche. Chaque halte prépare une situation dont vous aurez
+  <p>Dix étapes sur le Camino francés, de Roncesvalles à Santiago — environ ${D.etapes.reduce((t, e) => t + joursMarche(e), 0)} jours de marche. Chaque étape prépare une situation dont vous aurez
   besoin ce soir-là : trouver un lit, commander, vous soigner, demander votre chemin, parler avec les autres.</p>
   <div class="retro info"><b>Avant de partir</b> : préparer votre sac — huit entraînements de quinze minutes, à la maison — les sons, la politesse, les nombres, l'heure, quatre verbes, les questions, se présenter, comprendre la réponse — puis le test « Prêt à partir ? ». Conseillées, jamais obligatoires. <a href="#prep">Y aller</a>.</div>
   <div class="objectif"><b>La règle du chemin :</b> comprendre avant de dire, dire avant de jouer, jouer avant d'y aller seul.</div>
-  <h2>Une halte, sept temps</h2>
-  <p>Toujours dans le même ordre. Touchez un temps dans la halte pour le faire ; vous pouvez le refaire autant que vous voulez.</p>
+  <h2>Une étape, sept temps</h2>
+  <p>Toujours dans le même ordre. Touchez un temps dans l’étape pour le faire ; vous pouvez le refaire autant que vous voulez.</p>
   ${ph}
   <h2>Le tampon</h2>
   <p>Votre credencial se tamponne quand les quatre temps marqués <span class="g-tamp">✓ tampon</span> sont faits : comprendre,
   jouer la scène, dire, parler le soir. Lire et écouter ne suffisent pas : sur le chemin, il faudra parler.</p>
-  <h2>Les dix haltes</h2>
-  <p>Faites-les dans l'ordre : ce qui a été appris revient plus loin, sans prévenir (« Rappel · halte 2 »).
+  <h2>Les dix étapes</h2>
+  <p>Faites-les dans l'ordre : ce qui a été appris revient plus loin, sans prévenir (« Rappel · étape 2 »).
   À <b>León</b>, votre allergie est éliminatoire : la rater fait rejouer la scène. Après León, elle revient chaque jour.</p>
   <ol class="g-jours">${jours}</ol>
   <h2>Et aussi</h2>
   <ul class="g-liste">
-   <li><b>Parler librement</b> — au bas de chaque halte${D.jeuLibre ? '' : ' (bientôt)'} : la même personne vous répond vraiment, à votre vitesse, puis un bilan en français. Il faut un code : il s'obtient là, en quelques secondes, ou vient de votre groupe. Les haltes, elles, restent gratuites.</li>
+   <li><b>Parler librement</b> — au bas de chaque étape${D.jeuLibre ? '' : ' (bientôt)'} : la même personne vous répond vraiment, à votre vitesse, puis un bilan en français. Il faut un code : il s'obtient là, en quelques secondes, ou vient de votre groupe. Les étapes, elles, restent gratuites.</li>
    <li><b>Ma trousse</b> — la trousse de secours pour se débrouiller : les phrases du chemin, les urgences (112) et votre carte d'allergie en grand, à montrer. « Préparer pour le chemin » les garde dans le téléphone : elles marchent sans réseau.</li>
    <li><b>Tous les mots</b> et <b>les faux amis</b> — pour revoir, quand vous voulez.</li>
    <li><b>Suis-je prêt ?</b> — un quart d'heure de situations nouvelles avant le départ. Il vous situe (Solide · En route · À reprendre), il ne vous note pas.</li>
@@ -847,7 +854,7 @@ function vueBienvenue(){
   app.innerHTML = `
   <div class="heros"><img src="${BASE}etapes/meseta.jpg?v=${D.v}" alt="La Meseta, un chemin droit dans les blés, une borne à flèche jaune">
    <div class="txt"><p class="surtitre">Le Camino francés · 775 km</p><h1>En route vers Compostelle</h1>
-   <p>L'espagnol qu'il faut pour le chemin : trouver un lit, manger, se soigner, demander sa route, et parler avec les gens — halte après halte, de Roncesvalles à Santiago.</p></div></div>
+   <p>L'espagnol qu'il faut pour le chemin : trouver un lit, manger, se soigner, demander sa route, et parler avec les gens — étape après étape, de Roncesvalles à Santiago.</p></div></div>
   <div class="carte" style="margin-top:14px">
    <h2 style="margin-top:0">Avant de partir</h2>
    <p>Deux questions. L'allergie d'abord : c'est la phrase que vous apprendrez à dire, et celle qui ne pardonne pas.</p>
@@ -946,25 +953,23 @@ function vueAccueil(){
 /* ---------- une journée ---------- */
 function vueJour(et){
   const j = jour(et.id);
-  const liste = TEMPS.map(([k, t, d], i) => {
-    const f = j.faits[k];
-    return `<li class="${f ? 'fait' : ''}"><button onclick="aller('jour/${et.id}/${k}')"><span class="num">${f ? '✓' : i + 1}</span>
-      <span><b>${t}</b><span class="d">${d}</span></span>${f ? '<span class="etat">✓ fait</span>' : ''}</button></li>`;
-  }).join('');
   const suivant = TEMPS.find(([k]) => !j.faits[k]);
   const libre = D.jeuLibre ? `<h2>Pour aller plus loin</h2><ul class="etapes-j"><li><button onclick="aller('jour/${et.id}/libre')"><span class="num">+</span>
       <span><b>Parler librement, avec l'assistant</b><span class="d">${E(D.perso[et.local].nom)} ou Marta vous répondent vraiment. Il faut du réseau et un code.</span></span></button></li></ul>` : '';
   app.innerHTML = `${retour('accueil', 'La credencial')}
   <div class="bandeau">${et.vignette ? `<img src="${BASE}etapes/${et.img}.jpg?v=${D.v}" alt="">` : ''}</div>
-  <p class="surtitre" style="margin-top:12px">Halte ${et.n} · ${E(et.region)} · km ${et.km}</p>
+  <p class="surtitre" style="margin-top:12px">Étape ${et.n} · ${E(et.region)} · km ${et.km}</p>
   <h1>${E(et.lieu)}</h1><p class="muted">${E(et.titre)}</p>
-  ${OUTILLE[et.id] ? `<p class="avis-local" style="margin:4px 0 0">Les outils de cette halte : ${OUTILLE[et.id].map(id => `<a href="#prep/${id}">entraînement ${numSeance(seanceParId(id))}, ${E(seanceParId(id).titre.toLowerCase())}</a>`).join(' · ')}.</p>` : ''}
+  ${OUTILLE[et.id] ? `<p class="avis-local" style="margin:4px 0 0">Les outils de cette étape : ${OUTILLE[et.id].map(id => `<a href="#prep/${id}">entraînement ${numSeance(seanceParId(id))}, ${E(seanceParId(id).titre.toLowerCase())}</a>`).join(' · ')}.</p>` : ''}
   <div class="bande-borne">${borneImg(KM_TOTAL - et.km, true)}<p>Encore <b>${(KM_TOTAL - et.km).toLocaleString('fr-CA')} km</b> jusqu'à Santiago<br><span>${marche(et)}</span></p></div>
   <div class="objectif"><b>Aujourd'hui :</b> ${E(et.objectif)}</div>
   ${j.tampon ? `<div class="retro ok">✓ Tamponné le ${E(j.tampon)}. Vous pouvez rejouer chaque temps.</div>` :
    peutTamponner(et) ? `<button class="btn btn--pri btn--large" onclick="poserTampon(etapeParId('${et.id}'))">Faire tamponner ma credencial</button>` :
-   `<button class="btn btn--pri btn--large" onclick="aller('jour/${et.id}/${suivant ? suivant[0] : 'lieu'}')">${suivant && suivant[0] !== 'lieu' ? 'Continuer : ' + suivant[1] : 'Commencer la halte'}</button>`}
-  <ul class="etapes-j">${liste}</ul>${libre}
+   `<button class="btn btn--pri btn--large" onclick="aller('jour/${et.id}/${suivant ? suivant[0] : 'lieu'}')">${suivant && suivant[0] !== 'lieu' ? 'Continuer : ' + suivant[1] : 'Commencer l’étape'}</button>`}
+  ${filEtape(et, j.tampon ? null : suivant ? suivant[0] : null)}
+  <p class="fil-legende">${j.tampon ? 'Étape tamponnée : rejouez le temps de votre choix.'
+    : 'Dans l’ordre : on découvre le lieu et les mots, on comprend ce qu’on vous répond, puis on agit — la scène, « Je le dis », et le soir avec Marta.'}</p>
+  ${libre}
   <p class="avis-local" style="margin-top:12px">Le tampon se gagne avec « Ce qu'on me répond », la scène, « Je le dis » et le soir avec Marta.</p>`;
 }
 function peutTamponner(et){ const j = jour(et.id); return !j.tampon && ['repond', 'scene', 'dire', 'soir'].every(x => j.faits[x]); }
@@ -974,11 +979,24 @@ function fini(et, k){
     return `<button class="btn btn--pri btn--large" id="tampF">Faire tamponner ma credencial</button>`; }
   const i = TEMPS.findIndex(t => t[0] === k), s = TEMPS[i + 1];
   return s ? `<button class="btn btn--pri btn--large" onclick="aller('jour/${et.id}/${s[0]}')">Suivant : ${s[1]}</button>` :
-    `<button class="btn btn--pri btn--large" onclick="aller('jour/${et.id}')">Retour à la halte</button>`;
+    `<button class="btn btn--pri btn--large" onclick="aller('jour/${et.id}')">Retour à l’étape</button>`;
+}
+/* Le fil d'Ariane d'une étape, comme celui des entraînements : sept temps
+   dans l'ordre — découvrir, comprendre, agir — le suivant s'ouvre quand le
+   précédent est fait ; une étape tamponnée se rejoue librement. */
+const TEMPS_COURT = {lieu: 'Lieu', mots: 'Mots', entends: 'Écoute', repond: 'Réponse', scene: 'Scène', dire: 'Je le dis', soir: 'Soir'};
+function tempsEtapeOuvert(et, j){ const x = jour(et.id); return !!x.tampon || TEMPS.slice(0, j).every(([t]) => x.faits[t]); }
+function filEtape(et, actif){
+  const x = jour(et.id);
+  return `<ol class="ariane ariane--7" aria-label="Les temps de l'étape">${TEMPS.map(([t, nom], j) => {
+    const fait = !!x.faits[t], ouvert = tempsEtapeOuvert(et, j), ici = t === actif;
+    const cls = [fait ? 'fait' : '', ici ? 'ici' : '', ouvert ? '' : 'ferme', j > 0 && x.faits[TEMPS[j - 1][0]] ? 'relie' : ''].filter(Boolean).join(' ');
+    return `<li class="${cls}"><button ${ouvert && !ici ? `onclick="aller('jour/${et.id}/${t}')"` : ''} ${ouvert ? '' : 'disabled'} aria-label="${j + 1}. ${E(nom)}${fait ? ', fait' : ouvert ? '' : ', fermé'}"
+      ${ouvert ? '' : `title="D'abord : ${E(TEMPS[j - 1][1])}"`} ${ici ? 'aria-current="step"' : ''}><span class="rond">${fait ? '✓' : ouvert ? j + 1 : CADENAS}</span><span class="lib">${TEMPS_COURT[t]}</span></button></li>`; }).join('')}</ol>`;
 }
 function tete(et, k){
   const i = TEMPS.findIndex(t => t[0] === k);
-  return `${retour('jour/' + et.id, 'Halte ' + et.n + ' · ' + et.lieu)}<p class="surtitre">${i + 1} / 7</p><h1>${TEMPS[i][1]}</h1>`;
+  return `${retour('jour/' + et.id, 'Étape ' + et.n + ' · ' + et.lieu)}${filEtape(et, k)}<h1>${TEMPS[i][1]}</h1>`;
 }
 
 /* 1. le lieu */
@@ -1080,7 +1098,7 @@ function vueRepond(et){
     const o = ordre(choix.length, n + et.n);
     app.innerHTML = `${tete(et, 'repond')}
       <div class="progres"><i style="width:${100 * n / items.length}%"></i></div>
-      ${it.rappel ? `<span class="rappel">Rappel · halte ${src.n}, ${E(src.lieu)}</span>` : ''}
+      ${it.rappel ? `<span class="rappel">Rappel · étape ${src.n}, ${E(src.lieu)}</span>` : ''}
       <div class="scene-tete">${p.portrait ? `<img src="${BASE}portraits/${src.local}.jpg?v=${D.v}" alt="">` : ''}
        <div><b>${E(p.nom)}</b><div class="muted" style="font-size:14px">${E(p.qui)}, ${E(p.ou)}</div></div></div>
       <p class="consigne">${E(p.nom)} vous répond, à sa vitesse. Que veut-${p.g === 'f' ? 'elle' : 'il'} dire ?</p>
@@ -1354,7 +1372,7 @@ function vueLibre(et){
   const choixQui = () => [et.local, 'marta'].map(k => `<button class="btn ${qui === k ? 'btn--pri' : ''}" data-qui="${k}">${E(D.perso[k].nom)}</button>`).join('');
   const choixPal = () => [['lent', 'Lentement'], ['normal', 'Normalement'], ['rapide', 'Comme en Espagne']].map(([k, t]) => `<button class="btn btn--petit ${palier === k ? 'btn--pri' : ''}" data-pal="${k}">${t}</button>`).join('');
   function accueil(err){
-    app.innerHTML = `${retour('jour/' + et.id, 'Halte ' + et.n + ' · ' + et.lieu)}<p class="surtitre">Avec l'assistant</p><h1>Parler librement</h1>
+    app.innerHTML = `${retour('jour/' + et.id, 'Étape ' + et.n + ' · ' + et.lieu)}<p class="surtitre">Avec l'assistant</p><h1>Parler librement</h1>
       <p class="muted">La même situation, mais la personne vous répond vraiment : dites ce que vous voulez, comme vous pouvez. Il faut du réseau.</p>
       <h3>À qui parler</h3><div class="rangee" id="qui">${choixQui()}</div>
       <h3>Comment on vous parle</h3><div class="rangee" id="pal">${choixPal()}</div>
@@ -1372,7 +1390,7 @@ function vueLibre(et){
   function conversation(){
     const cas = qui === 'marta' ? 'marta-' + et.id : et.id, p = D.perso[qui], hist = [];
     let fini = false;
-    app.innerHTML = `${retour('jour/' + et.id, 'Halte ' + et.n + ' · ' + et.lieu)}
+    app.innerHTML = `${retour('jour/' + et.id, 'Étape ' + et.n + ' · ' + et.lieu)}
       <div class="scene-tete">${p.portrait ? `<img src="${BASE}portraits/${qui}.jpg?v=${D.v}" alt="">` : ''}<div><b>${E(p.nom)}</b><div class="muted" style="font-size:14px">${E(qui === 'marta' ? et.soir.titre : et.scene.titre)}</div></div></div>
       <div class="fil" id="fil"></div>
       <div id="saisie" style="margin-top:12px">
@@ -1425,7 +1443,7 @@ function vueLibre(et){
           ${(b.compris || []).length ? `<h3>Ce que vous avez obtenu</h3><ul>${b.compris.map(x => `<li>${E(x)}</li>`).join('')}</ul>` : ''}
           ${(b.phrases || []).length ? `<h3>À dire autrement</h3>${b.phrases.map(x => `<div class="carte" style="margin:6px 0"><div class="muted">${E(x.dit)}</div><div class="phrase-es" style="font-size:18px">${E(x.mieux)}</div></div>`).join('')}` : ''}
           ${b.conseil ? `<div class="retro info">${E(b.conseil)}</div>` : ''}
-          <button class="btn btn--pri btn--large" onclick="aller('jour/${et.id}')">Retour à la halte</button>`;
+          <button class="btn btn--pri btn--large" onclick="aller('jour/${et.id}')">Retour à l’étape</button>`;
       } catch(e) { $('#saisie').innerHTML = `<div class="retro no">Pas de réseau pour le bilan.</div>`; }
     }
     tour('');
@@ -1475,7 +1493,7 @@ async function afficherOffre(ouvrir){
      ${promo ? `<p class="promo-lancement">Prix de lancement : <b>${dollars(o.prix)}</b> au lieu de ${dollars(o.prixRegulier)}, pour un temps limité${o.promoFin ? ` — jusqu'au ${dateFr(o.promoFin)} inclusivement` : ''}.</p>` : ''}
      <p style="margin:0 0 8px"><b>${o.conversations} conversations</b> avec les gens du chemin, pendant <b>${Math.round(o.jours / 30.4)} mois</b> :
      la même personne qu'à l'étape, qui vous répond vraiment, puis un bilan en français.</p>
-     <p class="muted" style="font-size:14px;margin:0 0 10px">Les dix haltes, la trousse et le test restent gratuits. Paiement par carte chez Stripe ;
+     <p class="muted" style="font-size:14px;margin:0 0 10px">Les dix étapes, la trousse et le test restent gratuits. Paiement par carte chez Stripe ;
      nous ne recevons ni votre nom ni votre carte. Le code s'affiche ici tout de suite, et il est aussi écrit sur votre reçu.</p>
      <button class="btn btn--pri btn--large" id="acheter">Obtenir mon code — ${dollars(o.prix)}</button></div></details>`;
   $('#acheter').onclick = () => acheter(null);
@@ -1522,7 +1540,7 @@ async function vueAchat(sid){
 }
 function vueAchatAnnule(){
   app.innerHTML = `${retour('accueil', 'La credencial')}<h1>Paiement annulé</h1>
-    <div class="retro info">Rien n'a été facturé. Le chemin reste ouvert : les dix haltes, la trousse et le test ne demandent aucun code.</div>
+    <div class="retro info">Rien n'a été facturé. Le chemin reste ouvert : les dix étapes, la trousse et le test ne demandent aucun code.</div>
     <button class="btn btn--pri btn--large" onclick="aller('${suiteApresAchat()}')">Revenir à « Parler librement »</button>`;
 }
 
@@ -1583,7 +1601,7 @@ function vuePrep(){
   <p class="muted">${D.prep.test[0].length} questions, dont ${D.prep.test[0].filter(it => it.type === 'oral').length} au micro, pour savoir où vous en êtes après les entraînements. Il vous situe, il ne vous note pas.
   Refaites-le la veille du départ : ce sera l'autre forme.${t.dernier ? ' Dernier passage : ' + E(t.dernier) + '.' : ''}</p>
   <button class="btn btn--large" onclick="aller('prep/test')">${ICO.test} Faire la marche d'essai</button>
-  <p class="avis-local" style="margin-top:10px">À ne pas confondre avec « Suis-je prêt${S.genre === 'f' ? 'e' : ''} ? », le test du chemin, à faire après les haltes.</p>
+  <p class="avis-local" style="margin-top:10px">À ne pas confondre avec « Suis-je prêt${S.genre === 'f' ? 'e' : ''} ? », le test du chemin, à faire après les étapes.</p>
   <button class="btn btn--pri btn--large" style="margin-top:14px" onclick="aller('accueil')">Aller au chemin</button>`;
 }
 /* Le fil d'Ariane (Daniel, 27 sept. 2026) : les temps d'un entraînement
@@ -1594,7 +1612,7 @@ const CADENAS = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" str
 function tempsOuvert(x, j){ const e = prepEtat(x.id); return !!e.fin || PREP_TEMPS.slice(0, j).every(([t]) => e.faits[t]); }
 function filSeance(x, actif){
   const e = prepEtat(x.id);
-  return `<ol class="ariane" aria-label="Les étapes de l'entraînement">${PREP_TEMPS.map(([t, nom], j) => {
+  return `<ol class="ariane" aria-label="Les temps de l'entraînement">${PREP_TEMPS.map(([t, nom], j) => {
     const fait = !!e.faits[t], ouvert = tempsOuvert(x, j), ici = t === actif;
     const avant = j > 0 && e.faits[PREP_TEMPS[j - 1][0]];
     const cls = [fait ? 'fait' : '', ici ? 'ici' : '', ouvert ? '' : 'ferme', avant ? 'relie' : ''].filter(Boolean).join(' ');
@@ -1634,7 +1652,7 @@ function vueSeance(id, k){
   app.innerHTML = `${retour('prep', 'Mon sac')}<p class="surtitre">Entraînement ${numSeance(x)} sur ${D.prep.seances.length} · ${x.minutes} minutes</p>
     <h1>${E(x.titre)}</h1><p>${E(x.intro)}</p>
     ${filSeance(x, e.fin ? null : suivant[0])}
-    <p class="fil-legende">${e.fin ? `✓ Entraînement fait${o ? ' : ' + E(o[1]) + ' est dans votre sac' : ''}. Refaites l'étape de votre choix.`
+    <p class="fil-legende">${e.fin ? `✓ Entraînement fait${o ? ' : ' + E(o[1]) + ' est dans votre sac' : ''}. Refaites le temps de votre choix.`
       : 'Dans l’ordre : la leçon d’abord, puis on écoute, on reconnaît, et on finit par parler.'}</p>
     <button class="btn btn--pri btn--large" onclick="aller('prep/${x.id}/${suivant[0]}')">${e.fin ? 'Refaire' : Object.keys(e.faits).length ? 'Continuer' : 'Commencer'} : ${suivant[1]}</button>
     <div class="objectif" style="margin-top:16px">${E(D.prep.fin[x.obj])}</div>
@@ -1896,19 +1914,19 @@ function vuePrepTest(){
   function bilan(){
     const HALTE_N = id => D.etapes.find(e => e.id === id);
     const lignes = Object.keys(D.prep.objectifs).map(o => {
-      const [ok, tot] = res[o] || [0, 0], nv = nonVerif[o] || 0, h = HALTE_N(D.prep.halte[o]);
+      const [ok, tot] = res[o] || [0, 0], nv = nonVerif[o] || 0, h = HALTE_N(D.prep.étape[o]);
       if (!tot) return `<div class="carte" style="margin:8px 0"><b>${E(D.prep.objectifs[o])}</b><div class="retro info" style="margin:6px 0">Non vérifié au micro : refaites ces questions avec le micro.</div><p class="muted" style="margin:0;font-size:15px">${E(D.prep.conseils[o])}</p></div>`;
       const r = ok / tot;
       const etat = r >= .8 ? ['ok', '✓ Solide'] : r >= .5 ? ['info', '→ En route'] : ['no', '— À reprendre'];
       return `<div class="carte" style="margin:8px 0"><b>${E(D.prep.objectifs[o])}</b><div class="retro ${etat[0]}" style="margin:6px 0">${etat[1]} — ${ok} sur ${tot}${nv ? ` (et ${nv} non vérifiée${nv > 1 ? 's' : ''} au micro)` : ''}</div>
         ${r < .8 ? `<p class="muted" style="margin:0;font-size:15px">${E(D.prep.conseils[o])}</p>` : ''}
         ${(manquees[o] || []).length ? `<p class="muted" style="margin:4px 0 0;font-size:14px">À revoir : ${manquees[o].map(t => '<i lang="es">' + E(t) + '</i>').join(' · ')}</p>` : ''}
-        ${h ? `<p class="muted" style="margin:4px 0 0;font-size:14px">Vous en aurez besoin dès la halte ${h.n}, ${E(h.lieu)}.</p>` : ''}</div>`;
+        ${h ? `<p class="muted" style="margin:4px 0 0;font-size:14px">Vous en aurez besoin dès l’étape ${h.n}, ${E(h.lieu)}.</p>` : ''}</div>`;
     }).join('');
     T.prochaine = 1 - f; T.passages = (T.passages || 0) + 1; T.dernier = aujourdhui(); sauver();
     app.innerHTML = `${retour('prep', 'Avant de partir')}<h1>Où vous en êtes</h1>
       <p>Un repère sur un échantillon, pas une note. La prochaine fois — la veille du départ, par exemple — ce sera l'autre forme.</p>${lignes}
-      <button class="btn btn--pri btn--large" onclick="aller('jour/${D.etapes[0].id}')">En route : halte 1, ${E(D.etapes[0].lieu)}</button>
+      <button class="btn btn--pri btn--large" onclick="aller('jour/${D.etapes[0].id}')">En route : étape 1, ${E(D.etapes[0].lieu)}</button>
       <button class="btn btn--large" style="margin-top:8px" onclick="aller('prep')">Revoir mon sac</button>`;
   }
   intro();
@@ -2045,7 +2063,7 @@ function vueTest(){
       <p>${items.length} questions, un quart d'heure, avec le son. Des phrases <b>nouvelles pour la plupart</b> : comprendre et dire, pour un lit, un repas, la pharmacie, un chemin, un autre pèlerin — puis quelques mots.</p>
       <div class="regle"><b>La règle.</b> Les questions marquées « allergie » ne pardonnent pas : en rater une donne « Pas encore ${prete} », quel que soit le reste.
       Pour chaque objectif, plusieurs questions : ${E(D.test.seuil)} L'allergie dite au micro compte comme les autres questions d'allergie. ${allergie() ? 'Les questions d\u2019allergie portent sur la vôtre (' + E(allergie().fr) + ').' : 'Choisissez votre allergie dans les réglages : sans elle, les questions portent sur les noix.'}</div>
-      ${S.test.passages >= 2 ? `<div class="retro info">Vous avez vu les deux formes. Refaites quelques haltes avant de repasser : les réponses sont encore fraîches.</div>` : ''}
+      ${S.test.passages >= 2 ? `<div class="retro info">Vous avez vu les deux formes. Refaites quelques étapes avant de repasser : les réponses sont encore fraîches.</div>` : ''}
       ${S.test.dernier ? `<div class="retro info">Dernier passage : ${E(S.test.dernier)}</div>` : ''}
       <button class="btn btn--pri btn--large" id="go">Commencer</button>`;
     $('#go').onclick = tour;
@@ -2130,7 +2148,7 @@ function vueTest(){
   }
   function bilan(){
     const noms = {...D.test.objectifs, mots: 'Reconnaître les mots et les faux amis'};
-    const conseils = {O1: 'Refaites la halte 1 (Roncesvalles) et le « Ce qu’on me répond » de Burgos.', O2: 'Refaites León en entier' + (S.alergia ? '.' : ', et choisissez votre allergie dans les réglages.'),
+    const conseils = {O1: 'Refaites l’étape 1 (Roncesvalles) et le « Ce qu’on me répond » de Burgos.', O2: 'Refaites León en entier' + (S.alergia ? '.' : ', et choisissez votre allergie dans les réglages.'),
       O3: 'Refaites la pharmacie de Logroño.', O4: 'Refaites Puente la Reina, voix plus lentes d’abord.', O5: 'Refaites les soirs avec Marta, en répondant au micro.', mots: 'Reprenez « Tous les mots » et « Les faux amis ».'};
     const lignes = Object.keys(noms).filter(o => res[o]).map(o => {
       const [ok, tot] = res[o], r = ok / tot;
