@@ -50,7 +50,7 @@ def main():
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>En route vers Compostelle — comment ça marche</title>
-<meta name="description" content="L'espagnol du Camino francés, halte par halte, dans votre téléphone.">
+<meta name="description" content="L’espagnol du Camino francés, dix étapes choisies, dans votre téléphone.">
 <link rel="stylesheet" href="/assets/design-system/styles.css">
 <link rel="stylesheet" href="/assets/design-system/marque-francis.css">
 <link rel="icon" href="/assets/design-system/marque-francis-favicon.svg">
@@ -204,22 +204,23 @@ footer{{text-align:center;font-size:13px;color:var(--doux);padding:26px 0 40px}}
 <header class="une">
   <div>
     <p class="sur">Pour les pèlerins francophones</p>
-    <h1>L'espagnol du Camino, <span>halte par halte</span>.</h1>
+    <h1>L'espagnol du Camino, <span>là où vous en aurez besoin</span>.</h1>
     <p class="chapeau">Trouver un lit, commander le menu du pèlerin, expliquer une ampoule à la pharmacie, demander son chemin,
-    parler avec les autres le soir : vous apprenez chaque phrase <b>la veille du jour où vous en aurez besoin</b>, dans votre téléphone.</p>
+    parler avec les autres le soir : vous apprenez chaque phrase <b>la veille du jour où vous en aurez besoin</b>, dans votre téléphone.
+    Le chemin compte une trentaine d'étapes de marche : nous en avons choisi <b>dix</b>, celles où l'espagnol devient nécessaire.</p>
     <a class="cta" href="{APP}" target="_blank" rel="noopener">Essayer gratuitement</a>
   </div>
   <div class="visuel" aria-hidden="true">
     <div class="tel a"><img src="{CAP}accueil.jpg" alt=""></div>
     <div class="tel b"><img src="{CAP}scene.jpg" alt=""></div>
-    <div class="tampon"><span><b>{len(etapes)}</b>haltes<br>{km} km</span></div>
+    <div class="tampon"><span><b>{len(etapes)}</b>étapes<br>choisies</span></div>
   </div>
 </header>
 
 <div class="chiffres">
-  <div><b>{len(seances)}</b><span>séances de 15 min, à la maison, avant de partir</span></div>
-  <div><b>{len(etapes)}</b><span>haltes sur le Camino francés, de Roncesvalles à Santiago</span></div>
-  <div><b>7</b><span>petits temps par halte : écouter, comprendre, parler</span></div>
+  <div><b>{len(seances)}</b><span>entraînements de 15 min, à la maison, pour préparer son sac</span></div>
+  <div><b>{len(etapes)}</b><span>étapes choisies sur une trentaine, de Roncesvalles à Santiago ({km} km)</span></div>
+  <div><b>7</b><span>petits temps par étape : écouter, comprendre, parler</span></div>
   <div><b>0 $</b><span>pour tout le chemin ; aucune inscription, aucun courriel</span></div>
 </div>
 
@@ -230,31 +231,31 @@ footer{{text-align:center;font-size:13px;color:var(--doux);padding:26px 0 40px}}
     <article>
       <img class="croq" src="{MEDIA}croquis/mochila.jpg" alt="">
       <p class="quand">Les semaines d'avant</p>
-      <h3>Avant de partir</h3>
-      <p>Huit séances de quinze minutes, à la maison. Les outils qui servent partout :</p>
+      <h3>Préparer son sac</h3>
+      <p>Avant le Camino, on prépare son sac et on s'entraîne à marcher. Ici aussi : huit entraînements de quinze minutes, à la maison. Chacun met un outil dans votre sac :</p>
       <ul>{seance_li}</ul>
-      <p style="margin-top:10px">Puis un petit test : « Prêt à partir ? ».</p>
+      <p style="margin-top:10px">Puis la marche d'essai : « Prêt à partir ? ».</p>
       <svg class="fleche" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 2l16 10L4 22z"/></svg>
     </article>
     <article>
       <img class="croq" src="{MEDIA}croquis/flecha.jpg" alt="">
       <p class="quand">Sur le chemin · environ {jours} jours de marche</p>
-      <h3>Une halte, une situation</h3>
-      <p>Chaque halte prépare la situation qui vous attend ce soir-là : l'albergue complet, le bar du matin, la pharmacie, la pluie à O Cebreiro…</p>
-      <p style="margin-top:10px">Une halte se fait d'une traite ou en morceaux : le soir à l'albergue, ou pendant la pause.</p>
+      <h3>Dix étapes choisies</h3>
+      <p>Chacune prépare la situation qui vous attend ce soir-là : l'albergue complet, le bar du matin, la pharmacie, la pluie à O Cebreiro…</p>
+      <p style="margin-top:10px">Une étape se fait d'une traite ou en morceaux : le soir à l'albergue, ou pendant la pause.</p>
       <svg class="fleche" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4 2l16 10L4 22z"/></svg>
     </article>
     <article>
       <img class="croq" src="{MEDIA}croquis/credencial.jpg" alt="">
       <p class="quand">À chaque arrivée</p>
       <h3>Un tampon sur la credencial</h3>
-      <p>Comme le vrai carnet du pèlerin : chaque halte réussie ajoute son tampon. Au bout, le test du chemin vous dit ce que vous savez faire.</p>
+      <p>Comme le vrai carnet du pèlerin : chaque étape réussie ajoute son tampon. Au bout, le test du chemin vous dit ce que vous savez faire.</p>
     </article>
   </div>
 </section>
 
 <section>
-  <h2><span class="num">2</span>Une halte, de l'oreille à la voix</h2>
+  <h2><span class="num">2</span>Une étape, de l'oreille à la voix</h2>
   <p class="intro">Toujours le même rythme : on <b>découvre</b>, on <b>comprend</b> ce qu'on nous répond, puis on <b>agit</b>. La traduction reste cachée tant que vous n'avez pas cherché.</p>
   <div class="halte">
     <div class="ecran"><div class="tel"><img src="{CAP}mots.jpg" alt="Les mots du jour : des cartes dessinées"></div>
@@ -267,7 +268,7 @@ footer{{text-align:center;font-size:13px;color:var(--doux);padding:26px 0 40px}}
       <span class="phase ph-3">Agir</span><h3>À vous de le dire</h3>
       <p>Au micro, à voix haute. Vous cherchez d'abord, puis vous comparez avec le modèle.</p></div>
   </div>
-  <ul class="sept" aria-label="Les sept temps d'une halte">
+  <ul class="sept" aria-label="Les sept temps d'une étape">
     <li><i>1</i>Le lieu</li><li><i>2</i>Les mots du jour</li><li><i>3</i>J'entends, je trouve</li>
     <li><i>4</i>Ce qu'on me répond</li><li><i>5</i>La scène</li><li><i>6</i>Je le dis</li><li><i>7</i>Le soir, avec Marta</li>
   </ul>
@@ -277,7 +278,7 @@ footer{{text-align:center;font-size:13px;color:var(--doux);padding:26px 0 40px}}
   <div class="bande">
     <div>
       <h2>Vous parlez, pour vrai</h2>
-      <p class="intro">Le chemin ne se fait pas en cochant des cases. Chaque halte finit par une conversation.</p>
+      <p class="intro">Le chemin ne se fait pas en cochant des cases. Chaque étape finit par une conversation.</p>
       <ul>
         <li><b>La scène</b> : les gens du lieu, à l'albergue, au bar, à la pharmacie — vous choisissez ou vous répondez à voix haute.</li>
         <li><b>Le soir, avec Marta</b> : une pèlerine de Valladolid qui se souvient de ce que vous lui avez dit la veille.</li>
@@ -304,9 +305,9 @@ footer{{text-align:center;font-size:13px;color:var(--doux);padding:26px 0 40px}}
         <li><b>sans réseau</b> sur la Meseta : tout se garde dans le téléphone.</li></ul></div>
     </div>
     <div class="carte">
-      <div class="tel"><img src="{CAP}accueil.jpg" alt="La credencial"></div>
+      <div class="tel"><img src="{CAP}credencial.jpg" alt="La credencial"></div>
       <div><h3>Ma credencial</h3>
-        <p>Votre carnet de route. La borne vous dit combien il reste de kilomètres, les tampons ce que vous avez fait.</p>
+        <p>Votre carnet de route, avec une case par étape. La borne vous dit combien il reste de kilomètres, les tampons ce que vous avez fait.</p>
         <ul><li>on reprend où on s'était arrêté ;</li>
         <li>rien à créer : pas de compte, pas de mot de passe ;</li>
         <li>vos réponses restent <b>dans votre téléphone</b>.</li></ul></div>
@@ -315,8 +316,8 @@ footer{{text-align:center;font-size:13px;color:var(--doux);padding:26px 0 40px}}
 </section>
 
 <section>
-  <h2><span class="num">4</span>Les dix haltes</h2>
-  <p class="intro">Environ {jours} jours de marche, à {KM_JOUR} km par jour. Les haltes tombent là où l'espagnol devient nécessaire.</p>
+  <h2><span class="num">4</span>Les dix étapes choisies</h2>
+  <p class="intro">Environ {jours} jours de marche, à {KM_JOUR} km par jour. Sur la trentaine d'étapes du chemin, nous avons gardé celles où l'espagnol devient nécessaire.</p>
   <ol class="chemin">{haltes}</ol>
 </section>
 
@@ -326,7 +327,7 @@ footer{{text-align:center;font-size:13px;color:var(--doux);padding:26px 0 40px}}
     <div class="offre">
       <p class="etiq">Le chemin</p>
       <p class="montant">Gratuit</p>
-      <ul><li>les huit séances « Avant de partir » et le test ;</li><li>les dix haltes, leurs scènes et leurs voix ;</li>
+      <ul><li>les huit entraînements « Avant de partir » et la marche d'essai ;</li><li>les dix étapes, leurs scènes et leurs voix ;</li>
       <li>Ma trousse, hors ligne ;</li><li>le test du chemin.</li></ul>
     </div>
     <div class="offre plus">
@@ -347,7 +348,7 @@ footer{{text-align:center;font-size:13px;color:var(--doux);padding:26px 0 40px}}
 
 <div class="fin">
   <h2>Buen Camino !</h2>
-  <p>Commencez par la première séance : quinze minutes, ce soir.</p>
+  <p>Commencez par le premier entraînement : quinze minutes, ce soir.</p>
   <a class="cta" href="{APP}" target="_blank" rel="noopener">Ouvrir En route vers Compostelle</a>
 </div>
 
@@ -357,7 +358,7 @@ footer{{text-align:center;font-size:13px;color:var(--doux);padding:26px 0 40px}}
 </html>
 """
     SORTIE.write_text(page, encoding="utf-8")
-    print(SORTIE.relative_to(RACINE), f"— {len(etapes)} haltes, {len(seances)} séances, {prix(o['prix'])}")
+    print(SORTIE.relative_to(RACINE), f"— {len(etapes)} étapes, {len(seances)} entraînements, {prix(o['prix'])}")
 
 
 if __name__ == "__main__":

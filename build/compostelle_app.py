@@ -263,6 +263,56 @@ svg.tampon{opacity:.9}
   border-left:5px solid var(--accent);border-radius:14px;padding:12px 14px;margin-bottom:12px;font:inherit;color:var(--text-body)}
 .carte-prep b{font-size:17px;color:var(--text-strong)}
 .carte-prep .muted{font-size:14px}
+/* accueil en deux temps : le sac, puis le chemin */
+.deux-temps{list-style:none;padding:0;margin:4px 0 10px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.deux-temps a{display:flex;flex-direction:column;gap:2px;text-decoration:none;color:var(--text-muted);background:#fff;border:1px solid var(--line-200);border-radius:12px;padding:10px 12px 10px 48px;position:relative;min-height:60px}
+.deux-temps span{position:absolute;left:12px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:900;background:var(--line-200);color:var(--text-muted)}
+.deux-temps b{font-size:15px;line-height:1.2;color:inherit}.deux-temps small{font-size:12.5px}
+.deux-temps .actif a{border-color:var(--borne);color:var(--borne);box-shadow:inset 0 0 0 1px var(--borne)}
+.deux-temps .actif span{background:var(--borne);color:#fff}
+.deux-temps .fait span{background:#2E7D4F;color:#fff}
+.acc-temps{background:#FBF7EE;border:1px solid #E2D8C3;border-radius:18px;padding:16px;margin:14px 0}
+.acc-temps--fait{padding-bottom:12px}
+.acc-h{margin:2px 0 6px;font-size:26px;line-height:1.15}
+.acc-p{margin:0 0 12px;font-size:16px}
+.acc-temps .btn--large{white-space:normal;line-height:1.25}
+.acc-note{font-size:14px;margin:8px 0 0;text-align:center}
+.sac{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:start;margin:0 0 14px}
+.sac-dos{text-align:center;position:sticky;top:8px}
+.sac-dos img{width:100%;max-width:120px;display:block;margin:0 auto;mix-blend-mode:multiply}
+.sac-dos b{display:block;font-size:24px;color:var(--borne);line-height:1}.sac-dos small{font-size:13px;color:var(--text-muted)}
+.sac-objets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.sac-o{display:grid;grid-template-columns:52px 1fr;grid-template-rows:auto auto;column-gap:10px;align-items:center;text-align:left;background:#fff;
+  border:1.5px dashed #CDBF9F;border-radius:12px;padding:6px 8px;font:inherit;color:inherit;cursor:pointer;position:relative;min-height:64px}
+.sac-o .sac-img{grid-row:1/3;position:relative;width:52px;height:52px}
+.sac-o img{width:52px;height:52px;object-fit:contain;filter:grayscale(1);opacity:.35;mix-blend-mode:multiply}
+.sac-o b{font-size:13.5px;line-height:1.2;color:var(--text)}.sac-o small{font-size:12px;color:var(--text-muted);line-height:1.25}
+.sac-n{position:absolute;top:-7px;left:-7px;width:22px;height:22px;border-radius:50%;background:#fff;border:1.5px solid #CDBF9F;font-size:12px;font-weight:900;display:grid;place-items:center;color:var(--text-muted)}
+.sac-o.dans{border-style:solid;border-color:#B9D8C4;background:#F3FAF5}
+.sac-o.dans img{filter:none;opacity:1}
+.sac-o.dans .sac-n{background:#2E7D4F;border-color:#2E7D4F;color:#fff}
+.sac-img i{position:absolute;right:-4px;bottom:-2px;width:20px;height:20px;border-radius:50%;background:#2E7D4F;color:#fff;font-style:normal;font-size:12px;font-weight:900;display:grid;place-items:center}
+.sac-o.courant{border:2px solid var(--accent);background:#FFF9E6}
+.sac-o.courant .sac-n{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.sac--petit .sac-o small{display:block}
+@media (max-width:520px){.sac{grid-template-columns:1fr}.sac-dos{position:static;display:flex;align-items:center;gap:10px;justify-content:center}
+  .sac-dos img{width:64px;margin:0}.sac-objets{grid-template-columns:1fr;gap:7px}
+  .sac-o{grid-template-columns:44px 1fr;min-height:54px;padding:5px 10px}.sac-o .sac-img,.sac-o img{width:44px;height:44px}
+  .sac-o b{font-size:14.5px}.sac-o small{font-size:12.5px}}
+.livret{background:#FFFDF6;border:1px solid #D9C9A3;border-radius:6px 14px 14px 6px;padding:12px 12px 14px;margin-top:10px;
+  box-shadow:inset 6px 0 0 #E9DFC6, 0 2px 0 #E9DFC6, 0 4px 0 #D9C9A3}
+.livret-tete{display:flex;align-items:center;gap:10px;border-bottom:1.5px solid #D9C9A3;padding:0 0 8px 6px;margin-bottom:8px}
+.livret-tete img{width:40px;height:40px;object-fit:contain;mix-blend-mode:multiply}
+.livret-tete>div{min-width:0}
+.livret-tete div small{display:block;font-family:Newsreader,Georgia,serif;font-style:italic;font-size:12px;letter-spacing:.05em;color:var(--tampon);text-transform:uppercase}
+.livret-tete b{font-size:19px;color:var(--text)}
+.livret-compte{flex:none;white-space:nowrap;margin-left:auto;text-align:right;font-weight:900;font-size:20px;color:var(--tampon);line-height:1}
+.livret-tete .livret-compte small{display:block;font-family:inherit;font-style:normal;text-transform:none;letter-spacing:0;font-size:12px;font-weight:700;color:var(--text-muted)}
+.livret-leg{font-size:14px;margin:0 0 10px 6px;color:var(--text-muted)}
+.livret .cred{background:none;border:0;padding:0 0 0 6px;box-shadow:none}
+.case{flex-direction:column}
+.case em{display:block;font-style:normal;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:#B5A47E;margin-top:2px;font-weight:800}
+.case.courante em{color:var(--accent-ink)}
 .l-lecteur{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .l-jouer{display:inline-flex;align-items:center;gap:8px;min-height:48px}
 .l-barre{flex:1;min-width:120px;height:8px;border-radius:99px;background:var(--line-200);overflow:hidden}
@@ -665,7 +715,7 @@ function vueGuide(){
   <p class="surtitre">Le mode d'emploi</p><h1>Comment ça marche ?</h1>
   <p>Dix haltes sur le Camino francés, de Roncesvalles à Santiago — environ ${D.etapes.reduce((t, e) => t + joursMarche(e), 0)} jours de marche. Chaque halte prépare une situation dont vous aurez
   besoin ce soir-là : trouver un lit, commander, vous soigner, demander votre chemin, parler avec les autres.</p>
-  <div class="retro info"><b>Avant de partir</b> : huit séances de quinze minutes, à la maison — les sons, la politesse, les nombres, l'heure, quatre verbes, les questions, se présenter, comprendre la réponse — puis le test « Prêt à partir ? ». Conseillées, jamais obligatoires. <a href="#prep">Y aller</a>.</div>
+  <div class="retro info"><b>Avant de partir</b> : préparer votre sac — huit entraînements de quinze minutes, à la maison — les sons, la politesse, les nombres, l'heure, quatre verbes, les questions, se présenter, comprendre la réponse — puis le test « Prêt à partir ? ». Conseillées, jamais obligatoires. <a href="#prep">Y aller</a>.</div>
   <div class="objectif"><b>La règle du chemin :</b> comprendre avant de dire, dire avant de jouer, jouer avant d'y aller seul.</div>
   <h2>Une halte, sept temps</h2>
   <p>Toujours dans le même ordre. Touchez un temps dans la halte pour le faire ; vous pouvez le refaire autant que vous voulez.</p>
@@ -729,45 +779,69 @@ function frise(){
 const COURT = {'puente-la-reina': 'Puente', 'carrion': 'Carrión', 'o-cebreiro': 'Cebreiro', 'santiago': 'Santiago'};
 function vueAccueil(){
   const pro = prochaine(), faits = D.etapes.filter(e => jour(e.id).tampon).length;
+  const nP = prepFaites(), totP = D.prep.seances.length, sacPret = nP === totP, proP = prepProchaine();
+  const testFait = !!((S.prep || {}).test || {}).passages, pret = S.genre === 'f' ? 'prête' : 'prêt';
   const cases = D.etapes.map(e => {
     const j = jour(e.id);
     const nom = `<small>${E(COURT[e.id] || e.lieu)}</small>`;
     if (j.tampon) return `<div class="case-w"><button class="case faite" onclick="aller('jour/${e.id}')" aria-label="${E(e.lieu)} : tamponné">${tampon(e, '')}</button>${nom}</div>`;
-    return `<div class="case-w"><button class="case${pro && pro.id === e.id ? ' courante' : ''}" onclick="aller('jour/${e.id}')" aria-label="Halte ${e.n} : ${E(e.lieu)}"><span>${e.n}</span></button>${nom}</div>`;
+    const cour = pro && pro.id === e.id;
+    return `<div class="case-w"><button class="case${cour ? ' courante' : ''}" onclick="aller('jour/${e.id}')" aria-label="Étape ${e.n} : ${E(e.lieu)}"><span>${e.n}</span><em>${cour ? 'à faire' : 'sello'}</em></button>${nom}</div>`;
   }).join('');
+  // 1 · le sac
+  const sac = `<section class="acc-temps${sacPret ? ' acc-temps--fait' : ''}" id="sac">
+    <p class="surtitre">1 · Avant de partir</p>
+    <h2 class="acc-h">${sacPret ? `Mon sac est prêt ✓` : 'Préparer mon sac'}</h2>
+    ${sacPret ? '' : `<p class="acc-p">Avant le Camino, on prépare son sac et on s'entraîne à marcher. Pour l'espagnol, c'est pareil :
+      <b>huit entraînements de quinze minutes</b>, à la maison. Chacun met un outil dans votre sac.</p>`}
+    ${sacGrille(true)}
+    ${!sacPret ? `<button class="btn btn--pri btn--large" onclick="aller('prep/${proP.id}')">Entraînement ${nP + 1} : ${E(proP.titre)}</button>
+      <p class="muted acc-note">Conseillé, jamais obligatoire : le chemin reste ouvert.</p>` :
+      !testFait ? `<button class="btn btn--pri btn--large" onclick="aller('prep/test')">La marche d'essai : ${pret} à partir ?</button>
+      <p class="muted acc-note">Un quart d'heure pour savoir où vous en êtes — à refaire la veille du départ.</p>` :
+      `<button class="btn btn--large" onclick="aller('prep')">Revoir mon sac</button>`}
+  </section>`;
+  // 2 · le chemin
+  const chemin = `<section class="acc-temps" id="chemin">
+    <p class="surtitre">2 · Sur le chemin</p>
+    <h2 class="acc-h">Dix étapes choisies</h2>
+    <p class="acc-p">Le Camino francés compte une trentaine d'étapes de marche, de Saint-Jean à Santiago. Nous en avons retenu <b>dix</b> :
+      celles où l'espagnol devient nécessaire — trouver un lit, commander, se soigner, demander son chemin, parler avec les autres.</p>
+    <div class="carte-borne">${borneImg(pro ? KM_TOTAL - pro.km : 0)}<div class="cb-txt">
+     <p class="surtitre">${pro ? 'Prochaine étape · ' + pro.n + ' sur 10' : 'Au bout du chemin'}</p>
+     <h1>${faits === 10 ? '¡Lo has conseguido!' : pro ? E(pro.lieu) : ''}</h1>
+     ${pro ? `<p class="muted">${E(pro.titre)} — ${E(pro.region)}</p>
+     <p class="cb-reste">Encore <b>${(KM_TOTAL - pro.km).toLocaleString('fr-CA')} km</b> jusqu'à Santiago<br><span>${marche(pro)}</span></p>` :
+     `<p class="cb-reste">Vous êtes arrivé${S.genre === 'f' ? 'e' : ''} à Santiago.</p>`}</div></div>
+    ${pro ? `<button class="btn ${sacPret || faits ? 'btn--pri' : ''} btn--large" onclick="aller('jour/${pro.id}')">${faits ? 'Reprendre la route' : 'Partir : étape 1, ' + E(pro.lieu)}</button>` :
+      `<button class="btn btn--pri btn--large" onclick="aller('compostela')">Voir ma Compostela</button>`}
+    <div style="margin:16px 0 6px">${frise()}</div>
+    <div class="livret">
+      <div class="livret-tete"><img src="${BASE}croquis/concha.jpg?v=${D.v}" alt=""><div><small>Credencial del peregrino</small><b>Ma credencial</b></div>
+        <span class="livret-compte">${faits} / 10<small>tampons</small></span></div>
+      <p class="livret-leg">Le carnet du pèlerin. Sur le vrai chemin, on le fait tamponner à chaque arrêt ; ici, chaque étape réussie y pose son tampon — <i lang="es">el sello</i>.</p>
+      <div class="cred">${cases}</div>
+    </div>
+    <details class="rub" style="margin-top:12px"><summary>Au bout du chemin, vous saurez… <span>la règle</span></summary>
+     <div style="padding:0 14px 12px;font-size:15.5px"><ul style="margin:0 0 8px;padding-left:20px">
+      <li>obtenir un lit, et comprendre le prix et les heures ;</li><li>commander, et <b>dire votre allergie</b> puis comprendre la réponse ;</li>
+      <li>dire où vous avez mal et comprendre la posologie ;</li><li>demander votre chemin et le suivre ;</li><li>parler avec un autre pèlerin.</li></ul>
+      <p style="margin:0">Une erreur ne pardonne pas : <b>l'allergie</b>. À León comme au test « Suis-je prêt ? », la rater fait recommencer.
+      ${S.alergia ? 'La vôtre : ' + E(allergie().fr) + '.' : 'Choisissez la vôtre dans les réglages.'}</p></div></details>
+  </section>`;
   app.innerHTML = `
-  ${prepFaites() === D.prep.seances.length && !((S.prep || {}).test || {}).passages ? `<button class="carte-prep" onclick="aller('prep/test')">
-    <span class="surtitre">Avant de partir · les huit séances sont faites</span><b>Le test de la maison : prêt${S.genre === 'f' ? 'e' : ''} à partir ?</b>
-    <span class="muted">Un quart d'heure pour savoir où vous en êtes — et le refaire la veille du départ.</span></button>` : ''}
-  ${prepFaites() < D.prep.seances.length ? `<button class="carte-prep" onclick="aller('prep${prepProchaine() ? '/' + prepProchaine().id : ''}')">
-    <span class="surtitre">Avant de partir · ${prepFaites()} séance${prepFaites() > 1 ? 's' : ''} sur ${D.prep.seances.length}</span>
-    <b>${prepFaites() ? 'Continuer' : 'Commencer'} : ${E(prepProchaine().titre)}</b>
-    <span class="muted">Quinze minutes, à la maison : les outils qui serviront sur le chemin.</span></button>` : ''}
-  <div class="carte-borne">${borneImg(pro ? KM_TOTAL - pro.km : 0)}<div class="cb-txt">
-   <p class="surtitre">Ma credencial · ${faits} tampon${faits > 1 ? 's' : ''} sur 10</p>
-   <h1>${faits === 10 ? '¡Lo has conseguido!' : pro ? 'Halte ' + pro.n + ' · ' + E(pro.lieu) : ''}</h1>
-   ${pro ? `<p class="muted">${E(pro.titre)} — ${E(pro.region)}</p>
-   <p class="cb-reste">Encore <b>${(KM_TOTAL - pro.km).toLocaleString('fr-CA')} km</b> jusqu'à Santiago<br><span>${marche(pro)}</span></p>` :
-   `<p class="cb-reste">Vous êtes arrivé${S.genre === 'f' ? 'e' : ''} à Santiago.</p>`}</div></div>
-  ${pro ? `
-  <button class="btn btn--pri btn--large" onclick="aller('jour/${pro.id}')">Reprendre la route</button>
-  <button class="btn btn--large lien-guide" onclick="aller('guide')">${ICO.guide} Comment ça marche ?</button>` :
-  `<button class="btn btn--pri btn--large" onclick="aller('compostela')">Voir ma Compostela</button>`}
-  <div style="margin:16px 0 6px">${frise()}</div>
-  <div class="cred">${cases}</div>
-  <details class="rub" style="margin-top:12px"><summary>Au bout du chemin, vous saurez… <span>la règle</span></summary>
-   <div style="padding:0 14px 12px;font-size:15.5px"><ul style="margin:0 0 8px;padding-left:20px">
-    <li>obtenir un lit, et comprendre le prix et les heures ;</li><li>commander, et <b>dire votre allergie</b> puis comprendre la réponse ;</li>
-    <li>dire où vous avez mal et comprendre la posologie ;</li><li>demander votre chemin et le suivre ;</li><li>parler avec un autre pèlerin.</li></ul>
-    <p style="margin:0">Une erreur ne pardonne pas : <b>l'allergie</b>. À León comme au test « Suis-je prêt ? », la rater fait recommencer.
-    ${S.alergia ? 'La vôtre : ' + E(allergie().fr) + '.' : 'Choisissez la vôtre dans les réglages.'}</p></div></details>
+  <ol class="deux-temps">
+    <li class="${sacPret ? 'fait' : 'actif'}"><a href="#accueil" onclick="event.preventDefault();document.getElementById('sac').scrollIntoView({behavior:'smooth'})"><span>${sacPret ? '✓' : '1'}</span><b>Préparer mon sac</b><small>${nP} / ${totP} entraînements</small></a></li>
+    <li class="${sacPret || faits ? 'actif' : ''}${faits === 10 ? ' fait' : ''}"><a href="#accueil" onclick="event.preventDefault();document.getElementById('chemin').scrollIntoView({behavior:'smooth'})"><span>${faits === 10 ? '✓' : '2'}</span><b>Marcher le chemin</b><small>${faits} / 10 étapes</small></a></li>
+  </ol>
+  <button class="btn btn--large lien-guide" onclick="aller('guide')">${ICO.guide} Comment ça marche ?</button>
+  ${sacPret ? chemin + sac : sac + chemin}
   <h2>Pour la route</h2>
   <div class="outils">
-   <button class="outil" onclick="aller('prep')">${ICO.guide}<div><b>Avant de partir</b><span>${prepFaites()} séance${prepFaites() > 1 ? 's' : ''} sur ${D.prep.seances.length}, à la maison</span></div></button>
    <button class="outil" onclick="aller('trousse')">${ICO.poche}<div><b>Ma trousse</b><span>La trousse de secours pour se débrouiller : les phrases du chemin, les urgences — sans réseau</span></div></button>
    <button class="outil" onclick="aller('mots')">${ICO.livre}<div><b>Tous les mots</b><span>${Object.keys(D.mots).length} mots, onze planches</span></div></button>
    <button class="outil" onclick="aller('pieges')">${ICO.piege}<div><b>Les faux amis</b><span>constipado, embarazada, la carta…</span></div></button>
-   <button class="outil" onclick="aller('test')">${ICO.test}<div><b>Suis-je prêt${S.genre === 'f' ? 'e' : ''} ?</b><span>Le test du chemin, après les haltes</span></div></button>
+   <button class="outil" onclick="aller('test')">${ICO.test}<div><b>Suis-je ${pret} ?</b><span>Le test du chemin, après les étapes</span></div></button>
    <button class="outil" onclick="aller('reglages')">${ICO.reglage}<div><b>Réglages</b><span>Pèlerin ou pèlerine, traductions, recommencer</span></div></button>
   </div>`;
 }
@@ -787,7 +861,7 @@ function vueJour(et){
   <div class="bandeau">${et.vignette ? `<img src="${BASE}etapes/${et.img}.jpg?v=${D.v}" alt="">` : ''}</div>
   <p class="surtitre" style="margin-top:12px">Halte ${et.n} · ${E(et.region)} · km ${et.km}</p>
   <h1>${E(et.lieu)}</h1><p class="muted">${E(et.titre)}</p>
-  ${OUTILLE[et.id] ? `<p class="avis-local" style="margin:4px 0 0">Les outils de cette halte : ${OUTILLE[et.id].map(id => `<a href="#prep/${id}">séance ${numSeance(seanceParId(id))}, ${E(seanceParId(id).titre.toLowerCase())}</a>`).join(' · ')}.</p>` : ''}
+  ${OUTILLE[et.id] ? `<p class="avis-local" style="margin:4px 0 0">Les outils de cette halte : ${OUTILLE[et.id].map(id => `<a href="#prep/${id}">entraînement ${numSeance(seanceParId(id))}, ${E(seanceParId(id).titre.toLowerCase())}</a>`).join(' · ')}.</p>` : ''}
   <div class="bande-borne">${borneImg(KM_TOTAL - et.km, true)}<p>Encore <b>${(KM_TOTAL - et.km).toLocaleString('fr-CA')} km</b> jusqu'à Santiago<br><span>${marche(et)}</span></p></div>
   <div class="objectif"><b>Aujourd'hui :</b> ${E(et.objectif)}</div>
   ${j.tampon ? `<div class="retro ok">✓ Tamponné le ${E(j.tampon)}. Vous pouvez rejouer chaque temps.</div>` :
@@ -1369,29 +1443,51 @@ const seanceParId = id => D.prep.seances.find(x => x.id === id);
 const prepFaites = () => D.prep.seances.filter(x => prepEtat(x.id).fin).length;
 const prepProchaine = () => D.prep.seances.find(x => !prepEtat(x.id).fin) || null;
 const numSeance = x => D.prep.seances.indexOf(x) + 1;
+/* Le sac (Daniel, 27 sept. 2026) : avant le Camino on prépare son sac et on
+   s'entraîne ; chaque entraînement y met un objet. Le croquis de l'objet vient
+   du lexique ; il se colore quand l'entraînement est fait. */
+const SAC = {p1: ['botas', 'les chaussures', 'la base : tout repose dessus'],
+             p2: ['concha', 'la coquille', 'le signe du pèlerin : elle ouvre les portes'],
+             p3: ['efectivo', 'le porte-monnaie', 'payer, et comprendre le prix'],
+             p4: ['horario', "l'horloge", 'ne pas trouver la porte fermée'],
+             p5: ['baston', 'le bâton', 'on s’appuie dessus pour tout'],
+             p6: ['flecha', 'la flèche', 'trouver ce qu’on cherche'],
+             p7: ['credencial', 'la credencial', 'qui vous êtes, d’où vous venez'],
+             p8: ['chubasquero', "l'imperméable", 'prêt pour la réponse qui tombe']};
+function sacGrille(petit){
+  const pro = prepProchaine();
+  return `<div class="sac${petit ? ' sac--petit' : ''}"><div class="sac-dos"><img src="${BASE}croquis/mochila.jpg?v=${D.v}" alt="">
+    <b>${prepFaites()} / ${D.prep.seances.length}</b><small>dans le sac</small></div><div class="sac-objets">${
+    D.prep.seances.map((x, i) => { const o = SAC[x.id] || ['mochila', '', ''], fait = !!prepEtat(x.id).fin, cour = !fait && pro && pro.id === x.id;
+      return `<button class="sac-o${fait ? ' dans' : ''}${cour ? ' courant' : ''}" onclick="aller('prep/${x.id}')" aria-label="Entraînement ${i + 1} : ${E(x.titre)}${fait ? ', fait' : ''}">
+        <span class="sac-img"><img src="${BASE}croquis/${o[0]}.jpg?v=${D.v}" alt="" loading="lazy">${fait ? '<i aria-hidden="true">✓</i>' : ''}</span>
+        <span class="sac-n">${i + 1}</span><b>${E(x.titre)}</b><small>${E(o[1])}${petit ? '' : ' — ' + E(o[2])}</small></button>`; }).join('')}</div></div>`;
+}
 function vuePrep(){
   const n = prepFaites(), pro = prepProchaine();
   const liste = D.prep.seances.map((x, i) => { const e = prepEtat(x.id);
     return `<li class="${e.fin ? 'fait' : ''}"><button onclick="aller('prep/${x.id}')"><span class="num">${e.fin ? '✓' : i + 1}</span>
       <span><b>${E(x.titre)}</b><span class="d">${E(D.prep.objectifs[x.obj])} · ${x.minutes} min</span></span>${e.fin ? '<span class="etat">✓ faite</span>' : ''}</button></li>`; }).join('');
   const t = (S.prep && S.prep.test) || {};
-  app.innerHTML = `${retour('accueil', 'La credencial')}<p class="surtitre">Avant de partir · ${n} séance${n > 1 ? 's' : ''} sur ${D.prep.seances.length}</p>
-  <h1>Se préparer, à la maison</h1>
-  <p>Huit séances de quinze minutes, à faire dans les semaines qui précèdent le départ, dans l'ordre. On y apprend les outils — les sons,
-  les nombres, l'heure, quatre verbes, les questions — qu'on emploiera ensuite, halte après halte, sur le chemin.</p>
+  app.innerHTML = `${retour('accueil', 'Accueil')}<p class="surtitre">1 · Avant de partir · ${n} sur ${D.prep.seances.length} dans le sac</p>
+  <h1>Préparer mon sac</h1>
+  <p>Avant le Camino, on prépare son sac et on s'entraîne à marcher. Pour l'espagnol, c'est pareil : huit entraînements de quinze minutes,
+  à faire dans l'ordre, dans les semaines qui précèdent le départ. Chacun met un outil dans votre sac — les sons, les nombres, l'heure,
+  quatre verbes, les questions — et vous le ressortirez, étape après étape, sur le chemin.</p>
+  ${sacGrille()}
   <div class="retro info">Elles sont conseillées, pas obligatoires : le chemin reste ouvert, et vous pouvez y revenir quand vous voulez.</div>
   ${pro ? `<button class="btn btn--pri btn--large" style="margin:6px 0 4px" onclick="aller('prep/${pro.id}')">${n ? 'Continuer' : 'Commencer'} : ${E(pro.titre)}</button>` : ''}
   <ul class="etapes-j">${liste}</ul>
-  <h2>Le test de la maison : « Prêt${S.genre === 'f' ? 'e' : ''} à partir ? »</h2>
-  <p class="muted">${D.prep.test[0].length} questions, dont ${D.prep.test[0].filter(it => it.type === 'oral').length} au micro, pour savoir où vous en êtes après les séances. Il vous situe, il ne vous note pas.
+  <h2>La marche d'essai : « Prêt${S.genre === 'f' ? 'e' : ''} à partir ? »</h2>
+  <p class="muted">${D.prep.test[0].length} questions, dont ${D.prep.test[0].filter(it => it.type === 'oral').length} au micro, pour savoir où vous en êtes après les entraînements. Il vous situe, il ne vous note pas.
   Refaites-le la veille du départ : ce sera l'autre forme.${t.dernier ? ' Dernier passage : ' + E(t.dernier) + '.' : ''}</p>
-  <button class="btn btn--large" onclick="aller('prep/test')">${ICO.test} Faire le test de la maison</button>
+  <button class="btn btn--large" onclick="aller('prep/test')">${ICO.test} Faire la marche d'essai</button>
   <p class="avis-local" style="margin-top:10px">À ne pas confondre avec « Suis-je prêt${S.genre === 'f' ? 'e' : ''} ? », le test du chemin, à faire après les haltes.</p>
   <button class="btn btn--pri btn--large" style="margin-top:14px" onclick="aller('accueil')">Aller au chemin</button>`;
 }
 function teteSeance(x, k){
   const i = PREP_TEMPS.findIndex(t => t[0] === k);
-  return `${retour('prep/' + x.id, 'Séance ' + numSeance(x) + ' · ' + x.titre)}<p class="surtitre">${i + 1} / ${PREP_TEMPS.length}</p><h1>${PREP_TEMPS[i][1]}</h1>`;
+  return `${retour('prep/' + x.id, 'Entraînement ' + numSeance(x) + ' · ' + x.titre)}<p class="surtitre">${i + 1} / ${PREP_TEMPS.length}</p><h1>${PREP_TEMPS[i][1]}</h1>`;
 }
 function finTemps(x, k){
   const e = prepEtat(x.id); e.faits[k] = true;
@@ -1400,10 +1496,10 @@ function finTemps(x, k){
   const suivant = PREP_TEMPS.find(([t]) => !e.faits[t]);
   if (suivant) return `<button class="btn btn--pri btn--large" onclick="aller('prep/${x.id}/${suivant[0]}')">Suivant : ${suivant[1]}</button>`;
   const pro = prepProchaine();
-  return `<div class="retro ok">✓ Séance terminée. ${prepFaites()} sur ${D.prep.seances.length}.</div>
-    ${pro ? `<button class="btn btn--pri btn--large" onclick="aller('prep/${pro.id}')">Séance suivante : ${E(pro.titre)}</button>` :
+  return `<div class="retro ok">✓ Entraînement terminé : ${SAC[x.id] ? E(SAC[x.id][1]) + ' dans le sac. ' : ''}${prepFaites()} sur ${D.prep.seances.length}.</div>
+    ${pro ? `<button class="btn btn--pri btn--large" onclick="aller('prep/${pro.id}')">Entraînement suivant : ${E(pro.titre)}</button>` :
       `<button class="btn btn--pri btn--large" onclick="aller('prep/test')">Les huit sont faites : le test de la maison</button>`}
-    <button class="btn btn--large" style="margin-top:8px" onclick="aller('prep')">Toutes les séances</button>`;
+    <button class="btn btn--large" style="margin-top:8px" onclick="aller('prep')">Mon sac</button>`;
 }
 function vueSeance(id, k){
   const x = seanceParId(id); if (!x) return vuePrep();
@@ -1415,7 +1511,7 @@ function vueSeance(id, k){
   const liste = PREP_TEMPS.map(([t, nom, d], j) => `<li class="${e.faits[t] ? 'fait' : ''}"><button onclick="aller('prep/${x.id}/${t}')"><span class="num">${e.faits[t] ? '✓' : j + 1}</span>
     <span><b>${nom}</b><span class="d">${d}</span></span>${e.faits[t] ? '<span class="etat">✓ fait</span>' : ''}</button></li>`).join('');
   const suivant = PREP_TEMPS.find(([t]) => !e.faits[t]) || PREP_TEMPS[0];
-  app.innerHTML = `${retour('prep', 'Avant de partir')}<p class="surtitre">Séance ${numSeance(x)} sur ${D.prep.seances.length} · ${x.minutes} minutes</p>
+  app.innerHTML = `${retour('prep', 'Avant de partir')}<p class="surtitre">Entraînement ${numSeance(x)} sur ${D.prep.seances.length} · ${x.minutes} minutes</p>
     <h1>${E(x.titre)}</h1><p>${E(x.intro)}</p>
     <div class="objectif">${E(D.prep.fin[x.obj])}</div>
     <div class="meca"><p class="surtitre">La mécanique</p><ul>${x.meca.map(t => `<li>${g(t)}</li>`).join('')}</ul></div>
@@ -1520,7 +1616,7 @@ function questionPrep(it, fichier, graine, surFin, rappel, une){
 function seanceQuiz(x){
   // Audit tour 1 (D1/F3) : deux questions de la séance précédente ouvrent le quiz.
   const idx = D.prep.seances.indexOf(x);
-  const vues = D.prep.seances.slice(0, idx).flatMap((y, j) => y.quiz.map((it, k) => ({it, sid:y.id, k, rappel:'Rappel · séance ' + (j + 1)})));
+  const vues = D.prep.seances.slice(0, idx).flatMap((y, j) => y.quiz.map((it, k) => ({it, sid:y.id, k, rappel:'Rappel · entraînement ' + (j + 1)})));
   const tires = []; while (vues.length && tires.length < 2) tires.push(vues.splice(Math.floor(Math.random() * vues.length), 1)[0]);
   // Tour 2 (D2) : aux séances 3, 4 et 8, les deux dernières questions ne s'écoutent qu'une fois, comme au comptoir.
   const unefois = ['p3', 'p4', 'p8'].includes(x.id);
@@ -1611,7 +1707,7 @@ function vuePrepTest(){
   function intro(){
     app.innerHTML = `${retour('prep', 'Avant de partir')}<p class="surtitre">Le test de la maison</p><h1>${prete[0].toUpperCase() + prete.slice(1)} à partir ?</h1>
       <p>${items.length} questions, un quart d'heure, avec le son et le micro. Pour chacun des cinq objectifs, quelques questions — surtout des phrases
-      nouvelles : les mêmes outils que dans les séances, d'autres mots.</p>
+      nouvelles : les mêmes outils que dans les entraînements, d'autres mots.</p>
       <div class="regle"><b>Comme sur le chemin.</b> Les phrases qu'on vous dit ne s'écoutent <b>qu'une fois</b>, au débit normal. Au micro, <b>deux essais</b>.
       ${E(D.prep.seuil.split(' Au micro')[0])} C'est un repère sur un échantillon, pas une note : il ne vous empêche de rien.</div>
       <button class="btn btn--pri btn--large" id="go">Commencer</button>`;
@@ -1691,7 +1787,7 @@ function vuePrepTest(){
     app.innerHTML = `${retour('prep', 'Avant de partir')}<h1>Où vous en êtes</h1>
       <p>Un repère sur un échantillon, pas une note. La prochaine fois — la veille du départ, par exemple — ce sera l'autre forme.</p>${lignes}
       <button class="btn btn--pri btn--large" onclick="aller('jour/${D.etapes[0].id}')">En route : halte 1, ${E(D.etapes[0].lieu)}</button>
-      <button class="btn btn--large" style="margin-top:8px" onclick="aller('prep')">Revoir les séances</button>`;
+      <button class="btn btn--large" style="margin-top:8px" onclick="aller('prep')">Revoir mon sac</button>`;
   }
   intro();
 }
