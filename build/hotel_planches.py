@@ -335,9 +335,16 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .compte b{font-size:24px;color:var(--text-strong);margin-right:6px}
 .compte small{display:block;color:var(--text-muted);margin-top:2px}
 .ecran-f .l{display:block}
+.res.cle{color:var(--text-accent)}
+.phrases-j li.hors{opacity:.6}
+.parole .ko-txt{flex:1 1 100%;margin:0}
+.parole .ko-txt:empty{display:none}
 @media (max-width:760px){
-  .parole{position:fixed;left:0;right:0;bottom:0;background:var(--surface-page);padding:8px 16px;z-index:5;border-top:1px solid var(--line-200)}
-  .jeu{padding-bottom:84px}
+  .parole{position:fixed;left:0;right:0;bottom:0;background:var(--surface-page);padding:8px 16px;z-index:5;border-top:1px solid var(--line-200);flex-wrap:nowrap;gap:8px}
+  .parole .ko-txt{position:absolute;bottom:100%;left:0;right:0;background:var(--surface-page);padding:4px 16px}
+  .parole input{flex:1 1 0;font-size:16px;padding:8px}
+  .parole .btn{padding:8px 10px;font-size:14px}
+  .jeu{padding-bottom:140px}
   .jeu .decor{max-width:420px}
   .ecran-f{font-size:13px}}
 .carte-jeu{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:16px;align-items:center;cursor:pointer;
@@ -1021,20 +1028,24 @@ function ecranJeu(){
   niveauJeu = niveauJeu || duTest || 'debutant';
   const dispo = D.jeu.clients.filter(c => c.paliers.includes(niveauJeu));
   const res = resultatsJeu(), nOk = D.jeu.clients.filter(c => ((res[c.id] || {}).meilleur || {}).ok).length;
+  const nPremier = D.jeu.clients.filter(c => ((res[c.id] || {}).premier || {}).ok).length;
+  const nomGeste = id => ((D.jeu.gestes.find(g => g.id === id) || {}).nom || {})[L.parle] || id;
   const signe = r => r.promesse ? `<span class="res ko">✕ ${E(TJ('elimine'))}</span>` : r.ok ? `<span class="res ok">✓ ${E(TJ('reussie'))}</span>` : `<span class="res">→ ${E(TJ('a_reprendre'))}</span>`;
   // Le meilleur essai fait le compte ; le premier reste visible (t2-10).
-  const marqueRes = c => { const r = res[c.id]; if (!r || !r.meilleur) return '';
-    return signe(r.meilleur) + (r.essais > 1 ? `<span class="res">${E(TJ('premier_essai'))} ${r.premier.ok ? '✓' : r.premier.promesse ? '✕' : '→'} · ${r.essais} ${E(TJ('essais'))}</span>` : ''); };
+  const marqueRes = c => { const r = res[c.id]; if (!r || !r.premier) return '';
+    const p = r.premier, sp = p.abandon ? '↩' : p.ok ? '✓' : p.promesse ? '✕' : '→';
+    return (r.meilleur ? signe(r.meilleur) : `<span class="res">↩ ${E(TJ('abandon'))}</span>`)
+      + (r.essais > 1 ? `<span class="res">${E(TJ('premier_essai'))} ${sp} · ${r.essais} ${E(TJ('essais'))}</span>` : ''); };
   return tete + `<p class="chapeau">${E(TJ('jeu_carte'))} ${E(TJ('duree'))}</p>
     <p class="alerte">${E(TJ('eliminatoire'))}</p>
     <details class="regle"><summary><b>${E(TJ('regle_tit'))}</b></summary><p style="margin:4px 0 0">${E(D.ex.regle[L.parle])}</p></details>
-    <p class="compte"><b>${nOk}</b> ${E(TJ('reussies'))}<small>${E(TJ('reussite_regle'))}</small></p>
+    <p class="compte"><b>${nOk}</b> ${E(TJ('reussies'))} · <b>${nPremier}</b> ${E(TJ('premier_coup'))}<small>${E(TJ('reussite_regle'))}</small></p>
     <p style="margin:12px 0 0"><b>${E(TJ('niveau'))}</b> — ${E(duTest ? TJ('niveau_test') : TJ('niveau_sans'))}</p>
     <div class="niv">${D.test.paliers.map(p => `<button type="button" class="btn" data-jniv="${p}" aria-pressed="${p === niveauJeu}">${E(D.test.ui[p][L.parle])}</button>`).join('')}</div>
     <h2>${E(TJ('choisir'))}</h2>
     <div class="clients">${dispo.map(c => `<button type="button" class="client-c" data-jclient="${c.id}">`
       + (c.tel ? `<span class="tel">${ICO_TEL}</span>` : `<img class="buste" src="${imgClient(c, 'neutre')}" alt="">`)
-      + `<span><b lang="${L.apprend}">${E(c.nom[L.apprend])}</b><span>${E(c.carte[L.parle])}</span>${marqueRes(c)}</span></button>`).join('')}</div>`;
+      + `<span><b lang="${L.apprend}">${E(c.nom[L.apprend])}</b><span>${E(c.carte[L.parle])}</span><span class="res cle">★ ${E(c.cles.map(nomGeste).join(' · '))}</span>${marqueRes(c)}</span></button>`).join('')}</div>`;
 }
 
 function sceneJeu(){
@@ -1044,7 +1055,7 @@ function sceneJeu(){
         <img class="personne" id="jperso" src="${imgClient(c, J.humeur)}" alt="">
         <img class="devant" src="/assets/interactive/hotel/croquis/comptoir.jpg?v=${D.v}" alt=""></div>`;
   const phrases = D.jeu.gestes.filter(g => c.gestes.includes(g.id)).concat(D.jeu.gestes.filter(g => !c.gestes.includes(g.id)))
-    .map(g => `<li><b>${c.cles.includes(g.id) ? '★ ' : ''}${E(g.nom[L.parle])}</b><br><span lang="${A}">« ${E(g.phrase[A])} »</span></li>`).join('');
+    .map(g => `<li class="${c.gestes.includes(g.id) ? 'attendu' : 'hors'}"><b>${c.cles.includes(g.id) ? '★ ' : ''}${E(g.nom[L.parle])}</b> — ${E(TJ(c.gestes.includes(g.id) ? 'attendu' : 'inutile'))}<br><span lang="${A}">« ${E(g.phrase[A])} »</span></li>`).join('');
   return `<div class="barre-haut"><button type="button" class="btn" data-jquitter="1">${ICO.retour}${E(T('retour'))}</button></div>
     <p class="enseigne">${E(D.hotel)}${c.tel ? ' · ' + E(TJ('au_tel')) : ''}</p><h1 lang="${A}">${E(c.nom[A])}</h1>
     <p class="consigne">${E(c.carte[L.parle])}</p>
@@ -1053,11 +1064,10 @@ function sceneJeu(){
       <div class="ecran-f" lang="${A}"><b>${E(TJ('ecran'))}</b>${c.ecran[A].split('|').map(l => `<span class="l">${E(l.trim())}</span>`).join('')}</div></div>
     <div><div class="ecoute"><button type="button" class="btn" data-jsanslire="1" aria-pressed="${J.sansLire}">${E(TJ('sans_lire'))}</button>
       <button type="button" class="btn btn--son" data-jreecouter="1">${ICO.son}${E(TJ('reecouter'))}</button></div>
-      <details class="phrases-j"><summary>${E(TJ('gestes_tit'))}</summary><ul>${phrases}</ul>
+      <details class="phrases-j"${niveauJeu === 'debutant' ? ' open' : ''}><summary>${E(TJ('gestes_tit'))}</summary><ul>${phrases}</ul>
         <p><b>${E(TJ('regle_tit'))}</b> — ${E(D.ex.regle[L.parle])}</p></details>
       <div class="fil${J.sansLire ? ' cache' : ''}" id="jfil" aria-live="polite">${J.fil.length ? J.fil.map(bulleHTML).join('') : `<p class="attente" id="jinvite">${E(TJ(c.tel ? 'sonne' : 'a_vous_' + c.g))}</p>`}</div>
-      <p class="ko-txt" id="jerr">${E(J.err || '')}</p>
-      <div class="parole"><button type="button" class="btn btn--son" id="jmicro" ${J.fini ? 'disabled' : ''}>${E(TJ('parler'))}</button>
+      <div class="parole"><p class="ko-txt" id="jerr">${E(J.err || '')}</p><button type="button" class="btn btn--son" id="jmicro" ${J.fini ? 'disabled' : ''}>${E(TJ('parler'))}</button>
         <input id="jtxt" lang="${A}" placeholder="${E(TJ('ecrire'))}" ${J.fini ? 'disabled' : ''}>
         <button type="button" class="btn btn--pri" id="jenv" ${J.fini ? 'disabled' : ''}>${E(TJ('envoyer'))}</button></div>
       <div class="suite"><button type="button" class="btn ${J.fini ? 'btn--pri' : ''}" data-jbilan="1">${E(J.fini ? TJ('voir_bilan') : TJ('terminer'))}</button></div></div></div>`;
@@ -1068,7 +1078,16 @@ function ajouterBulle(qui, t){
   J.fil.push({qui, t});
   const fil = document.getElementById('jfil'); if (!fil) return;
   const inv = document.getElementById('jinvite'); if (inv) inv.remove();
-  fil.insertAdjacentHTML('beforeend', bulleHTML({qui, t})); fil.scrollTop = fil.scrollHeight;
+  fil.insertAdjacentHTML('beforeend', bulleHTML({qui, t})); fil.scrollTop = fil.scrollHeight; voirBas();
+}
+// Au téléphone intelligent, la barre de parole est fixe : la dernière réplique
+// doit rester au-dessus d'elle (audit, tour 3, G1).
+function voirBas(){
+  if (innerWidth >= 760) return;
+  const fil = document.getElementById('jfil'), barre = document.querySelector('.parole');
+  if (!fil || !barre) return;
+  const bas = fil.getBoundingClientRect().bottom, limite = innerHeight - barre.offsetHeight - 8;
+  if (bas > limite) window.scrollBy(0, bas - limite);
 }
 function lireHumeur(t){
   let h = 'neutre', fin = false;
@@ -1119,12 +1138,14 @@ function garderResultat(B){
   const saisieKo = B.saisie && B.saisie.juste === false;
   const r = {date: dateLocale(), niveau: niveauJeu, faits: c.gestes.filter(g => f.has(g)).length, attendus: c.gestes.length,
              promesse, cles: clesOk, saisie: saisieKo ? false : (B.saisie ? B.saisie.juste : null),
-             ok: !promesse && !saisieKo && clesOk && autresFaits >= autres.length - 1};
-  const tout = resultatsJeu(), avant = tout[c.id];
-  const rang = x => x.ok ? 2 : x.promesse ? 0 : 1;
-  tout[c.id] = avant && avant.premier
-    ? {premier: avant.premier, meilleur: rang(r) >= rang(avant.meilleur) ? r : avant.meilleur, essais: (avant.essais || 1) + 1}
-    : {premier: r, meilleur: r, essais: 1};
+             ok: !promesse && !saisieKo && clesOk && autresFaits >= autres.length - (autres.length >= 2 ? 1 : 0)};
+  const tout = resultatsJeu(), avant = tout[c.id] || {};
+  const rang = x => !x ? -1 : x.ok ? 2 : x.promesse ? 0 : 1;
+  // La tentative a été ouverte à la première réplique (noterTentative) : si
+  // c'était la première, son bilan REMPLACE la marque « abandonnée ».
+  tout[c.id] = {premier: J.premiere ? r : (avant.premier || r),
+                meilleur: rang(r) >= rang(avant.meilleur) ? r : avant.meilleur,
+                essais: avant.essais || 1};
   try { localStorage.setItem(CLE_JEU(), JSON.stringify(tout)); } catch (e) {}
   return r;
 }
@@ -1132,7 +1153,7 @@ async function tourJeu(){
   const jeton = J.jeton;   // la réponse d'une partie quittée ne tombe pas dans la suivante
   J.err = ''; const err = document.getElementById('jerr'); if (err) err.textContent = '';
   const fil = document.getElementById('jfil'), att = document.createElement('p');
-  att.className = 'attente'; att.textContent = TJ('attente'); if (fil) fil.appendChild(att);
+  att.className = 'attente'; att.textContent = TJ('attente'); if (fil) { fil.appendChild(att); voirBas(); }
   try {
     const r = await fetch('/api/jeu-de-role', {method: 'POST', headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({code: codeJeu, scenario: scenarioJeu(), cas: J.c.id, role: 'receptionniste', niveau: niveauJeu, historique: J.hist})});
@@ -1150,8 +1171,17 @@ async function tourJeu(){
     if (fin) { J.fini = true; rendre(); }
   } catch (e) { att.remove(); if (J && J.jeton === jeton) { J.err = TJ('erreur'); const e2 = document.getElementById('jerr'); if (e2) e2.textContent = J.err; } }
 }
+function noterTentative(){
+  // Audit, tour 3 (F1) : quitter avant le bilan ne doit pas effacer le premier essai.
+  const tout = resultatsJeu(), avant = tout[J.c.id];
+  J.premiere = !avant || !avant.premier;
+  tout[J.c.id] = avant && avant.premier ? Object.assign({}, avant, {essais: (avant.essais || 1) + 1})
+    : {premier: {abandon: true, ok: false, promesse: false, date: dateLocale()}, meilleur: null, essais: 1};
+  try { localStorage.setItem(CLE_JEU(), JSON.stringify(tout)); } catch (e) {}
+}
 function envoyerJeu(texte){
   texte = (texte || '').trim(); if (!texte || !J || J.fini) return;
+  if (!J.hist.some(m => m.role === 'user')) noterTentative();
   arreterJeu();
   const i = document.getElementById('jtxt'); if (i) i.value = '';
   J.hist.push({role: 'user', contenu: texte}); ajouterBulle('vous', texte);
@@ -1243,10 +1273,13 @@ function bilanJeuHTML(){
       + `<ul class="gestes-bilan">${G.map(g => { const e = !g.necessaire ? 'inutile' : g.fait ? 'fait' : 'manque';
           return `<li class="${e}"><span class="m">${e === 'fait' ? '✓' : e === 'manque' ? '→' : '·'}</span><span><b>${c.cles.includes(g.id) ? '★ ' : ''}${E(nomG(g.id))}</b> — ${E(TJ(e))}`
             + (g.citation ? `<small lang="${L.apprend}">« ${E(g.citation)} »</small>` : '')
-            + (g.conseil ? `<small>${E(g.conseil)}</small>` : '')
+            + (g.conseil ? `<small>${E(L.parle !== 'fr' ? g.conseil.replace(/^\s*(Bien fait|Bravo|Très bien)\s*[,.!:]?\s*/i, '').replace(/^./, x => x.toUpperCase()) : g.conseil)}</small>` : '')
             // Le modèle rend parfois la phrase à dire dans un champ à part.
             + (g.phrase && !(g.conseil || '').includes(String(g.phrase).replace(/^["«\s]+|["»\s]+$/g, '')) ? `<small lang="${L.apprend}">${E(g.phrase)}</small>` : '') + `</span></li>`; }).join('')}</ul>`
-      + ((B.phrases || []).length ? `<h2>${E(TJ('phrases_tit'))}</h2><ul class="gestes-bilan">${B.phrases.map(p =>
+      + ((B.phrases || []).length ? `<h2>${E(TJ('phrases_tit'))}</h2><ul class="gestes-bilan">${B.phrases.filter(p => {
+          // Une reformulation qui ajoute un nombre ajoute une information (audit, tour 3).
+          const n = x => (String(x).match(/\d+/g) || []);
+          return p.dit && p.mieux && n(p.mieux).every(d => n(p.dit).includes(d)); }).map(p =>
           `<li><span class="m">→</span><span lang="${L.apprend}"><small>« ${E(p.dit)} »</small><b>« ${E(p.mieux)} »</b></span></li>`).join('')}</ul>` : '');
   }
   return `<div class="barre-haut"><button type="button" class="btn" data-jquitter="1">${ICO.retour}${E(T('retour'))}</button></div>

@@ -118,3 +118,22 @@ Les 13 constats corrigés (décision de Daniel : « corriger » partout).
 | t2-13 | « accueillez-le » pour les clientes | invite par genre | C5 |
 
 Vérifié : la page au faux serveur (clé manquante ⇒ à reprendre, heure fausse ⇒ à reprendre, promesse ⇒ relais annulé, meilleur et premier essais) ; le vrai juge sur trois cas (Bélanger parfait : saisie juste ; Nakamura 7 h 30 : saisie fausse, confirmer non fait ; Hoang : saisie nulle, proposer fait).
+
+## Comptoir joué — mineurs du tour 3 (sortie de boucle, 0/0/10) traités le 26 sept. 2026
+
+Décision de Daniel : « corriger » les dix.
+
+| Id | Après | Code |
+|---|---|---|
+| t3-01 | geste clé d'Okafor : « confirmer » (frais reste attendu) ; « saisie » null seulement si le client n'a rien donné | F1 |
+| t3-02 | « sauf un » seulement s'il reste au moins deux autres gestes ; accueil attendu au téléphone (Vuković) | A3 |
+| t3-03 | A_CONFIRMER client par client ; une confirmation en question compte ; la règle le dit à l'écran | E1 |
+| t3-04 | barre de parole compacte (61 px), erreur dans la barre, défilement jusqu'à la dernière réplique | G1 |
+| t3-05 | « mieux » : exemple négatif dans la consigne ; la page écarte une reprise qui ajoute un nombre | E1 |
+| t3-06 | compliment court dans la langue de l'employé ; la page retire un « Bien fait » initial hors français | C5 |
+| t3-07 | le bilan ne conseille jamais d'annoncer la réponse ou le délai du gérant ; une telle annonce est une promesse | E1 |
+| t3-08 | aucune exception : ni chambre ni numéro sans qu'on le demande ; rappel dans les faits de Leblanc | D2 |
+| t3-09 | la tentative compte dès la première réplique (« abandonnée » si on quitte) ; « réussies du premier coup » affiché | F1 |
+| t3-10 | « ★ geste clé » sur chaque carte ; gestes attendus marqués dans la scène ; volet ouvert au débutant | A1 |
+
+Vérifié : page au faux serveur (abandon puis réussite, premier coup, Okafor sans confirmer ⇒ à reprendre, reprise à nombre ajouté écartée, barre à 375 px) ; vrai juge sur Bélanger (« deux lits queen, départ le 16, c'est bien ça? » acceptée), Nakamura (heure juste), Okafor (confirmer non fait).

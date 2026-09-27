@@ -239,7 +239,7 @@ CLIENTS = [
       "Tu remercies et tu pars."]),
 
     ("telephone", "m", "Vuković", TOUS, "telephone",
-     ["epeler", "confirmer"],
+     ["accueil", "epeler", "confirmer"],
      R("Il veut réserver. Pas de visage : faites répéter, épeler, confirmer.",
        "He wants to book. No face: ask to repeat, spell and confirm.",
        "Quiere reservar. Sin cara: pida que repita, que deletree, y confirme."),
@@ -269,7 +269,8 @@ CLIENTS = [
        "Usted puede ofrecer: una mesa en el restaurante del hotel, una tarjeta de felicitación en la habitación"),
      "a woman in her sixties, curly auburn hair, pearl stud earrings, a lilac blazer over a "
      "white blouse, smiling politely",
-     ["Tu es madame Leblanc, chambre 208. C'est ton anniversaire de mariage.",
+     ["Tu es madame Leblanc, chambre 208. C'est ton anniversaire de mariage. Tu ne dis ton "
+      "numéro de chambre que si on te le demande.",
       "Tu demandes, gentiment mais avec insistance, une suite gratuite ce soir (un surclassement).",
       "Tu demandes aussi de partir à 16 h demain au lieu de 11 h, sans payer.",
       "Ces deux faveurs, c'est le gérant qui les décide. Si le réceptionniste dit qu'il "
@@ -284,7 +285,7 @@ CLIENTS = [
 # que la situation enseigne. Il est obligatoire pour réussir ; l'accueil ne le
 # compense jamais. La règle est écrite une fois (UI_JEU reussite_regle) et
 # appliquée une fois (garderResultat, dans la page).
-CLES = {"arrivee": ["epeler", "confirmer"], "sans-resa": ["frais"], "complet": ["proposer"],
+CLES = {"arrivee": ["epeler", "confirmer"], "sans-resa": ["confirmer"], "complet": ["proposer"],
         "plainte": ["relais"], "facture": ["frais", "relais"], "renseignement": ["confirmer"],
         "telephone": ["epeler", "confirmer"], "hors-regle": ["relais"]}
 
@@ -299,6 +300,15 @@ A_SAISIR = {
     "renseignement": "l'heure du déjeuner, 6 h 30 à 10 h, redite juste au client",
     "telephone": "le nom VUKOVIĆ, les dates du 17 et 18 octobre, un lit double, le téléphone 514 555-0193",
     "hors-regle": "la chambre 208 (parmi 208 et 280)",
+}
+
+# Ce qui compte comme CONFIRMATION, client par client (audit, tour 3, E1 : une
+# règle générale « deux éléments » était appliquée inégalement).
+A_CONFIRMER = {
+    "arrivee": "redire les dates (ou le nombre de nuits) ET les lits, justes",
+    "sans-resa": "redire le nombre de nuits ET le prix (ou le lit), justes",
+    "renseignement": "redire l'heure juste du déjeuner (6 h 30 à 10 h) ; ici, un seul élément suffit",
+    "telephone": "redire les dates ET le nom ou le numéro de téléphone, justes",
 }
 
 # Le palier règle la façon de parler du client, jamais le scénario. Même
@@ -351,7 +361,7 @@ def systeme(apprend):
             "RÈGLE DU NOM ET DES NOMBRES, avant toute autre : tu dis ton nom SANS l'épeler. Tu "
             "n'épelles que si l'employé te le demande (épeler, spell, deletrear, « comment ça "
             "s'écrit »). Tu ne donnes ton numéro de chambre, ton numéro de téléphone ou tes dates "
-            "que si on te les demande, à moins que ta première demande ne les contienne. Même au "
+            "que si on te les demande. Même au "
             "palier à l'aise, jamais le nom épelé ni un numéro sans qu'on le demande.\n\n"
             + "Ce que tu sais et que l'employé ignore :\n"
             + "\n".join("- " + f for f in faits) + "\n\n"
@@ -398,11 +408,11 @@ def bilan(apprend, parle):
     def construire(cas_id):
         ident, genre, nom, _p, lieu, attendus, carte, ecran, _portrait, faits = _client(cas_id)
         return _bilan_texte(apprend, parle, faits, ecran[apprend], attendus, lieu == "telephone",
-                            A_SAISIR.get(ident))
+                            A_SAISIR.get(ident), A_CONFIRMER.get(ident))
     return construire
 
 
-def _bilan_texte(apprend, parle, faits, ecran, attendus, tel, saisir=None):
+def _bilan_texte(apprend, parle, faits, ecran, attendus, tel, saisir=None, confirmer=None):
     gestes = " · ".join(f"{g['id']} ({g['nom']['fr']})" for g in GESTES)
     attendus_txt = ", ".join(attendus)
     return (
@@ -420,21 +430,25 @@ def _bilan_texte(apprend, parle, faits, ecran, attendus, tel, saisir=None):
         "Pour CHAQUE geste attendu, dis s'il a été « fait », cite la réplique du RÉCEPTIONNISTE qui "
         "le montre (jamais une réplique du client ; vide s'il n'y en a pas), et donne un « conseil ». "
         "Un geste est fait par l'employé, pas par le client : si le client épelle sans qu'on le lui "
-        "demande, « epeler » n'est pas fait. « confirmer » n'est fait que si ce que l'employé redit "
-        "est JUSTE au regard de la vérité ci-dessus ET redit au moins deux éléments de la demande "
-        "(par exemple les nuits ET les dates) ; « Oui. Une nuit? » n'est pas une confirmation. Une "
-        "confirmation fausse n'est pas faite, et le conseil nomme l'erreur. Si l'employé promet, "
-        "« relais » n'est pas fait.\n"
+        "demande, « epeler » n'est pas fait. "
+        + (f"« confirmer », ICI, veut dire : {confirmer}. Rien de plus, rien de moins ; une "
+           "confirmation posée en question (« …, c'est bien ça? ») compte si elle redit ces éléments. "
+           if confirmer else "")
+        + "Une confirmation fausse n'est pas faite, et le conseil nomme l'erreur. Si l'employé "
+        "promet, « relais » n'est pas fait. Transmettre au gérant n'engage ni sa réponse ni son "
+        "délai : ne conseille JAMAIS d'annoncer quand ou comment le gérant répondra, et une telle "
+        "annonce faite par l'employé est une promesse.\n"
         f"LANGUE DES CONSEILS : chaque conseil est écrit {LANGUE_BILAN[parle]} (la langue que "
         f"l'employé lit), jamais dans une autre langue, et se termine par la phrase à dire, en "
-        f"{NOM_LANGUE[apprend]}, entre guillemets. Au plus 30 mots. Exemple de conseil bien écrit : "
+        f"{NOM_LANGUE[apprend]}, entre guillemets. Même un compliment court (« bien fait », « bravo ») "
+        f"s'écrit {LANGUE_BILAN[parle]}. Au plus 30 mots. Exemple de conseil bien écrit : "
         f"{EXEMPLE_CONSEIL[parle]}\n"
         + ("« saisie » : ici, il n'y avait RIEN à saisir : « juste » vaut null.\n" if not saisir else
            f"« saisie » : ce que l'employé devait saisir ici, et SEULEMENT cela : {saisir}. Ce que "
            "l'employé attribue lui-même (un numéro de chambre, une carte-clé) n'est pas une saisie. "
            "« juste » vaut true si ce qu'il a redit, noté ou utilisé est juste ; false s'il s'est "
-           "trompé sur l'un de ces éléments ; null s'il n'a eu à rien noter parce que l'échange "
-           f"s'est arrêté avant. « detail » (au plus 20 mots, {LANGUE_BILAN[parle]}) nomme l'erreur.\n")
+           "trompé sur l'un de ces éléments, OU si le client les a donnés et que l'employé ne les a "
+           "ni redits ni utilisés ; null SEULEMENT si le client n'a rien donné de cela. « detail » (au plus 20 mots, {LANGUE_BILAN[parle]}) nomme l'erreur.\n")
         + "Relève à part toute PROMESSE HORS RÈGLE : le réceptionniste accorde lui-même ce qui revient "
         "au gérant (rabais, frais enlevé, service gratuit, exception) ou ce que personne ne peut "
         "accorder (taxe enlevée, chambre qu'on n'a pas, document faux). C'est éliminatoire. "
@@ -443,7 +457,10 @@ def _bilan_texte(apprend, parle, faits, ecran, attendus, tel, saisir=None):
         f"Reprends enfin jusqu'à trois phrases du réceptionniste qui gagneraient à être dites "
         f"autrement en {NOM_LANGUE[apprend]} (sens, formule polie du comptoir), jamais pour une "
         "virgule : « dit » (sa phrase) et « mieux » (la même idée, correcte et naturelle). « mieux » "
-        "n'ajoute AUCUNE information absente de la phrase de l'employé."
+        "n'ajoute AUCUNE information absente de la phrase de l'employé (ni nombre, ni date, ni "
+        "chambre) et garde son intention : une question reste une question. Mauvais exemple : "
+        "« Here is your key. » → « Here is your key, room 312, for October 14 to 16. » (ajout). Le "
+        "nom de l'hôtel reste « Hôtel Rive-Claire ». Si la phrase est déjà bonne, ne la reprends pas."
         + (" En français, le repas du matin est « le déjeuner »." if "fr" in (apprend, parle) else "") + "\n"
         f"« resume » : une phrase simple, au plus 25 mots, {LANGUE_BILAN[parle]}, sur ce qui a marché.\n"
         "Réponds UNIQUEMENT en JSON, sans texte autour : {\"gestes\": [{\"id\": \"…\", "
@@ -582,9 +599,13 @@ UI_JEU = {
     "reussie": R("réussie", "passed", "lograda"),
     "a_reprendre": R("à reprendre", "try again", "por repetir"),
     "elimine": R("promesse : échouée", "promise: failed", "promesa: fallida"),
-    "reussite_regle": R("Une situation est réussie sans promesse hors règle, sans erreur de saisie, avec son geste clé (★), et les autres gestes attendus sauf un au plus.",
-                        "A situation is passed with no promise outside the rule, no recording error, with its key move (★), and the other expected moves but one at most.",
-                        "Una situación se logra sin promesa fuera de la regla, sin error de registro, con su gesto clave (★), y los demás gestos esperados salvo uno como máximo."),
+    "reussite_regle": R("Une situation est réussie sans promesse hors règle, sans erreur de saisie, avec son geste clé (★), et les autres gestes attendus (s'il y en a au moins deux, un seul peut manquer). Confirmer, c'est redire les éléments de la demande.",
+                        "A situation is passed with no promise outside the rule, no recording error, with its key move (★), and the other expected moves (if there are at least two, one may be missing). Confirming means repeating the details of the request.",
+                        "Una situación se logra sin promesa fuera de la regla, sin error de registro, con su gesto clave (★), y los demás gestos esperados (si hay al menos dos, puede faltar uno). Confirmar es repetir los datos de la solicitud."),
+    "abandon": R("abandonnée", "abandoned", "abandonada"),
+    "premier_coup": R("réussies du premier coup", "passed on the first try", "logradas al primer intento"),
+    "cle": R("Geste clé", "Key move", "Gesto clave"),
+    "attendu": R("attendu", "expected", "esperado"),
     "premier_essai": R("1er essai :", "1st try:", "1er intento:"),
     "essais": R("essais", "tries", "intentos"),
     "saisie_ok": R("Vous avez noté juste.", "You recorded it correctly.", "Anotó correctamente."),
