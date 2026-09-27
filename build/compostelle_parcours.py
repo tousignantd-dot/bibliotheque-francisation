@@ -175,7 +175,7 @@ en sept temps. Le pèlerin avance de lieu en lieu ; ce qui a été appris revien
 
 <section class="bloc">
   <h2><span class="etape-num">1b</span>À la maison : « Avant de partir » — préparer son sac</h2>
-  <p>Huit entraînements de quinze minutes, dans les semaines qui précèdent le départ — conseillés, jamais obligatoires. Chacun met
+  <p>Huit entraînements de quinze minutes, dans les semaines qui précèdent le départ — obligatoires : le chemin s'ouvre quand les huit sont faits. Chacun met
   un objet dans le sac (les chaussures, la coquille, le porte-monnaie…) et apprend <b>les outils</b> qu'on emploiera ensuite en situation :</p>
   <div class="duo">{prep_cartes}</div>
   <p style="font-size:14.5px;color:var(--muted);margin-top:8px">Chaque entraînement suit un fil d'Ariane, dans l'ordre — un temps s'ouvre

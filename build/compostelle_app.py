@@ -311,6 +311,7 @@ svg.tampon{opacity:.9}
 .acc-temps--fait{padding-bottom:12px}
 .acc-h{margin:2px 0 6px;font-size:26px;line-height:1.15}
 .acc-p{margin:0 0 12px;font-size:16px}
+.btn-ferme{display:inline-flex;align-items:center;justify-content:center;gap:8px;opacity:.75;cursor:not-allowed}
 .acc-temps .btn--large{white-space:normal;line-height:1.25}
 .acc-note{font-size:14px;margin:8px 0 0;text-align:center}
 .sac{display:grid;grid-template-columns:120px 1fr;gap:12px;align-items:start;margin:0 0 14px}
@@ -739,6 +740,10 @@ function aller(h){ location.hash = h; }
 window.addEventListener('hashchange', rendre);
 function retour(h, t){ return `<button class="retour pas-imprimer" onclick="aller('${h}')">${ICO.retour} ${E(t)}</button>`; }
 function etapeParId(id){ return D.etapes.find(e => e.id === id); }
+/* Le chemin s'ouvre quand le sac est prêt (Daniel, 27 sept. 2026 : « on ne
+   puisse pas aller sur le Camino si on n'a pas fait l'entraînement »).
+   Un pèlerin déjà en route (au moins un tampon) garde son chemin ouvert. */
+function cheminOuvert(){ return prepFaites() === D.prep.seances.length || D.etapes.some(e => (S.jours[e.id] || {}).tampon); }
 function prochaine(){ return D.etapes.find(e => !jour(e.id).tampon) || null; }
 
 function rendre(){
@@ -750,6 +755,7 @@ function rendre(){
   if (p[0] === 'achat') return vueAchat(p[1]);
   if (p[0] === 'achat-annule') return vueAchatAnnule();
   if (!S.genre && p[0] !== 'reglages') return vueBienvenue();
+  if (p[0] === 'jour' && etapeParId(p[1]) && !cheminOuvert()) { history.replaceState(null, '', '#accueil'); vueAccueil(true); return; }
   if (p[0] === 'jour' && etapeParId(p[1])) {
     const et = etapeParId(p[1]);
     if (!p[2]) return vueJour(et);
@@ -818,7 +824,7 @@ function vueGuide(){
   <p class="surtitre">Le mode d'emploi</p><h1>Comment ça marche ?</h1>
   <p>Dix étapes sur le Camino francés, de Roncesvalles à Santiago — environ ${D.etapes.reduce((t, e) => t + joursMarche(e), 0)} jours de marche. Chaque étape prépare une situation dont vous aurez
   besoin ce soir-là : trouver un lit, commander, vous soigner, demander votre chemin, parler avec les autres.</p>
-  <div class="retro info"><b>Avant de partir</b> : préparer votre sac — huit entraînements de quinze minutes, à la maison — les sons, la politesse, les nombres, l'heure, quatre verbes, les questions, se présenter, comprendre la réponse — puis le test « Prêt à partir ? ». Conseillées, jamais obligatoires. <a href="#prep">Y aller</a>.</div>
+  <div class="retro info"><b>Avant de partir</b> : préparer votre sac — huit entraînements de quinze minutes, à la maison — les sons, la politesse, les nombres, l'heure, quatre verbes, les questions, se présenter, comprendre la réponse — puis la marche d'essai « Prêt à partir ? ». Obligatoires : le chemin s'ouvre quand les huit sont faits. <a href="#prep">Y aller</a>.</div>
   <div class="objectif"><b>La règle du chemin :</b> comprendre avant de dire, dire avant de jouer, jouer avant d'y aller seul.</div>
   <h2>Une étape, sept temps</h2>
   <p>Toujours dans le même ordre. Touchez un temps dans l’étape pour le faire ; vous pouvez le refaire autant que vous voulez.</p>
@@ -880,15 +886,16 @@ function frise(){
   return s + `<circle class="ok" cx="14" cy="24" r="4"/><text x="14" y="10" style="text-anchor:start">St-Jean</text></svg>`;
 }
 const COURT = {'puente-la-reina': 'Puente', 'carrion': 'Carrión', 'o-cebreiro': 'Cebreiro', 'santiago': 'Santiago'};
-function vueAccueil(){
+function vueAccueil(refuse){
   const pro = prochaine(), faits = D.etapes.filter(e => jour(e.id).tampon).length;
   const nP = prepFaites(), totP = D.prep.seances.length, sacPret = nP === totP, proP = prepProchaine();
-  const testFait = !!((S.prep || {}).test || {}).passages, pret = S.genre === 'f' ? 'prête' : 'prêt';
+  const testFait = !!((S.prep || {}).test || {}).passages, pret = S.genre === 'f' ? 'prête' : 'prêt', ouvert = cheminOuvert();
   const cases = D.etapes.map(e => {
     const j = jour(e.id);
     const nom = `<small>${E(COURT[e.id] || e.lieu)}</small>`;
     if (j.tampon) return `<div class="case-w"><button class="case faite" onclick="aller('jour/${e.id}')" aria-label="${E(e.lieu)} : tamponné">${tampon(e, '')}</button>${nom}</div>`;
     const cour = pro && pro.id === e.id;
+    if (!cheminOuvert()) return `<div class="case-w"><button class="case" disabled aria-label="Étape ${e.n} : ${E(e.lieu)}, fermée"><span>${e.n}</span><em>sello</em></button>${nom}</div>`;
     return `<div class="case-w"><button class="case${cour ? ' courante' : ''}" onclick="aller('jour/${e.id}')" aria-label="Étape ${e.n} : ${E(e.lieu)}"><span>${e.n}</span><em>${cour ? 'à faire' : 'sello'}</em></button>${nom}</div>`;
   }).join('');
   // 1 · le sac
@@ -899,7 +906,7 @@ function vueAccueil(){
       <b>huit entraînements de quinze minutes</b>, à la maison. Chacun met un outil dans votre sac.</p>`}
     ${sacGrille(true)}
     ${!sacPret ? `<button class="btn btn--pri btn--large" onclick="aller('prep/${proP.id}')">Entraînement ${nP + 1} : ${E(proP.titre)}</button>
-      <p class="muted acc-note">Conseillé, jamais obligatoire : le chemin reste ouvert.</p>` :
+      <p class="muted acc-note">Le chemin s'ouvre quand votre sac est prêt : ${nP} entraînement${nP > 1 ? 's' : ''} sur ${totP}.</p>` :
       !testFait ? `<button class="btn btn--pri btn--large" onclick="aller('prep/test')">La marche d'essai : ${pret} à partir ?</button>
       <p class="muted acc-note">Un quart d'heure pour savoir où vous en êtes — à refaire la veille du départ.</p>` :
       `<button class="btn btn--large" onclick="aller('prep')">Revoir mon sac</button>`}
@@ -917,7 +924,8 @@ function vueAccueil(){
      ${pro ? `<p class="muted">${E(pro.titre)} — ${E(pro.region)}</p>
      <p class="cb-reste">Encore <b>${(KM_TOTAL - pro.km).toLocaleString('fr-CA')} km</b> jusqu'à Santiago<br><span>${marche(pro)}</span></p>` :
      `<p class="cb-reste">Vous êtes arrivé${S.genre === 'f' ? 'e' : ''} à Santiago.</p>`}</div></div>
-    ${pro ? `<button class="btn ${sacPret || faits ? 'btn--pri' : ''} btn--large" onclick="aller('jour/${pro.id}')">${faits ? 'Reprendre la route' : 'Partir : étape 1, ' + E(pro.lieu)}</button>` :
+    ${pro && !ouvert ? `<button class="btn btn--large btn-ferme" disabled>${CADENAS} Le chemin s'ouvre quand votre sac est prêt (${nP} / ${totP})</button>` :
+      pro ? `<button class="btn btn--pri btn--large" onclick="aller('jour/${pro.id}')">${faits ? 'Reprendre la route' : 'Partir : étape 1, ' + E(pro.lieu)}</button>` :
       `<button class="btn btn--pri btn--large" onclick="aller('compostela')">Voir ma Compostela</button>`}
     <div style="margin:16px 0 6px">${frise()}</div>
     <div class="livret">
@@ -933,10 +941,10 @@ function vueAccueil(){
       <p style="margin:0">Une erreur ne pardonne pas : <b>l'allergie</b>. À León comme au test « Suis-je prêt ? », la rater fait recommencer.
       ${S.alergia ? 'La vôtre : ' + E(allergie().fr) + '.' : 'Choisissez la vôtre dans les réglages.'}</p></div></details>
   </section>`;
-  app.innerHTML = `
+  app.innerHTML = `${refuse ? `<div class="retro info" style="margin-bottom:10px">Le chemin s'ouvre quand votre sac est prêt : faites d'abord les huit entraînements (${nP} sur ${totP}).</div>` : ''}
   <ol class="deux-temps">
     <li class="${sacPret ? 'fait' : 'actif'}"><a href="#accueil" onclick="event.preventDefault();document.getElementById('sac').scrollIntoView({behavior:'smooth'})"><span>${sacPret ? '✓' : '1'}</span><b>Préparer mon sac</b><small>${nP} / ${totP} entraînements</small></a></li>
-    <li class="${sacPret || faits ? 'actif' : ''}${faits === 10 ? ' fait' : ''}"><a href="#accueil" onclick="event.preventDefault();document.getElementById('chemin').scrollIntoView({behavior:'smooth'})"><span>${faits === 10 ? '✓' : '2'}</span><b>Marcher le chemin</b><small>${faits} / 10 étapes</small></a></li>
+    <li class="${sacPret || faits ? 'actif' : ''}${faits === 10 ? ' fait' : ''}"><a href="#accueil" onclick="event.preventDefault();document.getElementById('chemin').scrollIntoView({behavior:'smooth'})"><span>${faits === 10 ? '✓' : ouvert ? '2' : CADENAS}</span><b>Marcher le chemin</b><small>${faits} / 10 étapes</small></a></li>
   </ol>
   <button class="btn btn--large lien-guide" onclick="aller('guide')">${ICO.guide} Comment ça marche ?</button>
   ${sacPret ? chemin + sac : sac + chemin}
@@ -1594,7 +1602,7 @@ function vuePrep(){
   à faire dans l'ordre, dans les semaines qui précèdent le départ. Chacun met un outil dans votre sac — les sons, les nombres, l'heure,
   quatre verbes, les questions — et vous le ressortirez, étape après étape, sur le chemin.</p>
   ${sacGrille()}
-  <div class="retro info">Elles sont conseillées, pas obligatoires : le chemin reste ouvert, et vous pouvez y revenir quand vous voulez.</div>
+  <div class="retro info">Ils sont obligatoires : le chemin s'ouvre quand les huit sont faits. Vous pourrez toujours y revenir ensuite.</div>
   ${pro ? `<button class="btn btn--pri btn--large" style="margin:6px 0 4px" onclick="aller('prep/${pro.id}')">${n ? 'Continuer' : 'Commencer'} : ${E(pro.titre)}</button>` : ''}
   <ul class="etapes-j">${liste}</ul>
   <h2>La marche d'essai : « Prêt${S.genre === 'f' ? 'e' : ''} à partir ? »</h2>
