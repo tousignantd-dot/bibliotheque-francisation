@@ -13,7 +13,7 @@ change dans Railway, la page la relit par /api/pelerins/offre.
 
 # À remplir par Daniel : la loi veut le titre et les coordonnées de la
 # personne responsable. None → « à désigner », en ambre.
-RESPONSABLE = None            # ex. ("Prénom Nom", "responsable de la protection des renseignements personnels")
+RESPONSABLE = ("Daniel Tousignant", "fondateur de francis")   # désigné par Daniel, 27 sept. 2026
 COURRIEL = "confidentialite@edufrancis.ca"
 MISE_A_JOUR = "27 septembre 2026"
 
