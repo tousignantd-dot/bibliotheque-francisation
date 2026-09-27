@@ -129,7 +129,7 @@ ok(R.menage(vieux) == 2 and [x["code"] for x in vieux] == ["PCBBBBBB", "PCDDDDDD
 ok(P.offre()["conservation"] == 365, "la durée de conservation est lue par l'offre (365 jours)")
 
 print("Le prix de lancement")
-o = P.offre(); ok(o["prix"] == 999 and o["prixRegulier"] == 1999 and o["promo"], "9,99 $ au lieu de 19,99 $")
+o = P.offre(); ok(o["prix"] == 999 and o["prixRegulier"] == 1999 and o["promo"] and o["promoFin"] == "2026-12-31", "9,99 $ au lieu de 19,99 $, jusqu'au 31 décembre 2026")
 os.environ["COMPOSTELLE_PROMO_FIN"] = "2000-01-01"
 o = P.offre(); ok(o["prix"] == 1999 and not o["promo"] and o["promoFin"] == "", "la promotion finie, le prix régulier revient seul")
 os.environ["COMPOSTELLE_PROMO_FIN"] = "2999-12-31"

@@ -27,6 +27,14 @@ E = html.escape
 KM_JOUR = 25
 
 
+MOIS = "janvier février mars avril mai juin juillet août septembre octobre novembre décembre".split()
+
+
+def date_fr(iso):
+    a, m, j = (int(x) for x in iso.split("-"))
+    return f"{'1er' if j == 1 else j} {MOIS[m - 1]} {a}"
+
+
 def main():
     etapes = C.charger("etapes").ETAPES
     seances = C.charger("preparation").SEANCES
@@ -335,7 +343,7 @@ footer{{text-align:center;font-size:13px;color:var(--doux);padding:26px 0 40px}}
     <div class="offre plus">
       <p class="etiq">En option · Parler librement</p>
       <p class="montant">{f'<s class="barre">{prix(o["prixRegulier"])}</s> ' if o["promo"] else ""}{prix(o["prix"])} <small>une fois, pour {o["jours"] // 30} mois</small></p>
-      {f'<p class="lancement">Prix de lancement, pour un temps limité{" — jusqu’au " + o["promoFin"] if o["promoFin"] else ""}.</p>' if o["promo"] else ""}
+      {f'<p class="lancement">Prix de lancement, pour un temps limité{" — jusqu’au " + date_fr(o["promoFin"]) + " inclusivement" if o["promoFin"] else ""}.</p>' if o["promo"] else ""}
       <ul><li>{o["conversations"]} conversations libres avec les personnages du chemin, sur le sujet de votre choix ;</li>
       <li>ils vous répondent et vous relancent, comme sur le chemin ;</li>
       <li>au besoin, {o["rechargeConversations"]} conversations de plus pour {prix(o["recharge"])}.</li></ul>

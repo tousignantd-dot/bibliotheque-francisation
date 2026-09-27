@@ -52,11 +52,12 @@ def offre():
     """Les conditions en vigueur. Réglables par variables d'environnement, pour
     qu'un changement de prix ne demande pas de déployer du code."""
     # Le prix de lancement (Daniel, 27 sept. 2026) : 9,99 $ au lieu de 19,99 $,
-    # pour un temps limité. COMPOSTELLE_PROMO_FIN (AAAA-MM-JJ, inclus) borne la
+    # pour un temps limité, jusqu'au 31 déc. 2026 (décidé par Daniel le 27 sept.).
+    # COMPOSTELLE_PROMO_FIN (AAAA-MM-JJ, inclus) la déplace et borne la
     # promotion : passée cette date, le prix régulier revient tout seul.
     # COMPOSTELLE_PROMO_CENTS=0 la coupe. `prix` est TOUJOURS le montant facturé.
     regulier = _entier("COMPOSTELLE_PRIX_CENTS", 1999)
-    promo, fin = _entier("COMPOSTELLE_PROMO_CENTS", 999), os.environ.get("COMPOSTELLE_PROMO_FIN", "").strip()
+    promo, fin = _entier("COMPOSTELLE_PROMO_CENTS", 999), os.environ.get("COMPOSTELLE_PROMO_FIN", "2026-12-31").strip()
     en_promo = 0 < promo < regulier and (not fin or _aujourdhui() <= fin)
     return {
         "prix": promo if en_promo else regulier,
