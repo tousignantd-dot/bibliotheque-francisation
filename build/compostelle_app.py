@@ -268,6 +268,20 @@ svg.tampon{opacity:.9}
 .carte-prep .muted{font-size:14px}
 .prix-barre{color:var(--text-muted);font-weight:600}
 .promo-lancement{background:#FBEFC4;border:1px solid #E7C75A;border-radius:10px;padding:8px 12px;margin:0 0 10px;color:#5C4400}
+/* le fil d'Ariane d'un entraînement */
+.ariane{list-style:none;padding:0;margin:12px 0 14px;display:flex;counter-reset:f}
+.ariane li{flex:1;position:relative;text-align:center;min-width:0}
+.ariane li+li::before{content:"";position:absolute;top:17px;right:calc(50% + 19px);left:calc(-50% + 19px);height:3px;border-radius:2px;background:var(--line-200)}
+.ariane li.relie::before{background:#2E7D4F}
+.ariane button{background:none;border:0;padding:0;font:inherit;color:inherit;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;width:100%}
+.ariane button:disabled{cursor:not-allowed}
+.ariane .rond{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:16px;background:#fff;border:2px solid var(--borne);color:var(--borne);position:relative;z-index:1}
+.ariane .lib{font-size:13px;font-weight:800;line-height:1.2;color:var(--text)}
+.ariane li.fait .rond{background:#2E7D4F;border-color:#2E7D4F;color:#fff}
+.ariane li.ici .rond{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);box-shadow:0 0 0 4px rgba(242,194,48,.3)}
+.ariane li.ferme .rond{border-color:var(--line-300);color:var(--text-muted);background:#F3F0E8}
+.ariane li.ferme .lib{color:var(--text-muted);font-weight:700}
+.fil-legende{font-size:14.5px;color:var(--text-muted);margin:-4px 0 12px;text-align:center}
 .pied{max-width:720px;margin:24px auto 0;padding:14px 16px 28px;text-align:center;font-size:13.5px;color:var(--text-muted)}
 .pied a{color:var(--text-muted)}
 .a-remplir{background:#FDF0CF;color:#7A4A00;border:1px dashed #D9A43A;border-radius:6px;padding:0 6px;font-weight:800}
@@ -887,8 +901,9 @@ function vueAccueil(){
   const chemin = `<section class="acc-temps" id="chemin">
     <p class="surtitre">2 · Sur le chemin</p>
     <h2 class="acc-h">Dix étapes choisies</h2>
-    <p class="acc-p">Le Camino francés compte une trentaine d'étapes de marche, de Saint-Jean à Santiago. Nous en avons retenu <b>dix</b> :
-      celles où l'espagnol devient nécessaire — trouver un lit, commander, se soigner, demander son chemin, parler avec les autres.</p>
+    <p class="acc-p">Le Camino francés compte une trentaine d'étapes de marche, de Saint-Jean à Santiago. Nous en avons retenu <b>dix</b>,
+      réparties tout le long du chemin — environ une tous les trois jours de marche. Chacune vous fait vivre <b>une situation nouvelle</b> :
+      trouver un lit, commander au bar, demander son chemin, la pharmacie, l'auberge complète… Assez pour tout couvrir, sans alourdir le sac.</p>
     <div class="carte-borne">${borneImg(pro ? KM_TOTAL - pro.km : 0)}<div class="cb-txt">
      <p class="surtitre">${pro ? 'Prochaine étape · ' + pro.n + ' sur 10' : 'Au bout du chemin'}</p>
      <h1>${faits === 10 ? '¡Lo has conseguido!' : pro ? E(pro.lieu) : ''}</h1>
@@ -1571,9 +1586,26 @@ function vuePrep(){
   <p class="avis-local" style="margin-top:10px">À ne pas confondre avec « Suis-je prêt${S.genre === 'f' ? 'e' : ''} ? », le test du chemin, à faire après les haltes.</p>
   <button class="btn btn--pri btn--large" style="margin-top:14px" onclick="aller('accueil')">Aller au chemin</button>`;
 }
+/* Le fil d'Ariane (Daniel, 27 sept. 2026) : les temps d'un entraînement
+   s'enchaînent — la leçon, écouter, reconnaître, puis parler. Un temps ne
+   s'ouvre qu'une fois le précédent fait ; un entraînement terminé se refait
+   dans n'importe quel ordre. */
+const CADENAS = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+function tempsOuvert(x, j){ const e = prepEtat(x.id); return !!e.fin || PREP_TEMPS.slice(0, j).every(([t]) => e.faits[t]); }
+function filSeance(x, actif){
+  const e = prepEtat(x.id);
+  return `<ol class="ariane" aria-label="Les étapes de l'entraînement">${PREP_TEMPS.map(([t, nom], j) => {
+    const fait = !!e.faits[t], ouvert = tempsOuvert(x, j), ici = t === actif;
+    const avant = j > 0 && e.faits[PREP_TEMPS[j - 1][0]];
+    const cls = [fait ? 'fait' : '', ici ? 'ici' : '', ouvert ? '' : 'ferme', avant ? 'relie' : ''].filter(Boolean).join(' ');
+    const rond = fait ? '✓' : ouvert ? j + 1 : CADENAS;
+    const titre = ouvert ? '' : ` title="D'abord : ${E(PREP_TEMPS[j - 1][1])}"`;
+    return `<li class="${cls}"><button ${ouvert && !ici ? `onclick="aller('prep/${x.id}/${t}')"` : ''} ${ouvert ? '' : 'disabled'}${titre}
+      ${ici ? 'aria-current="step"' : ''}><span class="rond">${rond}</span><span class="lib">${nom}</span></button></li>`; }).join('')}</ol>`;
+}
 function teteSeance(x, k){
   const i = PREP_TEMPS.findIndex(t => t[0] === k);
-  return `${retour('prep/' + x.id, 'Entraînement ' + numSeance(x) + ' · ' + x.titre)}<p class="surtitre">${i + 1} / ${PREP_TEMPS.length}</p><h1>${PREP_TEMPS[i][1]}</h1>`;
+  return `${retour('prep/' + x.id, 'Entraînement ' + numSeance(x) + ' · ' + x.titre)}${filSeance(x, k)}<h1>${PREP_TEMPS[i][1]}</h1>`;
 }
 function finTemps(x, k){
   const e = prepEtat(x.id); e.faits[k] = true;
@@ -1589,20 +1621,24 @@ function finTemps(x, k){
 }
 function vueSeance(id, k){
   const x = seanceParId(id); if (!x) return vuePrep();
+  // Un temps encore fermé renvoie au premier qui reste à faire.
+  const jk = PREP_TEMPS.findIndex(([t]) => t === k);
+  if (jk > 0 && !tempsOuvert(x, jk)) { const f = PREP_TEMPS.find(([t]) => !prepEtat(x.id).faits[t]); history.replaceState(null, '', '#prep/' + x.id + '/' + f[0]); k = f[0]; }
   if (k === 'lecon') return seanceLecon(x);
   if (k === 'ecoute') return seanceEcoute(x);
   if (k === 'quiz') return seanceQuiz(x);
   if (k === 'dire') return seanceDire(x);
   const e = prepEtat(x.id);
-  const liste = PREP_TEMPS.map(([t, nom, d], j) => `<li class="${e.faits[t] ? 'fait' : ''}"><button onclick="aller('prep/${x.id}/${t}')"><span class="num">${e.faits[t] ? '✓' : j + 1}</span>
-    <span><b>${nom}</b><span class="d">${d}</span></span>${e.faits[t] ? '<span class="etat">✓ fait</span>' : ''}</button></li>`).join('');
   const suivant = PREP_TEMPS.find(([t]) => !e.faits[t]) || PREP_TEMPS[0];
-  app.innerHTML = `${retour('prep', 'Avant de partir')}<p class="surtitre">Entraînement ${numSeance(x)} sur ${D.prep.seances.length} · ${x.minutes} minutes</p>
+  const o = SAC[x.id];
+  app.innerHTML = `${retour('prep', 'Mon sac')}<p class="surtitre">Entraînement ${numSeance(x)} sur ${D.prep.seances.length} · ${x.minutes} minutes</p>
     <h1>${E(x.titre)}</h1><p>${E(x.intro)}</p>
-    <div class="objectif">${E(D.prep.fin[x.obj])}</div>
-    <div class="meca"><p class="surtitre">La mécanique</p><ul>${x.meca.map(t => `<li>${g(t)}</li>`).join('')}</ul></div>
+    ${filSeance(x, e.fin ? null : suivant[0])}
+    <p class="fil-legende">${e.fin ? `✓ Entraînement fait${o ? ' : ' + E(o[1]) + ' est dans votre sac' : ''}. Refaites l'étape de votre choix.`
+      : 'Dans l’ordre : la leçon d’abord, puis on écoute, on reconnaît, et on finit par parler.'}</p>
     <button class="btn btn--pri btn--large" onclick="aller('prep/${x.id}/${suivant[0]}')">${e.fin ? 'Refaire' : Object.keys(e.faits).length ? 'Continuer' : 'Commencer'} : ${suivant[1]}</button>
-    <ul class="etapes-j">${liste}</ul>`;
+    <div class="objectif" style="margin-top:16px">${E(D.prep.fin[x.obj])}</div>
+    <div class="meca"><p class="surtitre">L'aide-mémoire</p><ul>${x.meca.map(t => `<li>${g(t)}</li>`).join('')}</ul></div>`;
 }
 /* La leçon narrée : la guide explique, la voix d'Espagne dit les exemples ; le
    texte suit l'écoute. Le temps est fait quand on a écouté jusqu'au bout — ou

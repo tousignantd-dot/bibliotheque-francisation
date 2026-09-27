@@ -217,7 +217,7 @@ footer{{text-align:center;font-size:13px;color:var(--doux);padding:26px 0 40px}}
     <h1>L'espagnol du Camino, <span>là où vous en aurez besoin</span>.</h1>
     <p class="chapeau">Trouver un lit, commander le menu du pèlerin, expliquer une ampoule à la pharmacie, demander son chemin,
     parler avec les autres le soir : vous apprenez chaque phrase <b>la veille du jour où vous en aurez besoin</b>, dans votre téléphone.
-    Le chemin compte une trentaine d'étapes de marche : nous en avons choisi <b>dix</b>, celles où l'espagnol devient nécessaire.</p>
+    Le chemin compte une trentaine d'étapes de marche : nous en avons retenu <b>dix</b>, environ une tous les trois jours, chacune avec une situation nouvelle.</p>
     <a class="cta" href="{APP}" target="_blank" rel="noopener">Essayer gratuitement</a>
   </div>
   <div class="visuel" aria-hidden="true">
@@ -327,7 +327,7 @@ footer{{text-align:center;font-size:13px;color:var(--doux);padding:26px 0 40px}}
 
 <section>
   <h2><span class="num">4</span>Les dix étapes choisies</h2>
-  <p class="intro">Environ {jours} jours de marche, à {KM_JOUR} km par jour. Sur la trentaine d'étapes du chemin, nous avons gardé celles où l'espagnol devient nécessaire.</p>
+  <p class="intro">Environ {jours} jours de marche, à {KM_JOUR} km par jour. Sur la trentaine d'étapes du chemin, nous en avons retenu dix, réparties tout le long : environ une tous les trois jours de marche, et chacune vous fait vivre une situation nouvelle. Assez pour tout couvrir, sans alourdir le sac.</p>
   <ol class="chemin">{haltes}</ol>
 </section>
 
