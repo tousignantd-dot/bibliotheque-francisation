@@ -13,7 +13,10 @@ change dans Railway, la page la relit par /api/pelerins/offre.
 
 # À remplir par Daniel : la loi veut le titre et les coordonnées de la
 # personne responsable. None → « à désigner », en ambre.
-RESPONSABLE = ("Daniel Tousignant", "fondateur de francis")   # désigné par Daniel, 27 sept. 2026
+# La loi (P-39.1, art. 3.1) exige le TITRE et les coordonnées, pas le nom
+# (vérifié sur LégisQuébec le 27 sept. 2026) : Daniel préfère ne pas publier
+# son nom. La fonction est tenue par lui, en tant que fondateur.
+RESPONSABLE = ("", "le fondateur de francis")
 COURRIEL = "confidentialite@edufrancis.ca"
 MISE_A_JOUR = "27 septembre 2026"
 

@@ -753,7 +753,7 @@ function rendre(){
 function vueConfidentialite(){
   const C = D.confid;
   const ambre = t => `<span class="a-remplir">${t}</span>`;
-  const resp = C.responsable ? `${E(C.responsable[0])}, ${E(C.responsable[1])}` : ambre('personne responsable à désigner');
+  const resp = C.responsable ? [C.responsable[0], C.responsable[1]].filter(Boolean).map(E).join(', ') : ambre('personne responsable à désigner');
   const rendu = cons => {
     const duree = `effacés ${cons} jours après la fin de votre accès (et un code jamais payé, après 7 jours)`;
     app.innerHTML = `${retour(S.genre ? 'accueil' : '', S.genre ? 'Accueil' : 'Retour')}
