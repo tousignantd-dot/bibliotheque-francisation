@@ -32,14 +32,26 @@ OBJECTIFS = {
     "P5": "Comprendre une réponse courte",
 }
 
+FIN = {
+    "P1": "À la fin, vous direz ces formules au micro, sans les lire, et on vous comprendra du premier ou du deuxième coup.",
+    "P2": "À la fin, vous comprendrez un prix ou une heure entendus une seule fois, sans confondre les nombres qui se ressemblent.",
+    "P3": "À la fin, vous saurez demander ce qu'il vous faut, dans une situation que vous n'avez jamais vue.",
+    "P4": "À la fin, vous vous présenterez en trois phrases — d'où, pourquoi, votre allergie — sans aide.",
+    "P5": "À la fin, vous saisirez le mot qui décide dans une réponse dite vite : oui, non, il en reste, à gauche, ça en contient.",
+}
+# La halte où chaque objectif servira d'abord (lien du bilan du test, F2).
+HALTE = {"P1": "roncesvalles", "P2": "roncesvalles", "P3": "pamplona", "P4": "carrion", "P5": "puente-la-reina"}
+
 SEANCES = [
   {"id": "p1", "titre": "Les sons de l'espagnol", "obj": "P1", "minutes": 15,
    "intro": "En espagnol, chaque lettre se dit, et toujours de la même façon. Une fois les cinq ou six sons qui changent du français apprivoisés, vous pouvez lire à voix haute n'importe quel mot du chemin.",
-   "meca": "<b>Les voyelles</b> sont toujours pleines : a, e, i, o, u — jamais muettes, jamais « eu ». "
-           "<b>j</b> se racle au fond de la gorge : <i>jamón</i>. <b>ll</b> se dit comme un y : <i>calle</i>. "
-           "<b>ñ</b> se dit gn : <i>España</i>. <b>r</b> est battu une fois, <b>rr</b> roule : <i>pero</i> (mais), <i>perro</i> (chien). "
-           "En Espagne, <b>z</b>, <b>ce</b> et <b>ci</b> se disent la langue entre les dents : <i>gracias</i>. "
-           "<b>La syllabe forte</b> : l'accent écrit la marque (<i>café</i>) ; sans accent, c'est l'avant-dernière (<i>ca·MI·no</i>).",
+   "meca": [
+     '<b>Les voyelles</b> sont toujours pleines : a, e, i, o, u — jamais muettes, jamais « eu ».',
+     '<b>j</b> se racle au fond de la gorge : <i>jamón</i>.',
+     '<b>ll</b> se dit comme un y : <i>calle</i> ; <b>ñ</b> se dit gn : <i>España</i>.',
+     '<b>r</b> est battu une fois, <b>rr</b> roule : <i>pero</i> (mais), <i>perro</i> (chien).',
+     'En Espagne, <b>z, ce, ci</b> se disent la langue entre les dents : <i>gracias</i>.',
+     "<b>La syllabe forte</b> : mot fini par une voyelle, n ou s → l'avant-dernière (<i>ca·MI·no</i>) ; par une autre consonne → la dernière (<i>pa·GAR, hos·TAL</i>) ; un accent écrit l'emporte (<i>ca·FÉ, MÉ·di·co</i>)."],
    "ecoute": [("jamón", "le jambon — le j raclé"), ("la calle", "la rue — ll comme un y"),
               ("España", "l'Espagne — ñ comme gn"), ("pero, perro", "mais, chien — r battu, rr roulé"),
               ("gracias", "merci — la langue entre les dents"), ("el camino", "le chemin — ca·MI·no"),
@@ -50,7 +62,8 @@ SEANCES = [
      {"type": "mot", "es": "caja", "choix": [("caja", None), ("casa", "Casa se dit avec un s doux. Ici, on entendait le j raclé : caja, la caisse."), ("cara", "Cara a un r battu. Ici, le son du milieu se raclait : caja.")]},
      {"type": "mot", "es": "pollo", "choix": [("pollo", None), ("polo", "Polo n'a qu'un l. Ici, le ll sonnait comme un y : pollo, le poulet."), ("bollo", "Bollo commence par un b. Ici : pollo, le poulet.")]},
      {"type": "mot", "es": "mañana", "choix": [("mañana", None), ("manzana", "Manzana (la pomme) a un z au milieu. Ici, on entendait gn : mañana."), ("mamá", "Mamá n'a que deux syllabes. Ici, il y en avait trois : ma·ÑA·na.")]},
-     {"type": "mot", "es": "médico", "q": "Où est la syllabe forte ?", "choix": [("MÉ·di·co", None), ("me·DI·co", "Sans accent, ce serait l'avant-dernière ; mais médico porte un accent sur le é : MÉ·di·co."), ("me·di·CO", "La dernière n'est presque jamais forte en espagnol. L'accent écrit la place : MÉ·di·co.")]},
+     {"type": "mot", "es": "médico", "q": "Où est la syllabe forte ?", "choix": [("ME·di·co", None), ("me·DI·co", "Sans accent écrit, un mot fini par une voyelle serait fort sur l'avant-dernière ; mais médico porte un accent sur le é : ME·di·co."), ("me·di·CO", "Un mot fini par une voyelle n'est pas fort sur la dernière, sauf accent écrit. Ici, l'accent est sur le é : ME·di·co.")]},
+     {"type": "mot", "es": "repetir", "q": "Où est la syllabe forte ?", "choix": [("re·pe·TIR", None), ("re·PE·tir", "Repetir finit par un r, une consonne autre que n ou s : la dernière syllabe est forte, re·pe·TIR."), ("RE·pe·tir", "Sans accent écrit, jamais la première ici : repetir finit par r, donc re·pe·TIR.")]},
      {"type": "mot", "es": "cerveza", "choix": [("cerveza", None), ("servesa", "Servesa n'existe pas : c'est la prononciation d'Amérique latine. En Espagne, ce et z se disent la langue entre les dents : cerveza."), ("cereza", "Cereza (la cerise) n'a pas de v. Ici : cer·VE·za, la bière.")]},
    ],
    "dire": [("Dites « merci ».", "Gracias.", ["gracias"]),
@@ -60,9 +73,12 @@ SEANCES = [
 
   {"id": "p2", "titre": "Saluer, remercier, faire répéter", "obj": "P1", "minutes": 15,
    "intro": "Les formules qui ouvrent toutes les portes — et celles qui sauvent quand on ne comprend pas. Avec elles, on peut commencer n'importe quelle conversation, et s'en sortir.",
-   "meca": "<b>Bonjour change avec l'heure</b> : <i>buenos días</i> jusqu'au dîner (vers 14 h), <i>buenas tardes</i> jusqu'au souper — tard en Espagne —, "
-           "<i>buenas noches</i> le soir et pour dire bonne nuit. <b>Perdone</b> (vous) pour un commerçant ou une personne âgée ; "
-           "<b>perdona</b> (tu) entre pèlerins. <b>De nada</b> répond à <i>gracias</i>. Et la phrase qui sauve : <i>más despacio, por favor</i>.",
+   "meca": [
+     "<b>Bonjour change avec l'heure</b> : <i>buenos días</i> jusqu'au dîner (vers 14 h).",
+     "<i>Buenas tardes</i> jusqu'au souper, tard en Espagne ; <i>buenas noches</i> le soir, et pour dire bonne nuit.",
+     '<b>Perdone</b> (vous) pour un commerçant ou une personne âgée ; <b>perdona</b> (tu) entre pèlerins.',
+     '<b>De nada</b> répond à <i>gracias</i>.',
+     'La phrase qui sauve : <i>más despacio, por favor</i>.'],
    "ecoute": [("Buenos días.", "Bonjour (le matin)."), ("Buenas tardes.", "Bonjour (l'après-midi, jusqu'au souper)."),
               ("Buenas noches.", "Bonsoir, bonne nuit."), ("¡Buen Camino!", "Bon chemin ! — le salut des pèlerins."),
               ("Muchas gracias. — De nada.", "Merci beaucoup. — De rien."), ("Perdone, no entiendo.", "Pardon, je ne comprends pas."),
@@ -83,10 +99,11 @@ SEANCES = [
 
   {"id": "p3", "titre": "Les nombres et les prix", "obj": "P2", "minutes": 15,
    "intro": "Un lit, un café, un pansement : tout a un prix, et il se dit vite. On apprend les nombres dont on a besoin, et surtout ceux qui se ressemblent à l'oreille.",
-   "meca": "<b>Les prix</b> : les euros, puis les centimes avec <b>con</b> — <i>cuatro con cincuenta</i> = 4,50 €. "
-           "<b>Les paires qui trompent l'oreille</b> : <i>dos</i> (2) / <i>doce</i> (12) · <i>seis</i> (6) / <i>siete</i> (7) · "
-           "<i>trece</i> (13) / <i>treinta</i> (30) · <i>quince</i> (15) / <i>cincuenta</i> (50). "
-           "Pour payer : <i>¿Cuánto es?</i> (c'est combien ?), <i>con tarjeta</i> (par carte), <i>en efectivo</i> (comptant).",
+   "meca": [
+     '<b>Les prix</b> : les euros, puis les centimes avec <b>con</b> — <i>cuatro con cincuenta</i> = 4,50 €.',
+     "<b>Les paires qui trompent l'oreille</b> : <i>dos</i> (2) / <i>doce</i> (12) · <i>seis</i> (6) / <i>siete</i> (7).",
+     'Et encore : <i>trece</i> (13) / <i>treinta</i> (30) · <i>quince</i> (15) / <i>cincuenta</i> (50).',
+     "<b>Pour payer</b> : <i>¿Cuánto es?</i> (c'est combien ?), <i>con tarjeta</i> (par carte), <i>en efectivo</i> (comptant)."],
    "ecoute": [("uno, dos, tres, cuatro, cinco", "1, 2, 3, 4, 5"), ("seis, siete, ocho, nueve, diez", "6, 7, 8, 9, 10"),
               ("once, doce, trece, catorce, quince", "11, 12, 13, 14, 15"), ("veinte, treinta, cuarenta, cincuenta", "20, 30, 40, 50"),
               ("¿Cuánto es?", "C'est combien ?"), ("Son cuatro con cincuenta.", "C'est 4,50 €."),
@@ -107,10 +124,12 @@ SEANCES = [
 
   {"id": "p4", "titre": "L'heure et les jours", "obj": "P2", "minutes": 15,
    "intro": "Le souper, la porte de l'albergue, la messe, le magasin qui rouvre après la sieste : sur le chemin, beaucoup de choses se jouent à une heure près.",
-   "meca": "<b>L'heure</b> : <i>a la una</i>, puis <i>a las dos, a las tres</i>… <i>y media</i> (et demie), <i>y cuarto</i> (et quart), "
-           "<i>menos cuarto</i> (moins le quart). <b>Antes de</b> = avant, <b>después de</b> = après. "
-           "<b>La journée espagnole</b> : on dîne (<i>la comida</i>) vers 14 h, on soupe (<i>la cena</i>) vers 21 h ; beaucoup de commerces "
-           "ferment de 14 h à 17 h. Attention : <i>mañana</i> = demain, mais <i>por la mañana</i> = le matin.",
+   "meca": [
+     "<b>L'heure</b> : <i>a la una</i>, puis <i>a las dos, a las tres</i>…",
+     '<i>y media</i> (et demie), <i>y cuarto</i> (et quart), <i>menos cuarto</i> (moins le quart).',
+     '<b>Antes de</b> = avant ; <b>después de</b> = après.',
+     '<b>La journée espagnole</b> : on dîne vers 14 h, on soupe vers 21 h ; beaucoup de commerces ferment de 14 h à 17 h.',
+     'Attention : <i>mañana</i> = demain, mais <i>por la mañana</i> = le matin.'],
    "ecoute": [("¿Qué hora es?", "Quelle heure est-il ?"), ("Es la una.", "Il est une heure."),
               ("Son las ocho y media.", "Il est huit heures et demie."), ("a las siete menos cuarto", "à sept heures moins le quart"),
               ("¿A qué hora abre?", "À quelle heure ça ouvre ?"), ("Abre a las cinco.", "Ça ouvre à cinq heures."),
@@ -131,11 +150,12 @@ SEANCES = [
 
   {"id": "p5", "titre": "Quatre verbes qui font presque tout", "obj": "P3", "minutes": 15,
    "intro": "Pas besoin de conjuguer pour se débrouiller : quatre formes toutes faites suffisent pour demander presque tout ce dont on a besoin sur le chemin.",
-   "meca": "<b>Quisiera</b> + la chose : je voudrais (poli, pour commander) — <i>quisiera un café</i>. "
-           "<b>¿Tiene…?</b> + la chose : vous avez… ? (ce qui existe ici) — <i>¿tiene agua?</i> "
-           "<b>Necesito</b> + la chose : j'ai besoin de (l'urgence) — <i>necesito una farmacia</i>. "
-           "<b>Me duele</b> + la partie du corps : j'ai mal à — <i>me duele la rodilla</i> ; <b>me duelen</b> si elles sont plusieurs : "
-           "<i>me duelen los pies</i>. Rien d'autre à apprendre : ces quatre formes ne changent jamais.",
+   "meca": [
+     '<b>Quisiera</b> + la chose : je voudrais (poli, pour commander) — <i>quisiera un café</i>.',
+     '<b>¿Tiene…?</b> + la chose : vous avez… ? (ce qui existe ici) — <i>¿tiene agua?</i>',
+     "<b>Necesito</b> + la chose : j'ai besoin de (l'urgence) — <i>necesito una farmacia</i>.",
+     "<b>Me duele</b> + la partie du corps : j'ai mal à — <i>me duele la rodilla</i>.",
+     'Une seule forme bouge : <b>me duelen</b>, avec un n, devant plusieurs choses — <i>me duelen los pies</i>.'],
    "ecoute": [("Quisiera una cama.", "Je voudrais un lit."), ("Quisiera un café con leche.", "Je voudrais un café au lait."),
               ("¿Tiene agua?", "Vous avez de l'eau ?"), ("¿Tiene tiritas?", "Vous avez des pansements ?"),
               ("Necesito una farmacia.", "J'ai besoin d'une pharmacie."), ("Necesito ayuda.", "J'ai besoin d'aide."),
@@ -156,10 +176,12 @@ SEANCES = [
 
   {"id": "p6", "titre": "Poser une question", "obj": "P3", "minutes": 15,
    "intro": "Où, combien, à quelle heure, est-ce qu'il y a : avec quatre mots, on peut trouver presque tout ce qu'on cherche dans un village.",
-   "meca": "<b>¿Dónde está…?</b> où est… ? — <i>¿dónde está el albergue?</i> · <b>¿Cuánto cuesta?</b> combien ça coûte ? · "
-           "<b>¿A qué hora…?</b> à quelle heure… ? · <b>¿Hay…?</b> y a-t-il… ? — un seul petit mot, pour tout : <i>¿hay agua?</i>, "
-           "<i>¿hay una farmacia?</i> Et pour les lits : <i>¿quedan camas?</i> (il en reste ?). La voix <b>monte</b> à la fin ; "
-           "à l'écrit, le <b>¿</b> à l'envers ouvre la question.",
+   "meca": [
+     '<b>¿Dónde está…?</b> où est… ? — <i>¿dónde está el albergue?</i>',
+     '<b>¿Cuánto cuesta?</b> combien ça coûte ? · <b>¿A qué hora…?</b> à quelle heure… ?',
+     '<b>¿Hay…?</b> y a-t-il… ? — un seul petit mot, pour tout : <i>¿hay agua?</i>, <i>¿hay una farmacia?</i>',
+     'Pour les lits : <i>¿quedan camas?</i> (il en reste ?).',
+     "La voix <b>monte</b> à la fin ; à l'écrit, le <b>¿</b> à l'envers ouvre la question."],
    "ecoute": [("¿Dónde está el albergue?", "Où est l'albergue ?"), ("¿Dónde está la ducha?", "Où est la douche ?"),
               ("¿Hay una farmacia cerca?", "Y a-t-il une pharmacie près d'ici ?"), ("¿Hay agua potable?", "Y a-t-il de l'eau potable ?"),
               ("¿Cuánto cuesta?", "Combien ça coûte ?"), ("¿Quedan camas?", "Reste-t-il des lits ?"),
@@ -180,10 +202,11 @@ SEANCES = [
 
   {"id": "p7", "titre": "Parler de soi", "obj": "P4", "minutes": 15,
    "intro": "Sur le chemin, la première question qu'on vous posera est d'où vous venez. La deuxième : pourquoi vous marchez. Préparez vos trois phrases — elles serviront tous les soirs.",
-   "meca": "<b>Soy de…</b> pour l'origine : <i>soy de Quebec, en Canadá</i>. <b>Hago el Camino por…</b> pour la raison : "
-           "<i>por el deporte, por mi familia, por la fe, para pensar</i>. "
-           "<b>Soy</b> pour ce qu'on est (alérgic{o|a}), <b>estoy</b> pour ce qui passe (cansad{o|a}) — et le mot s'accorde : "
-           "vous direz <i>{o|a}</i>. Entre pèlerins, on se tutoie : <i>¿De dónde eres? ¿Por qué haces el Camino?</i>",
+   "meca": [
+     "<b>Soy de…</b> pour l'origine : <i>soy de Quebec, en Canadá</i>.",
+     '<b>Hago el Camino por…</b> pour la raison : <i>por el deporte, por mi familia, por la fe</i> — ou <i>para pensar</i>.',
+     "<b>Soy</b> pour ce qu'on est (<i>alérgic{<b>o</b>|<b>a</b>}</i>), <b>estoy</b> pour ce qui passe (<i>cansad{<b>o</b>|<b>a</b>}</i>).",
+     'Entre pèlerins, on se tutoie : <i>¿De dónde eres? ¿Por qué haces el Camino?</i>'],
    "ecoute": [("Soy de Quebec, en Canadá.", "Je viens du Québec, au Canada."), ("Hago el Camino por el deporte.", "Je fais le Chemin pour le sport."),
               ("Hago el Camino por mi familia.", "Je fais le Chemin pour ma famille."), ("Soy alérgic{o|a} {alg:a}.", "Je suis allergique {alg:fr}."),
               ("Estoy cansad{o|a}.", "Je suis fatigué{|e}."), ("¿De dónde eres?", "D'où viens-tu ?"),
@@ -198,16 +221,19 @@ SEANCES = [
      {"type": "dire", "fr": "On vient de vous présenter quelqu'un.", "choix": [("Encantad{o|a}.", None), ("Cansad{o|a}.", "Cansad{o|a}, c'est fatigué{|e} : pas très aimable pour une présentation !"), ("De nada.", "De nada répond à un merci. Pour une rencontre : encantad{o|a}.")]},
    ],
    "dire": [("Dites d'où vous venez.", "Soy de Quebec, en Canadá.", ["soy de"]),
-            ("Dites pourquoi vous marchez — par exemple, pour le sport.", "Hago el Camino por el deporte.", ["camino"]),
-            ("Dites votre allergie.", "Soy alérgic{o|a} {alg:a}.", ["alergic{o|a}"]),
+            ("Dites pourquoi vous marchez — par exemple, pour le sport.", "Hago el Camino por el deporte.", ["camino", "por|para"]),
+            ("Dites votre allergie.", "Soy alérgic{o|a} {alg:a}.", ["alergic{o|a}", "{alg:sans}"]),
             ("Demandez à un pèlerin d'où il vient.", "¿De dónde eres?", ["de donde"])]},
 
   {"id": "p8", "titre": "Comprendre la réponse", "obj": "P5", "minutes": 15,
    "intro": "Le plus dur n'est pas de demander : c'est d'entendre la réponse, dite vite, avec l'accent d'ici. Le secret : guetter le mot qui décide, et laisser filer le reste.",
-   "meca": "<b>Les mots qui décident</b> : <i>sí</i> / <i>no</i> · <i>hay</i> (il y en a) / <i>no hay</i> (il n'y en a pas) · "
-           "<i>quedan</i> (il en reste) / <i>está completo</i> (c'est complet) · <i>a la derecha</i> (à droite) / <i>a la izquierda</i> "
-           "(à gauche) / <i>todo recto</i> (tout droit) · <i>lleva</i> (ça en contient) / <i>no lleva</i> (ça n'en contient pas). "
-           "Le reste de la phrase peut vous échapper : ce mot-là, non.",
+   "meca": [
+     '<b>Sí</b> / <b>no</b> — souvent répété : <i>sí, sí</i>.',
+     "<b>Hay</b> (il y en a) / <b>no hay</b> (il n'y en a pas).",
+     "<b>Quedan</b> (il en reste) / <b>está completo</b> (c'est complet).",
+     '<b>A la derecha</b> (à droite) / <b>a la izquierda</b> (à gauche) / <b>todo recto</b> (tout droit).',
+     "<b>Lleva</b> (ça en contient) / <b>no lleva</b> (ça n'en contient pas).",
+     'Le reste de la phrase peut vous échapper : ce mot-là, non.'],
    "ecoute": [("Sí, claro.", "Oui, bien sûr."), ("No, no hay.", "Non, il n'y en a pas."),
               ("Lo siento, está completo.", "Désolé, c'est complet."), ("Quedan tres camas.", "Il reste trois lits."),
               ("A la derecha.", "À droite."), ("A la izquierda.", "À gauche."),
@@ -226,38 +252,57 @@ SEANCES = [
             ("Vous n'avez pas compris la direction.", "Perdone, ¿puede repetir?", ["repetir"])]},
 ]
 
-# Le test « Prêt à partir ? » : deux formes parallèles, phrases NOUVELLES
-# (mêmes structures, autres valeurs), deux items par objectif et par forme.
-# Types : ceux du quiz, plus "oral" (une situation ; on la dit au micro, trois
-# essais ; `cles` et `modele`). Il situe, il ne verrouille pas.
+# Le test « Prêt à partir ? » (révisé au tour 1 de la boucle, A3/F1) : chaque
+# objectif est mesuré comme son critère le dit. P1 et P3 : DITS au micro, deux
+# essais au plus (« au 1er ou au 2e essai »). P2 et P5 : entendus UNE fois, au
+# débit naturel. P4 : une seule tâche, se présenter en trois phrases, dont
+# l'allergie et l'accord. Deux formes parallèles ; phrases surtout nouvelles
+# (les formules figées de P1 sont, par nature, celles des séances).
 TEST = [
   [
     {"obj": "P1", "type": "oral", "fr": "Demandez poliment de parler plus lentement.", "cles": ["despacio"], "modele": "Más despacio, por favor."},
-    {"obj": "P1", "type": "mot", "es": "carro", "choix": [("carro", None), ("caro", "Caro (cher) a un r battu. Ici, le rr roulait : carro."), ("cara", "Cara finit par a. Ici : carro.")]},
+    {"obj": "P1", "type": "oral", "fr": "Remerciez beaucoup.", "cles": ["muchas", "gracias"], "modele": "Muchas gracias."},
+    {"obj": "P1", "type": "oral", "fr": "Dites que vous ne comprenez pas.", "cles": ["no entiendo"], "modele": "Perdone, no entiendo."},
     {"obj": "P2", "type": "rep", "qui": "alex", "es": "Son catorce con cincuenta.", "choix": [("14,50 €", None), ("40,50 €", "Cuarenta, ce serait 40. Catorce, c'est 14."), ("4,50 €", "Cuatro, ce serait 4. Catorce, c'est 14.")]},
-    {"obj": "P2", "type": "rep", "qui": "uxia", "es": "El desayuno es a las siete menos cuarto.", "choix": [("Le déjeuner est à 6 h 45.", None), ("Le déjeuner est à 7 h 15.", "Y cuarto, ce serait et quart. Menos cuarto : moins le quart."), ("Le déjeuner est à 17 h 45.", "Siete, c'est 7 ; le matin, pour un déjeuner. Moins le quart : 6 h 45.")]},
-    {"obj": "P3", "type": "dire", "fr": "À la pharmacie : vous voulez de la crème solaire.", "choix": [("Quisiera crema solar, por favor.", None), ("Me duele crema solar, por favor.", "Me duele, c'est la douleur. Pour demander : quisiera."), ("Estoy crema solar, por favor.", "Estoy, c'est un état. Pour demander : quisiera.")]},
+    {"obj": "P2", "type": "rep", "qui": "uxia", "es": "El desayuno es a las siete menos cuarto.", "choix": [("Le déjeuner est à 6 h 45.", None), ("Le déjeuner est à 7 h 15.", "Y cuarto, ce serait et quart. Menos cuarto : moins le quart."), ("Le déjeuner est à 7 h 45.", "Siete menos cuarto, c'est sept heures moins le quart : 6 h 45.")]},
+    {"obj": "P2", "type": "rep", "qui": "manolo", "es": "Son dieciséis euros.", "choix": [("16 €", None), ("6 €", "Seis, ce serait 6. Dieciséis, c'est 16."), ("60 €", "Sesenta, ce serait 60. Dieciséis, c'est 16.")]},
+    {"obj": "P2", "type": "rep", "qui": "rocio", "es": "Cerramos a las nueve.", "choix": [("On ferme à 21 h.", None), ("On ferme à 22 h.", "Diez, ce serait 10. Nueve, c'est 9 — ici 21 h."), ("On ouvre à 21 h.", "Abrimos, ce serait « on ouvre ». Cerramos : on ferme.")]},
+    {"obj": "P3", "type": "oral", "fr": "À la pharmacie, demandez de la crème solaire.", "cles": ["quisiera|tiene|necesito", "crema"], "modele": "Quisiera crema solar, por favor."},
     {"obj": "P3", "type": "oral", "fr": "Demandez où est la fontaine.", "cles": ["donde", "fuente"], "modele": "¿Dónde está la fuente?"},
-    {"obj": "P4", "type": "dire", "fr": "Un pèlerin vous demande pourquoi vous marchez. Vous répondez : pour réfléchir.", "choix": [("Hago el Camino para pensar.", None), ("Soy el Camino para pensar.", "Soy, c'est « je suis » : vous seriez le Chemin ! Hago el Camino : je fais le Chemin."), ("¿Por qué haces el Camino?", "Vous lui renvoyez sa question. Répondez-lui : hago el Camino para pensar.")]},
-    {"obj": "P4", "type": "oral", "fr": "Dites d'où vous venez.", "cles": ["soy de"], "modele": "Soy de Quebec, en Canadá."},
-    {"obj": "P5", "type": "rep", "qui": "javier", "es": "No, ya no quedan camas. Hay un hostal en la plaza.", "choix": [("Plus de lits ; il y a un petit hôtel sur la place.", None), ("Il reste des lits, sur la place.", "Ya no quedan : il n'en reste plus. L'hostal, lui, est sur la place."), ("Plus de lits ; l'hôtel de la place est complet aussi.", "Rien n'est dit de l'hôtel, sinon qu'il existe : hay un hostal.")]},
+    {"obj": "P3", "type": "oral", "fr": "Vous avez mal à l'épaule : dites-le à la pharmacienne.", "cles": ["duele", "hombro"], "modele": "Me duele el hombro."},
+    {"obj": "P4", "type": "oral", "fr": "Présentez-vous en trois phrases : d'où vous venez, pourquoi vous marchez, et votre allergie.",
+     "cles": ["soy de", "camino", "por|para", "alergic{o|a}", "{alg:sans}"],
+     "parties": ["d'où vous venez (soy de…)", "le Chemin (hago el Camino…)", "la raison (por… ou para…)", "allergique, au bon genre", "l'aliment de votre allergie"],
+     "modele": "Soy de Quebec, en Canadá. Hago el Camino por el deporte. Soy alérgic{o|a} {alg:a}."},
+    {"obj": "P5", "type": "rep", "qui": "javier", "es": "No, ya no quedan camas. Hay un hostal en la plaza.", "choix": [("Plus de lits ; il y a un petit hôtel sur la place.", None), ("Il reste des lits, sur la place.", "Ya no quedan : il n'en reste plus. L'hostal, lui, est sur la place."), ("Plus de lits ; l'hôtel de la place est plein.", "Rien n'est dit de l'hôtel, sinon qu'il existe : hay un hostal.")]},
     {"obj": "P5", "type": "rep", "qui": "fermin", "es": "Sigue todo recto hasta el puente.", "choix": [("Continuez tout droit jusqu'au pont.", None), ("Tournez à droite au pont.", "Derecha n'a pas été dit : todo recto, tout droit."), ("Continuez tout droit jusqu'à l'église.", "La iglesia, ce serait l'église. El puente : le pont.")]},
+    {"obj": "P5", "type": "rep", "qui": "rocio", "es": "Sí, sí, queda una cama.", "choix": [("Oui, il reste un lit.", None), ("Non, il ne reste plus de lit.", "Sí, sí, et queda : il en reste un."), ("Oui, il reste une douche.", "Ducha, ce serait une douche. Cama : un lit.")]},
+    {"obj": "P5", "type": "rep", "qui": "alex", "es": "No, la sopa no lleva huevo.", "choix": [("La soupe ne contient pas d'œuf.", None), ("La soupe contient de l'œuf.", "No lleva : elle n'en contient pas."), ("Il n'y a pas de soupe ce soir.", "La soupe existe ; c'est l'œuf qui n'y est pas.")]},
   ],
   [
     {"obj": "P1", "type": "oral", "fr": "Demandez de répéter, poliment.", "cles": ["repetir"], "modele": "¿Puede repetir, por favor?"},
-    {"obj": "P1", "type": "mot", "es": "llave", "choix": [("llave", None), ("lave", "Lave n'existe pas en espagnol. Ici, le ll sonnait comme un y : llave, la clé."), ("nave", "Nave commence par un n. Ici : llave.")]},
+    {"obj": "P1", "type": "oral", "fr": "Il est 17 h : saluez en entrant dans une boutique.", "cles": ["buenas tardes"], "modele": "Buenas tardes."},
+    {"obj": "P1", "type": "oral", "fr": "Excusez-vous : vous avez bousculé quelqu'un.", "cles": ["lo siento|perdone|perdona"], "modele": "Perdone, lo siento."},
     {"obj": "P2", "type": "rep", "qui": "manolo", "es": "Son siete con treinta.", "choix": [("7,30 €", None), ("6,30 €", "Seis, ce serait 6. Siete, c'est 7."), ("7,13 €", "Trece, ce serait 13. Treinta, c'est 30.")]},
     {"obj": "P2", "type": "rep", "qui": "rocio", "es": "Abrimos el albergue a la una y cuarto.", "choix": [("On ouvre l'albergue à 13 h 15.", None), ("On ouvre l'albergue à 12 h 45.", "Menos cuarto, ce serait moins le quart. Y cuarto : et quart."), ("On ferme l'albergue à 13 h 15.", "Abrimos : on ouvre.")]},
-    {"obj": "P3", "type": "dire", "fr": "Au comptoir : ont-ils du pain sans gluten ?", "choix": [("¿Tiene pan sin gluten?", None), ("¿Quisiera pan sin gluten?", "Quisiera, c'est « je voudrais » : pour savoir s'ils en ont, ¿tiene…?"), ("¿Me duele pan sin gluten?", "Me duele, c'est la douleur. La question : ¿tiene…?")]},
+    {"obj": "P2", "type": "rep", "qui": "ainhoa", "es": "Son cuarenta euros.", "choix": [("40 €", None), ("14 €", "Catorce, ce serait 14. Cuarenta, c'est 40."), ("4 €", "Cuatro, ce serait 4. Cuarenta, c'est 40.")]},
+    {"obj": "P2", "type": "rep", "qui": "carmen", "es": "La misa es a las ocho menos cuarto.", "choix": [("La messe est à 7 h 45.", None), ("La messe est à 8 h 15.", "Y cuarto, ce serait et quart. Menos cuarto : moins le quart, donc 7 h 45."), ("La messe est à 8 h 45.", "Ocho menos cuarto, c'est huit heures moins le quart : 7 h 45.")]},
     {"obj": "P3", "type": "oral", "fr": "Demandez s'il y a une pharmacie près d'ici.", "cles": ["hay", "farmacia"], "modele": "¿Hay una farmacia cerca?"},
-    {"obj": "P4", "type": "dire", "fr": "On vous demande d'où vous venez.", "choix": [("Soy de Quebec, en Canadá.", None), ("Voy de Quebec, en Canadá.", "Voy, c'est « je vais ». L'origine : soy de…"), ("Tengo de Quebec, en Canadá.", "Tengo, c'est « j'ai ». L'origine : soy de…")]},
-    {"obj": "P4", "type": "oral", "fr": "Dites que vous êtes fatigué{|e}.", "cles": ["cansad{o|a}"], "modele": "Estoy cansad{o|a}."},
+    {"obj": "P3", "type": "oral", "fr": "Au bar, demandez un jus d'orange.", "cles": ["quisiera|tiene", "zumo"], "modele": "Quisiera un zumo de naranja."},
+    {"obj": "P3", "type": "oral", "fr": "Il vous faut un taxi : dites-le à l'hospitalière.", "cles": ["necesito", "taxi"], "modele": "Necesito un taxi."},
+    {"obj": "P4", "type": "oral", "fr": "Un pèlerin vous demande qui vous êtes. Répondez en trois phrases : d'où vous venez, pourquoi vous marchez, et votre allergie.",
+     "cles": ["soy de", "camino", "por|para", "alergic{o|a}", "{alg:sans}"],
+     "parties": ["d'où vous venez (soy de…)", "le Chemin (hago el Camino…)", "la raison (por… ou para…)", "allergique, au bon genre", "l'aliment de votre allergie"],
+     "modele": "Soy de Quebec, en Canadá. Hago el Camino por el deporte. Soy alérgic{o|a} {alg:a}."},
     {"obj": "P5", "type": "rep", "qui": "alex", "es": "No, el postre no lleva leche.", "choix": [("Non, pas de lait dans le dessert.", None), ("Oui, le dessert contient du lait.", "No lleva : il n'en contient pas."), ("Il n'y a pas de dessert ce soir.", "Le dessert existe ; c'est le lait qui n'y est pas.")]},
     {"obj": "P5", "type": "rep", "qui": "fermin", "es": "La segunda calle a la izquierda.", "choix": [("La deuxième rue à gauche.", None), ("La deuxième rue à droite.", "Derecha, ce serait à droite. Izquierda : à gauche."), ("La première rue à gauche.", "Primera, ce serait la première. Segunda : la deuxième.")]},
+    {"obj": "P5", "type": "rep", "qui": "manolo", "es": "Lo siento, hoy está cerrado.", "choix": [("Désolé, c'est fermé aujourd'hui.", None), ("Désolé, c'est complet aujourd'hui.", "Completo, ce serait complet. Cerrado : fermé."), ("Désolé, c'est ouvert demain seulement.", "Rien n'est dit de demain : hoy, aujourd'hui, está cerrado.")]},
+    {"obj": "P5", "type": "rep", "qui": "uxia", "es": "Sí, hay agua en la fuente de la plaza.", "choix": [("Il y a de l'eau à la fontaine de la place.", None), ("Il n'y a pas d'eau à la fontaine.", "Sí, hay : il y en a."), ("L'eau de la place n'est pas potable.", "Rien n'est dit de la qualité : hay agua, il y a de l'eau.")]},
   ],
 ]
+PAR_OBJECTIF = {"P1": 3, "P2": 4, "P3": 3, "P4": 1, "P5": 4}
 
-SEUIL = "tout juste : « Solide » ; au moins une juste : « En route » ; aucune : « À reprendre »."
+SEUIL = "Solide : 80 % ou plus ; En route : au moins la moitié ; À reprendre : moins de la moitié. Au micro, deux essais au plus ; les phrases entendues ne s'écoutent qu'une fois."
 CONSEILS = {"P1": "Reprenez les séances 1 et 2, au micro.", "P2": "Reprenez les séances 3 et 4, voix plus lentes d'abord.",
             "P3": "Reprenez les séances 5 et 6.", "P4": "Reprenez la séance 7, et préparez vos trois phrases.",
             "P5": "Reprenez la séance 8 : guettez le mot qui décide."}
@@ -279,10 +324,11 @@ def verifier(lexique_ids=None, personnages=None):
     for f, forme in enumerate(TEST):
         objs = [it["obj"] for it in forme]
         for o in OBJECTIFS:
-            assert objs.count(o) == 2, (f, o)
+            assert objs.count(o) == PAR_OBJECTIF[o], (f, o)
         for it in forme:
             if it["type"] == "oral":
                 assert it["cles"] and it["modele"], it
+                assert "parties" not in it or len(it["parties"]) == len(it["cles"]), it
             else:
                 _item(it, f"test{f}", personnages)
     return True

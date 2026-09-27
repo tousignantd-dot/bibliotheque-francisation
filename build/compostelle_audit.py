@@ -155,6 +155,42 @@ TOURS = [
   ]},
 ]
 
+# La section « Avant de partir » (27 sept. 2026) : sa propre boucle.
+TOURS_PREP = [
+ {"tour": 1, "date": "27 septembre 2026", "compte": (0, 5, 14),
+  "note": "Audit de la version du 27 sept. : page servie à 375 et 1280 px, trois séances entières et le test joués, micro simulé ; 163 sons présents, séance de 9 à 12 minutes.",
+  "constats": [
+   ("A3/F1", "majeur", "Test « Prêt à partir ? »",
+    "Le test ne mesurait pas les critères : P1 (dire) jugé pour moitié par un item écrit, P4 sans l'allergie ni les trois phrases, P3 sur une seule phrase dite, « Solide » à 2 sur 2.",
+    "Test refait objectif par objectif (15 questions par forme) : P1 et P3, trois phrases au micro chacun ; P2 et P5, quatre écoutes chacun ; P4, une présentation en trois phrases dont l'allergie et l'accord. Règle annoncée : Solide à 80 %.", "corrigé"),
+   ("F1", "majeur", "Test, items P2",
+    "Le critère dit « une seule écoute, vitesse normale » : le test laissait réécouter, et au ralenti.",
+    "P2 et P5 : une seule écoute, au débit naturel même si « voix lentes » est coché ; la règle est dite avant de commencer.", "corrigé"),
+   ("E1", "majeur", "Je le dis, séances 3 et 4",
+    "La reconnaissance écrit les nombres en chiffres (« 2 cafés », « a las 8:30 h ») : des phrases justes étaient refusées.",
+    "Les chiffres, les heures et les prix en euros sont remis en lettres avant la comparaison — pour toute l'application, haltes comprises.", "corrigé"),
+   ("E1", "majeur", "Séance 7",
+    "« Soy alérgica » sans l'aliment recevait « On vous a compris » — l'erreur éliminatoire du chemin.",
+    "L'aliment de l'allergie choisie est exigé, pluriel accepté ; message propre : « On sait que vous êtes allergique, mais pas à quoi » ; la raison du chemin exige por ou para.", "corrigé"),
+   ("E1", "majeur", "Séance 1, la syllabe forte",
+    "La règle enseignée était fausse (« sans accent, l'avant-dernière ») : pa·GAR, re·pe·TIR, hos·TAL la contredisent.",
+    "Règle complète : voyelle, n ou s → l'avant-dernière ; autre consonne → la dernière ; l'accent écrit l'emporte. Une question sur re·pe·TIR ajoutée ; les choix de médico sans accent écrit (la réponse ne se lit plus).", "corrigé"),
+   ("C1", "mineur", "La mécanique", "Les puces coupaient les phrases au milieu.", "L'encadré est écrit comme une liste, une règle par puce.", "corrigé"),
+   ("C5", "mineur", "Séances 5 et 7", "« Ces formes ne changent jamais » juste après me duelen ; « vous direz a ».", "Réécrits : une seule forme bouge (me duelen) ; alérgic<b>a</b>, le mot entier.", "corrigé"),
+   ("A1", "mineur", "Ouverture de séance", "L'objectif était annoncé sans condition ni seuil.", "« À la fin, vous direz ces formules au micro, sans les lire… » — à la 2e personne, avec le seuil ; le bilan distingue les phrases comprises au micro.", "corrigé"),
+   ("F1", "mineur", "Bilan du test", "Sans micro, « En route — 1 sur 1 » sans conseil.", "« Non vérifié au micro : refaites ces questions avec le micro », avec le conseil.", "corrigé"),
+   ("F1", "mineur", "Annonce du test", "« Des phrases nouvelles » alors que certaines sont celles des séances.", "« Surtout des phrases nouvelles » ; P3 et P4 sur des situations inédites.", "corrigé"),
+   ("D4", "mineur", "Quiz des séances", "La bonne réponse suivait le même motif dans les huit séances.", "La graine dépend aussi de la séance.", "corrigé"),
+   ("E1", "mineur", "Je le dis", "« Presque » même quand rien n'était reconnu ; mots sans accent (« jamon »).", "« Presque » seulement si la moitié est là ; le mot manquant est écrit comme dans le modèle.", "corrigé"),
+   ("D1", "mineur", "Je le dis", "Le 2e essai se faisait modèle sous les yeux ; « me duelen » passait pour « me duele ».", "Deuxième essai à l'aveugle avant le modèle ; comparaison par mots entiers.", "corrigé"),
+   ("G2", "mineur", "J'écoute", "Coché « fait » dès l'ouverture.", "Le bouton « J'ai tout écouté » ne s'active qu'après chaque phrase entendue.", "corrigé"),
+   ("C5", "mineur", "Deux tests", "« Suis-je prêt ? » et « Prêt à partir ? » se confondaient.", "Nommés : le test de la maison, le test du chemin ; chacun dit quand le faire.", "corrigé"),
+   ("D1/F3", "mineur", "Entre les séances, et vers les haltes", "Aucun rappel ; aucune halte ne renvoie à sa séance.", "Deux questions de rappel de la séance précédente ; chaque halte nomme la séance qui l'outille ; « refaites le test la veille du départ ».", "corrigé"),
+   ("F2", "mineur", "Bilan du test", "Le bouton « première halte » menait à l'accueil.", "Il mène à la halte 1 ; chaque objectif dit la halte où il servira d'abord.", "corrigé"),
+   ("—", "correction", "Je le dis (trouvé en vérifiant la révision)", "Un « Suivant » rapide après une réussite affichait et jouait le modèle de la phrase précédente sur la suivante — aussi dans les haltes.", "Le modèle différé ne s'écrit que dans la zone de sa propre phrase.", "corrigé"),
+  ]},
+]
+
 
 def main():
     tete = SOURCE.read_text(encoding="utf-8")
@@ -180,6 +216,17 @@ table.cmp{display:block;max-width:100%;min-width:0;overflow-x:auto}
   <div class="chiffres"><div class="ch"><span class="n">{b}</span><span class="q">bloquants</span></div>
   <div class="ch"><span class="n">{m}</span><span class="q">majeurs</span></div><div class="ch"><span class="n">{n}</span><span class="q">mineurs</span></div></div>
   <p style="margin-top:12px">{E(t['note'])}</p>{items}</section>"""
+    tours_prep = ""
+    for t in TOURS_PREP:
+        b, m, n = t["compte"]
+        items = "".join(
+            f'<div class="cst"><div class="t"><span class="g-{g}">{E(g)}</span> · {E(c)} · {E(o)}</div>'
+            f'<p>{E(k)}</p><p class="fait {E(st)}"><b>{E(st.capitalize())}.</b> {f}</p></div>'
+            for c, g, o, k, f, st in t["constats"])
+        tours_prep += f"""<section><h2>« Avant de partir » — tour {t['tour']}, {E(t['date'])}</h2>
+  <div class="chiffres"><div class="ch"><span class="n">{b}</span><span class="q">bloquants</span></div>
+  <div class="ch"><span class="n">{m}</span><span class="q">majeurs</span></div><div class="ch"><span class="n">{n}</span><span class="q">mineurs</span></div></div>
+  <p style="margin-top:12px">{E(t['note'])}</p>{items}</section>"""
     corps = f"""<body><div class="doc">
 <a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
 <p class="eyebrow">En route vers Compostelle &middot; qualité</p>
@@ -187,7 +234,10 @@ table.cmp{display:block;max-width:100%;min-width:0;overflow-x:auto}
 <p class="chapeau">L'application passée à la grille de 23 critères, par un regard qui ne l'a pas écrite : page servie, jouée,
 mesurée au téléphone. Sortie de boucle : zéro bloquant, zéro majeur — <b>atteinte au tour 5</b> (2/8/6 → 0/5/13 → 0/4/8 → 0/1/10 → 0/0/5). Ce que la boucle ne vérifie pas : l'exactitude de l'espagnol
 (relu à part), et l'essai auprès de vrais pèlerins — cinq personnes qui pensent à voix haute, avant toute diffusion.</p>
+<h2 style="margin-top:40px">Le chemin</h2>
 {tours}
+<h2 style="margin-top:40px">La préparation « Avant de partir »</h2>
+{tours_prep}
 <div class="pied"><p>Produit par <code>build/compostelle_audit.py</code> — ne pas l'éditer.</p></div>
 </div></body></html>"""
     SORTIE.write_text(tete + corps, encoding="utf-8")
