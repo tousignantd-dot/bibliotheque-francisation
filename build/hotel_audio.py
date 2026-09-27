@@ -64,7 +64,8 @@ CHOIX_LETTRES = {"fr:E": "b", "fr:L": "b", "es:K": "b", "es:P": "b", "es:V": "b"
                  "fr:A": "e", "fr:I": "e", "fr:Q": "e", "fr:R": "e", "fr:T": "e", "en:M": "f", "en:V": "e"}
 # (export du 27 sept. 2026 ; les lettres absentes gardent « a »)
 # « Aucune » à la première écoute, tranchées aux reprises (hotel_lettres.py --reprises).
-LETTRES_A_REPRENDRE = ["en:M", "en:V", "fr:A", "fr:I", "fr:Q", "fr:R", "fr:T"]
+# Seconde ronde (27 sept.) : le E français, « terrible » en B une fois dans les noms.
+LETTRES_A_REPRENDRE = ["fr:E"]
 GARDE_LETTRE, GARDE_GROUPE = 0.12, 0.35   # secondes : débit d'un client, pas d'une dictée
 
 

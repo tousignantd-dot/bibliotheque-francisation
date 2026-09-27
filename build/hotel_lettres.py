@@ -24,7 +24,7 @@ du nom écrit ; d = HD, autre graphie ; e = voix neurale (non HD, déterministe)
 écrit ; f = neurale, lettre nue ; g = neurale, phonème API. Page :
 assets/presentations/hotel-lettres-reprises.html ; le choix va dans CHOIX_LETTRES.
 """
-import html, importlib.util, pathlib, sys
+import html, importlib.util, json, pathlib, sys
 from concurrent.futures import ThreadPoolExecutor
 
 RACINE = pathlib.Path(__file__).resolve().parent.parent
@@ -39,13 +39,16 @@ NOM_L = {"fr": "Français — Thierry", "es": "Espagnol — Jorge", "en": "Angla
 
 HP_V = "12"   # = MEDIA_V de hotel_planches.py au dernier assemblage
 NEURALE = {"fr": "fr-CA-ThierryNeural", "en": "en-US-AndrewNeural", "es": "es-MX-JorgeNeural"}
-AUTRE_GRAPHIE = {"fr:A": "ah", "fr:I": "î", "fr:Q": "cu", "fr:R": "ère", "fr:T": "thé",
+AUTRE_GRAPHIE = {"fr:E": "euh", "fr:A": "ah", "fr:I": "î", "fr:Q": "cu", "fr:R": "ère", "fr:T": "thé",
                  "en:M": "em", "en:V": "vee"}
-API = {"fr:A": "a", "fr:I": "i", "fr:Q": "ky", "fr:R": "ɛʁ", "fr:T": "te",
+API = {"fr:E": "ə", "fr:A": "a", "fr:I": "i", "fr:Q": "ky", "fr:R": "ɛʁ", "fr:T": "te",
        "en:M": "ɛm", "en:V": "viː"}
 PAGE_R = RACINE / "assets" / "presentations" / "hotel-lettres-reprises.html"
+# h et i : seconde ronde, pour les lettres où même la voix neurale a déçu (le E français, 27 sept.)
+API2 = {"fr:E": "ø"}
 QUOI = {"c": "nouveau tirage, nom écrit", "d": "autre graphie", "e": "voix neurale, nom écrit",
-        "f": "voix neurale, lettre nue", "g": "voix neurale, phonème"}
+        "f": "voix neurale, lettre nue", "g": "voix neurale, phonème", "h": "voix neurale, autre graphie",
+        "i": "voix neurale, autre phonème"}
 
 
 def taches_reprises():
@@ -58,18 +61,22 @@ def taches_reprises():
         yield l, c, "e", html.escape(EX.LETTRES[l][c]), nr
         yield l, c, "f", f'<say-as interpret-as="characters">{c}</say-as>', nr
         yield l, c, "g", f'<phoneme alphabet="ipa" ph="{API[k]}">{c}</phoneme>', nr
+        if k in API2:
+            yield l, c, "h", html.escape(AUTRE_GRAPHIE[k]), nr
+            yield l, c, "i", f'<phoneme alphabet="ipa" ph="{API2[k]}">{c}</phoneme>', nr
 
 
 def page_reprises():
     lignes = ""
     for k in HA.LETTRES_A_REPRENDRE:
         l, c = k.split(":")
+        vs = "cdefg" + ("hi" if k in API2 else "")
         lect = "".join(
             f'<div class="c"><span class="lab">{v.upper()}</span> <small>{QUOI[v]}'
-            f'{" « " + html.escape(AUTRE_GRAPHIE[k]) + " »" if v == "d" else ""}</small><br>'
+            f'{" « " + html.escape(AUTRE_GRAPHIE[k]) + " »" if v in "dh" else ""}</small><br>'
             f'<audio controls preload="none" src="/assets/interactive/hotel/sons/x/lettres/{l}/{c}-{v}.mp3"></audio></div>'
-            for v in "cdefg")
-        boutons = "".join(f'<button data-v="{v}">{v.upper()}</button>' for v in "cdefg")
+            for v in vs)
+        boutons = "".join(f'<button data-v="{v}">{v.upper()}</button>' for v in vs)
         lignes += (f'<section><h2>{NOM_L[l].split(" —")[0]} · <b>{c}</b></h2><div class="g">{lect}</div>'
                    f'<div class="v" data-k="{k}">{boutons}<button data-v="aucune">Aucune</button></div></section>')
     PAGE_R.write_text(f'''<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -82,15 +89,15 @@ button{{font:inherit;font-weight:700;cursor:pointer;border:1px solid #bbb;backgr
 .v{{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}}.v button[aria-pressed=true]{{background:#DCF2E6;border-color:#0A8F5B}}
 .v button[aria-pressed=true][data-v=aucune]{{background:#FBEEDC;border-color:#B45309}}
 #exporter{{background:#0A8F5B;color:#fff;border-color:#0A8F5B}}</style></head>
-<body><h1>Les sept lettres à reprendre</h1>
-<p>Vous avez refusé A et B pour ces lettres. Voici cinq autres façons de les dire. <b>C</b> et <b>D</b> gardent la voix
+<body><h1>Les lettres à reprendre</h1>
+<p>Ces lettres sonnaient faux. Voici d'autres façons de les dire. <b>C</b> et <b>D</b> gardent la voix
 des noms (HD) ; <b>E</b>, <b>F</b> et <b>G</b> passent par la voix neurale du même comédien, plus stable, mais d'un timbre
 un peu différent : écoutez-la aussi dans son rang, entre deux lettres HD, avant de la retenir.</p>
 {{lignes}}
 <p style="margin-top:24px">Un mot (facultatif) :</p><textarea id="note" rows="3" style="width:100%;font:inherit"></textarea>
 <p><button id="exporter">Exporter mes choix</button> <span id="etat"></span></p>
 <script>
-(function(){{var C='hotel-lettres-reprises',s={{}};try{{s=JSON.parse(localStorage.getItem(C)||'{{}}')}}catch(e){{}}
+(function(){{var C='hotel-lettres-reprises-'+{json.dumps(HA.LETTRES_A_REPRENDRE).replace('"','')!r},s={{}};try{{s=JSON.parse(localStorage.getItem(C)||'{{}}')}}catch(e){{}}
 var n=document.getElementById('note');n.value=s.__note||'';n.oninput=function(){{s.__note=n.value;sv()}};
 function sv(){{try{{localStorage.setItem(C,JSON.stringify(s))}}catch(e){{}}}}
 function p(){{document.querySelectorAll('.v').forEach(function(d){{d.querySelectorAll('button').forEach(function(b){{b.setAttribute('aria-pressed',s[d.dataset.k]===b.dataset.v)}})}});
