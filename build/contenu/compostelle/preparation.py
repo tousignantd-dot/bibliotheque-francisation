@@ -327,9 +327,9 @@ TEST = [
 PAR_OBJECTIF = {"P1": 3, "P2": 4, "P3": 3, "P4": 1, "P5": 4}
 
 SEUIL = "Solide : 80 % ou plus ; En route : au moins la moitié ; À reprendre : moins de la moitié. Au micro, deux essais au plus ; les phrases entendues ne s'écoutent qu'une fois."
-CONSEILS = {"P1": "Reprenez les séances 1 et 2, au micro.", "P2": "Reprenez les séances 3 et 4, voix plus lentes d'abord.",
-            "P3": "Reprenez les séances 5 et 6.", "P4": "Reprenez la séance 7, et préparez vos trois phrases.",
-            "P5": "Reprenez la séance 8 : guettez le mot qui décide."}
+CONSEILS = {"P1": "Reprenez les entraînements 1 et 2, au micro.", "P2": "Reprenez les entraînements 3 et 4, voix plus lentes d'abord.",
+            "P3": "Reprenez les entraînements 5 et 6.", "P4": "Reprenez l'entraînement 7, et préparez vos trois phrases.",
+            "P5": "Reprenez l'entraînement 8 : guettez le mot qui décide."}
 
 
 def verifier(lexique_ids=None, personnages=None):

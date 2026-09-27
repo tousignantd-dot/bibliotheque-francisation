@@ -598,6 +598,11 @@ function arreterMicro(){ if (recoActive) { try { recoActive.stop(); } catch(e) {
 /* Loi 25 (27 sept. 2026) : avant le premier usage, dire où va la voix — chez
    le fournisseur du navigateur, pas chez nous. Accepté une fois, gardé dans
    le téléphone ; refusé, rien ne s'ouvre et l'exercice se fait en touchant. */
+let micRefuse = false;
+// Le message quand le micro ne rend rien : refusé à l'avis, ou rien entendu.
+const rienEntendu = sinon => micRefuse
+  ? 'Micro fermé, comme vous l’avez choisi. ' + (sinon.includes('touchez votre réponse') ? 'Touchez votre réponse.' : 'Dites la phrase à voix haute, puis touchez le bouton « je l’ai dit ».')
+  : sinon;
 function fournisseurVoix(){
   const u = navigator.userAgent;
   if (/Edg\//.test(u)) return 'Microsoft (Edge)';
@@ -613,12 +618,12 @@ function ecouterMicro(surTexte, surFin){
     <p>Pour comprendre ce que vous dites, l'application utilise la reconnaissance vocale de <b>votre navigateur</b>.
     Votre voix est donc envoyée à <b>${fournisseurVoix()}</b>, aux États-Unis, qui la transcrit et renvoie le texte.</p>
     <p>Nous ne recevons pas votre voix et ne l'enregistrons pas. Le texte reste dans votre téléphone.</p>
-    <p class="muted" style="font-size:14px">Vous préférez ne pas l'utiliser ? Tous les exercices se font aussi en touchant. <a href="#confidentialite">En savoir plus</a></p>
+    <p class="muted" style="font-size:14px">Vous préférez ne pas l'utiliser ? Tout se fait aussi sans micro : dites la phrase à voix haute, puis touchez « je l’ai dit » — elle n’est alors pas vérifiée. <a href="#confidentialite">En savoir plus</a></p>
     <div class="rangee"><button class="btn btn--pri" id="avisOui">J'ai compris, ouvrir le micro</button><button class="btn" id="avisNon">Pas maintenant</button></div></div>`;
   document.body.appendChild(fond);
   const fermer = () => fond.remove();
   fond.querySelector('#avisOui').onclick = () => { S.avisMicro = aujourdhui(); sauver(); fermer(); ouvrirMicro(surTexte, surFin); };
-  fond.querySelector('#avisNon').onclick = () => { fermer(); surFin(''); };
+  fond.querySelector('#avisNon').onclick = () => { fermer(); micRefuse = true; surFin(''); micRefuse = false; };
   fond.querySelector('a').onclick = () => fermer();
   fond.querySelector('#avisOui').focus();
 }
@@ -760,7 +765,7 @@ function vueConfidentialite(){
     <h2>Ce qui sort du Québec</h2>
     <p>Certains services sont situés à l'extérieur du Québec. Voici lesquels, et ce qu'ils reçoivent :</p>
     <div class="carte">${C.hors.map(([qui, quoi, ou]) => `<p class="cf-hors"><b>${E(qui)}</b> — ${E(quoi)} <span class="muted">(${E(ou)})</span></p>`).join('')}</div>
-    <p>Vous pouvez éviter l'envoi de votre voix : n'utilisez pas le micro, et répondez en touchant. Vous pouvez éviter l'envoi à Anthropic : n'utilisez pas « Parler librement ». Le reste de l'application fonctionne sans.</p>
+    <p>Vous pouvez éviter l'envoi de votre voix : n'ouvrez pas le micro ; dites les phrases à voix haute et touchez « je l'ai dit » (elles ne sont alors pas vérifiées). Vous pouvez éviter l'envoi à Anthropic : n'utilisez pas « Parler librement ». Le reste de l'application fonctionne sans.</p>
     <h2>Ce que nous ne faisons pas</h2><ul>${C.nefait.map(t => `<li>${E(t)}</li>`).join('')}</ul>
     <h2>Vos droits</h2>
     <p>Vous pouvez demander à savoir ce que nous détenons à votre sujet, le faire corriger ou effacer. Comme nous ne savons pas qui vous êtes, donnez-nous votre <b>code d'accès</b> : c'est tout ce que nous avons.
@@ -1152,7 +1157,7 @@ function vueDire(et){
         mic.classList.add('ecoute'); mic.innerHTML = ICO.stop; $('#micEtat').textContent = 'Je vous écoute… touchez pour arrêter.';
         ecouterMicro(t => { $('#entendu').textContent = '« ' + t + ' »'; }, final => {
           mic.classList.remove('ecoute'); mic.innerHTML = ICO.micro; $('#micEtat').textContent = 'Touchez le micro pour réessayer.';
-          if (!final) { $('#r').innerHTML = `<div class="retro info">Je n'ai rien entendu. Vérifiez que le micro est permis, ou dites-le et touchez « Je l'ai dit ».</div>`; return; }
+          if (!final) { $('#r').innerHTML = `<div class="retro info">${rienEntendu('Je n\u2019ai rien entendu. Vérifiez que le micro est permis, ou dites-le et touchez « Je l\u2019ai dit ».')}</div>`; return; }
           const t = ' ' + plat(final).replace(/ o no$/, '') + ' ';
           const manque = it.cles.map(c => g(c)).filter(c => !c.split('|').some(a => t.includes(' ' + plat(a) + ' ') || t.includes(plat(a))));
           // Audit tour 2 (E1) : « no quedan camas » passait pour « quedan camas ».
@@ -1257,7 +1262,7 @@ function vueScene(et, bloc){
       bt.innerHTML = ICO.stop + ' Arrêter'; bt.classList.add('btn--son');
       ecouterMicro(t => { $('#entendu').textContent = '« ' + t + ' »'; }, final => {
         bt.innerHTML = ICO.micro + ' Le dire au lieu de toucher'; bt.classList.remove('btn--son');
-        if (!final) { $('#r').innerHTML = `<div class="retro info">Je n'ai rien entendu. Réessayez, ou touchez votre réponse.</div>`; return; }
+        if (!final) { $('#r').innerHTML = `<div class="retro info">${rienEntendu('Je n\u2019ai rien entendu. Réessayez, ou touchez votre réponse.')}</div>`; return; }
         // La phrase dite rejoint le choix dont elle partage le plus de mots.
         const dits = new Set(plat(final).split(' '));
         const score = i => { const m = plat(g(tour.choix[i][0])).split(' ').filter(Boolean); return m.filter(w => dits.has(w)).length / Math.max(m.length, 1); };
@@ -1756,7 +1761,7 @@ function seanceDire(x){
       mic.classList.add('ecoute'); mic.innerHTML = ICO.stop; $('#micEtat').textContent = 'Je vous écoute… touchez pour arrêter.';
       ecouterMicro(t => { $('#entendu').textContent = '« ' + t + ' »'; }, final => {
         mic.classList.remove('ecoute'); mic.innerHTML = ICO.micro; $('#micEtat').textContent = 'Touchez le micro pour réessayer.';
-        if (!final) { $('#r').innerHTML = `<div class="retro info">Je n'ai rien entendu. Vérifiez que le micro est permis, ou dites-le et touchez « Je l'ai dit ».</div>`; return; }
+        if (!final) { $('#r').innerHTML = `<div class="retro info">${rienEntendu('Je n\u2019ai rien entendu. Vérifiez que le micro est permis, ou dites-le et touchez « Je l\u2019ai dit ».')}</div>`; return; }
         essais++;
         const manque = cles.map(c => g(algDe(c))).filter(c => !trouve(final, c));
         const algCle = cles.find(c => /\{alg:/.test(c));
@@ -1800,7 +1805,7 @@ function vuePrepTest(){
       let prises = 0;
       app.innerHTML = `${tete2}<h1>Dites-le</h1><div class="carte"><p style="font-size:18px;font-weight:800;margin:0">${E(g(it.fr))}</p></div>
         ${Reco ? `<div class="micro"><button class="btn-micro" id="mic" aria-label="Parler">${ICO.micro}</button><div class="muted" id="micEtat" style="font-size:14px">Deux essais.</div><div class="entendu" id="entendu"></div></div>` : ''}
-        <div id="r"></div><button class="btn btn--large" id="sansmic" style="margin-top:8px">${Reco ? 'Le micro ne marche pas : je l’ai dit' : 'Je l’ai dit à voix haute'}</button>`;
+        <div id="r"></div><button class="btn btn--large" id="sansmic" style="margin-top:8px">${Reco ? 'Sans micro : je l’ai dit à voix haute' : 'Je l’ai dit à voix haute'}</button>`;
       const fin = (ok, verifie) => { if (verifie) noter(ok); else { compte = true; nonVerif[it.obj] = (nonVerif[it.obj] || 0) + 1; }
         if ($('#sansmic')) $('#sansmic').remove(); if ($('#mic')) $('#mic').disabled = true;
         $('#r').insertAdjacentHTML('beforeend', `<div class="retro ${!verifie ? 'info' : ok ? 'ok' : 'no'}">${!verifie ? 'Non vérifié : cette question ne compte pas.' : ok ? '✓ On vous a compris.' : 'Deux essais sans qu’on vous comprenne tout à fait.'}</div>
@@ -1811,7 +1816,7 @@ function vuePrepTest(){
         mic.classList.add('ecoute'); mic.innerHTML = ICO.stop;
         ecouterMicro(t => { $('#entendu').textContent = '« ' + t + ' »'; }, final => {
           mic.classList.remove('ecoute'); mic.innerHTML = ICO.micro;
-          if (!final) { $('#r').innerHTML = `<div class="retro info">Je n'ai rien entendu. Vérifiez que le micro est permis et réessayez — ou touchez « je l'ai dit ».</div>`; return; }
+          if (!final) { $('#r').innerHTML = `<div class="retro info">${rienEntendu('Je n\u2019ai rien entendu. Vérifiez que le micro est permis et réessayez — ou touchez « je l\u2019ai dit ».')}</div>`; return; }
           const manque = it.cles.map((c, i) => [g(algDe(c)), i]).filter(([c]) => !trouve(final, c));
           prises++;
           // Tour 2 (F1) : une fois le micro entendu, « le micro ne marche pas » n'est plus une issue.
@@ -2035,7 +2040,7 @@ function vueTest(){
       let prises = 0;
       app.innerHTML = `${tete2}<h1>Dites-le</h1><div class="carte"><p style="font-size:18px;font-weight:800;margin:0">${E(g(it.fr))}</p></div>
         ${Reco ? `<div class="micro"><button class="btn-micro" id="mic" aria-label="Parler">${ICO.micro}</button><div class="muted" id="micEtat" style="font-size:14px">Trois essais ; le meilleur compte.</div><div class="entendu" id="entendu"></div></div>` : ''}
-        <div id="r"></div><button class="btn btn--large" id="sansmic" style="margin-top:8px">${Reco ? 'Le micro ne marche pas : je l’ai dit' : 'Je l’ai dit à voix haute'}</button>
+        <div id="r"></div><button class="btn btn--large" id="sansmic" style="margin-top:8px">${Reco ? 'Sans micro : je l’ai dit à voix haute' : 'Je l’ai dit à voix haute'}</button>
         ${Reco ? '' : '<p class="avis-local">Ce navigateur ne reconnaît pas la voix : cette question ne sera pas vérifiée.</p>'}`;
       const modele = () => `<div class="retro info"><span class="surtitre">Le modèle</span><div class="phrase-es">${E(g(it.modele || ''))}</div></div>`;
       const fin = (ok, verifie) => {
@@ -2049,7 +2054,7 @@ function vueTest(){
         mic.classList.add('ecoute'); mic.innerHTML = ICO.stop;
         ecouterMicro(t => { $('#entendu').textContent = '« ' + t + ' »'; }, final => {
           mic.classList.remove('ecoute'); mic.innerHTML = ICO.micro;
-          if (!final) { $('#r').innerHTML = `<div class="retro info">Je n'ai rien entendu. Vérifiez que le micro est permis et réessayez — ou touchez « je l'ai dit ».</div>`; return; }
+          if (!final) { $('#r').innerHTML = `<div class="retro info">${rienEntendu('Je n\u2019ai rien entendu. Vérifiez que le micro est permis et réessayez — ou touchez « je l\u2019ai dit ».')}</div>`; return; }
           const t = ' ' + plat(final).replace(/ o no$/, '') + ' ', non = it.obj === 'O2' && / no /.test(t);
           const ok = !non && it.cles.every(c => g(c).split('|').some(x => t.includes(plat(x))));
           prises++;
@@ -2090,10 +2095,12 @@ function vueTest(){
       const etat = (r >= .99 && tot >= 2) ? ['ok', '✓ Solide'] : r > 0 ? ['info', '→ En route'] : ['no', '— À reprendre'];
       return `<div class="carte" style="margin:8px 0"><b>${E(noms[o])}</b><div class="retro ${etat[0]}" style="margin:6px 0">${etat[1]} — ${ok} sur ${tot}</div>${r < .99 ? `<p class="muted" style="margin:0;font-size:15px">${E(conseils[o])}</p>` : ''}</div>`;
     }).join('');
-    S.test.prochaine = 1 - f; S.test.passages = (S.test.passages || 0) + 1; S.test.dernier = aujourdhui() + (elimRate ? ' — allergie ratée' : ' — allergie réussie'); sauver();
+    S.test.prochaine = 1 - f; S.test.passages = (S.test.passages || 0) + 1; S.test.dernier = aujourdhui() + (elimRate ? ' — allergie ratée' : nonVerifie ? ' — allergie non vérifiée' : ' — allergie réussie'); sauver();
     app.innerHTML = `${retour('accueil', 'La credencial')}<h1>Où vous en êtes</h1>
       ${elimRate ? `<div class="eliminatoire"><b>Pas encore ${prete} : l'allergie.</b><p style="margin:6px 0 0">Une question sur l'allergie a été ratée. C'est la seule erreur qui ne pardonne pas sur le chemin. Refaites León, puis repassez le test : ce seront d'autres phrases.</p></div>`
-        : `<div class="retro ok">✓ L'allergie : réussie${nonVerifie ? ' (dite à voix haute, mais non vérifiée par le micro)' : ''}. Le reste est un repère, pas une note.</div>`}
+        : nonVerifie ? `<div class="retro info"><b>L'allergie : dite sans micro, donc non vérifiée.</b> C'est la phrase qui compte le plus sur le chemin :
+          faites-la vérifier une fois au micro (à León, « Je le dis »), ou dites-la à quelqu'un qui parle espagnol. Le reste est un repère, pas une note.</div>`
+        : `<div class="retro ok">✓ L'allergie : réussie. Le reste est un repère, pas une note.</div>`}
       ${lignes}
       <p class="muted">La vraie épreuve, ce sera le premier « ¿Qué te pongo? » à Pamplona.</p>
       <button class="btn btn--pri btn--large" onclick="aller('accueil')">Retour à la credencial</button>`;
