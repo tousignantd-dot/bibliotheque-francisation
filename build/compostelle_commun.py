@@ -76,6 +76,28 @@ def extraits():
                 yield from _pour(f"test/{f}-{n}", it["es"], it["qui"])
             if it["type"] == "repondre":
                 yield from _pour(f"test/{f}-{n}-c0", it["choix"][0][0], "narratrice")
+    # « Avant de partir » (26 sept. 2026) : les huit séances et le test.
+    PR = charger("preparation")
+    for se in PR.SEANCES:
+        d = "prep/" + se["id"]
+        for i, (es, _) in enumerate(se["ecoute"]):
+            yield from _pour(f"{d}/e{i}", es, "narratrice")
+        for i, q in enumerate(se["quiz"]):
+            if q["type"] == "dire":
+                yield from _pour(f"{d}/q{i}-c0", q["choix"][0][0], "narratrice")
+            else:
+                yield from _pour(f"{d}/q{i}", q["es"], q.get("qui", "narratrice"))
+        for i, (_, es, _) in enumerate(se["dire"]):
+            yield from _pour(f"{d}/d{i}", es, "narratrice")
+    for f, forme in enumerate(PR.TEST):
+        for i, it in enumerate(forme):
+            base = f"prep/test/{f}-{i}"
+            if it["type"] == "oral":
+                yield from _pour(base + "-m", it["modele"], "narratrice")
+            elif it["type"] == "dire":
+                yield from _pour(base + "-c0", it["choix"][0][0], "narratrice")
+            else:
+                yield from _pour(base, it["es"], it.get("qui", "narratrice"))
     for et in ET.ETAPES:
         d = et["id"]
         for i, (es, _) in enumerate(et["voir"]):
