@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compostelle — trois habits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   UN MODULE POUR LA VENTE DE CHAUSSURES — LE CADRAGE
+   Chantier « formation en entreprise », second secteur :
+   le commerce de détail. Écrite à la main, comme
+   analyse-marche.html — ses chiffres viennent d'ailleurs et
+   doivent vieillir visiblement.
+
+   Vert : ce que le tour de main actuel produit déjà.
+   Ambre : ce qui attend votre décision.
+   Rouge : l'argument de vente qui tient à une obligation légale.
+   L'acier ne fait que la structure.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+
+  --fait:#0A8F5B;    --fait-bg:#E6F5EE;
+  --decid:#C07A08;   --decid-bg:#FBF2E2;
+  --loi:#C7302B;     --loi-bg:#FBEDEC;
+  --acier:#1D6B8F;   --acier-bg:#E7F0F6;
+
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --fait:#4BC48D; --fait-bg:#12291F;
+    --decid:#E0A63F; --decid-bg:#2C2213;
+    --loi:#EE7A73; --loi-bg:#2E1917;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --loi:#EE7A73; --loi-bg:#2E1917;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+em.art{font-style:normal;font-family:var(--mono);font-size:.82em;color:var(--muted);
+  white-space:nowrap}
+
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+
+/* ── Les décisions ─────────────────────────────────────── */
+.decisions{display:flex;flex-direction:column;gap:2px;counter-reset:d}
+.dec{counter-increment:d;background:var(--card);border:1px solid var(--line);
+  border-left:5px solid var(--decid);border-radius:3px;padding:19px 22px 19px 60px;
+  position:relative;display:flex;flex-direction:column;gap:8px}
+.dec.ok{border-left-color:var(--fait)}
+.dec::before{content:counter(d);position:absolute;left:24px;top:18px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+.dec .ligne{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  justify-content:space-between}
+.dec p{font-size:15.5px}
+.dec .defaut{font-size:13.5px;color:var(--muted);font-style:italic}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-fait{background:var(--fait-bg);color:var(--fait)}
+.b-dec{background:var(--decid-bg);color:var(--decid)}
+.b-loi{background:var(--loi-bg);color:var(--loi)}
+.b-n{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+
+/* ── Tableaux ──────────────────────────────────────────── */
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:640px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:3px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tr.l td:first-child{border-left-color:var(--loi)}
+tr.d td:first-child{border-left-color:var(--decid)}
+tr.f td:first-child{border-left-color:var(--fait)}
+
+/* ── Chiffres ──────────────────────────────────────────── */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--acier);padding:15px 16px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;margin-top:7px}
+
+/* ── Marche à suivre ───────────────────────────────────── */
+ol.actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;
+  counter-reset:a}
+ol.actions li{counter-increment:a;background:var(--card);border:1px solid var(--line);
+  border-radius:3px;padding:18px 22px 18px 62px;position:relative;display:flex;
+  flex-direction:column;gap:6px}
+ol.actions li::before{content:counter(a);position:absolute;left:22px;top:17px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+ol.actions li p{font-size:15.5px}
+.qui{font-size:13px;color:var(--muted);font-style:italic}
+
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.avert{background:var(--loi-bg);border:1px solid var(--loi);border-radius:3px;
+  padding:20px 24px;display:flex;flex-direction:column;gap:9px}
+.avert strong{color:var(--ink)}
+.avert p{font-size:15.5px;color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} }
+
+/* ── décisions à boutons (plan magasin de vêtements) ── */
+.dec2{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0}
+.dq{margin:0 0 10px;font-weight:700;color:var(--ink)}
+.dn{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--decid-bg);color:var(--decid);font-size:13px;margin-right:8px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{font:inherit;font-size:15px;text-align:left;cursor:pointer;background:var(--sunken);color:var(--body);border:1px solid var(--line-fort);border-radius:10px;padding:8px 12px}
+.opt:hover{border-color:var(--acier)}
+.opt[aria-pressed="true"]{background:var(--fait-bg);border-color:var(--fait);color:var(--ink);font-weight:700}
+.opt .tag{font-size:12px;color:var(--decid);font-weight:700;margin-left:4px}
+.dw{margin:10px 0 0;font-size:15px;color:var(--muted)}
+.btn-export{font:inherit;font-weight:700;cursor:pointer;background:var(--acier);color:#fff;border:0;border-radius:10px;padding:10px 16px}
+.etat{margin-left:12px;color:var(--muted);font-size:15px}
+table{display:block;overflow-x:auto}
+</style>
+<style>
+  .doc{padding-top:26px}
+  .retour{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+    color:var(--muted);text-decoration:none;margin-bottom:34px}
+  .retour:hover{color:var(--acier)}
+  table.cmp{width:100%;border-collapse:collapse;font-size:15px;background:var(--card);
+    border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  table.cmp th,table.cmp td{padding:13px 15px;text-align:left;vertical-align:top;
+    border-bottom:1px solid var(--line)}
+  table.cmp thead th{background:var(--sunken);font-size:12px;font-weight:800;
+    letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  table.cmp tbody tr:last-child td{border-bottom:0}
+  table.cmp td:first-child{font-weight:700;color:var(--ink)}
+  .roule{overflow-x:auto}
+  .voie{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:24px 26px;display:flex;flex-direction:column;gap:11px}
+  .voie.oui{border-color:var(--fait);border-width:2px;padding:23px 25px}
+  .voie.non{border-left:5px solid var(--loi)}
+  .voie h3{font-size:19px;font-family:Newsreader,Georgia,serif;font-weight:600;margin:0}
+  .voie .cout{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .verdict{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 10px;border-radius:99px;align-self:flex-start}
+  .v-oui{background:var(--fait-bg);color:var(--fait)}
+  .v-peut{background:var(--decid-bg);color:var(--decid)}
+  .v-non{background:var(--loi-bg);color:var(--loi)}
+  .mes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;
+    background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .mes div{background:var(--card);padding:16px 18px}
+  .mes b{display:block;font-family:Newsreader,Georgia,serif;font-size:27px;font-weight:500;
+    color:var(--ink);line-height:1.1}
+  .mes span{font-size:13px;color:var(--muted)}
+  .planche{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .planche figure{margin:0;background:var(--card);border:1px solid var(--line);
+    border-radius:3px;overflow:hidden;display:flex;flex-direction:column}
+  .planche figure.large{grid-column:1 / -1}
+  .planche img{display:block;width:100%;height:auto;background:var(--sunken)}
+  .planche figcaption{padding:13px 16px 15px;font-size:14px;line-height:1.5;color:var(--muted);
+    border-top:1px solid var(--line)}
+  .planche figcaption b{display:block;color:var(--ink);font-size:14.5px;margin-bottom:2px}
+  @media (max-width:620px){ .planche{grid-template-columns:1fr} }
+  .doc p a,.doc li a,.doc td a{color:var(--acier);text-decoration:underline;
+    text-underline-offset:2px;text-decoration-thickness:1px}
+  ul.src{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px;font-size:14.5px}
+  ul.src li{color:var(--muted)} ul.src .d{font-family:var(--mono);font-size:12.5px}
+  h3.sous{font-family:Newsreader,Georgia,serif;font-size:21px;font-weight:600;
+    letter-spacing:-.01em;color:var(--ink);margin:14px 0 0}
+  @media (max-width:640px){ .doc{padding-left:18px;padding-right:18px} }
+</style>
+<style>
+.th-actuel{--p-bg:#F7F7F5;--p-card:#FFFFFF;--p-ink:#17181A;--p-body:#2B2D31;--p-muted:#6B6E73;--p-line:#E4E4E0;--p-act:#0A8F5B;--p-actink:#FFFFFF;--p-prog:#F2C230;--p-titre:#6B6E73;--p-audio:#C8102E;--p-ok:#0A8F5B;--p-okbg:#E6F4EC;--p-rad:12px;--p-cellbg:#FBF6E4;--p-cellline:#C9B98A;--p-tampon:#0A8F5B;--p-tamponbg:#FFFFFF;--p-fond:none;--p-bande:transparent;--p-act-txt:#0A8F5B}.th-carnet{--p-bg:#EFE5CF;--p-card:#FBF6EA;--p-ink:#3B2E14;--p-body:#4A3B22;--p-muted:#85704A;--p-line:#DCCBA5;--p-act:#9B2C2C;--p-actink:#FFFFFF;--p-prog:#C9A227;--p-titre:#9B2C2C;--p-audio:#1D4E89;--p-ok:#3F6B2E;--p-okbg:#E9EFD9;--p-rad:6px;--p-cellbg:#FBF6EA;--p-cellline:#B79F6E;--p-tampon:#9B2C2C;--p-tamponbg:transparent;--p-fond:repeating-linear-gradient(0deg,rgba(120,90,40,.035) 0 1px,transparent 1px 26px);--p-bande:transparent;--p-act-txt:#9B2C2C}.th-borne{--p-bg:#E8ECEE;--p-card:#FFFFFF;--p-ink:#13233B;--p-body:#22324A;--p-muted:#5B6979;--p-line:#D2D9DF;--p-act:#F2C230;--p-actink:#13233B;--p-prog:#1F4E9C;--p-titre:#1F4E9C;--p-audio:#1F4E9C;--p-ok:#1F4E9C;--p-okbg:#E3EBF7;--p-rad:14px;--p-cellbg:#FFFFFF;--p-cellline:#AFBFD3;--p-tampon:#F2C230;--p-tamponbg:#1F4E9C;--p-fond:none;--p-bande:transparent;--p-act-txt:#1F4E9C}.th-meseta{--p-bg:#F6EFE2;--p-card:#FFFDF8;--p-ink:#2E2A24;--p-body:#3D372E;--p-muted:#7C7163;--p-line:#E6DAC4;--p-act:#B04A20;--p-actink:#FFFFFF;--p-prog:#E3B04B;--p-titre:#2F6FA3;--p-audio:#2F6FA3;--p-ok:#5F7A2E;--p-okbg:#EDF1E0;--p-rad:18px;--p-cellbg:#FFFDF8;--p-cellline:#D9C29A;--p-tampon:#B04A20;--p-tamponbg:#FFFDF8;--p-fond:none;--p-bande:linear-gradient(180deg,#CFE3F0 0 86%,#EBCB86 86% 100%);--p-act-txt:#B04A20}
+.variation{margin-top:46px}
+.variation>header h2{margin:0 0 4px}
+.variation>header p{margin:0 0 14px;font-size:16px}
+.telephones{display:flex;gap:22px;flex-wrap:wrap;align-items:flex-start}
+.nuancier{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px;padding:0;list-style:none}
+.nuancier li{display:flex;align-items:center;gap:7px;font-size:13.5px;background:var(--card);border:1px solid var(--line);border-radius:99px;padding:4px 11px 4px 4px}
+.nuancier i{width:20px;height:20px;border-radius:50%;border:1px solid rgba(0,0,0,.15);display:block}
+.pourquoi{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+.pourquoi div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:14.5px;line-height:1.45}
+.pourquoi b{display:block;color:var(--ink);margin-bottom:3px}
+/* le téléphone : ses couleurs sont celles de la variation, jamais celles de la page */
+.tel{width:300px;max-width:100%;border-radius:30px;border:9px solid #1B1C1E;background:var(--p-bg);background-image:var(--p-fond);
+ overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.18);font-size:13px;color:var(--p-body);flex:none}
+.tel .barre{display:flex;justify-content:space-between;align-items:baseline;background:#fff;border-bottom:2px solid #6B4FBB;padding:9px 12px}
+.tel .fr-nom{font-weight:900;letter-spacing:-.035em;color:#17181A;font-size:16px}
+.tel .tr{font-weight:900;color:var(--p-act-txt);font-size:11.5px}
+.tel .ecran{padding:12px 13px 16px;position:relative}
+.tel .horizon{position:absolute;inset:0 0 auto 0;height:104px;background:var(--p-bande);z-index:0}
+.tel .ecran>*{position:relative;z-index:1}
+.tel .ecran>.horizon{position:absolute;z-index:0}
+.tel *{font-style:normal}
+.tel .sur{margin:2px 0 2px;font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:var(--p-titre)}
+.tel h4{margin:0;font-size:21px;line-height:1.15;color:var(--p-ink);font-weight:900}
+.tel .sous{margin:2px 0 10px;color:var(--p-muted)}
+.tel .btn{border-radius:var(--p-rad);padding:11px;text-align:center;font-weight:900;font-size:14px}
+.tel .btn.act{background:var(--p-act);color:var(--p-actink)}
+.tel .fl{margin-left:4px}
+.tel .frise{display:flex;justify-content:space-between;align-items:center;margin:13px 4px 11px;position:relative}
+.tel .frise::before{content:"";position:absolute;left:0;right:0;top:50%;border-top:2px dotted var(--p-prog)}
+.tel .frise i{width:10px;height:10px;border-radius:50%;background:var(--p-card);border:2px solid var(--p-prog);position:relative}
+.tel .frise i.pass{background:var(--p-prog)}
+.tel .cred{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;background:var(--p-card);border:1px solid var(--p-line);border-radius:var(--p-rad);padding:8px}
+.tel .case{aspect-ratio:1/1.12;border:1.5px dashed var(--p-cellline);border-radius:calc(var(--p-rad) * .6);background:var(--p-cellbg);
+ display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
+.tel .case .num{font-weight:900;font-size:15px;color:var(--p-muted)}
+.tel .case small{font-size:7.5px;color:var(--p-muted);position:absolute;bottom:2px}
+.tel .case.ici{border:2px solid var(--p-act);border-style:solid}
+.tel .case.faite .num{display:none}
+.tel .sceau{width:25px;height:25px;margin-bottom:7px;border-radius:50%;display:grid;place-items:center;color:var(--p-tampon);background:var(--p-tamponbg);
+ border:2px solid var(--p-tampon);transform:rotate(-12deg)}
+.tel .sceau svg{width:16px;height:16px}
+.th-carnet .sceau{box-shadow:0 0 0 2px var(--p-card),0 0 0 3.2px var(--p-tampon);opacity:.88}
+.th-borne .case.faite{background:#1F4E9C;border:none}
+.th-borne .case.faite small{color:#DDE6F4}
+.th-borne .sceau{border:none;transform:none}
+.th-meseta .sceau{border-width:2.5px}
+.tel .deux{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}
+.tel .tuile{background:var(--p-card);border:1px solid var(--p-line);border-radius:var(--p-rad);padding:8px 9px}
+.tel .tuile b{display:block;color:var(--p-ink);font-size:12.5px}
+.tel .tuile span{color:var(--p-muted);font-size:11px}
+.th-meseta .sous{margin-bottom:22px}
+.th-borne .tuile{border-left:4px solid #1F4E9C}
+.tel .vig{width:100%;height:92px;object-fit:cover;border-radius:var(--p-rad);display:block;margin-bottom:9px}
+.tel .qui{display:flex;gap:9px;align-items:center;margin:6px 0 8px}
+.tel .qui img{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid var(--p-card);background:#fff}
+.tel .qui b{display:block;color:var(--p-ink)}
+.tel .qui span{color:var(--p-muted);font-size:11.5px}
+.tel .bulle{display:flex;gap:9px;align-items:center;background:var(--p-card);border:1px solid var(--p-line);border-radius:var(--p-rad);padding:9px 10px;color:var(--p-ink);font-weight:800;font-size:14px;margin-bottom:9px}
+.tel .play{flex:none;width:30px;height:30px;border-radius:50%;background:var(--p-audio);color:#fff;display:grid;place-items:center;font-size:11px}
+.tel .choix{background:var(--p-card);border:1.5px solid var(--p-line);border-radius:var(--p-rad);padding:9px 10px;margin-top:6px;color:var(--p-ink);font-weight:700}
+.tel .choix.bon{border-color:var(--p-ok);background:var(--p-okbg)}
+.tel .retro{margin-top:8px;color:var(--p-ok);font-weight:800;font-size:12.5px}
+.choisir{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+.choisir label{display:flex;gap:8px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:700}
+.choisir input{accent-color:#0A8F5B;width:18px;height:18px}
+textarea.note{width:100%;min-height:90px;font:inherit;border:1px solid var(--line-fort);border-radius:10px;padding:10px;background:var(--card);color:var(--body)}
+.exporter{margin-top:10px;font:inherit;font-weight:800;background:#0A8F5B;color:#fff;border:0;border-radius:10px;padding:11px 18px;cursor:pointer}
+pre.json{white-space:pre-wrap;background:var(--sunken);border-radius:10px;padding:12px;font-size:13px}
+@media (max-width:760px){.pourquoi{grid-template-columns:1fr}.telephones{justify-content:center}}
+</style>
+</head>
+<body>
+<div class="doc">
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
+<p class="eyebrow">Voyage &middot; grand public &middot; chemin de Saint-Jacques</p>
+<h1>Compostelle &mdash; trois habits pour le chemin</h1>
+<p class="chapeau">Trois variations du système de design, <strong>même police</strong> (Nunito), mêmes écrans : l'accueil
+avec la credencial, et la scène de Pamplona. Ce qui change : la palette, le papier, les rayons, le tampon et la progression.
+Les maquettes sont faites avec les vraies images et les vraies répliques de l'application.</p>
+<div class="pourquoi"><div><b>Ce qui ne bouge pas</b>La barre francis et son filet mauve (le mauve n'appartient qu'à la marque) ;
+Nunito ; la mise en page, les sept temps, les dessins ; un état dit toujours par un signe <i>et</i> un mot, jamais par la couleur seule.</div>
+<div><b>Ce qui s'écarte de la règle</b>Sur la plateforme, l'action est toujours le vert <code>#0A8F5B</code>. La trousse de Compostelle
+s'adresse au grand public, hors de la classe : elle peut porter un habit de secteur, comme Maison Francœur porte le sien (Denim).
+Chaque variation remplace donc ce vert.</div></div>
+<section class="variation" id="actuel"><header><h2>Aujourd&#x27;hui : le thème francis</h2><p>La référence : le système de la plateforme, le jaune de la flèche réservé à la progression.</p></header>
+<ul class="nuancier"><li><i style="background:#F7F7F5"></i>Fond <code style="font-size:12px;color:var(--muted)">#F7F7F5</code></li><li><i style="background:#0A8F5B"></i>Action <code style="font-size:12px;color:var(--muted)">#0A8F5B</code></li><li><i style="background:#F2C230"></i>Flèche <code style="font-size:12px;color:var(--muted)">#F2C230</code></li><li><i style="background:#C8102E"></i>Audio <code style="font-size:12px;color:var(--muted)">#C8102E</code></li></ul>
+<div class="telephones"><div class="tel th-actuel"><div class="barre"><span class="fr-nom">francis</span><span class="tr">En route vers Compostelle</span></div>
+<div class="ecran"><div class="horizon"></div>
+ <p class="sur">Ma credencial · 3 tampons sur 10</p>
+ <h4>Jour 4 · Logroño</h4><p class="sous">La Rioja, km 163</p>
+ <div class="btn act">Reprendre la route <span class="fl">➜</span></div>
+ <div class="frise"><i class="pass"></i><i class="pass"></i><i class="pass"></i><i class="pass"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></div>
+ <div class="cred"><div class="case faite"><span class="num">1</span><span class="sceau"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c-5 0-9 4-9 9 0 1 .4 2 1 3l8 6 8-6c.6-1 1-2 1-3 0-5-4-9-9-9z" fill="currentColor" opacity=".9"/><path d="M12 5v14M8 6.5 11 19M16 6.5 13 19M5.2 9.5 10.5 19M18.8 9.5 13.5 19" stroke="rgba(0,0,0,.28)" stroke-width="1" fill="none"/></svg></span><small>Ronces.</small></div><div class="case faite"><span class="num">2</span><span class="sceau"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c-5 0-9 4-9 9 0 1 .4 2 1 3l8 6 8-6c.6-1 1-2 1-3 0-5-4-9-9-9z" fill="currentColor" opacity=".9"/><path d="M12 5v14M8 6.5 11 19M16 6.5 13 19M5.2 9.5 10.5 19M18.8 9.5 13.5 19" stroke="rgba(0,0,0,.28)" stroke-width="1" fill="none"/></svg></span><small>Pampl.</small></div><div class="case faite"><span class="num">3</span><span class="sceau"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c-5 0-9 4-9 9 0 1 .4 2 1 3l8 6 8-6c.6-1 1-2 1-3 0-5-4-9-9-9z" fill="currentColor" opacity=".9"/><path d="M12 5v14M8 6.5 11 19M16 6.5 13 19M5.2 9.5 10.5 19M18.8 9.5 13.5 19" stroke="rgba(0,0,0,.28)" stroke-width="1" fill="none"/></svg></span><small>Puente</small></div><div class="case ici"><span class="num">4</span><small>Logroño</small></div><div class="case"><span class="num">5</span><small>Burgos</small></div><div class="case"><span class="num">6</span><small>Carrión</small></div><div class="case"><span class="num">7</span><small>León</small></div><div class="case"><span class="num">8</span><small>Cebreiro</small></div><div class="case"><span class="num">9</span><small>Sarria</small></div><div class="case"><span class="num">10</span><small>Santiago</small></div></div>
+ <div class="deux"><div class="tuile"><b>La poche</b><span>Hors ligne</span></div><div class="tuile"><b>Suis-je prêt ?</b><span>Un quart d'heure</span></div></div>
+</div></div><div class="tel th-actuel"><div class="barre"><span class="fr-nom">francis</span><span class="tr">En route vers Compostelle</span></div>
+<div class="ecran">
+ <img class="vig" src="../interactive/compostelle/etapes/pamplona.jpg" alt="">
+ <p class="sur">Jour 2 · La scène</p>
+ <div class="qui"><img src="../interactive/compostelle/portraits/ainhoa.jpg" alt=""><div><b>Ainhoa</b><span>serveuse, Pamplona</span></div></div>
+ <div class="bulle"><span class="play">▶</span><div>¡Buenos días! ¿Qué te pongo?</div></div>
+ <div class="choix bon">Un café y una tostada, por favor.</div><div class="choix">Un café y la carta, por favor.</div><div class="choix">Una caña y una tostada, por favor.</div>
+ <div class="retro">✓ C'est ce qu'elle attendait : commandez directement.</div>
+</div></div></div></section><section class="variation" id="carnet"><header><h2>A · La credencial</h2><p>Le carnet du pèlerin : papier crème, encre sépia, tampons à l&#x27;encre rouge. L&#x27;application devient l&#x27;objet qu&#x27;on fait tamponner.</p></header>
+<ul class="nuancier"><li><i style="background:#EFE5CF"></i>Papier <code style="font-size:12px;color:var(--muted)">#EFE5CF</code></li><li><i style="background:#3B2E14"></i>Encre sépia <code style="font-size:12px;color:var(--muted)">#3B2E14</code></li><li><i style="background:#9B2C2C"></i>Rouge Santiago <code style="font-size:12px;color:var(--muted)">#9B2C2C</code></li><li><i style="background:#C9A227"></i>Or <code style="font-size:12px;color:var(--muted)">#C9A227</code></li><li><i style="background:#1D4E89"></i>Bleu encre <code style="font-size:12px;color:var(--muted)">#1D4E89</code></li></ul>
+<div class="telephones"><div class="tel th-carnet"><div class="barre"><span class="fr-nom">francis</span><span class="tr">En route vers Compostelle</span></div>
+<div class="ecran"><div class="horizon"></div>
+ <p class="sur">Ma credencial · 3 tampons sur 10</p>
+ <h4>Jour 4 · Logroño</h4><p class="sous">La Rioja, km 163</p>
+ <div class="btn act">Reprendre la route <span class="fl">➜</span></div>
+ <div class="frise"><i class="pass"></i><i class="pass"></i><i class="pass"></i><i class="pass"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></div>
+ <div class="cred"><div class="case faite"><span class="num">1</span><span class="sceau"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c-5 0-9 4-9 9 0 1 .4 2 1 3l8 6 8-6c.6-1 1-2 1-3 0-5-4-9-9-9z" fill="currentColor" opacity=".9"/><path d="M12 5v14M8 6.5 11 19M16 6.5 13 19M5.2 9.5 10.5 19M18.8 9.5 13.5 19" stroke="rgba(0,0,0,.28)" stroke-width="1" fill="none"/></svg></span><small>Ronces.</small></div><div class="case faite"><span class="num">2</span><span class="sceau"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c-5 0-9 4-9 9 0 1 .4 2 1 3l8 6 8-6c.6-1 1-2 1-3 0-5-4-9-9-9z" fill="currentColor" opacity=".9"/><path d="M12 5v14M8 6.5 11 19M16 6.5 13 19M5.2 9.5 10.5 19M18.8 9.5 13.5 19" stroke="rgba(0,0,0,.28)" stroke-width="1" fill="none"/></svg></span><small>Pampl.</small></div><div class="case faite"><span class="num">3</span><span class="sceau"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c-5 0-9 4-9 9 0 1 .4 2 1 3l8 6 8-6c.6-1 1-2 1-3 0-5-4-9-9-9z" fill="currentColor" opacity=".9"/><path d="M12 5v14M8 6.5 11 19M16 6.5 13 19M5.2 9.5 10.5 19M18.8 9.5 13.5 19" stroke="rgba(0,0,0,.28)" stroke-width="1" fill="none"/></svg></span><small>Puente</small></div><div class="case ici"><span class="num">4</span><small>Logroño</small></div><div class="case"><span class="num">5</span><small>Burgos</small></div><div class="case"><span class="num">6</span><small>Carrión</small></div><div class="case"><span class="num">7</span><small>León</small></div><div class="case"><span class="num">8</span><small>Cebreiro</small></div><div class="case"><span class="num">9</span><small>Sarria</small></div><div class="case"><span class="num">10</span><small>Santiago</small></div></div>
+ <div class="deux"><div class="tuile"><b>La poche</b><span>Hors ligne</span></div><div class="tuile"><b>Suis-je prêt ?</b><span>Un quart d'heure</span></div></div>
+</div></div><div class="tel th-carnet"><div class="barre"><span class="fr-nom">francis</span><span class="tr">En route vers Compostelle</span></div>
+<div class="ecran">
+ <img class="vig" src="../interactive/compostelle/etapes/pamplona.jpg" alt="">
+ <p class="sur">Jour 2 · La scène</p>
+ <div class="qui"><img src="../interactive/compostelle/portraits/ainhoa.jpg" alt=""><div><b>Ainhoa</b><span>serveuse, Pamplona</span></div></div>
+ <div class="bulle"><span class="play">▶</span><div>¡Buenos días! ¿Qué te pongo?</div></div>
+ <div class="choix bon">Un café y una tostada, por favor.</div><div class="choix">Un café y la carta, por favor.</div><div class="choix">Una caña y una tostada, por favor.</div>
+ <div class="retro">✓ C'est ce qu'elle attendait : commandez directement.</div>
+</div></div></div><div class="pourquoi"><div><b>Pourquoi elle fait « chemin »</b>C&#x27;est la métaphore que l&#x27;application porte déjà : la credencial et ses tampons. La pousser jusqu&#x27;à la surface rend chaque tampon gagné plus précieux, et le rouge est celui de la croix de Santiago, brodée sur les capes.</div><div><b>À surveiller</b>Le papier crème baisse un peu le contraste : garder l&#x27;encre très foncée pour le texte courant. Un rouge qui sert à l&#x27;action ne peut plus signaler une erreur : les erreurs passent au brun-orangé.</div></div></section><section class="variation" id="borne"><header><h2>B · La flèche et la borne</h2><p>La signalétique du chemin : le jaune de la flèche devient l&#x27;action, le bleu de la borne galicienne encadre.</p></header>
+<ul class="nuancier"><li><i style="background:#E8ECEE"></i>Granite <code style="font-size:12px;color:var(--muted)">#E8ECEE</code></li><li><i style="background:#F2C230"></i>Flèche <code style="font-size:12px;color:var(--muted)">#F2C230</code></li><li><i style="background:#1F4E9C"></i>Bleu borne <code style="font-size:12px;color:var(--muted)">#1F4E9C</code></li><li><i style="background:#13233B"></i>Nuit <code style="font-size:12px;color:var(--muted)">#13233B</code></li></ul>
+<div class="telephones"><div class="tel th-borne"><div class="barre"><span class="fr-nom">francis</span><span class="tr">En route vers Compostelle</span></div>
+<div class="ecran"><div class="horizon"></div>
+ <p class="sur">Ma credencial · 3 tampons sur 10</p>
+ <h4>Jour 4 · Logroño</h4><p class="sous">La Rioja, km 163</p>
+ <div class="btn act">Reprendre la route <span class="fl">➜</span></div>
+ <div class="frise"><i class="pass"></i><i class="pass"></i><i class="pass"></i><i class="pass"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></div>
+ <div class="cred"><div class="case faite"><span class="num">1</span><span class="sceau"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c-5 0-9 4-9 9 0 1 .4 2 1 3l8 6 8-6c.6-1 1-2 1-3 0-5-4-9-9-9z" fill="currentColor" opacity=".9"/><path d="M12 5v14M8 6.5 11 19M16 6.5 13 19M5.2 9.5 10.5 19M18.8 9.5 13.5 19" stroke="rgba(0,0,0,.28)" stroke-width="1" fill="none"/></svg></span><small>Ronces.</small></div><div class="case faite"><span class="num">2</span><span class="sceau"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c-5 0-9 4-9 9 0 1 .4 2 1 3l8 6 8-6c.6-1 1-2 1-3 0-5-4-9-9-9z" fill="currentColor" opacity=".9"/><path d="M12 5v14M8 6.5 11 19M16 6.5 13 19M5.2 9.5 10.5 19M18.8 9.5 13.5 19" stroke="rgba(0,0,0,.28)" stroke-width="1" fill="none"/></svg></span><small>Pampl.</small></div><div class="case faite"><span class="num">3</span><span class="sceau"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c-5 0-9 4-9 9 0 1 .4 2 1 3l8 6 8-6c.6-1 1-2 1-3 0-5-4-9-9-9z" fill="currentColor" opacity=".9"/><path d="M12 5v14M8 6.5 11 19M16 6.5 13 19M5.2 9.5 10.5 19M18.8 9.5 13.5 19" stroke="rgba(0,0,0,.28)" stroke-width="1" fill="none"/></svg></span><small>Puente</small></div><div class="case ici"><span class="num">4</span><small>Logroño</small></div><div class="case"><span class="num">5</span><small>Burgos</small></div><div class="case"><span class="num">6</span><small>Carrión</small></div><div class="case"><span class="num">7</span><small>León</small></div><div class="case"><span class="num">8</span><small>Cebreiro</small></div><div class="case"><span class="num">9</span><small>Sarria</small></div><div class="case"><span class="num">10</span><small>Santiago</small></div></div>
+ <div class="deux"><div class="tuile"><b>La poche</b><span>Hors ligne</span></div><div class="tuile"><b>Suis-je prêt ?</b><span>Un quart d'heure</span></div></div>
+</div></div><div class="tel th-borne"><div class="barre"><span class="fr-nom">francis</span><span class="tr">En route vers Compostelle</span></div>
+<div class="ecran">
+ <img class="vig" src="../interactive/compostelle/etapes/pamplona.jpg" alt="">
+ <p class="sur">Jour 2 · La scène</p>
+ <div class="qui"><img src="../interactive/compostelle/portraits/ainhoa.jpg" alt=""><div><b>Ainhoa</b><span>serveuse, Pamplona</span></div></div>
+ <div class="bulle"><span class="play">▶</span><div>¡Buenos días! ¿Qué te pongo?</div></div>
+ <div class="choix bon">Un café y una tostada, por favor.</div><div class="choix">Un café y la carta, por favor.</div><div class="choix">Una caña y una tostada, por favor.</div>
+ <div class="retro">✓ C'est ce qu'elle attendait : commandez directement.</div>
+</div></div></div><div class="pourquoi"><div><b>Pourquoi elle fait « chemin »</b>Sur le Camino, on suit une flèche jaune et une borne bleue à coquille jaune — le pèlerin les voit mille fois. Le bouton « Reprendre la route » devient littéralement la flèche ; chaque tampon, une petite borne.</div><div><b>À surveiller</b>Le jaune ne porte pas de texte blanc : texte bleu nuit sur jaune (contraste 10:1). Le jaune quitte la barre de progression, qui passe au bleu. C&#x27;est la plus lisible au soleil, et la plus « signalétique » — moins chaleureuse.</div></div></section><section class="variation" id="meseta"><header><h2>C · La Meseta, terre et ciel</h2><p>Les couleurs du paysage : ocre des blés, terre cuite des toits, bleu du grand ciel de Castille, olive des haies.</p></header>
+<ul class="nuancier"><li><i style="background:#E3B04B"></i>Blé <code style="font-size:12px;color:var(--muted)">#E3B04B</code></li><li><i style="background:#B04A20"></i>Terre cuite <code style="font-size:12px;color:var(--muted)">#B04A20</code></li><li><i style="background:#2F6FA3"></i>Ciel <code style="font-size:12px;color:var(--muted)">#2F6FA3</code></li><li><i style="background:#5F7A2E"></i>Olive <code style="font-size:12px;color:var(--muted)">#5F7A2E</code></li><li><i style="background:#F6EFE2"></i>Sable <code style="font-size:12px;color:var(--muted)">#F6EFE2</code></li></ul>
+<div class="telephones"><div class="tel th-meseta"><div class="barre"><span class="fr-nom">francis</span><span class="tr">En route vers Compostelle</span></div>
+<div class="ecran"><div class="horizon"></div>
+ <p class="sur">Ma credencial · 3 tampons sur 10</p>
+ <h4>Jour 4 · Logroño</h4><p class="sous">La Rioja, km 163</p>
+ <div class="btn act">Reprendre la route <span class="fl">➜</span></div>
+ <div class="frise"><i class="pass"></i><i class="pass"></i><i class="pass"></i><i class="pass"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></div>
+ <div class="cred"><div class="case faite"><span class="num">1</span><span class="sceau"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c-5 0-9 4-9 9 0 1 .4 2 1 3l8 6 8-6c.6-1 1-2 1-3 0-5-4-9-9-9z" fill="currentColor" opacity=".9"/><path d="M12 5v14M8 6.5 11 19M16 6.5 13 19M5.2 9.5 10.5 19M18.8 9.5 13.5 19" stroke="rgba(0,0,0,.28)" stroke-width="1" fill="none"/></svg></span><small>Ronces.</small></div><div class="case faite"><span class="num">2</span><span class="sceau"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c-5 0-9 4-9 9 0 1 .4 2 1 3l8 6 8-6c.6-1 1-2 1-3 0-5-4-9-9-9z" fill="currentColor" opacity=".9"/><path d="M12 5v14M8 6.5 11 19M16 6.5 13 19M5.2 9.5 10.5 19M18.8 9.5 13.5 19" stroke="rgba(0,0,0,.28)" stroke-width="1" fill="none"/></svg></span><small>Pampl.</small></div><div class="case faite"><span class="num">3</span><span class="sceau"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c-5 0-9 4-9 9 0 1 .4 2 1 3l8 6 8-6c.6-1 1-2 1-3 0-5-4-9-9-9z" fill="currentColor" opacity=".9"/><path d="M12 5v14M8 6.5 11 19M16 6.5 13 19M5.2 9.5 10.5 19M18.8 9.5 13.5 19" stroke="rgba(0,0,0,.28)" stroke-width="1" fill="none"/></svg></span><small>Puente</small></div><div class="case ici"><span class="num">4</span><small>Logroño</small></div><div class="case"><span class="num">5</span><small>Burgos</small></div><div class="case"><span class="num">6</span><small>Carrión</small></div><div class="case"><span class="num">7</span><small>León</small></div><div class="case"><span class="num">8</span><small>Cebreiro</small></div><div class="case"><span class="num">9</span><small>Sarria</small></div><div class="case"><span class="num">10</span><small>Santiago</small></div></div>
+ <div class="deux"><div class="tuile"><b>La poche</b><span>Hors ligne</span></div><div class="tuile"><b>Suis-je prêt ?</b><span>Un quart d'heure</span></div></div>
+</div></div><div class="tel th-meseta"><div class="barre"><span class="fr-nom">francis</span><span class="tr">En route vers Compostelle</span></div>
+<div class="ecran">
+ <img class="vig" src="../interactive/compostelle/etapes/pamplona.jpg" alt="">
+ <p class="sur">Jour 2 · La scène</p>
+ <div class="qui"><img src="../interactive/compostelle/portraits/ainhoa.jpg" alt=""><div><b>Ainhoa</b><span>serveuse, Pamplona</span></div></div>
+ <div class="bulle"><span class="play">▶</span><div>¡Buenos días! ¿Qué te pongo?</div></div>
+ <div class="choix bon">Un café y una tostada, por favor.</div><div class="choix">Un café y la carta, por favor.</div><div class="choix">Una caña y una tostada, por favor.</div>
+ <div class="retro">✓ C'est ce qu'elle attendait : commandez directement.</div>
+</div></div></div><div class="pourquoi"><div><b>Pourquoi elle fait « chemin »</b>Les vignettes de l&#x27;application sont déjà dans ces tons : la palette sort des images au lieu de les encadrer de gris. Un horizon ciel-blé ouvre l&#x27;accueil, comme la Meseta ouvre la deuxième moitié du chemin.</div><div><b>À surveiller</b>La plus chaleureuse, et la plus proche des dessins ; mais c&#x27;est aussi celle qui s&#x27;éloigne le plus du reste de la plateforme. La terre cuite est foncée à dessein : plus claire, le texte blanc ne passerait plus.</div></div></section>
+<section class="variation" id="choix"><header><h2>Votre choix</h2><p>Choisissez, ajoutez ce que vous voulez garder d'une
+autre, puis exportez : collez le texte dans la conversation.</p></header>
+<div class="choisir"><label><input type="radio" name="choix" value="actuel">Garder le thème francis</label><label><input type="radio" name="choix" value="carnet">A · La credencial</label><label><input type="radio" name="choix" value="borne">B · La flèche et la borne</label><label><input type="radio" name="choix" value="meseta">C · La Meseta, terre et ciel</label></div>
+<textarea class="note" id="note" placeholder="Par exemple : B, mais avec les tampons rouges de A."></textarea>
+<button class="exporter" id="exp" type="button">Exporter mon choix</button>
+<pre class="json" id="sortie" hidden></pre>
+</section>
+</div>
+<script>
+const CLE = 'compostelle-variations:choix';
+function lire(){ try { return JSON.parse(localStorage.getItem(CLE) || '{}'); } catch (e) { return {}; } }
+function ecrire(v){ try { localStorage.setItem(CLE, JSON.stringify(v)); } catch (e) {} }
+const etat = lire();
+if (etat.choix) { const r = document.querySelector(`input[value="${etat.choix}"]`); if (r) r.checked = true; }
+if (etat.note) document.getElementById('note').value = etat.note;
+document.querySelectorAll('input[name=choix]').forEach(r => r.addEventListener('change', () => { etat.choix = r.value; ecrire(etat); }));
+document.getElementById('note').addEventListener('input', e => { etat.note = e.target.value; ecrire(etat); });
+document.getElementById('exp').addEventListener('click', async () => {
+  const txt = JSON.stringify({page: 'compostelle-variations', date: new Date().toLocaleDateString('fr-CA'),
+    choix: etat.choix || null, note: etat.note || ''}, null, 2);
+  const s = document.getElementById('sortie'); s.textContent = txt; s.hidden = false;
+  try { await navigator.clipboard.writeText(txt); document.getElementById('exp').textContent = 'Copié — collez-le dans la conversation'; }
+  catch (e) { document.getElementById('exp').textContent = 'Sélectionnez le texte ci-dessous et copiez-le'; }
+});
+</script>
+</body>
+</html>
