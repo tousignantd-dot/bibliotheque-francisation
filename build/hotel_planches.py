@@ -27,7 +27,7 @@ RACINE = pathlib.Path(__file__).resolve().parent.parent
 CONTENU = RACINE / "build" / "contenu" / "entreprise-hotel"
 CROQUIS = RACINE / "assets" / "interactive" / "hotel" / "croquis"
 SORTIE = RACINE / "modules-autonomes" / "hotel-reception" / "index.html"
-MEDIA_V = "12"  # 12 : noms épelés réassemblés des lettres choisies à l'oreille, 27 sept. 2026
+MEDIA_V = "13"  # 13 : le E français refait (voix neurale), 27 sept. 2026
 
 
 def _charger(nom):

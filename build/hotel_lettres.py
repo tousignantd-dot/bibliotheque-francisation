@@ -37,7 +37,7 @@ PAGE = RACINE / "assets" / "presentations" / "hotel-lettres.html"
 NOM_L = {"fr": "Français — Thierry", "es": "Espagnol — Jorge", "en": "Anglais — Andrew"}
 
 
-HP_V = "12"   # = MEDIA_V de hotel_planches.py au dernier assemblage
+HP_V = "13"   # = MEDIA_V de hotel_planches.py au dernier assemblage
 NEURALE = {"fr": "fr-CA-ThierryNeural", "en": "en-US-AndrewNeural", "es": "es-MX-JorgeNeural"}
 AUTRE_GRAPHIE = {"fr:E": "euh", "fr:A": "ah", "fr:I": "î", "fr:Q": "cu", "fr:R": "ère", "fr:T": "thé",
                  "en:M": "em", "en:V": "vee"}
