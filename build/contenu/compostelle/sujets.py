@@ -131,7 +131,7 @@ SUJETS = {
     "abierto": ("scene", "a small village shop with its door wide open, warm light inside, crates of fruit on the pavement outside; no sign, no writing."),
     "cerrado": ("scene", "the same kind of small village shop with its metal rolling shutter pulled all the way down, the street empty in the hot early afternoon; no sign, no writing, no graffiti."),
     "manana": ("scene", "a bunk bed with a sleeping pilgrim at night, and through the window beside it a sun beginning to rise over the hills — tonight, then tomorrow."),
-    "por_la_tarde": ("scene", "a village square in warm late-afternoon light, long shadows, people sitting at a café terrace."),
+    "por_la_tarde": ("scene", "a village square in warm late-afternoon light, long shadows, people sitting at a café terrace under plain umbrellas; the café awning and the walls are completely plain, with NO sign and NO name anywhere."),
     "por_la_noche": ("scene", "a village street at night under a crescent moon and stars, a few lit windows and a street lamp."),
     "siesta": ("geste", "a man dozing in the shade on a bench under a tree, hat over his eyes, in a quiet sunny village street with closed shutters."),
     "tienda": ("scene", "the inside of a small village grocery: wooden shelves with jars, bread, fruit in crates, a counter with an old scale; no labels, no writing."),
@@ -143,7 +143,7 @@ SUJETS = {
     "me_duele": ("corps", "a standing human figure seen from the front, one hand on the knee, which is the coral red part: pain in the knee."),
     "tendinitis": ("corps", "a lower leg and foot seen from the side, the Achilles tendon at the back of the ankle in coral red."),
     "constipado": ("geste", "a pilgrim sitting on a bunk bed, wrapped in a blanket, blowing their nose into a tissue, a box of tissues beside them."),
-    "guardia": ("scene", "a pharmacy front at night: a lit green cross sign glowing above a small lit door, the rest of the street dark; no writing."),
+    "guardia": ("scene", "a pharmacy front at night: a lit green cross sign glowing above a small lit door with a plain glass pane, the rest of the street dark; nothing written on the door, the windows or the walls."),
     "centro_salud": ("scene", "a modern low health-centre building with glass doors and a simple red cross above the entrance, a bench outside; no writing."),
     "emergencias": ("scene", "a white ambulance with blue lights flashing, parked on a country road; no writing, no numbers on the vehicle."),
     "calor": ("scene", "a dusty track under a blazing sun, heat shimmering over dry golden fields, a pilgrim drinking from a water bottle."),
@@ -167,11 +167,11 @@ SUJETS = {
     "horario": ("objet", "a round wall clock with hands and tick marks only, no numbers, next to a heavy old wooden church door."),
     "visita_guiada": ("geste", "a small group of visitors with backpacks inside a Gothic cathedral nave, following a guide who points up at the stained-glass windows."),
     "misa": ("scene", "the interior of a stone church during a service: rows of pews with seated people, candles and a priest at the altar, seen from the back."),
-    "descuento": ("geste", "at a museum ticket window, a pilgrim showing an open folded pilgrim passport covered with red ink stamps; the clerk smiles and nods."),
+    "descuento": ("geste", "at a museum ticket window, a pilgrim showing an open folded pilgrim passport covered with round red ink stamps (plain circles and shells, no letters); the clerk smiles and nods. No plaque, no sign, no word on the walls."),
     "de_donde": ("geste", "two pilgrims sitting on a low stone wall with their backpacks beside them, chatting, one asking the other with an open hand gesture."),
     "soy_de": ("geste", "a pilgrim with a small red maple leaf patch on the backpack, pointing to themselves with a smile while talking to another pilgrim."),
     "por_que": ("geste", "two pilgrims walking side by side on the Meseta, one turning to the other with a curious, thoughtful look."),
-    "desde_donde": ("geste", "two pilgrims looking back together at a long path winding down from far-away mountains behind them."),
+    "desde_donde": ("geste", "two pilgrims seen from behind, standing on a path and looking back at the long way they have walked, winding far away into distant mountains; no writing anywhere, no signature."),
     "hasta_donde": ("geste", "two pilgrims looking ahead together at a long path leading to a distant village with a church tower, one pointing forward."),
     "kilometros": ("scene", "a long straight dirt track stretching to the horizon, with plain stone waymarker posts at regular intervals along it (no numbers), a pair of boots in the foreground."),
     "cansado": ("geste", "an exhausted pilgrim sitting on the ground against a stone wall, boots off, backpack dropped beside, head tilted back, eyes closed."),
@@ -196,7 +196,7 @@ SCENE = (
     "A small travel-sketchbook vignette in ink and light wash: crisp black ink line of even "
     "weight, a few flat, soft, slightly muted colour fills, centred in a square frame, the scene "
     "fading softly into a pure white background at its edges. A flat scan of the drawing, not a "
-    "photograph of a sketchbook: no page edge, no paper shadow. No people in close-up. No text, "
+    "photograph of a sketchbook: no page edge, no paper shadow, no grey or beige paper tone: the background around the scene is PURE WHITE. No people in close-up. No text, "
     "no letters, no numbers, no signs, no logo. No frame, no border.\n\n"
     "THE SCENE: ")
 GESTE = (
@@ -204,7 +204,7 @@ GESTE = (
     "from the waist up, their gesture and expression clearly readable, in a simple setting on the "
     "Way of St James; crisp black ink line of even weight, a few flat, soft, slightly muted colour "
     "fills, centred in a square frame, fading softly into a pure white background at its edges. A flat "
-    "scan of the drawing, not a photograph of a sketchbook. No speech bubbles, no text, no letters, no "
+    "scan of the drawing, not a photograph of a sketchbook, no grey or beige paper tone: the background is PURE WHITE. No speech bubbles, no text, no letters, no "
     "numbers, no signs, no logo. No frame, no border.\n\n"
     "THE SCENE: ")
 PORTRAIT = (
