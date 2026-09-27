@@ -51,6 +51,30 @@
     .os-prof { margin: var(--sp-5) 0 0; font-size: var(--fs-ui); font-weight: var(--fw-semi); }
     .os-prof a { color: var(--text-muted); text-decoration: none; border-bottom: 1px solid var(--border); }
     .os-prof a:hover { color: var(--text-accent); border-bottom-color: currentColor; }
+    /* ---- Langue d'appui (js/appui.js, langues/portail/) ----------------
+       Même règle et même mémoire que le portail élève : la traduction se pose
+       SOUS le français, jamais à sa place, et seules les phrases du
+       dictionnaire sont traduites. Ajouté le 27 sept. 2026 pour le pilote de
+       l'hôtel : un groupe hispanophone entrait par une page en français seul.
+       Styles repris d'eleve.html — les deux copies vont ensemble. */
+    .ap { display: block; margin-top: 3px; padding-left: 9px;
+          border-left: 2px solid var(--line-100);
+          font-size: .84em; line-height: 1.45; font-weight: var(--fw-medium);
+          color: var(--ink-500); font-style: normal;
+          text-transform: none; letter-spacing: normal; }
+    .ap:lang(ar) { direction: rtl; text-align: right; padding-left: 0; padding-right: 9px;
+          border-left: 0; border-right: 2px solid var(--line-100); }
+    .btn .ap { padding: 0; border: 0; margin-top: 1px; font-size: .82em; opacity: .85; }
+    .btn:has(.ap) { flex-direction: column; align-items: center; gap: 0; line-height: 1.25; }
+    .os-numero:has(.ap) { flex-wrap: wrap; }
+    .fr-barre__in { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); }
+    .fr-barre__in .fr-lockup { margin: 0; }
+    .appui-sel { font-family: inherit; font-size: var(--fs-ui-sm);
+          color: var(--ink-500); background: transparent;
+          border: 1px solid var(--line-100); border-radius: 6px;
+          padding: 3px 6px; cursor: pointer; max-width: 132px; }
+    .appui-sel:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+    @media (max-width: 640px) { .appui-sel { max-width: 96px; font-size: 12px; padding: 3px 2px; } }
   </style>
 <!-- INSTALLABLE:début — greffé par build/greffe_installable.py -->
 <link rel="manifest" href="/manifest.webmanifest">
@@ -80,6 +104,7 @@
         <span class="fr-trait" aria-hidden="true"></span>
         <span class="fr-desc">Aide à l'apprentissage du français</span>
       </h1>
+      <span class="appui-hote"></span>
     </div>
   </div>
 
@@ -120,16 +145,20 @@
           <p class="os-erreur" id="erreurModule" hidden></p>
         </div>
 
-        <p class="os-prof"><a href="enseignant.html">Espace enseignant</a></p>
+        <p class="os-prof" data-sans-appui><a href="enseignant.html">Espace enseignant</a></p>
       </div>
     </div>
   </header>
 </div>
 
+<script src="js/appui.js"></script>
 <script>
 (function () {
   'use strict';
   var API = location.origin;
+  // L'appui se repose après chaque texte changé par la page (écran suivant,
+  // message d'erreur) : Appui.poser nettoie avant de poser, rien ne s'empile.
+  function appui() { if (window.Appui) Appui.poser(document.body); }
   var carteCode   = document.getElementById('carteCode');
   var carteModule = document.getElementById('carteModule');
   var champ       = document.getElementById('champCode');
@@ -163,6 +192,7 @@
     var el = document.getElementById(ou);
     el.textContent = texte;
     el.hidden = !texte;
+    appui();
   }
 
   function normalise(v) {
@@ -189,6 +219,7 @@
     chapeau.textContent = 'Voici ton activité.';
     carteCode.hidden = true;
     carteModule.hidden = false;
+    appui();
   }
 
   function entrer(code, jeton) {
@@ -255,6 +286,11 @@
 
   // Arrivée par le code QR : le code est déjà dans l'adresse, on ne fait pas
   // recopier ce qui a été scanné.
+  // La langue d'appui : la même clé que le portail élève et le vocabulaire.
+  if (window.Appui) Appui.demarrer().then(function () {
+    Appui.selecteur(document.querySelector('.appui-hote'), function () {});
+    appui();
+  });
   var depart = normalise(new URLSearchParams(location.search).get('c'));
   if (depart) {
     champ.value = depart;

@@ -23,6 +23,8 @@ code, répondent, et paraissent au direct de leur groupe seulement. Elle a trouv
 deux défauts de la page (premier coup jamais compté, items illisibles au direct),
 corrigés avant d'écrire cette trousse. Elle a aussi montré qu'un groupe qui n'est
 pas au niveau 3 ne peut PAS ouvrir la séance : c'est dans la liste de vérification.
+Et que la page d'entrée d'une séance (seance.html) était en français seul : elle
+porte depuis la langue d'appui du portail (js/appui.js), en anglais et en espagnol.
 """
 import html, importlib.util, json, pathlib, re, subprocess, sys
 
@@ -244,7 +246,8 @@ def feuille_de_route():
                  "<li>Son : faire écouter un mot à chacun avec ses écouteurs avant de commencer.</li>")
         if k == 0:
             avant += ("<li>Donner la fiche « ce que vous devez savoir » dans la langue de chacun ; la lire ensemble.</li>"
-                      "<li>La page d'entrée de la séance est en français : montrer le bouton « Commencer ».</li>")
+                      "<li>La page d'entrée de la séance a un choix de langue en haut à droite (English, Español) : "
+                      "la traduction se pose sous le français. Le montrer au groupe.</li>")
         else:
             avant += "<li>Le même appareil que la semaine passée : chacun retrouve son numéro de participant.</li>"
         blocs += f"""<section{' class="saut"' if k else ''}>
