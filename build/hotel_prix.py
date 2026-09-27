@@ -119,7 +119,9 @@ def main():
 <a class="retour" href="/presentations.html#hotellerie"><span aria-hidden="true">&#8592;</span> Le classeur</a>
 <p class="eyebrow">Hôtel Rive-Claire &middot; page acheteur</p>
 <h1>Les prix à confirmer</h1>
-<p class="chapeau">Les trois formules de la page acheteur ont été {"<strong>recopiées telles quelles</strong> de la Maison Francœur" if memes else "reprises de la Maison Francœur, puis retouchées"}.
+{('<div class="these"><p class="cle">Prix confirmés le ' + E(PX.CONFIRME) + ' : les montants ci-dessous sont ceux de la page acheteur. '
+   'Les décisions restent affichées comme trace.</p></div>') if getattr(PX, "CONFIRME", None) else ""}
+<p class="chapeau">Les trois formules de la page acheteur ont été {"<strong>recopiées telles quelles</strong> de la Maison Francœur" if memes else "d'abord recopiées de la Maison Francœur"}.
 L'hôtel n'a jamais été chiffré à part. Quatre décisions, chacune avec une recommandation ; l'export se recolle
 dans la séance, et les montants changent à un seul endroit, <code>prix.py</code>.</p>
 
