@@ -21448,12 +21448,19 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             return None, ("Clé API non configurée sur le serveur", 503)
         eleve_id, groupe_id = self._repere_eleve(code)
 
-        payload = json.dumps({
+        corps = {
             "model": modele or MODELE_CORRECTION,
             "max_tokens": max_tokens,
             "system": system_prompt,
             "messages": [{"role": "user", "content": user_content}],
-        }).encode("utf-8")
+        }
+        if modele:
+            # Le modèle de conversation réfléchit avant de répondre : effort au
+            # minimum, sinon la réflexion mange le budget et aucun texte ne sort
+            # (audit du comptoir joué, tour 2 : un bilan sur quatorze).
+            corps["thinking"] = {"type": "adaptive"}
+            corps["output_config"] = {"effort": "low"}
+        payload = json.dumps(corps).encode("utf-8")
 
         req = urllib.request.Request(
             "https://api.anthropic.com/v1/messages",
@@ -21490,7 +21497,13 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         _noter(result.get("usage"))
 
         try:
-            raw_text = result["content"][0]["text"].strip()
+            # Le premier bloc peut être une réflexion : on lit les blocs de TEXTE
+            # (audit du comptoir joué, tour 2, bloquant — le bilan était perdu
+            # douze fois sur quatorze).
+            raw_text = "".join(b.get("text", "") for b in result["content"]
+                               if b.get("type") == "text").strip()
+            if not raw_text:
+                raise KeyError("aucun bloc de texte")
             if raw_text.startswith("```"):
                 raw_text = re.sub(r"^```(json)?\n?", "", raw_text)
                 raw_text = re.sub(r"\n?```$", "", raw_text)
