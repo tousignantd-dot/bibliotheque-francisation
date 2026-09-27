@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compostelle — avant de partir</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   UN MODULE POUR LA VENTE DE CHAUSSURES — LE CADRAGE
+   Chantier « formation en entreprise », second secteur :
+   le commerce de détail. Écrite à la main, comme
+   analyse-marche.html — ses chiffres viennent d'ailleurs et
+   doivent vieillir visiblement.
+
+   Vert : ce que le tour de main actuel produit déjà.
+   Ambre : ce qui attend votre décision.
+   Rouge : l'argument de vente qui tient à une obligation légale.
+   L'acier ne fait que la structure.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+
+  --fait:#0A8F5B;    --fait-bg:#E6F5EE;
+  --decid:#C07A08;   --decid-bg:#FBF2E2;
+  --loi:#C7302B;     --loi-bg:#FBEDEC;
+  --acier:#1D6B8F;   --acier-bg:#E7F0F6;
+
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --fait:#4BC48D; --fait-bg:#12291F;
+    --decid:#E0A63F; --decid-bg:#2C2213;
+    --loi:#EE7A73; --loi-bg:#2E1917;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --loi:#EE7A73; --loi-bg:#2E1917;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+em.art{font-style:normal;font-family:var(--mono);font-size:.82em;color:var(--muted);
+  white-space:nowrap}
+
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+
+/* ── Les décisions ─────────────────────────────────────── */
+.decisions{display:flex;flex-direction:column;gap:2px;counter-reset:d}
+.dec{counter-increment:d;background:var(--card);border:1px solid var(--line);
+  border-left:5px solid var(--decid);border-radius:3px;padding:19px 22px 19px 60px;
+  position:relative;display:flex;flex-direction:column;gap:8px}
+.dec.ok{border-left-color:var(--fait)}
+.dec::before{content:counter(d);position:absolute;left:24px;top:18px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+.dec .ligne{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  justify-content:space-between}
+.dec p{font-size:15.5px}
+.dec .defaut{font-size:13.5px;color:var(--muted);font-style:italic}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-fait{background:var(--fait-bg);color:var(--fait)}
+.b-dec{background:var(--decid-bg);color:var(--decid)}
+.b-loi{background:var(--loi-bg);color:var(--loi)}
+.b-n{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+
+/* ── Tableaux ──────────────────────────────────────────── */
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:640px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:3px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tr.l td:first-child{border-left-color:var(--loi)}
+tr.d td:first-child{border-left-color:var(--decid)}
+tr.f td:first-child{border-left-color:var(--fait)}
+
+/* ── Chiffres ──────────────────────────────────────────── */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--acier);padding:15px 16px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;margin-top:7px}
+
+/* ── Marche à suivre ───────────────────────────────────── */
+ol.actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;
+  counter-reset:a}
+ol.actions li{counter-increment:a;background:var(--card);border:1px solid var(--line);
+  border-radius:3px;padding:18px 22px 18px 62px;position:relative;display:flex;
+  flex-direction:column;gap:6px}
+ol.actions li::before{content:counter(a);position:absolute;left:22px;top:17px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+ol.actions li p{font-size:15.5px}
+.qui{font-size:13px;color:var(--muted);font-style:italic}
+
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.avert{background:var(--loi-bg);border:1px solid var(--loi);border-radius:3px;
+  padding:20px 24px;display:flex;flex-direction:column;gap:9px}
+.avert strong{color:var(--ink)}
+.avert p{font-size:15.5px;color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} }
+
+/* ── décisions à boutons (plan magasin de vêtements) ── */
+.dec2{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0}
+.dq{margin:0 0 10px;font-weight:700;color:var(--ink)}
+.dn{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--decid-bg);color:var(--decid);font-size:13px;margin-right:8px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{font:inherit;font-size:15px;text-align:left;cursor:pointer;background:var(--sunken);color:var(--body);border:1px solid var(--line-fort);border-radius:10px;padding:8px 12px}
+.opt:hover{border-color:var(--acier)}
+.opt[aria-pressed="true"]{background:var(--fait-bg);border-color:var(--fait);color:var(--ink);font-weight:700}
+.opt .tag{font-size:12px;color:var(--decid);font-weight:700;margin-left:4px}
+.dw{margin:10px 0 0;font-size:15px;color:var(--muted)}
+.btn-export{font:inherit;font-weight:700;cursor:pointer;background:var(--acier);color:#fff;border:0;border-radius:10px;padding:10px 16px}
+.etat{margin-left:12px;color:var(--muted);font-size:15px}
+table{display:block;overflow-x:auto}
+</style>
+<style>
+  .doc{padding-top:26px}
+  .retour{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+    color:var(--muted);text-decoration:none;margin-bottom:34px}
+  .retour:hover{color:var(--acier)}
+  table.cmp{width:100%;border-collapse:collapse;font-size:15px;background:var(--card);
+    border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  table.cmp th,table.cmp td{padding:13px 15px;text-align:left;vertical-align:top;
+    border-bottom:1px solid var(--line)}
+  table.cmp thead th{background:var(--sunken);font-size:12px;font-weight:800;
+    letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  table.cmp tbody tr:last-child td{border-bottom:0}
+  table.cmp td:first-child{font-weight:700;color:var(--ink)}
+  .roule{overflow-x:auto}
+  .voie{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:24px 26px;display:flex;flex-direction:column;gap:11px}
+  .voie.oui{border-color:var(--fait);border-width:2px;padding:23px 25px}
+  .voie.non{border-left:5px solid var(--loi)}
+  .voie h3{font-size:19px;font-family:Newsreader,Georgia,serif;font-weight:600;margin:0}
+  .voie .cout{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .verdict{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 10px;border-radius:99px;align-self:flex-start}
+  .v-oui{background:var(--fait-bg);color:var(--fait)}
+  .v-peut{background:var(--decid-bg);color:var(--decid)}
+  .v-non{background:var(--loi-bg);color:var(--loi)}
+  .mes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;
+    background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .mes div{background:var(--card);padding:16px 18px}
+  .mes b{display:block;font-family:Newsreader,Georgia,serif;font-size:27px;font-weight:500;
+    color:var(--ink);line-height:1.1}
+  .mes span{font-size:13px;color:var(--muted)}
+  .planche{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .planche figure{margin:0;background:var(--card);border:1px solid var(--line);
+    border-radius:3px;overflow:hidden;display:flex;flex-direction:column}
+  .planche figure.large{grid-column:1 / -1}
+  .planche img{display:block;width:100%;height:auto;background:var(--sunken)}
+  .planche figcaption{padding:13px 16px 15px;font-size:14px;line-height:1.5;color:var(--muted);
+    border-top:1px solid var(--line)}
+  .planche figcaption b{display:block;color:var(--ink);font-size:14.5px;margin-bottom:2px}
+  @media (max-width:620px){ .planche{grid-template-columns:1fr} }
+  .doc p a,.doc li a,.doc td a{color:var(--acier);text-decoration:underline;
+    text-underline-offset:2px;text-decoration-thickness:1px}
+  ul.src{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px;font-size:14.5px}
+  ul.src li{color:var(--muted)} ul.src .d{font-family:var(--mono);font-size:12.5px}
+  h3.sous{font-family:Newsreader,Georgia,serif;font-size:21px;font-weight:600;
+    letter-spacing:-.01em;color:var(--ink);margin:14px 0 0}
+  @media (max-width:640px){ .doc{padding-left:18px;padding-right:18px} }
+</style>
+<style>
+table.cmp{display:block;max-width:100%;min-width:0;overflow-x:auto}
+.deux-temps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.temps{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.temps h3{margin:0 0 4px}.temps .q{color:var(--muted);font-size:14px;margin:0 0 8px}
+.temps.avant{border-top:5px solid #F2C230}.temps.chemin{border-top:5px solid #1F4E9C}
+.seance{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:10px 0}
+.seance h3{margin:0 0 4px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.seance h3 .n{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#F2C230;color:#13233B;font-size:14px;flex:none}
+.seance h3 .obj{font-size:12px;font-weight:900;color:var(--acier);background:var(--acier-bg);border-radius:99px;padding:2px 9px}
+.seance p{margin:6px 0;font-size:15px}
+.seance .dire{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.seance .dire span{background:#FFF6D6;color:#4A3A0A;border-radius:8px;padding:3px 9px;font-size:14px;font-weight:700}
+.seance .mots{font-size:13.5px;color:var(--muted)}
+.frise-marche{list-style:none;padding:0;margin:8px 0}
+.frise-marche li{display:grid;grid-template-columns:130px minmax(0,1fr);gap:10px;align-items:center;padding:6px 0;border-bottom:1px dashed var(--line)}
+.frise-marche .jm{font-size:13px;color:var(--muted)}
+.frise-marche .barre{height:10px;border-radius:99px;background:repeating-linear-gradient(90deg,#1F4E9C 0 12px,transparent 12px 16px)}
+.dec{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:10px 0}
+.dec h3{margin:0 0 8px;font-size:16.5px}
+.dec .opts{display:flex;flex-wrap:wrap;gap:8px}
+.dec label{display:flex;gap:7px;align-items:center;border:1px solid var(--line-fort);border-radius:10px;padding:8px 12px;cursor:pointer;font-size:14.5px}
+.dec label.reco{border-color:var(--fait)}
+.dec label small{font-size:11px;font-weight:900;color:var(--fait);text-transform:uppercase;letter-spacing:.05em}
+.dec p{margin:8px 0 0;font-size:14px;color:var(--muted)}
+textarea.note{width:100%;min-height:90px;font:inherit;border:1px solid var(--line-fort);border-radius:10px;padding:10px;background:var(--card);color:var(--body)}
+.exporter{margin-top:10px;font:inherit;font-weight:800;background:#0A8F5B;color:#fff;border:0;border-radius:10px;padding:11px 18px;cursor:pointer}
+pre.json{white-space:pre-wrap;background:var(--sunken);border-radius:10px;padding:12px;font-size:13px}
+@media (max-width:760px){.deux-temps{grid-template-columns:1fr}.frise-marche li{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="doc">
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
+<p class="eyebrow">Voyage &middot; grand public &middot; chemin de Saint-Jacques</p>
+<h1>Compostelle &mdash; « Avant de partir » : le plan</h1>
+<p class="chapeau">Deux constats de votre relecture. <strong>Il manque une préparation</strong> : l'application jette le pèlerin à
+Roncesvalles sans lui avoir appris à prononcer, à entendre un prix, ni les quelques tournures qui servent partout. Et <strong>dix
+« journées » pour 775 km, ce n'est pas crédible</strong> : à 25 km par jour, le Camino francés prend environ 33 jours.
+Ce plan propose deux temps — la maison, puis le chemin — et rebaptise les journées en haltes. Rien n'est encore écrit : les choix sont au bas de la page.</p>
+
+<section class="premier">
+  <h2>Deux temps</h2>
+  <div class="deux-temps">
+    <div class="temps avant"><h3>Avant de partir</h3><p class="q">À la maison · deux à quatre semaines · gratuit</p>
+      <p>Huit séances de quinze minutes : les sons, la politesse, les nombres, l'heure, quatre verbes, les questions, se présenter,
+      comprendre la réponse. Un test « Prêt à partir ? » pour finir.</p>
+      <p style="font-size:14px;color:var(--muted);margin:0">On y apprend <b>les outils</b> ; on ne s'en sert pas encore en situation.</p></div>
+    <div class="temps chemin"><h3>Sur le chemin</h3><p class="q">Les dix haltes · les scènes · Marta · « Parler librement »</p>
+      <p>Ce qui existe aujourd'hui : chaque halte met les outils en situation (un lit, un comptoir, la pharmacie, l'allergie…), puis la
+      conversation libre les exerce avec quelqu'un qui répond vraiment.</p>
+      <p style="font-size:14px;color:var(--muted);margin:0">On y <b>réemploie</b> ; la poche reste l'outil de secours.</p></div>
+  </div>
+</section>
+
+<section>
+  <h2>Ce que le pèlerin saura faire avant de partir</h2>
+  <p>Cinq objectifs, chacun avec sa condition et son critère — c'est ce que le test « Prêt à partir ? » vérifiera.</p>
+  <table class="cmp"><thead><tr><th></th><th>Objectif</th><th>Condition</th><th>Critère</th><th>Séances</th></tr></thead><tbody><tr><td><b>P1</b></td><td>Dire lisiblement les formules et les mots du chemin</td><td>au micro, sans modèle sous les yeux</td><td>reconnus par la reconnaissance vocale espagnole au premier ou au deuxième essai, pour 8 sur 10</td><td>1, 2</td></tr><tr><td><b>P2</b></td><td>Comprendre un prix ou une heure</td><td>dits à vitesse normale, une seule écoute</td><td>8 sur 10, sans confondre les paires d&#x27;oreille</td><td>3, 4</td></tr><tr><td><b>P3</b></td><td>Formuler une demande ou une question</td><td>dans une situation nouvelle, avec quisiera, ¿tiene…?, necesito, me duele, ¿dónde está…?, ¿hay…?</td><td>4 sur 5 dites et comprises</td><td>5, 6</td></tr><tr><td><b>P4</b></td><td>Se présenter</td><td>en trois phrases, au bon genre, allergie comprise</td><td>les trois dites sans aide</td><td>7</td></tr><tr><td><b>P5</b></td><td>Comprendre une réponse courte</td><td>oui / non, il y en a / il n&#x27;y en a pas, complet, gauche / droite / tout droit, ça en contient</td><td>8 sur 10</td><td>8</td></tr></tbody></table>
+</section>
+
+<section>
+  <h2>Les huit séances</h2>
+  <p>Chaque séance suit le même ordre que les journées : j'écoute, je reconnais, je le dis. Un encadré « la mécanique » par séance
+  explique la seule forme qui sert (décision 5). Les mots viennent du lexique existant : <b>75 mots déjà dessinés et
+  enregistrés</b> sont réemployés.</p>
+  <div class="seance"><h3><span class="n">1</span>Les sons de l&#x27;espagnol <span class="obj">P1</span></h3><p>Les cinq voyelles toujours pleines ; le j et le g doux (<i>jamón, gente</i>) ; le ll et le y (<i>calle</i>) ; le ñ (<i>España</i>) ; le r roulé et le rr ; le z et le c doux à la castillane ; l'accent tonique et sa marque écrite.</p><div class="dire"><span lang=es>Me llamo…</span><span lang=es>España</span><span lang=es>Galicia</span></div><p><b>On y fait :</b> Écouter–répéter par paires (<i>pero / perro</i>), lire un mot à voix haute (micro es-ES), trouver la syllabe forte.</p><p class="mots">Mots du lexique réemployés (10) : <i lang=es>el jamón</i>, <i lang=es>¿Lleva…? — lleva, no lleva</i>, <i lang=es>el queso</i>, <i lang=es>la ducha</i>, <i lang=es>la almohada</i>, <i lang=es>mañana</i>, <i lang=es>un zumo de naranja</i>, <i lang=es>cerrado</i>, <i lang=es>la iglesia</i>, <i lang=es>un vino tinto</i></p></div><div class="seance"><h3><span class="n">2</span>Saluer, remercier, faire répéter <span class="obj">P1</span></h3><p>Les formules qui ouvrent toutes les portes, et celles qui sauvent quand on ne comprend pas.</p><div class="dire"><span lang=es>Hola, buenos días.</span><span lang=es>Muchas gracias.</span><span lang=es>¿Puede repetir, por favor?</span><span lang=es>Más despacio, por favor.</span></div><p><b>On y fait :</b> Qui dit quoi, et à quel moment de la journée ; « Je le dis » au micro ; réagir à une phrase dite trop vite.</p><p class="mots">Mots du lexique réemployés (12) : <i lang=es>buenos días</i>, <i lang=es>buenas tardes</i>, <i lang=es>buenas noches</i>, <i lang=es>¡Buen Camino!</i>, <i lang=es>vale</i>, <i lang=es>perdone, perdona</i>, <i lang=es>no entiendo</i>, <i lang=es>más despacio, por favor</i>, <i lang=es>¿Puede repetir?</i>, <i lang=es>¿Cómo se dice…?</i>, <i lang=es>lo siento</i>, <i lang=es>de nada</i></p></div><div class="seance"><h3><span class="n">3</span>Les nombres et les prix <span class="obj">P2</span></h3><p>De 1 à 100, puis les prix en euros tels qu'on les dit (<i>cuatro con cincuenta</i>) ; les pièges d'oreille (<i>seis / siete, trece / treinta</i>).</p><div class="dire"><span lang=es>¿Cuánto es?</span><span lang=es>Son doce euros.</span><span lang=es>¿Puedo pagar con tarjeta?</span></div><p><b>On y fait :</b> Prix entendu, quatre choix construits autour d'un leurre d'oreille ; dicter un prix ; payer au comptoir.</p><p class="mots">Mots du lexique réemployés (7) : <i lang=es>¿Cuánto cuesta?</i>, <i lang=es>en efectivo</i>, <i lang=es>la tarjeta</i>, <i lang=es>el cajero automático</i>, <i lang=es>un kilo, medio kilo</i>, <i lang=es>la cuenta</i>, <i lang=es>la propina</i></p></div><div class="seance"><h3><span class="n">4</span>L&#x27;heure et les jours <span class="obj">P2</span></h3><p>Dire et comprendre l'heure (<i>a las ocho y media</i>), la journée espagnole (déjeuner tardif, siesta, souper à 21 h), les jours de la semaine.</p><div class="dire"><span lang=es>¿A qué hora abre?</span><span lang=es>Mañana a las siete.</span><span lang=es>Hoy es domingo.</span></div><p><b>On y fait :</b> Horloge entendue ; horaire d'une albergue à comprendre ; « ouvert ou fermé ? » à une heure donnée.</p><p class="mots">Mots du lexique réemployés (12) : <i lang=es>¿A qué hora…?</i>, <i lang=es>abierto</i>, <i lang=es>cerrado</i>, <i lang=es>mañana</i>, <i lang=es>por la tarde</i>, <i lang=es>por la noche</i>, <i lang=es>la siesta</i>, <i lang=es>a las siete</i>, <i lang=es>a las ocho y media</i>, <i lang=es>a las diez</i>, <i lang=es>a las dos</i>, <i lang=es>el horario</i></p></div><div class="seance"><h3><span class="n">5</span>Quatre verbes qui font presque tout <span class="obj">P3</span></h3><p><b>Quisiera</b> (je voudrais) · <b>¿Tiene…?</b> (avez-vous… ?) · <b>Necesito</b> (j'ai besoin de) · <b>Me duele</b> (j'ai mal à). Une mécanique à la fois, jamais la conjugaison entière : la forme qui sert, et une seule variante (<i>me duelen los pies</i>).</p><div class="dire"><span lang=es>Quisiera una cama.</span><span lang=es>¿Tiene agua?</span><span lang=es>Necesito una farmacia.</span><span lang=es>Me duele la rodilla.</span></div><p><b>On y fait :</b> Construire la phrase avec des tuiles, puis la dire ; même besoin, quatre situations (albergue, bar, pharmacie, épicerie).</p><p class="mots">Mots du lexique réemployés (12) : <i lang=es>la litera</i>, <i lang=es>una botella de agua</i>, <i lang=es>la farmacia</i>, <i lang=es>la tirita</i>, <i lang=es>la ampolla</i>, <i lang=es>la rodilla</i>, <i lang=es>el pie</i>, <i lang=es>la espalda</i>, <i lang=es>me duele…, me duelen…</i>, <i lang=es>el ibuprofeno</i>, <i lang=es>un café con leche</i>, <i lang=es>un bocadillo</i></p></div><div class="seance"><h3><span class="n">6</span>Poser une question <span class="obj">P3</span></h3><p><b>¿Dónde está…?</b> · <b>¿Cuánto cuesta?</b> · <b>¿A qué hora…?</b> · <b>¿Hay…?</b> (y a-t-il ?) — et l'intonation qui monte.</p><div class="dire"><span lang=es>¿Dónde está el albergue?</span><span lang=es>¿Hay una farmacia cerca?</span><span lang=es>¿Quedan camas?</span></div><p><b>On y fait :</b> Quelle question pour obtenir quoi ; dire la question ; entendre qu'on vous la pose.</p><p class="mots">Mots du lexique réemployés (10) : <i lang=es>el albergue</i>, <i lang=es>la farmacia</i>, <i lang=es>el supermercado</i>, <i lang=es>la panadería</i>, <i lang=es>la parada</i>, <i lang=es>¿Quedan camas?</i>, <i lang=es>la fuente</i>, <i lang=es>la iglesia</i>, <i lang=es>la ducha</i>, <i lang=es>el enchufe</i></p></div><div class="seance"><h3><span class="n">7</span>Parler de soi <span class="obj">P4</span></h3><p>Se présenter en trois phrases : d'où l'on vient, pourquoi l'on marche, son allergie. Pèlerin ou pèlerine : l'accord se fait tout seul.</p><div class="dire"><span lang=es>Soy de Quebec, en Canadá.</span><span lang=es>Hago el Camino por…</span><span lang=es>Soy alérgico / alérgica a…</span></div><p><b>On y fait :</b> Composer sa présentation (elle rejoint la poche, « Me présenter ») ; la dire ; répondre à « ¿De dónde eres? ».</p><p class="mots">Mots du lexique réemployés (8) : <i lang=es>Soy de Quebec, de Canadá.</i>, <i lang=es>¿De dónde eres?</i>, <i lang=es>¿Por qué haces el Camino?</i>, <i lang=es>¿Desde dónde caminas?</i>, <i lang=es>encantado, encantada</i>, <i lang=es>soy alérgico, soy alérgica</i>, <i lang=es>estoy cansado, estoy cansada</i>, <i lang=es>el peregrino, la peregrina</i></p></div><div class="seance"><h3><span class="n">8</span>Comprendre la réponse <span class="obj">P5</span></h3><p>Le plus dur n'est pas de demander, c'est d'entendre la réponse : <i>sí / no, hay / no hay, está completo, a la derecha, todo recto, lleva / no lleva</i>.</p><div class="dire"><span lang=es>—</span><span lang=es>(on n&#x27;y dit rien : on écoute)</span></div><p><b>On y fait :</b> Réponses dites vite, à la vitesse d'Espagne : que faut-il faire ? — la famille « Ce qu'on me répond », en version courte.</p><p class="mots">Mots du lexique réemployés (10) : <i lang=es>completo</i>, <i lang=es>a la izquierda</i>, <i lang=es>a la derecha</i>, <i lang=es>todo recto</i>, <i lang=es>¿Lleva…? — lleva, no lleva</i>, <i lang=es>el cruce</i>, <i lang=es>la subida</i>, <i lang=es>la bajada</i>, <i lang=es>arriba</i>, <i lang=es>abajo</i></p></div>
+</section>
+
+<section>
+  <h2>Le chemin : dix haltes, environ 33 jours de marche</h2>
+  <p>Les dix étapes de l'application ne sont pas des jours : ce sont les <b>haltes</b> où se joue une situation. Entre deux haltes,
+  on marche — calculé ici à 25 km par jour, à partir des kilomètres de l'application.</p>
+  <ol class="frise-marche"><li><div><b>Halte 1</b> · Roncesvalles<div class="jm">km 25 · 1 jour de marche depuis Saint-Jean</div></div><div class="barre" style="width:14%" aria-hidden="true"></div></li><li><div><b>Halte 2</b> · Pamplona<div class="jm">km 68 · 2 jours de marche depuis Roncesvalles</div></div><div class="barre" style="width:29%" aria-hidden="true"></div></li><li><div><b>Halte 3</b> · Puente la Reina<div class="jm">km 92 · 1 jour de marche depuis Pamplona</div></div><div class="barre" style="width:14%" aria-hidden="true"></div></li><li><div><b>Halte 4</b> · Logroño<div class="jm">km 163 · 3 jours de marche depuis Puente la Reina</div></div><div class="barre" style="width:43%" aria-hidden="true"></div></li><li><div><b>Halte 5</b> · Burgos<div class="jm">km 285 · 5 jours de marche depuis Logroño</div></div><div class="barre" style="width:71%" aria-hidden="true"></div></li><li><div><b>Halte 6</b> · Carrión de los Condes<div class="jm">km 369 · 4 jours de marche depuis Burgos</div></div><div class="barre" style="width:57%" aria-hidden="true"></div></li><li><div><b>Halte 7</b> · León<div class="jm">km 463 · 4 jours de marche depuis Carrión de los Condes</div></div><div class="barre" style="width:57%" aria-hidden="true"></div></li><li><div><b>Halte 8</b> · O Cebreiro<div class="jm">km 617 · 6 jours de marche depuis León</div></div><div class="barre" style="width:86%" aria-hidden="true"></div></li><li><div><b>Halte 9</b> · Sarria<div class="jm">km 659 · 2 jours de marche depuis O Cebreiro</div></div><div class="barre" style="width:29%" aria-hidden="true"></div></li><li><div><b>Halte 10</b> · Santiago de Compostela<div class="jm">km 775 · 5 jours de marche depuis Sarria</div></div><div class="barre" style="width:71%" aria-hidden="true"></div></li></ol>
+  <p style="font-size:14.5px;color:var(--muted)">Faire les 33 étapes une à une n'apprendrait rien de plus : les situations se
+  répéteraient (un lit, un repas, un lit, un repas), pour trois fois plus de contenu à écrire, enregistrer et faire relire.</p>
+</section>
+
+<section>
+  <h2>Ce que ça demande</h2>
+  <table class="cmp"><thead><tr><th>Poste</th><th>Estimation</th></tr></thead><tbody>
+    <tr><td>Écriture (huit séances, le test, le renommage)</td><td>deux à trois séances de travail</td></tr>
+    <tr><td>Sons neufs (Azure, voix d'Espagne)</td><td>environ 208, soit moins de 1 $</td></tr>
+    <tr><td>Dessins neufs</td><td>presque aucun : les mots sont déjà illustrés ; quelques pictogrammes composés en HTML (horloges, prix)</td></tr>
+    <tr><td>Boucle didactique</td><td>au moins trois tours, comme pour le chemin</td></tr>
+    <tr><td>Relecture espagnole</td><td>à ajouter au lot déjà prévu (les tournures neuves)</td></tr>
+  </tbody></table>
+</section>
+
+<section id="decisions">
+  <h2>Vos décisions</h2>
+  <p>Les recommandations sont cochées d'avance. Changez ce que vous voulez, ajoutez une note, puis exportez et collez le texte dans la conversation.</p>
+  <div class="dec" data-cle="nom"><h3>Comment appeler les dix étapes de l&#x27;application ?</h3><div class="opts"><label class="reco"><input type="radio" name="nom" value="haltes" checked>« Halte 4 · Logroño » <small>recommandé</small></label><label class=""><input type="radio" name="nom" value="etapes">« Étape 4 · Logroño »</label><label class=""><input type="radio" name="nom" value="jours">Garder « Jour 4 »</label></div><p>Halte dit juste : un lieu où l&#x27;on s&#x27;arrête, pas un jour de marche. « Étape » prête à la même confusion que « jour » : sur le Camino, une étape, c&#x27;est une journée de marche.</p></div><div class="dec" data-cle="marche"><h3>Afficher les jours de marche entre deux haltes ?</h3><div class="opts"><label class="reco"><input type="radio" name="marche" value="oui" checked>Oui : « 3 jours de marche jusqu&#x27;à Logroño » <small>recommandé</small></label><label class=""><input type="radio" name="marche" value="non">Non</label></div><p>C&#x27;est ce qui rend les 775 km lisibles : 10 haltes, mais environ 33 jours de marche.</p></div><div class="dec" data-cle="verrou"><h3>La préparation doit-elle être faite avant d&#x27;ouvrir le chemin ?</h3><div class="opts"><label class="reco"><input type="radio" name="verrou" value="conseillee" checked>Conseillée, jamais verrouillée <small>recommandé</small></label><label class=""><input type="radio" name="verrou" value="obligatoire">Obligatoire</label></div><p>Un pèlerin qui parle déjà un peu l&#x27;espagnol ne doit pas être retenu à la maison. L&#x27;accueil propose d&#x27;abord la préparation ; le test « Prêt à partir ? » dit où il en est.</p></div><div class="dec" data-cle="format"><h3>Le format des séances</h3><div class="opts"><label class="reco"><input type="radio" name="format" value="huit" checked>8 séances de 15 minutes <small>recommandé</small></label><label class=""><input type="radio" name="format" value="cinq">5 séances de 25 minutes</label></div><p>Quinze minutes tiennent dans une pause ; huit séances sur deux à quatre semaines laissent le temps d&#x27;oublier et de revoir.</p></div><div class="dec" data-cle="grammaire"><h3>Expliquer la grammaire ?</h3><div class="opts"><label class="reco"><input type="radio" name="grammaire" value="mecanique" checked>Un encadré « la mécanique » par séance, la seule forme qui sert <small>recommandé</small></label><label class=""><input type="radio" name="grammaire" value="aucune">Aucune explication : des phrases toutes faites</label><label class=""><input type="radio" name="grammaire" value="tableaux">Les conjugaisons complètes</label></div><p>Vous le demandiez : « l&#x27;utilisation d&#x27;un verbe ». Une forme à la fois (quisiera, me duele) suffit au chemin ; les tableaux complets découragent un débutant de 60 ans.</p></div><div class="dec" data-cle="test"><h3>Un test « Prêt à partir ? » à la fin de la préparation ?</h3><div class="opts"><label class="reco"><input type="radio" name="test" value="oui" checked>Oui : il situe, il ne verrouille pas <small>recommandé</small></label><label class=""><input type="radio" name="test" value="non">Non</label></div><p>Même règle que « Suis-je prêt ? » : des phrases nouvelles, deux formes, trois verdicts (Solide · En route · À reprendre).</p></div><div class="dec" data-cle="marcher"><h3>Un petit exercice « En marchant », cinq minutes par jour de marche ?</h3><div class="opts"><label class="reco"><input type="radio" name="marcher" value="apres" checked>Plus tard, après le pilote <small>recommandé</small></label><label class=""><input type="radio" name="marcher" value="maintenant">Maintenant, avec la préparation</label><label class=""><input type="radio" name="marcher" value="non">Non</label></div><p>Il donnerait la continuité des 33 jours sans contenu neuf (il reprend les mots vus). Mais c&#x27;est le pilote qui dira si les pèlerins ouvrent l&#x27;application pendant la marche.</p></div><div class="dec" data-cle="prix"><h3>La préparation dans la vente</h3><div class="opts"><label class="reco"><input type="radio" name="prix" value="gratuite" checked>Gratuite, comme le chemin <small>recommandé</small></label><label class=""><input type="radio" name="prix" value="payante">Comprise dans l&#x27;accès payant</label></div><p>Elle attire sans rien coûter (aucune IA) ; ce qui se paie reste la conversation.</p></div>
+  <textarea class="note" id="note" placeholder="Ce qui manque, ce qui est de trop, une séance à changer…"></textarea>
+  <button class="exporter" id="exp" type="button">Exporter mes décisions</button>
+  <pre class="json" id="sortie" hidden></pre>
+</section>
+</div>
+<script>
+const CLE = 'compostelle-preparation:decisions';
+function lire(){ try { return JSON.parse(localStorage.getItem(CLE) || '{}'); } catch (e) { return {}; } }
+function ecrire(v){ try { localStorage.setItem(CLE, JSON.stringify(v)); } catch (e) {} }
+const etat = lire();
+for (const [k, v] of Object.entries(etat.choix || {})) { const r = document.querySelector(`input[name="${k}"][value="${v}"]`); if (r) r.checked = true; }
+if (etat.note) document.getElementById('note').value = etat.note;
+function releve(){ const c = {}; document.querySelectorAll('.dec').forEach(d => { const r = d.querySelector('input:checked'); c[d.dataset.cle] = r ? r.value : null; }); return c; }
+document.querySelectorAll('.dec input').forEach(r => r.addEventListener('change', () => { etat.choix = releve(); ecrire(etat); }));
+document.getElementById('note').addEventListener('input', e => { etat.note = e.target.value; ecrire(etat); });
+document.getElementById('exp').addEventListener('click', async () => {
+  const txt = JSON.stringify({page: 'compostelle-preparation-plan', date: new Date().toLocaleDateString('fr-CA'),
+    decisions: releve(), note: document.getElementById('note').value}, null, 2);
+  const s = document.getElementById('sortie'); s.textContent = txt; s.hidden = false;
+  try { await navigator.clipboard.writeText(txt); document.getElementById('exp').textContent = 'Copié — collez-le dans la conversation'; }
+  catch (e) { document.getElementById('exp').textContent = 'Sélectionnez le texte ci-dessous et copiez-le'; }
+});
+</script>
+</body>
+</html>
