@@ -141,6 +141,10 @@ essai par la moitié du groupe accuse l'item ; une situation que personne ne ré
 <section>
   <h2>Les règles de décision</h2>
   <div class="these"><p class="cle">On lit le direct de la classe item par item, par groupe, et on décide sur le matériel.</p></div>
+  <p>La trousse n'envoie au direct que le <b>premier essai</b> de chaque item. La barre d'un item se lit donc ainsi :
+  « 1<sup>er</sup> coup » = réussi d'emblée ; « encore faux » = <b>raté au premier essai</b> (l'employé a pu se
+  reprendre ensuite, sur l'appareil). Le direct est à ouvrir par groupe : Progression des élèves, bloc « Le direct de
+  la classe », module Hôtel Rive-Claire.</p>
   <table class="cmp"><thead><tr><th>Ce qu'on voit</th><th>Ce qu'on en conclut</th><th>Ce qu'on fait</th></tr></thead><tbody>
     <tr><td>Un item <b>raté au premier essai par la moitié</b> du groupe ou plus</td><td>L'item est en cause : image ambiguë, voix mal dite, distracteur trop proche</td><td>On le réécoute, on le regarde, on le refait</td></tr>
     <tr><td>Un item <b>réussi par tous</b> au premier essai</td><td>Il n'apprend rien à ce groupe</td><td>On le garde pour les débutants, ou on le retire</td></tr>

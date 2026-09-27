@@ -360,6 +360,12 @@ function ecranComptoir(){
 // par la moitié accuse l'item »). Jamais les phrases libres du comptoir, ni
 // l'oral, ni la langue de l'employé. La langue APPRISE est dans l'identifiant de
 // zone : les groupes fr→en et es→fr ne se mêlent pas.
+// `essais` compte les erreurs AVANT la réponse (0 = du premier coup) : c'est
+// ainsi que /api/direct classe « 1er coup · après un essai · encore faux ». La
+// page n'envoie que le premier essai, donc toujours 0 ; un « encore faux » au
+// direct se lit « raté au premier essai ». (Envoyé à 1 jusqu'au 27 sept. 2026 :
+// la répétition générale du pilote a montré qu'aucune réponse n'aurait compté
+// « du premier coup ».)
 const CTX = (function () {
   try {
     const moi = new URLSearchParams(location.search);
@@ -374,9 +380,15 @@ function rapporter(o){
   if (!CTX) return;
   fetch('/api/student/progress', {method: 'POST', headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(Object.assign({code: CTX.code, activityId: CTX.activityId,
-      activityTitle: 'Hôtel Rive-Claire', event: 'zone_repondue', bonne: '', reponse: '', essais: 1}, o))}).catch(() => {});
+      activityTitle: 'Hôtel Rive-Claire', event: 'zone_repondue', bonne: '', reponse: '', essais: 0}, o))}).catch(() => {});
 }
 const idItem = it => (it.m && it.m.id) || (it.r && it.r.id) || it.id || it.nom || it.lit || '?';
+// Ce que la formatrice lit au direct : l'item dans la langue apprise, son code entre parenthèses.
+// (Le code seul, « lit-appoint », ne se lisait pas — vu à la répétition générale du 27 sept. 2026.)
+const libelle = (t, id) => { const s = t && typeof t === 'object' ? (t[L.apprend] || '') : String(t || '');
+  return (s.length > 120 ? s.slice(0, 117) + '…' : s) + (s ? ' (' + id + ')' : String(id)); };
+const libelleItem = it => { const dem = it.lit && D.ex.demandes.find(d => d[0] === it.id);
+  return libelle(it.m || (it.r && it.r.client) || it.nom || it.dit || (dem && dem[3]) || '', idItem(it)); };
 
 // ── Les exercices ────────────────────────────────────────────────────────
 const FAMILLES = ['entends','image','souviens','dire','pieges','epeler','nombres','client','reponds'];
@@ -579,7 +591,7 @@ function noter(ok, msg, b){
   const fb = document.getElementById('fb');
   if (X.essais === 0 && !X.resolu) { const it = X.items[X.i];
     rapporter({zone: `hr-${L.apprend}-x-${X.fam}-${idItem(it)}`, exo: `hr-x-${X.fam}`, exoNum: `Exercice · ${L.apprend.toUpperCase()}`,
-      exoTitre: D.ui['x_' + X.fam].fr, section: 'exercices', type: X.fam, enonce: String(idItem(it)), ok}); }
+      exoTitre: D.ui['x_' + X.fam].fr, section: 'exercices', type: X.fam, enonce: libelleItem(it), ok}); }
   if (ok) {
     if (X.essais === 0) X.premier++;
     X.resolu = true;
@@ -686,7 +698,7 @@ function suivantItem(){ TX.bVide = null; TX.ordre = null; TX.ecoutes = 0; TX.rej
 function repA(ok){
   const it = cranItems()[TX.idx];
   rapporter({zone: `hr-${L.apprend}-test${TX.forme}-A-${it[0]}`, exo: 'hr-test-A', exoNum: `Test · forme ${TX.forme} · cran ${TX.cran}`,
-    exoTitre: D.test.ui.pA.fr, section: 'test', type: 'test', enonce: it[0], ok});
+    exoTitre: D.test.ui.pA.fr, section: 'test', type: 'test', enonce: libelle(it[2], it[0]), ok});
   if (ok) TX.bons++; else TX.err++;
   TX.idx++;
   if (TX.bons === 3) {
@@ -699,7 +711,7 @@ function repA(ok){
 function repB(ok){
   const it = D.test.B[TX.forme][TX.b.i];
   rapporter({zone: `hr-${L.apprend}-test${TX.forme}-B-${it[0]}`, exo: 'hr-test-B', exoNum: `Test · forme ${TX.forme} · ${it[1]}`,
-    exoTitre: D.test.ui.pB.fr, section: 'test', type: 'test', enonce: it[0], ok});
+    exoTitre: D.test.ui.pB.fr, section: 'test', type: 'test', enonce: libelle(it[2], it[0]), ok});
   if (ok) TX.b[it[1]]++;
   TX.b.i++;
   if (TX.b.i >= D.test.B[TX.forme].length) return finPartie();
@@ -854,7 +866,7 @@ function clicTest(b){
   if (t === 'c') {
     const k = b.dataset.k, bonne = it[3];
     rapporter({zone: `hr-${L.apprend}-test${TX.forme}-C-${it[0]}`, exo: 'hr-test-C', exoNum: `Test · forme ${TX.forme} · qui décide`,
-      exoTitre: D.test.ui.pC.fr, section: 'test', type: 'test', enonce: it[0], ok: k === bonne});
+      exoTitre: D.test.ui.pC.fr, section: 'test', type: 'test', enonce: libelle(it[2], it[0]), ok: k === bonne});
     if (k === bonne) TX.c.ok++;
     // Accorder soi-même ce qui revient au gérant, ou ce que personne ne peut accorder.
     if (k === 'moi' && bonne !== 'moi') TX.c.promesse = true;
