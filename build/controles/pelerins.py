@@ -119,6 +119,15 @@ R.depuis_retour(res2["session"])
 ok(R.etat(R.trouver(code))["restant"] == 97 + 50, "la recharge ajoute 50 conversations")
 ok(R.commencer_achat("https://x", recharge="PCZZZZZZ")[1][1] == 404, "recharge d'un code inconnu : refusée")
 
+print("Le ménage (Loi 25)")
+vieux = [{"code": "PCAAAAAA", "etat": "actif", "expire": "2000-01-01"},
+         {"code": "PCBBBBBB", "etat": "actif", "expire": "2999-01-01"},
+         {"code": "PCCCCCCC", "etat": "reserve", "cree": "2000-01-01T00:00:00+00:00"},
+         {"code": "PCDDDDDD", "etat": "reserve", "cree": P._maintenant()}]
+ok(R.menage(vieux) == 2 and [x["code"] for x in vieux] == ["PCBBBBBB", "PCDDDDDD"],
+   "un code expiré depuis plus d'un an et une réservation de plus de 7 jours sont effacés")
+ok(P.offre()["conservation"] == 365, "la durée de conservation est lue par l'offre (365 jours)")
+
 print("Les codes")
 ok(not P.est_code("ABC123") and not P.est_code("S" + "X" * 16), "un code d'élève ou un jeton de séance n'est pas un code de pèlerin")
 ok(not P.est_code("PC0OIL11"), "l'alphabet exclut 0, O, I, L, 1")

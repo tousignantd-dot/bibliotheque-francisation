@@ -73,6 +73,7 @@ def donnees():
     TS.verifier()
     LX.verifier()
     PR = C.charger("preparation")
+    CF = C.charger("confidentialite"); CF.verifier()
     # Les leçons narrées (build/compostelle_lecons.py) : seulement celles qui ont leur son.
     LE = C.charger("lecons").LECONS
     temps_l = json.loads((C.CONTENU / "lecons_temps.json").read_text()) if (C.CONTENU / "lecons_temps.json").exists() else {}
@@ -140,6 +141,8 @@ def donnees():
             "test": {"formes": TS.FORMES, "objectifs": TS.OBJECTIFS, "seuil": TS.SEUIL},
             "prep": {"seances": PR.SEANCES, "test": PR.TEST, "objectifs": PR.OBJECTIFS, "seuil": PR.SEUIL, "conseils": PR.CONSEILS,
                      "fin": PR.FIN, "halte": PR.HALTE, "lecons": lecons},
+            "confid": {"responsable": CF.RESPONSABLE, "courriel": CF.COURRIEL, "maj": CF.MISE_A_JOUR, "bref": CF.EN_BREF,
+                       "donnees": CF.DONNEES, "hors": CF.HORS_QUEBEC, "nefait": CF.NE_FAIT_PAS},
             "poids": round(poids / 1e6), "planches": LX.PLANCHES, "mots": mots, "pieges": pieges, "perso": perso,
             "etapes": etapes, "poche": poche, "sons": sons}, manque, len(tous)
 
@@ -263,6 +266,18 @@ svg.tampon{opacity:.9}
   border-left:5px solid var(--accent);border-radius:14px;padding:12px 14px;margin-bottom:12px;font:inherit;color:var(--text-body)}
 .carte-prep b{font-size:17px;color:var(--text-strong)}
 .carte-prep .muted{font-size:14px}
+.pied{max-width:720px;margin:24px auto 0;padding:14px 16px 28px;text-align:center;font-size:13.5px;color:var(--text-muted)}
+.pied a{color:var(--text-muted)}
+.a-remplir{background:#FDF0CF;color:#7A4A00;border:1px dashed #D9A43A;border-radius:6px;padding:0 6px;font-weight:800}
+.cf-bref ul{margin:0;padding-left:20px}.cf-bref li{margin:6px 0}
+.cf-ligne dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:8px 0 0;font-size:15px}
+.cf-ligne dt{color:var(--text-muted);font-weight:700}.cf-ligne dd{margin:0}
+.cf-hors{margin:6px 0}
+.avis-fond{position:fixed;inset:0;background:rgba(19,35,59,.55);display:grid;place-items:center;padding:16px;z-index:50}
+.avis-micro{background:#fff;border-radius:16px;padding:18px;max-width:440px;width:100%;box-shadow:0 16px 40px rgba(0,0,0,.3)}
+.avis-micro h3{margin:0 0 8px}.avis-micro p{margin:0 0 10px;font-size:15.5px}
+.avis-micro .rangee{display:flex;gap:8px;flex-wrap:wrap}
+@media (max-width:420px){.cf-ligne dl{grid-template-columns:1fr}.cf-ligne dt{margin-top:4px}}
 /* accueil en deux temps : le sac, puis le chemin */
 .deux-temps{list-style:none;padding:0;margin:4px 0 10px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .deux-temps a{display:flex;flex-direction:column;gap:2px;text-decoration:none;color:var(--text-muted);background:#fff;border:1px solid var(--line-200);border-radius:12px;padding:10px 12px 10px 48px;position:relative;min-height:60px}
@@ -497,6 +512,7 @@ details.rub summary span{font-size:13px;color:var(--text-muted);font-weight:700;
   <span class="secteur"><small>Voyage · chemin de Saint-Jacques</small><b>En route vers Compostelle</b></span>
 </div></div>
 <main id="app"></main>
+<footer class="pied"><a href="#guide">Comment ça marche ?</a> · <a href="#confidentialite">Confidentialité</a></footer>
 <audio id="lecteur" preload="none"></audio>
 <script>
 const D = %%DONNEES%%;
@@ -579,7 +595,34 @@ const sonDe = (base, texte) => base + suf(texte) + '.mp3';
 const Reco = window.SpeechRecognition || window.webkitSpeechRecognition;
 let recoActive = null;
 function arreterMicro(){ if (recoActive) { try { recoActive.stop(); } catch(e) {} } }
+/* Loi 25 (27 sept. 2026) : avant le premier usage, dire où va la voix — chez
+   le fournisseur du navigateur, pas chez nous. Accepté une fois, gardé dans
+   le téléphone ; refusé, rien ne s'ouvre et l'exercice se fait en touchant. */
+function fournisseurVoix(){
+  const u = navigator.userAgent;
+  if (/Edg\//.test(u)) return 'Microsoft (Edge)';
+  if (/Chrome|CriOS|Android/.test(u)) return 'Google (Chrome)';
+  if (/Safari|iPhone|iPad|Macintosh/.test(u)) return 'Apple (Safari)';
+  return 'l’éditeur de votre navigateur';
+}
 function ecouterMicro(surTexte, surFin){
+  if (S.avisMicro) return ouvrirMicro(surTexte, surFin);
+  const fond = document.createElement('div'); fond.className = 'avis-fond';
+  fond.innerHTML = `<div class="avis-micro" role="dialog" aria-modal="true" aria-labelledby="avisT">
+    <h3 id="avisT">Avant d'ouvrir le micro</h3>
+    <p>Pour comprendre ce que vous dites, l'application utilise la reconnaissance vocale de <b>votre navigateur</b>.
+    Votre voix est donc envoyée à <b>${fournisseurVoix()}</b>, aux États-Unis, qui la transcrit et renvoie le texte.</p>
+    <p>Nous ne recevons pas votre voix et ne l'enregistrons pas. Le texte reste dans votre téléphone.</p>
+    <p class="muted" style="font-size:14px">Vous préférez ne pas l'utiliser ? Tous les exercices se font aussi en touchant. <a href="#confidentialite">En savoir plus</a></p>
+    <div class="rangee"><button class="btn btn--pri" id="avisOui">J'ai compris, ouvrir le micro</button><button class="btn" id="avisNon">Pas maintenant</button></div></div>`;
+  document.body.appendChild(fond);
+  const fermer = () => fond.remove();
+  fond.querySelector('#avisOui').onclick = () => { S.avisMicro = aujourdhui(); sauver(); fermer(); ouvrirMicro(surTexte, surFin); };
+  fond.querySelector('#avisNon').onclick = () => { fermer(); surFin(''); };
+  fond.querySelector('a').onclick = () => fermer();
+  fond.querySelector('#avisOui').focus();
+}
+function ouvrirMicro(surTexte, surFin){
   // Le micro qui coupe (leçon de Francœur) : reconnaissance continue qui
   // accumule, fin sur « Arrêter » ou 4 s de silence (9 s avant le premier mot).
   const r = new Reco(); r.lang = 'es-ES'; r.continuous = true; r.interimResults = true;
@@ -677,6 +720,7 @@ function rendre(){
   const p = (location.hash.slice(1) || 'accueil').split('/');
   window.scrollTo(0, 0);
   if (p[0] === 'guide') return vueGuide();
+  if (p[0] === 'confidentialite') return vueConfidentialite();
   if (p[0] === 'achat') return vueAchat(p[1]);
   if (p[0] === 'achat-annule') return vueAchatAnnule();
   if (!S.genre && p[0] !== 'reglages') return vueBienvenue();
@@ -696,6 +740,37 @@ function rendre(){
   if (p[0] === 'test') return vueTest();
   if (p[0] === 'compostela') return vueCompostela();
   return vueAccueil();
+}
+
+/* ---------- confidentialité (Loi 25) ---------- */
+/* Texte : build/contenu/compostelle/confidentialite.py. Les cases à remplir
+   restent visibles en ambre ; la durée de conservation vient du serveur. */
+function vueConfidentialite(){
+  const C = D.confid;
+  const ambre = t => `<span class="a-remplir">${t}</span>`;
+  const resp = C.responsable ? `${E(C.responsable[0])}, ${E(C.responsable[1])}` : ambre('personne responsable à désigner');
+  const rendu = cons => {
+    const duree = `effacés ${cons} jours après la fin de votre accès (et un code jamais payé, après 7 jours)`;
+    app.innerHTML = `${retour(S.genre ? 'accueil' : '', S.genre ? 'Accueil' : 'Retour')}
+    <p class="surtitre">Loi 25 · mise à jour le ${E(C.maj)}</p><h1>Vos renseignements personnels</h1>
+    <div class="carte cf-bref"><h3 style="margin-top:0">En bref</h3><ul>${C.bref.map(t => `<li>${t}</li>`).join('')}</ul></div>
+    <h2>Ce que nous savons de vous, et où c'est</h2>
+    ${C.donnees.map(([q, ou, qui, dur]) => `<div class="carte cf-ligne"><b>${E(q)}</b>
+      <dl><dt>Où</dt><dd>${E(ou)}</dd><dt>Qui le voit</dt><dd>${E(qui)}</dd><dt>Combien de temps</dt><dd>${E(dur).replace('{conservation}', duree)}</dd></dl></div>`).join('')}
+    <h2>Ce qui sort du Québec</h2>
+    <p>Certains services sont situés à l'extérieur du Québec. Voici lesquels, et ce qu'ils reçoivent :</p>
+    <div class="carte">${C.hors.map(([qui, quoi, ou]) => `<p class="cf-hors"><b>${E(qui)}</b> — ${E(quoi)} <span class="muted">(${E(ou)})</span></p>`).join('')}</div>
+    <p>Vous pouvez éviter l'envoi de votre voix : n'utilisez pas le micro, et répondez en touchant. Vous pouvez éviter l'envoi à Anthropic : n'utilisez pas « Parler librement ». Le reste de l'application fonctionne sans.</p>
+    <h2>Ce que nous ne faisons pas</h2><ul>${C.nefait.map(t => `<li>${E(t)}</li>`).join('')}</ul>
+    <h2>Vos droits</h2>
+    <p>Vous pouvez demander à savoir ce que nous détenons à votre sujet, le faire corriger ou effacer. Comme nous ne savons pas qui vous êtes, donnez-nous votre <b>code d'accès</b> : c'est tout ce que nous avons.
+    Ce qui est dans votre téléphone, vous l'effacez vous-même : <a href="#reglages">Réglages</a> → recommencer, ou vider les données du navigateur.</p>
+    <p>Pour toute question ou demande : <a href="mailto:${E(C.courriel)}">${E(C.courriel)}</a>. Responsable de la protection des renseignements personnels : ${resp}.</p>
+    <p class="muted" style="font-size:14px">Si notre réponse ne vous satisfait pas, vous pouvez vous adresser à la Commission d'accès à l'information du Québec.</p>
+    <h2>En cas d'incident</h2>
+    <p>Si un incident touchait des renseignements que nous détenons (vos codes), nous le consignerions et avertirions la Commission d'accès à l'information et les personnes concernées lorsque la loi l'exige.</p>`;
+  };
+  rendu('365'); offreServeur().then(o => { if (o && o.conservation && location.hash === '#confidentialite') rendu(String(o.conservation)); });
 }
 
 /* ---------- comment ça marche ---------- */

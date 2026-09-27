@@ -60,6 +60,9 @@ def offre():
         "jours": _entier("COMPOSTELLE_DUREE_JOURS", 365),
         "toursMax": _entier("COMPOSTELLE_TOURS_MAX", 16),
         "parJour": _entier("COMPOSTELLE_PAR_JOUR", 30),
+        # Loi 25 : un code est effacé ce nombre de jours après son expiration
+        # (menage()) ; la page de confidentialité le relit ici.
+        "conservation": _entier("COMPOSTELLE_CONSERVATION_JOURS", 365),
     }
 
 
@@ -160,6 +163,28 @@ class Registre:
             if c not in pris:
                 return c
 
+    # -- le ménage (Loi 25) ---------------------------------------------------
+    @staticmethod
+    def _a_effacer(p, aujourdhui, conservation):
+        """Un code actif, `conservation` jours après son expiration ; un code
+        réservé jamais payé, après 7 jours (crediter() le recrée si un paiement
+        tardif arrive)."""
+        if p.get("etat") == "actif":
+            fin = p.get("expire", "")
+            return bool(fin) and (_dt.date.fromisoformat(fin) + _dt.timedelta(days=conservation)).isoformat() < aujourdhui
+        cree = str(p.get("cree", ""))[:10]
+        return bool(cree) and (_dt.date.fromisoformat(cree) + _dt.timedelta(days=7)).isoformat() < aujourdhui
+
+    def menage(self, tous=None):
+        """Retire les codes à effacer. Appelé à chaque achat (sous le verrou) :
+        sans cron, l'effacement a lieu au plus tard au prochain achat. Rend le
+        nombre de codes retirés."""
+        j, c = _aujourdhui(), offre()["conservation"]
+        garde = [p for p in tous if not self._a_effacer(p, j, c)]
+        n = len(tous) - len(garde)
+        tous[:] = garde
+        return n
+
     # -- l'achat --------------------------------------------------------------
     def commencer_achat(self, adresse, recharge=None):
         """Crée la session Stripe Checkout. Rend ({url, session}, None) ou (None, (message, statut))."""
@@ -177,6 +202,7 @@ class Registre:
         else:
             with self.verrou:
                 tous = self.charger()
+                self.menage(tous)
                 code = self._nouveau_code({p.get("code") for p in tous})
                 # Réservé, pas actif : il le devient au paiement. Un code réservé
                 # jamais payé n'ouvre rien, et le ménage peut le retirer.
