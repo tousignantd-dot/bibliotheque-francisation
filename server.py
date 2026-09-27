@@ -21057,7 +21057,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         # bilan corrigeait la grammaire et jamais les gestes, qui sont le but).
         # Seuls les scénarios qui déclarent une consigne `bilan` l'acceptent.
         if body.get("bilan"):
-            consigne = JEU_DE_ROLE_SCENARIOS[scenario].get("bilan")
+            sc_bilan = JEU_DE_ROLE_SCENARIOS[scenario]
+            consigne = sc_bilan.get("bilan")
+            # Un scénario peut rendre une consigne PAR CAS (le comptoir : le juge
+            # reçoit les faits du client et les gestes attendus).
+            if callable(consigne):
+                consigne = consigne(cas)
             if not consigne:
                 json_response(self, {"error": "Pas de bilan pour ce scénario"}, 400)
                 return
@@ -21070,9 +21075,12 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             if not lignes:
                 json_response(self, {"error": "Visite vide"}, 400)
                 return
+            modele_bilan = (MODELE_CONVERSATION if sc_bilan.get("bilan_modele") == "conversation"
+                            else None)
             parsed, err = self._call_anthropic_json(
-                consigne, "\n".join(lignes), max_tokens=900,
-                route="jeu-de-role-bilan", code=code, module=scenario)
+                consigne, "\n".join(lignes), max_tokens=sc_bilan.get("bilan_max", 900),
+                route="jeu-de-role-bilan", code=code, module=scenario,
+                modele=modele_bilan, timeout=60 if modele_bilan else 25)
             if err:
                 json_response(self, {"error": err[0]}, err[1])
                 return
@@ -21425,7 +21433,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         json_response(self, {"reponse": texte})
 
     def _call_anthropic_json(self, system_prompt, user_content, max_tokens=400,
-                             route="?", code=None, module=None):
+                             route="?", code=None, module=None, modele=None, timeout=25):
         """Appelle l'API Anthropic et retourne (parsed_dict, None) en cas de
         succès, ou (None, (error_message, status_code)) en cas d'échec. Le
         modèle doit répondre avec un objet JSON pur (voir prompts appelants).
@@ -21441,7 +21449,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         eleve_id, groupe_id = self._repere_eleve(code)
 
         payload = json.dumps({
-            "model": MODELE_CORRECTION,
+            "model": modele or MODELE_CORRECTION,
             "max_tokens": max_tokens,
             "system": system_prompt,
             "messages": [{"role": "user", "content": user_content}],
@@ -21459,11 +21467,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         )
 
         def _noter(usage=None, statut="ok", http=None):
-            journal_api.noter(route, MODELE_CORRECTION, eleve_id, groupe_id,
+            journal_api.noter(route, modele or MODELE_CORRECTION, eleve_id, groupe_id,
                               module=module, usage=usage, statut=statut, http=http)
 
         try:
-            with urllib.request.urlopen(req, timeout=25) as resp:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
                 result = json.loads(resp.read().decode("utf-8"))
         except urllib.error.HTTPError as e:
             detail = e.read().decode("utf-8", errors="replace")

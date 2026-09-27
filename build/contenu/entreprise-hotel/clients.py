@@ -48,6 +48,10 @@ def R(fr, en, es):
 LANGUES = ("fr", "en", "es")
 HUMEURS = ["neutre", "contente", "hesitante", "impatiente"]
 PALIERS = ["debutant", "fonctionnel", "aise"]
+# Audit du comptoir joué, tour 1 (F1) : le débutant ne voyait que cinq clients sur
+# huit, et le seuil d'O3 (6 sur 8) était hors d'atteinte. Le palier règle la façon
+# de parler du client, jamais la liste.
+TOUS = PALIERS
 
 # Comment le client parle, selon la langue apprise (variétés décidées le 24 sept.).
 PARLER = {
@@ -112,26 +116,26 @@ GESTES = [
 # Les faits s'écrivent en français : ce sont des consignes au modèle, qui PARLE
 # la langue apprise (règle posée par `systeme()`).
 CLIENTS = [
-    ("arrivee", "f", "Bélanger", ["debutant", "fonctionnel", "aise"], "comptoir",
+    ("arrivee", "f", "Bélanger", TOUS, "comptoir",
      ["accueil", "epeler", "confirmer"],
      R("Elle arrive avec une réservation. Trouvez-la, et confirmez les dates.",
        "She arrives with a booking. Find it and confirm the dates.",
        "Llega con una reservación. Encuéntrela y confirme las fechas."),
-     R("Réservation : BÉLANGER · 14 → 16 oct. · 2 nuits · 2 lits queen · 338 $",
-       "Booking: BÉLANGER · Oct 14 → 16 · 2 nights · 2 queen beds · $338",
-       "Reservación: BÉLANGER · 14 → 16 oct. · 2 noches · 2 camas queen · 338 dólares"),
+     R("Arrivées du 14 oct. : BÉLAND · 1 lit king · 1 nuit | BÉLANGER · 2 lits queen · 2 nuits (→ 16 oct.) · 338 $ | BOULANGER · 1 lit queen · 3 nuits · déjeuner : 6 h 30 à 10 h",
+       "Arrivals, Oct 14: BÉLAND · 1 king bed · 1 night | BÉLANGER · 2 queen beds · 2 nights (→ Oct 16) · $338 | BOULANGER · 1 queen bed · 3 nights · breakfast: 6:30 to 10 a.m.",
+       "Llegadas del 14 de oct.: BÉLAND · 1 cama king · 1 noche | BÉLANGER · 2 camas queen · 2 noches (→ 16 oct.) · 338 dólares | BOULANGER · 1 cama queen · 3 noches · desayuno: de 6:30 a 10"),
      "a woman in her fifties, short silver-blond hair, small round glasses, a teal rain jacket "
      "zipped halfway over a cream sweater, a travel bag strap on one shoulder",
      ["Tu es madame Bélanger. Tu arrives à l'hôtel avec une réservation pour deux nuits, du 14 au "
       "16 octobre, une chambre à deux lits queen.",
-      "Au début, tu dis seulement que tu as une réservation et ton nom : « Bélanger ». Tu ne "
-      "l'épelles QUE si le réceptionniste te le demande : B-É-L-A-N-G-E-R.",
+      "Au début, tu dis seulement que tu as une réservation et ton nom : « Bélanger ». Ton "
+      "épellation, si on te la demande : B-É-L-A-N-G-E-R.",
       "Si le réceptionniste répète les dates et le type de chambre, tu confirmes, contente.",
       "S'il se trompe de dates ou de lits, tu le corriges poliment.",
       "Quand on te donne la carte-clé et le numéro de chambre, tu demandes l'heure du déjeuner, "
       "puis tu remercies et tu pars."]),
 
-    ("sans-resa", "m", "Okafor", ["debutant", "fonctionnel", "aise"], "comptoir",
+    ("sans-resa", "m", "Okafor", TOUS, "comptoir",
      ["accueil", "confirmer", "frais"],
      R("Il n'a pas de réservation. Il veut une chambre pour ce soir.",
        "He has no booking. He wants a room for tonight.",
@@ -142,8 +146,10 @@ CLIENTS = [
        "breakfast not included: $18",
        "Esta noche: 1 habitación con cama king libre, 189 dólares · 2 habitaciones con 2 camas "
        "queen libres, 169 dólares · desayuno no incluido: 18 dólares"),
-     "a tall man in his thirties, very short black hair, a neat short beard, a dark green "
-     "bomber jacket over a grey t-shirt, a backpack strap on one shoulder",
+     # Audit t1 (C2) : sans carnation nommée, le visage sortait blanc papier.
+     "a tall Black man in his thirties with warm dark brown skin (the face and neck are filled "
+     "with a flat dark brown skin colour), very short black hair, a neat short beard, a dark "
+     "green bomber jacket over a grey t-shirt, a backpack strap on one shoulder",
      ["Tu es monsieur Okafor. Tu arrives sans réservation et tu veux une chambre pour UNE nuit, "
       "ce soir, avec un grand lit.",
       "Tu demandes le prix. Si on te dit 189 $, tu demandes si le déjeuner est compris.",
@@ -153,7 +159,7 @@ CLIENTS = [
       "Si le réceptionniste répète le prix et le nombre de nuits avant de conclure, tu es "
       "content."]),
 
-    ("complet", "f", "Hoang", ["fonctionnel", "aise"], "comptoir",
+    ("complet", "f", "Hoang", TOUS, "comptoir",
      ["accueil", "proposer"],
      R("Elle veut une chambre ce soir. L'hôtel est complet.",
        "She wants a room tonight. The hotel is full.",
@@ -171,14 +177,14 @@ CLIENTS = [
       "demain), tu acceptes et tu demandes comment te rendre à l'autre hôtel.",
       "S'il te promet une chambre qu'il n'a pas, tu le crois et tu attends."]),
 
-    ("plainte", "m", "Tremblay", ["debutant", "fonctionnel", "aise"], "comptoir",
+    ("plainte", "m", "Tremblay", TOUS, "comptoir",
      ["accueil", "epeler", "relais"],
      R("Il revient au comptoir. Sa carte-clé ne marche pas.",
        "He comes back to the desk. His key card doesn't work.",
        "Regresa al mostrador. Su tarjeta llave no funciona."),
-     R("Chambre 412 · TREMBLAY · 3 nuits · encodeur de cartes-clés sur le comptoir",
-       "Room 412 · TREMBLAY · 3 nights · key card encoder on the desk",
-       "Habitación 412 · TREMBLAY · 3 noches · codificador de tarjetas en el mostrador"),
+     R("Clients en séjour : ch. 214 TREMBLAY-ROY · ch. 412 TREMBLAY · ch. 421 TREMBLE · encodeur de cartes-clés sur le comptoir",
+       "Guests in house: rm 214 TREMBLAY-ROY · rm 412 TREMBLAY · rm 421 TREMBLE · key card encoder on the desk",
+       "Huéspedes: hab. 214 TREMBLAY-ROY · hab. 412 TREMBLAY · hab. 421 TREMBLE · codificador de tarjetas en el mostrador"),
      "a man in his sixties, bald on top with short white hair on the sides, a white moustache, "
      "a navy fleece jacket, holding nothing",
      ["Tu es monsieur Tremblay, chambre 412. Ta carte-clé ne marche plus : la porte ne s'ouvre "
@@ -190,14 +196,14 @@ CLIENTS = [
       "demande au gérant, tu acceptes. S'il te promet lui-même un rabais, tu le remercies "
       "chaleureusement."]),
 
-    ("facture", "f", "Castillo", ["fonctionnel", "aise"], "comptoir",
+    ("facture", "f", "Castillo", TOUS, "comptoir",
      ["frais", "relais"],
      R("Elle part. Elle ne comprend pas un montant sur sa facture.",
        "She is checking out. She doesn't understand an amount on her bill.",
        "Se va del hotel. No entiende un cargo en su cuenta."),
-     R("Facture CASTILLO · chambre 2 nuits 338 $ · stationnement 2 × 15 $ = 30 $ · taxes · total 422,28 $",
-       "Bill CASTILLO · room 2 nights $338 · parking 2 × $15 = $30 · taxes · total $422.28",
-       "Cuenta CASTILLO · habitación 2 noches 338 dólares · estacionamiento 2 × 15 = 30 dólares · impuestos · total 422.28 dólares"),
+     R("Départs du jour : ch. 305 CASTILLO · ch. 503 CASTELLI | Facture CASTILLO : chambre 2 nuits 338 $ · stationnement 2 × 15 $ = 30 $ · taxe d'hébergement 11,83 $ · TPS et TVQ 56,88 $ · total 436,71 $",
+       "Departures today: rm 305 CASTILLO · rm 503 CASTELLI | Bill CASTILLO: room 2 nights $338 · parking 2 × $15 = $30 · lodging tax $11.83 · GST and QST $56.88 · total $436.71",
+       "Salidas de hoy: hab. 305 CASTILLO · hab. 503 CASTELLI | Cuenta CASTILLO: habitación 2 noches 338 dólares · estacionamiento 2 × 15 = 30 dólares · impuesto de hospedaje 11.83 · impuestos federal y provincial 56.88 · total 436.71 dólares"),
      "a woman in her forties, dark wavy shoulder-length hair, gold hoop earrings, a red trench "
      "coat over a black top",
      ["Tu es madame Castillo. Tu pars ce matin. Sur ta facture, tu vois 30 $ que tu ne "
@@ -208,9 +214,10 @@ CLIENTS = [
       "Enlever un frais, c'est le gérant qui le décide. S'il transmet ta demande au gérant, tu "
       "acceptes d'attendre. S'il enlève lui-même le frais, tu es contente.",
       "Tu demandes aussi si les taxes peuvent être enlevées « tant qu'à y être » : elles ne "
-      "s'enlèvent jamais."]),
+      "s'enlèvent jamais.",
+      "Ta chambre était la 305."]),
 
-    ("renseignement", "m", "Nakamura", ["debutant", "fonctionnel", "aise"], "comptoir",
+    ("renseignement", "m", "Nakamura", TOUS, "comptoir",
      ["accueil", "confirmer"],
      R("Il veut des renseignements : le déjeuner et le Vieux-Port.",
        "He wants some information: breakfast and the Old Port.",
@@ -231,7 +238,7 @@ CLIENTS = [
       "combien de temps ça prend.",
       "Tu remercies et tu pars."]),
 
-    ("telephone", "m", "Vuković", ["fonctionnel", "aise"], "telephone",
+    ("telephone", "m", "Vuković", TOUS, "telephone",
      ["epeler", "confirmer"],
      R("Au téléphone : il veut réserver. Pas de visage : faites répéter, épeler, confirmer.",
        "On the phone: he wants to book. No face: ask to repeat, spell and confirm.",
@@ -249,14 +256,14 @@ CLIENTS = [
       "Si le réceptionniste ne redit pas les dates, le nom et le numéro avant de raccrocher, tu "
       "demandes : « Vous avez bien tout noté? »"]),
 
-    ("hors-regle", "f", "Leblanc", ["debutant", "fonctionnel", "aise"], "comptoir",
+    ("hors-regle", "f", "Leblanc", TOUS, "comptoir",
      ["accueil", "proposer", "relais"],
      R("Elle demande deux faveurs pour son anniversaire de mariage.",
        "She asks for two favours for her wedding anniversary.",
        "Pide dos favores por su aniversario de bodas."),
-     R("Chambre 208 · LEBLANC · départ : 11 h · départ tardif et surclassement : décision du gérant",
-       "Room 208 · LEBLANC · check-out: 11 a.m. · late check-out and upgrades: manager's decision",
-       "Habitación 208 · LEBLANC · salida: 11 a. m. · salida tardía y mejora de habitación: decide el gerente"),
+     R("Clients en séjour : ch. 208 LEBLANC · ch. 280 LEBLOND · départ : 11 h · départ tardif et surclassement : décision du gérant",
+       "Guests in house: rm 208 LEBLANC · rm 280 LEBLOND · check-out: 11 a.m. · late check-out and upgrades: manager's decision",
+       "Huéspedes: hab. 208 LEBLANC · hab. 280 LEBLOND · salida: 11 a. m. · salida tardía y mejora de habitación: decide el gerente"),
      "a woman in her sixties, curly auburn hair, pearl stud earrings, a lilac blazer over a "
      "white blouse, smiling politely",
      ["Tu es madame Leblanc, chambre 208. C'est ton anniversaire de mariage.",
@@ -312,6 +319,14 @@ def systeme(apprend):
             + ("LE LIEU : tu APPELLES l'hôtel au téléphone. Vous ne vous voyez pas. Tu ne dis "
                "jamais « regardez » ni « ici ».\n\n" if tel else
                "LE LIEU : tu es debout devant le comptoir de la réception.\n\n")
+            + ("L'OUVERTURE : l'employé décroche et parle le premier. " if tel else
+               "L'OUVERTURE : tu attends au comptoir ; l'employé parle le premier. ")
+            + "S'il ne te salue pas, tu entres quand même dans ta demande, sans le lui reprocher.\n\n"
+            "RÈGLE DU NOM ET DES NOMBRES, avant toute autre : tu dis ton nom SANS l'épeler. Tu "
+            "n'épelles que si l'employé te le demande (épeler, spell, deletrear, « comment ça "
+            "s'écrit »). Tu ne donnes ton numéro de chambre, ton numéro de téléphone ou tes dates "
+            "que si on te les demande, à moins que ta première demande ne les contienne. Même au "
+            "palier à l'aise, jamais le nom épelé ni un numéro sans qu'on le demande.\n\n"
             + "Ce que tu sais et que l'employé ignore :\n"
             + "\n".join("- " + f for f in faits) + "\n\n"
             "La règle de l'hôtel, que tu ne connais pas mais que l'employé doit suivre : "
@@ -339,19 +354,52 @@ def systeme(apprend):
     return construire
 
 
+EXEMPLE_CONSEIL = {
+    "fr": "Demandez-lui d'épeler son nom avant de chercher la réservation : « Pouvez-vous épeler votre nom, s'il vous plaît? »",
+    "en": "Ask the guest to spell the name before you look for the booking: \"Could you spell your last name, please?\"",
+    "es": "Pídale que deletree su apellido antes de buscar la reservación: «¿Me puede deletrear su apellido, por favor?»",
+}
+
+
 def bilan(apprend, parle):
-    """La consigne du bilan : juger les gestes, relever la promesse, reprendre trois phrases."""
+    """La consigne du bilan, pour UN client : elle connaît ses faits, l'écran de
+    l'employé et les gestes attendus (audit du comptoir joué, tour 1, E1 : un
+    juge aveugle validait des dates fausses et prenait l'épellation du client
+    pour celle de l'employé)."""
+    def construire(cas_id):
+        ident, genre, nom, _p, lieu, attendus, carte, ecran, _portrait, faits = _client(cas_id)
+        return _bilan_texte(apprend, parle, faits, ecran[apprend], attendus, lieu == "telephone")
+    return construire
+
+
+def _bilan_texte(apprend, parle, faits, ecran, attendus, tel):
     gestes = " · ".join(f"{g['id']} ({g['nom']['fr']})" for g in GESTES)
+    attendus_txt = ", ".join(attendus)
     return (
         "Tu es formateur en réception hôtelière. Voici la transcription d'un échange à la réception "
         f"de l'Hôtel Rive-Claire : un CLIENT (joué par un modèle) et un RÉCEPTIONNISTE, un employé "
         f"qui apprend {APPREND_ART[apprend]}. Juge le RÉCEPTIONNISTE, geste par geste.\n"
         f"Les gestes : {gestes}.\n"
+        f"Les gestes ATTENDUS dans cette situation : {attendus_txt}. Les autres ne sont pas "
+        "nécessaires ; ne les juge pas.\n"
+        "L'employé parle le premier : s'il n'ouvre pas par une salutation, « accueil » n'est pas fait.\n"
+        + ("La situation se passe AU TÉLÉPHONE.\n" if tel else "")
+        + "Ce que le client savait (la vérité) :\n" + "\n".join("- " + f for f in faits) + "\n"
+        f"Ce que l'écran de l'employé affichait : {ecran}\n"
         "La règle de l'hôtel : " + REGLE_RELAIS["fr"] + "\n"
-        "Pour CHAQUE geste, dis s'il était « necessaire » dans cet échange, s'il a été « fait », "
-        "cite la réplique du réceptionniste qui le montre (ou vide), et donne un « conseil » d'une "
-        f"phrase courte, écrit {LANGUE_BILAN[parle]}, suivi de la phrase à dire, en "
-        f"{NOM_LANGUE[apprend]}, entre guillemets.\n"
+        "Pour CHAQUE geste attendu, dis s'il a été « fait », cite la réplique du RÉCEPTIONNISTE qui "
+        "le montre (jamais une réplique du client ; vide s'il n'y en a pas), et donne un « conseil ». "
+        "Un geste est fait par l'employé, pas par le client : si le client épelle sans qu'on le lui "
+        "demande, « epeler » n'est pas fait. « confirmer » n'est fait que si ce que l'employé redit "
+        "est JUSTE au regard de la vérité ci-dessus ; une confirmation fausse n'est pas faite, et le "
+        "conseil nomme l'erreur.\n"
+        f"LANGUE DES CONSEILS : chaque conseil est écrit {LANGUE_BILAN[parle]} (la langue que "
+        f"l'employé lit), jamais dans une autre langue, et se termine par la phrase à dire, en "
+        f"{NOM_LANGUE[apprend]}, entre guillemets. Au plus 30 mots. Exemple de conseil bien écrit : "
+        f"{EXEMPLE_CONSEIL[parle]}\n"
+        "« saisie » : l'employé a-t-il saisi JUSTE ce qui compte (nom, dates, nombre de nuits, lit, "
+        "prix, numéro de chambre ou de téléphone) ? « juste » vaut null si rien n'était à saisir ; "
+        f"sinon true ou false, et « detail » (au plus 20 mots, {LANGUE_BILAN[parle]}) nomme l'erreur.\n"
         "Relève à part toute PROMESSE HORS RÈGLE : le réceptionniste accorde lui-même ce qui revient "
         "au gérant (rabais, frais enlevé, service gratuit, exception) ou ce que personne ne peut "
         "accorder (taxe enlevée, chambre qu'on n'a pas, document faux). C'est éliminatoire. "
@@ -359,12 +407,14 @@ def bilan(apprend, parle):
         "ou expliquer un frais non plus.\n"
         f"Reprends enfin jusqu'à trois phrases du réceptionniste qui gagneraient à être dites "
         f"autrement en {NOM_LANGUE[apprend]} (sens, formule polie du comptoir), jamais pour une "
-        "virgule : « dit » (sa phrase) et « mieux » (la même idée, correcte et naturelle).\n"
-        f"« resume » : une phrase simple, {LANGUE_BILAN[parle]}, sur ce qui a marché.\n"
-        "Réponds UNIQUEMENT en JSON : {\"gestes\": [{\"id\": \"accueil\", \"necessaire\": true, "
-        "\"fait\": false, \"citation\": \"…\", \"conseil\": \"…\"}, …], \"promesse\": {\"faite\": "
-        "false, \"citation\": \"\"}, \"phrases\": [{\"dit\": \"…\", \"mieux\": \"…\"}], "
-        "\"resume\": \"…\"}."
+        "virgule : « dit » (sa phrase) et « mieux » (la même idée, correcte et naturelle). « mieux » "
+        "n'ajoute AUCUNE information absente de la phrase de l'employé."
+        + (" En français, le repas du matin est « le déjeuner »." if "fr" in (apprend, parle) else "") + "\n"
+        f"« resume » : une phrase simple, au plus 25 mots, {LANGUE_BILAN[parle]}, sur ce qui a marché.\n"
+        "Réponds UNIQUEMENT en JSON, sans texte autour : {\"gestes\": [{\"id\": \"…\", "
+        "\"fait\": false, \"citation\": \"…\", \"conseil\": \"…\"}, …], \"saisie\": {\"juste\": "
+        "null, \"detail\": \"\"}, \"promesse\": {\"faite\": false, \"citation\": \"\"}, "
+        "\"phrases\": [{\"dit\": \"…\", \"mieux\": \"…\"}], \"resume\": \"…\"}."
     )
 
 
@@ -383,6 +433,11 @@ def scenario_serveur(apprend, parle):
                   "receptionniste": {"qui": "", "conduite": ""}},
         "paliers": PALIERS_JEU,
         "bilan": bilan(apprend, parle),
+        # Le bilan passe au modèle de conversation, et plus long (audit t1, E1 :
+        # Haiku rendait des conseils dans la mauvaise langue, et 900 jetons
+        # coupaient le JSON des échanges riches).
+        "bilan_modele": "conversation",
+        "bilan_max": 2000,
         # Ce que le serveur lit à la place de son gabarit français (server.py).
         "systeme": systeme(apprend),
         "etiquettes": ("CLIENT", "RÉCEPTIONNISTE"),
@@ -476,6 +531,33 @@ UI_JEU = {
     "hum_contente_f": R("est contente", "is pleased", "está contenta"), "hum_contente_m": R("est content", "is pleased", "está contento"),
     "hum_hesitante_f": R("hésite", "is unsure", "duda"), "hum_hesitante_m": R("hésite", "is unsure", "duda"),
     "hum_impatiente_f": R("s'impatiente", "is getting impatient", "se impacienta"), "hum_impatiente_m": R("s'impatiente", "is getting impatient", "se impacienta"),
+    # Audit du comptoir joué, tour 1.
+    "eliminatoire": R("Une promesse hors règle fait échouer la situation. Ce qui revient au gérant, vous le transmettez sans rien promettre.",
+                      "A promise outside the rule fails the situation. What belongs to the manager, you pass on without promising anything.",
+                      "Una promesa fuera de la regla hace fallar la situación. Lo que le corresponde al gerente, usted lo transmite sin prometer nada."),
+    "duree": R("3 à 5 minutes par client.", "3 to 5 minutes per guest.", "De 3 a 5 minutos por cliente."),
+    "a_vous": R("Le client attend au comptoir. À vous : accueillez-le.", "The guest is waiting at the desk. Your turn: greet them.",
+                "El cliente espera en el mostrador. Le toca: salúdelo."),
+    "sonne": R("Le téléphone sonne. À vous : décrochez et présentez l'hôtel.", "The phone is ringing. Your turn: answer and say the hotel's name.",
+               "Suena el teléfono. Le toca: conteste y diga el nombre del hotel."),
+    "reussies": R("situations réussies sur 8", "situations passed out of 8", "situaciones logradas de 8"),
+    "reussie": R("réussie", "passed", "lograda"),
+    "a_reprendre": R("à reprendre", "try again", "por repetir"),
+    "elimine": R("promesse : échouée", "promise: failed", "promesa: fallida"),
+    "reussite_regle": R("Une situation est réussie sans promesse hors règle, sans erreur de saisie, et avec tous les gestes attendus, sauf un au plus.",
+                        "A situation is passed with no promise outside the rule, no recording error, and every expected move but one at most.",
+                        "Una situación se logra sin promesa fuera de la regla, sin error de registro, y con todos los gestos esperados, salvo uno como máximo."),
+    "saisie_ok": R("Vous avez noté juste.", "You recorded it correctly.", "Anotó correctamente."),
+    "saisie_ko": R("Erreur de saisie :", "Recording error:", "Error de registro:"),
+    "reessayer": R("Réessayer le bilan", "Try the review again", "Intentar de nuevo el resumen"),
+    "fin_promesse_f": R("repart contente… mais le gérant n'accordera pas ce que vous avez promis : elle reviendra fâchée.",
+                        "leaves happy… but the manager won't grant what you promised: she'll come back angry.",
+                        "se va contenta… pero el gerente no concederá lo que usted prometió: volverá enojada."),
+    "fin_promesse_m": R("repart content… mais le gérant n'accordera pas ce que vous avez promis : il reviendra fâché.",
+                        "leaves happy… but the manager won't grant what you promised: he'll come back angry.",
+                        "se va contento… pero el gerente no concederá lo que usted prometió: volverá enojado."),
+    "fin_relais": R("attend la réponse du gérant. C'était le bon geste.", "is waiting for the manager's answer. That was the right move.",
+                    "espera la respuesta del gerente. Era el gesto correcto."),
     "fin_ok_f": R("repart satisfaite.", "leaves satisfied.", "se va satisfecha."),
     "fin_ok_m": R("repart satisfait.", "leaves satisfied.", "se va satisfecho."),
     "fin_ko_f": R("repart sans être satisfaite.", "leaves unsatisfied.", "se va sin estar satisfecha."),

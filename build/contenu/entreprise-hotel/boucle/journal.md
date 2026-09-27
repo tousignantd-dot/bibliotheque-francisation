@@ -79,3 +79,20 @@ mêle les employés (le guide du formateur le dira).
 - « Refaire » avertit si la passation n'est pas confirmée ; la passation précédente affichée est la dernière confirmée, sinon marquée « non confirmé » ; « voix effacée » après 30 jours (F1).
 - Confirmation : l'avertissement paraît dès qu'une réponse n'a pas ses deux lignes, micro ou non ; une notation à moitié faite affiche « oral en cours de notation » (A3).
 - Changer la langue apprise remet la passation à zéro (F1).
+
+## Comptoir joué — révision après le tour 1 de son audit (0/8/14), 26 sept. 2026
+
+| Constat | Avant | Après | Code |
+|---|---|---|---|
+| Éliminatoire pas dit avant | règle repliée, « éliminatoire » au bilan seulement | bandeau visible sur la liste ET dans la scène, règle dépliée | A1 |
+| Accueil jamais pratiqué | la page disait l'accueil à la place de l'employé | l'employé ouvre ; le client attend (« À vous : accueillez-le » / « Le téléphone sonne ») | A3 |
+| Bilan aveugle | ni faits, ni écran, ni gestes attendus | consigne PAR CLIENT (faits, écran, gestes attendus) ; citation du réceptionniste seulement ; « confirmer » jugé sur la vérité ; champ « saisie » juste/faux ; gestes attendus fixés par la page | E1 |
+| Conseils dans la mauvaise langue | Haiku, sans exemple | modèle de conversation, exemple de conseil dans la langue de l'employé, 30 mots au plus | E1 |
+| Bilan coupé | 900 jetons | 2000, délai 60 s, bouton « Réessayer le bilan » | E1 |
+| Fin qui récompense la faute | tirée de l'humeur | tirée du bilan : promesse → « reviendra fâché » ; relais fait → « attend la réponse du gérant : le bon geste » | E2 |
+| O2 mal pratiqué | nom et numéro affichés d'avance ; le client épelait de lui-même | écrans « à chercher » (noms et chambres voisins) ; règle en tête : jamais épeler ni donner un numéro sans qu'on le demande | D2 |
+| Rien n'est gardé | — | résultat par client et par langue apprise sur l'appareil, marqué sur la carte ; « n situations réussies sur 8 », règle de réussite écrite ; les 8 clients ouverts à tous les paliers | F1 |
+
+Mineurs traités : jeton de partie (course), 401 sans perte de la conversation et erreurs dans la langue de l'employé, saisie collante à 375 px, « sans lire » par défaut au téléphone et à l'aise, « Débutant » présélectionné, durée annoncée, doublon « Au téléphone » retiré, facture Castillo recalculée (taxe d'hébergement 3,5 %, TPS et TVQ 14,975 %), heure du déjeuner à l'écran de Bélanger, « mieux » sans information ajoutée et « déjeuner » en français, portrait d'Okafor refait avec sa carnation, poches de détourage de Hoang effacées, bas des bustes rogné et posé sous le rebord.
+
+Reste hors révision : la remontée des résultats au portail (le pilote la branchera, comme pour Francœur).

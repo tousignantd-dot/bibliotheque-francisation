@@ -102,31 +102,58 @@ def detourer(src):
     """Le blanc RELIÉ AU BORD devient transparent ; le blanc intérieur (yeux,
     chemise) reste. Remplissage depuis les bords haut, gauche et droit — jamais
     le bas, où la coupe à mi-poitrine touche le cadre et doit rester opaque.
+
+    Audit du comptoir joué, tour 1 (C2) : deux défauts corrigés ici.
+    - Les POCHES de fond enfermées entre les cheveux et les épaules (Hoang)
+      restaient blanches : une poche de blanc pur, loin du centre, est du fond.
+    - Le trait horizontal du bas débordait du corps et le buste flottait : on
+      efface, dans les 6 % du bas, tout ce qui sort de la largeur du corps.
     Puis on recadre au plus juste et on ramène à 720 px de haut."""
+    import numpy as np
     im = Image.open(src).convert("RGB")
     w, h = im.size
-    # Pousser au blanc pur ce qui est presque blanc, pour que le remplissage passe.
-    px = im.load()
-    for y in range(h):
-        for x in range(w):
-            r, g, b = px[x, y]
-            if r >= 238 and g >= 238 and b >= 238:
-                px[x, y] = (255, 255, 255)
-    masque = Image.new("L", (w, h), 0)
+    a = np.asarray(im).copy()
+    a[(a >= 238).all(axis=2)] = 255
+    im = Image.fromarray(a)
     trace = im.copy()
+    FOND = (255, 0, 255)
     graines = [(x, 0) for x in range(0, w, 8)] + [(0, y) for y in range(0, h - 4, 8)] \
         + [(w - 1, y) for y in range(0, h - 4, 8)]
     for sx, sy in graines:
         if trace.getpixel((sx, sy)) == (255, 255, 255):
-            ImageDraw.floodfill(trace, (sx, sy), (255, 0, 255), thresh=0)
-    tp = trace.load(); mp = masque.load()
-    for y in range(h):
-        for x in range(w):
-            mp[x, y] = 0 if tp[x, y] == (255, 0, 255) else 255
-    rgba = im.convert("RGBA"); rgba.putalpha(masque)
-    boite = masque.getbbox()
+            ImageDraw.floodfill(trace, (sx, sy), FOND, thresh=0)
+    # Les poches : blanc pur restant, dans le tiers extérieur de chaque côté.
+    t = np.asarray(trace)
+    blanc = (t == 255).all(axis=2)
+    k = 0
+    for x in list(range(0, int(w * 0.45), 4)) + list(range(int(w * 0.55), w, 4)):
+        for y in range(0, int(h * 0.97), 4):
+            if blanc[y, x]:
+                k += 1
+                couleur = (1, (k * 37) % 250 + 1, (k * 91) % 250 + 1)
+                ImageDraw.floodfill(trace, (x, y), couleur, thresh=0)
+                t = np.asarray(trace)
+                zone = (t == couleur).all(axis=2)
+                ys, xs = np.nonzero(zone)
+                cx, cy = xs.mean() / w, ys.mean() / h
+                # Loin du centre, ou sous le menton entre cheveux et épaules — jamais
+                # à hauteur des yeux, dont le blanc est intérieur.
+                exterieur = cx < 0.3 or cx > 0.7 or (cy > 0.5 and (cx < 0.42 or cx > 0.58))
+                ImageDraw.floodfill(trace, (x, y), FOND if (exterieur and zone.sum() > 150) else (254, 254, 254), thresh=0)
+                t = np.asarray(trace)
+                blanc = (t == 255).all(axis=2)
+    alpha = np.where((np.asarray(trace) == FOND).all(axis=2), 0, 255).astype("uint8")
+    # Le bas : rien au-delà de la largeur du corps.
+    ref = int(h * 0.92)
+    xs = np.nonzero(alpha[ref])[0]
+    if len(xs):
+        g, d = max(0, xs.min() - 3), min(w, xs.max() + 4)
+        alpha[int(h * 0.94):, :g] = 0
+        alpha[int(h * 0.94):, d:] = 0
+    rgba = Image.fromarray(np.dstack([a, alpha]).astype("uint8"))
+    boite = Image.fromarray(alpha).getbbox()
     if boite:
-        rgba = rgba.crop((boite[0], boite[1], boite[2], h))
+        rgba = rgba.crop((boite[0], boite[1], boite[2], boite[3]))
     H = 720
     rgba = rgba.resize((round(rgba.width * H / rgba.height), H), Image.LANCZOS)
     rgba.save(src.with_suffix(".webp"), "WEBP", quality=86, method=6)
