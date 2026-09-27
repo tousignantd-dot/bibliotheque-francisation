@@ -15,6 +15,13 @@ règle au montage.
 
 Sortie : assets/interactive/hotel/sons/x/lettres/<langue>/<L>-<a|b>.mp3 et
 assets/presentations/hotel-lettres.html (produite, jamais éditée).
+
+    python3 build/hotel_lettres.py --reprises   # les lettres « Aucune » : cinq candidats de plus
+
+Reprises (HA.LETTRES_A_REPRENDRE, écoute du 27 sept. 2026) : c = nouveau tirage HD
+du nom écrit ; d = HD, autre graphie ; e = voix neurale (non HD, déterministe), nom
+écrit ; f = neurale, lettre nue ; g = neurale, phonème API. Page :
+assets/presentations/hotel-lettres-reprises.html ; le choix va dans CHOIX_LETTRES.
 """
 import html, importlib.util, pathlib, sys
 from concurrent.futures import ThreadPoolExecutor
@@ -27,6 +34,70 @@ EX = HA.EX
 DEST = HA.SONS / "x" / "lettres"
 PAGE = RACINE / "assets" / "presentations" / "hotel-lettres.html"
 NOM_L = {"fr": "Français — Thierry", "es": "Espagnol — Jorge", "en": "Anglais — Andrew"}
+
+
+NEURALE = {"fr": "fr-CA-ThierryNeural", "en": "en-US-AndrewNeural", "es": "es-MX-JorgeNeural"}
+AUTRE_GRAPHIE = {"fr:A": "ah", "fr:I": "î", "fr:Q": "cu", "fr:R": "ère", "fr:T": "thé",
+                 "en:M": "em", "en:V": "vee"}
+API = {"fr:A": "a", "fr:I": "i", "fr:Q": "ky", "fr:R": "ɛʁ", "fr:T": "te",
+       "en:M": "ɛm", "en:V": "viː"}
+PAGE_R = RACINE / "assets" / "presentations" / "hotel-lettres-reprises.html"
+QUOI = {"c": "nouveau tirage, nom écrit", "d": "autre graphie", "e": "voix neurale, nom écrit",
+        "f": "voix neurale, lettre nue", "g": "voix neurale, phonème"}
+
+
+def taches_reprises():
+    """(langue, lettre, variante, ssml, voix)"""
+    for k in HA.LETTRES_A_REPRENDRE:
+        l, c = k.split(":")
+        hd, nr = HA.VOIX_CLIENTS[l], NEURALE[l]
+        yield l, c, "c", html.escape(EX.LETTRES[l][c]), hd
+        yield l, c, "d", html.escape(AUTRE_GRAPHIE[k]), hd
+        yield l, c, "e", html.escape(EX.LETTRES[l][c]), nr
+        yield l, c, "f", f'<say-as interpret-as="characters">{c}</say-as>', nr
+        yield l, c, "g", f'<phoneme alphabet="ipa" ph="{API[k]}">{c}</phoneme>', nr
+
+
+def page_reprises():
+    lignes = ""
+    for k in HA.LETTRES_A_REPRENDRE:
+        l, c = k.split(":")
+        lect = "".join(
+            f'<div class="c"><span class="lab">{v.upper()}</span> <small>{QUOI[v]}'
+            f'{" « " + html.escape(AUTRE_GRAPHIE[k]) + " »" if v == "d" else ""}</small><br>'
+            f'<audio controls preload="none" src="/assets/interactive/hotel/sons/x/lettres/{l}/{c}-{v}.mp3"></audio></div>'
+            for v in "cdefg")
+        boutons = "".join(f'<button data-v="{v}">{v.upper()}</button>' for v in "cdefg")
+        lignes += (f'<section><h2>{NOM_L[l].split(" —")[0]} · <b>{c}</b></h2><div class="g">{lect}</div>'
+                   f'<div class="v" data-k="{k}">{boutons}<button data-v="aucune">Aucune</button></div></section>')
+    PAGE_R.write_text(f'''<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lettres à reprendre</title>
+<style>body{{font-family:Nunito,system-ui,sans-serif;max-width:980px;margin:0 auto;padding:16px;background:#fff;color:#17181A}}
+section{{border-bottom:1px solid #ddd;padding:10px 0 14px}}h2{{font-size:1.1rem;margin:6px 0}}
+.g{{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}}.c small{{color:#555}}
+audio{{width:100%;height:34px}}.lab{{font-weight:800}}
+button{{font:inherit;font-weight:700;cursor:pointer;border:1px solid #bbb;background:#f5f5f3;border-radius:10px;padding:6px 12px;min-height:40px}}
+.v{{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}}.v button[aria-pressed=true]{{background:#DCF2E6;border-color:#0A8F5B}}
+.v button[aria-pressed=true][data-v=aucune]{{background:#FBEEDC;border-color:#B45309}}
+#exporter{{background:#0A8F5B;color:#fff;border-color:#0A8F5B}}</style></head>
+<body><h1>Les sept lettres à reprendre</h1>
+<p>Vous avez refusé A et B pour ces lettres. Voici cinq autres façons de les dire. <b>C</b> et <b>D</b> gardent la voix
+des noms (HD) ; <b>E</b>, <b>F</b> et <b>G</b> passent par la voix neurale du même comédien, plus stable, mais d'un timbre
+un peu différent : écoutez-la aussi dans son rang, entre deux lettres HD, avant de la retenir.</p>
+{{lignes}}
+<p style="margin-top:24px">Un mot (facultatif) :</p><textarea id="note" rows="3" style="width:100%;font:inherit"></textarea>
+<p><button id="exporter">Exporter mes choix</button> <span id="etat"></span></p>
+<script>
+(function(){{var C='hotel-lettres-reprises',s={{}};try{{s=JSON.parse(localStorage.getItem(C)||'{{}}')}}catch(e){{}}
+var n=document.getElementById('note');n.value=s.__note||'';n.oninput=function(){{s.__note=n.value;sv()}};
+function sv(){{try{{localStorage.setItem(C,JSON.stringify(s))}}catch(e){{}}}}
+function p(){{document.querySelectorAll('.v').forEach(function(d){{d.querySelectorAll('button').forEach(function(b){{b.setAttribute('aria-pressed',s[d.dataset.k]===b.dataset.v)}})}});
+ document.getElementById('etat').textContent=(Object.keys(s).length-(s.__note!==undefined?1:0))+' lettres marquées sur {len(HA.LETTRES_A_REPRENDRE)}';}}
+document.addEventListener('click',function(e){{var b=e.target.closest('.v button');if(!b)return;var k=b.parentNode.dataset.k;if(s[k]===b.dataset.v)delete s[k];else s[k]=b.dataset.v;sv();p();}});
+document.getElementById('exporter').onclick=function(){{var o={{page:'hotel-lettres-reprises',choix:{{}},note:s.__note||''}};Object.keys(s).forEach(function(k){{if(k!=='__note')o.choix[k]=s[k]}});
+ var t=JSON.stringify(o,null,2);(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){{document.getElementById('etat').textContent='Copié — recolle-le-moi.'}},function(){{prompt('Copiez :',t)}});}};
+p();}})();
+</script></body></html>'''.replace("{lignes}", lignes), encoding="utf-8")
 
 
 def taches():
@@ -100,6 +171,21 @@ if __name__ == "__main__":
                 return
         print(f"  {f.name} ({t[0]}) reste à {duree(f):.1f} s après quatre tirages")
 
+    if "--reprises" in sys.argv:
+        faire = [t for t in taches_reprises() if not (DEST / t[0] / f"{t[1]}-{t[2]}.mp3").exists()]
+
+        def reprise(t):
+            f = DEST / t[0] / f"{t[1]}-{t[2]}.mp3"
+            for _ in range(4):
+                HA.synth(t[0], t[3], f, cle, region, t[4], "0%", True)
+                if duree(f) <= 2.5:
+                    return
+            print(f"  {f.name} ({t[0]}) reste à {duree(f):.1f} s")
+        with ThreadPoolExecutor(6) as pool:
+            list(pool.map(reprise, faire))
+        page_reprises()
+        print(f"{len(faire)} candidats ; {PAGE_R.relative_to(RACINE)}")
+        sys.exit(0)
     # Les lettres déjà sur le disque mais aberrantes repassent aussi.
     a_faire += [t for t in taches() if (DEST / t[0] / f"{t[1]}-{t[2]}.mp3").exists()
                 and duree(DEST / t[0] / f"{t[1]}-{t[2]}.mp3") > 2.5]
