@@ -1152,7 +1152,7 @@ function commencerJeu(id){
   J = {vue: 'scene', c, hist: [], fil: [], humeur: 'neutre', fini: false, err: '', dernier: '',
        sansLire: c.tel || niveauJeu === 'aise', jeton: ++jetonJeu};
   rendre(); window.scrollTo(0, 0);
-  if (innerWidth < 760) { const f = document.getElementById('jfil'); if (f) f.scrollIntoView({block: 'center'}); }
+  if (innerWidth < 760 && !q.get('capture')) { const f = document.getElementById('jfil'); if (f) f.scrollIntoView({block: 'center'}); }
 }
 let jetonJeu = 0;
 const CLE_JEU = () => `hotel-comptoir-${L.apprend}`;
@@ -1426,6 +1426,12 @@ window.addEventListener('hashchange', () => {
 window.HR = {familles: FAMILLES, etat: () => X, test: () => TX, jeu: () => J, ctx: () => CTX,
   donnees: /[?&]controle=1/.test(location.search) ? D : undefined};
 rendre();
+// État par adresse (étape 6 : captures, liens d'essai du guide et de la démo) :
+// ?client=<id>#jeu ouvre la scène de ce client. Aucun appel : l'employé parle le premier.
+if (q.get('client') && location.hash === '#jeu' && D.jeu.clients.some(c => c.id === q.get('client'))) {
+  if (q.get('niveau')) niveauJeu = q.get('niveau');
+  commencerJeu(q.get('client'));
+}
 </script>
 </body>
 </html>

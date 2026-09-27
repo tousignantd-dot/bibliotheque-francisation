@@ -54,7 +54,8 @@ def main():
     tete = (RACINE / "assets" / "presentations" / "magasin-vetements-plan.html").read_text(encoding="utf-8")
     tete = tete[:tete.index("<body")]
     tete = re.sub(r"<title>.*?</title>", "<title>Hôtel Rive-Claire — le pilote</title>", tete)
-    tete = tete.replace("</style>", CSS + "</style>", 1)
+    RIVE = _charger("hp_rive", RACINE / "build" / "hotel_rive.py")
+    tete = tete.replace("</style>", CSS + RIVE.CSS + "</style>", 1)
 
     avant = [
         ("Trancher les lettres épelées" if not lettres_faites else "Lettres épelées : tranché",
@@ -195,7 +196,7 @@ Plan : <a href="hotellerie-plan.html">hotellerie-plan.html</a> · cadrage : <a h
 CSS = """
 .obs td{height:44px}
 .obs th,.obs td{border:1px solid #9aa0a6}
-.btn-export{font:inherit;font-weight:700;cursor:pointer;background:#0F5E63;color:#fff;border:0;border-radius:10px;padding:10px 16px}
+.btn-export{font:inherit;font-weight:700;cursor:pointer;background:var(--acier);color:#fff;border:0;border-radius:10px;padding:10px 16px}
 @media print{
   body *{visibility:hidden}
   .grille-obs,.grille-obs *{visibility:visible}

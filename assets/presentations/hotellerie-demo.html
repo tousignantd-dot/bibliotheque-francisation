@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hôtel Rive-Claire — le pilote</title>
+<title>Hôtel Rive-Claire — la langue du comptoir</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
@@ -166,15 +166,29 @@ ol.actions li p{font-size:15.5px}
 .etat{margin-left:12px;color:var(--muted);font-size:15px}
 table{display:block;overflow-x:auto}
 
-.obs td{height:44px}
-.obs th,.obs td{border:1px solid #9aa0a6}
-.btn-export{font:inherit;font-weight:700;cursor:pointer;background:var(--acier);color:#fff;border:0;border-radius:10px;padding:10px 16px}
+.captures{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin:14px 0}
+.captures figure{margin:0}
+.captures img{width:100%;border-radius:14px;border:1px solid var(--line);display:block;background:#fff}
+.captures figcaption{font-size:14px;margin-top:6px;color:var(--body)}
+.captures figcaption b{display:block;color:var(--ink);font-size:15px}
+.liens{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.liens a{font-size:14px;border:1px solid var(--line-fort);border-radius:8px;padding:5px 9px;text-decoration:none;color:var(--ink);background:var(--card)}
+.formules{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:14px 0}
+.formule{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.formule.entree{border:2px solid var(--acier)}
+.formule h3{margin:0;font-size:18px;color:var(--ink)}
+.formule .montant{font-size:26px;font-weight:800;color:var(--ink);margin:4px 0 0;line-height:1.1}
+.formule .unite{font-size:14px;color:var(--muted);font-weight:700}
+.formule p{margin:0;font-size:15px}
+.formule ul{margin:6px 0 0;padding-left:18px;font-size:14.5px}
+.formule li{margin:3px 0}
+.notes-prix{font-size:14.5px;color:var(--muted)}
+.faq dt{font-weight:800;color:var(--ink);margin-top:12px}
+.faq dd{margin:4px 0 0}
 @media print{
-  body *{visibility:hidden}
-  .grille-obs,.grille-obs *{visibility:visible}
-  .grille-obs{position:absolute;inset:0;padding:0 12px}
-  .grille-obs button{display:none}
-  .obs td{height:70px}
+  .retour,.liens{display:none}
+  body{background:#fff;color:#000;font-size:11pt;border-top:0}
+  section{break-inside:avoid-page}
 }
 
 /* ── Palette Rive-Claire (build/hotel_rive.py) ── */
@@ -254,110 +268,61 @@ body{border-top:4px solid var(--surpiqure)}
 </head>
 <body><div class="doc">
 <a class="retour" href="/presentations.html#hotellerie"><span aria-hidden="true">&#8592;</span> Le classeur</a>
-<p class="eyebrow">Hôtel Rive-Claire &middot; étape 5</p>
-<h1>Le pilote</h1>
-<p class="chapeau">Faire jouer la trousse par de vrais employés de réception, et lire <strong>ce que le matériel fait
-rater</strong>. Ce n'est pas une évaluation des personnes : c'est un diagnostic didactique. Un item raté au premier
-essai par la moitié du groupe accuse l'item ; une situation que personne ne réussit accuse la situation.</p>
+<p class="eyebrow">Formation au poste &middot; hôtellerie</p>
+<h1>Hôtel Rive-Claire : la langue du comptoir</h1>
+<p class="chapeau">Vos réceptionnistes reçoivent des clients qui ne parlent pas leur langue. Ce qui fait rater
+une arrivée, ce n'est pas d'ignorer le mot <em>king</em> : c'est de mal entendre un nom au téléphone, de noter
+le 14 pour le 15, ou de promettre un rabais qui ne leur revient pas. <strong>Cette trousse leur apprend les mots du
+comptoir, à entendre le client dit à vitesse réelle, à faire épeler et confirmer — et à passer au gérant ce qui
+lui revient.</strong></p>
 
 <section class="premier">
-  <h2>Avant le pilote</h2>
-  <ol class="actions"><li><p><b>Trancher les lettres épelées</b> — Sur la <a href="hotel-lettres.html">page des lettres</a>, choisir la prise de chaque lettre qui sonne mal, puis exporter : les noms épelés des exercices et du test se réassemblent à partir de ce choix. C'est le seul média de la trousse qui attend encore votre oreille.</p><p class="qui">Vous. Quinze minutes.</p></li><li><p><b>Jouer deux clients en ligne</b> — Avec un code d'élève, sur le vrai serveur : un client au comptoir, un au téléphone, dans la direction de chaque groupe. Le comptoir a été joué par l'audit sur un serveur local jetable, jamais en production.</p><p class="qui">Vous. Vingt minutes.</p></li><li><p><b>Faire relire l&#x27;anglais et l&#x27;espagnol</b> — Par un locuteur de chaque langue : les mots, les phrases des exercices, les répliques-modèles. Les variétés sont celles décidées au cadrage (Amérique du Nord, Mexique) ; le français d'ici a été écrit d'ici. L'audit didactique ne vérifie pas la justesse de la langue.</p><p class="qui">Un employé bilingue par langue, idéalement du pilote.</p></li><li><p><b>Créer les deux groupes et imprimer</b> — Deux groupes pilotes de niveau 3 (la trousse est l'atelier 238), une séance sans compte par groupe, la feuille QR, et la grille d'observation plus bas, une par séance.</p><p class="qui">Le formateur.</p></li></ol>
+  <h2>Ce que l'employé voit, sur son téléphone</h2>
+  <div class="captures"><figure><img src="hotellerie-captures/langue.png?v=1" alt="Deux langues à choisir" loading="lazy"><figcaption><b>Deux langues à choisir</b>Celle qu&#x27;on parle, celle qu&#x27;on apprend : six directions.</figcaption></figure><figure><img src="hotellerie-captures/comptoir.png?v=1" alt="Le comptoir dessiné" loading="lazy"><figcaption><b>Le comptoir dessiné</b>Les objets du poste, vus de la place du réceptionniste ; toucher fait entendre le mot.</figcaption></figure><figure><img src="hotellerie-captures/planche.png?v=1" alt="Une planche" loading="lazy"><figcaption><b>Une planche</b>Le mot dans la langue apprise, sa voix, et sa langue cachée dessous.</figcaption></figure><figure><img src="hotellerie-captures/pieges.png?v=1" alt="Les faux amis de la paire" loading="lazy"><figcaption><b>Les faux amis de la paire</b>« Embarazada », « la facture », « un cargo » : chaque paire a les siens.</figcaption></figure><figure><img src="hotellerie-captures/client.png?v=1" alt="Ce que le client veut" loading="lazy"><figcaption><b>Ce que le client veut</b>La demande au débit d&#x27;un client : le lit et les nuits font la différence.</figcaption></figure><figure><img src="hotellerie-captures/jeu.png?v=1" alt="Au comptoir" loading="lazy"><figcaption><b>Au comptoir</b>Huit clients, un visage qui réagit, une vraie conversation, un bilan par geste.</figcaption></figure></div>
+  <p>Essayer, sans compte :</p><div class="liens"><a href="/modules-autonomes/hotel-reception/index.html?#langue" target="_blank" rel="noopener">Le choix des langues</a><a href="/modules-autonomes/hotel-reception/index.html?parle=fr&apprend=en#comptoir" target="_blank" rel="noopener">Le comptoir, en anglais</a><a href="/modules-autonomes/hotel-reception/index.html?parle=es&apprend=fr#x-pieges" target="_blank" rel="noopener">Les faux amis, espagnol → français</a><a href="/modules-autonomes/hotel-reception/index.html?parle=fr&apprend=en#x-nombres" target="_blank" rel="noopener">Au téléphone : les nombres</a><a href="/modules-autonomes/hotel-reception/index.html?parle=es&apprend=fr#jeu" target="_blank" rel="noopener">Au comptoir (demande un code)</a></div>
 </section>
 
 <section>
-  <h2>Deux groupes, deux directions</h2>
-  <table class="cmp"><thead><tr><th></th><th>Groupe A · fr → en</th><th>Groupe B · es → fr</th></tr></thead><tbody>
-    <tr><td><b>Qui</b></td><td>Réceptionnistes francophones qui reçoivent des clients anglophones</td>
-      <td>Réceptionnistes hispanophones qui apprennent le français d'ici</td></tr>
-    <tr><td><b>Combien</b></td><td>Trois à six</td><td>Trois à six</td></tr>
-    <tr><td><b>L'écran</b></td><td>En français, contenu en anglais</td><td>En espagnol, contenu en français</td></tr>
-    <tr><td><b>Pièges de la paire</b></td><td class="num">9</td><td class="num">8</td></tr>
+  <h2>Ce qu'il y a dedans</h2>
+  <div class="chiffres">
+    <div class="ch"><span class="n">3</span><span class="q">langues à égalité, six directions : français du Québec, anglais nord-américain, espagnol du Mexique</span></div>
+    <div class="ch"><span class="n">153</span><span class="q">mots du comptoir, en 9 planches</span></div>
+    <div class="ch"><span class="n">856</span><span class="q">extraits de voix, Azure HD, six voix</span></div>
+    <div class="ch"><span class="n">8</span><span class="q">clients au comptoir, dont un au téléphone</span></div>
+  </div>
+  <table class="cmp"><tbody>
+    <tr><td><b>Apprendre les mots</b></td><td>54 croquis, dont un grand comptoir dessiné vu de la place du réceptionniste ; 22 faux amis signalés, chacun dans sa paire de langues.</td></tr>
+    <tr><td><b>S'exercer</b></td><td>Neuf exercices : le mot entendu, les nombres et les heures, les noms épelés au téléphone, ce que le client veut, « Ce que je réponds ».</td></tr>
+    <tr><td><b>Mesurer</b></td><td>Un test d'une quinzaine de minutes, en deux formes parallèles, qui propose un niveau ; le formateur écoute l'oral et confirme.</td></tr>
+    <tr><td><b>Pratiquer</b></td><td>Un jeu de rôle à voix haute dans la langue apprise ; le client réagit ; le bilan dit quels gestes ont été faits, vérifie ce qui a été noté, et relève toute promesse hors règle.</td></tr>
+    <tr><td><b>Garder en poche</b></td><td>Une fiche imprimable par direction : six phrases du comptoir, la règle du relais, les faux amis, l'alphabet pour épeler.</td></tr>
   </tbody></table>
-  <p>Les deux groupes <b>ne se comparent pas</b> : la langue, les pièges et les voix diffèrent. Chacun sert à
-  juger sa direction. Encadrement : un formateur qui mène, un observateur qui ne parle pas et note. Matériel :
-  leurs téléphones, des écouteurs (l'écoute est au cœur de tout), la feuille QR. Durée : <b>deux séances de
-  90 minutes à une semaine d'écart</b> — le test se repasse à la fin, dans sa seconde forme.</p>
 </section>
 
 <section>
-  <h2>Mise en place, dans le portail</h2>
+  <h2>Comment ça se déploie</h2>
   <ol class="actions">
-    <li><p>Créer le groupe, puis ouvrir une <b>séance sans compte</b> sur « Entreprise · Hôtel Rive-Claire — la réception » (atelier 238) :
-      aucun nom, un code et un carré QR imprimés. Chaque réponse fermée remonte au <b>direct de la classe</b>
-      (progression.html), au premier essai, question par question, et chaque situation du comptoir avec ses gestes.
-      Ne remontent jamais : les phrases dites au comptoir, l'oral du test, la langue de l'employé.</p></li>
-    <li><p>Le comptoir et ses voix passent par le serveur : <b>en séance, ils reçoivent le code de la séance</b>.
-      Si le centre a refusé le mode avec assistance, le comptoir ne s'ouvre pas — le vérifier avant.</p></li>
-    <li><p>Chaque employé choisit sa langue et la langue apprise au premier écran. Le test garde son historique
-      <b>sur l'appareil</b> : un téléphone par personne, jamais une tablette partagée.</p></li>
+    <li><p><b>Sur le téléphone de l'employé</b>, par un carré QR : aucun compte à créer, aucune application à installer.</p></li>
+    <li><p><b>Avec un formateur</b>, qui a son guide : deux à quatre séances de 90 minutes, puis en libre-service.</p></li>
+    <li><p><b>Sans données personnelles</b> : aucun nom, l'oral reste sur l'appareil. Ce qui remonte est un constat sur
+      le matériel ou sur le groupe, jamais sur une personne (Loi 25).</p></li>
   </ol>
 </section>
 
 <section>
-  <h2>Le déroulé</h2>
-  <table class="cmp"><thead><tr><th>Séance 1</th><th>Min.</th><th>Ce qu'on regarde</th></tr></thead><tbody>
-    <tr><td>Langues, puis le test (première forme)</td><td class="num">20</td><td>32 items, adaptatif en A ; le code du formateur ouvre la passation, le formateur note l'oral et confirme le niveau.</td></tr>
-    <tr><td>Le comptoir dessiné et les planches</td><td class="num">20</td><td>153 mots. Touchent-ils « voir dans ma langue » à chaque mot, ou jamais ?</td></tr>
-    <tr><td>Les exercices : entendre, image, pièges, nombres</td><td class="num">35</td><td>10 nombres et heures, 18 pièges : lesquels tombent.</td></tr>
-    <tr><td>Retour à chaud</td><td class="num">15</td><td>Deux questions, plus bas.</td></tr>
-  </tbody></table>
-  <table class="cmp" style="margin-top:14px"><thead><tr><th>Séance 2</th><th>Min.</th><th>Ce qu'on regarde</th></tr></thead><tbody>
-    <tr><td>Épeler, ce que le client veut, ce que je réponds</td><td class="num">20</td><td>12 noms, 12 demandes, 13 répliques ; la règle du relais tient-elle ?</td></tr>
-    <tr><td>Au comptoir</td><td class="num">35</td><td>8 clients — Madame Bélanger · Monsieur Okafor · Madame Hoang · Monsieur Tremblay · Madame Castillo · Monsieur Nakamura · Monsieur Vuković (téléphone) · Madame Leblanc. Trois à cinq minutes chacun ; le compte « réussies sur 8 » et « du premier coup ».</td></tr>
-    <tr><td>Le test, repassé (seconde forme)</td><td class="num">20</td><td>L'écart avec la première passation, sur des items nouveaux ; le formateur note l'oral.</td></tr>
-    <tr><td>Entretien de groupe</td><td class="num">15</td><td>Les questions, plus bas.</td></tr>
-  </tbody></table>
+  <h2>Les prix</h2>
+  <div class="formules"><div class="formule entree"><h3>Le pilote à votre réception</h3><p class="montant">3 000 à 6 000 $</p><span class="unite">prix fixe</span><p>Pour commencer : un hôtel, un petit groupe de réceptionnistes.</p><ul><li>la trousse ajustée à votre hôtel : vos chambres, vos tarifs, vos services, votre politique</li><li>le pilote : deux séances avec un groupe de trois à six employés, et votre formateur</li><li>le diagnostic : ce que le matériel a fait rater, et sa révision</li><li>les fiches de poche et le guide du formateur</li></ul></div><div class="formule"><h3>La trousse à votre métier</h3><p class="montant">12 000 à 25 000 $</p><span class="unite">prix fixe</span><p>Pour un autre poste d&#x27;accueil : restaurant, clinique, location d&#x27;autos, service à la clientèle…</p><ul><li>un lexique neuf, son décor, ses voix, dans les langues de vos employés</li><li>les exercices, le test de niveau et les clients du jeu de rôle, écrits pour ce poste</li><li>le pilote et la révision</li><li>les fiches de poche et le guide du formateur</li></ul></div><div class="formule"><h3>La licence annuelle</h3><p class="montant">2 000 à 5 000 $</p><span class="unite">par année</span><p>Pour un réseau, une chaîne ou un partenaire qui la déploie lui-même.</p><ul><li>l&#x27;usage de la trousse par vos groupes, sans limite d&#x27;employés</li><li>l&#x27;hébergement, les voix et le jeu de rôle</li><li>les corrections et les mises à jour de l&#x27;année</li></ul></div></div>
+  <ul class="simple notes-prix"><li>Des prix fixes, jamais à l&#x27;heure. La fourchette dépend de la portée : le nombre de situations, de clients et de langues.</li><li>Montants avant taxes.</li><li>Le matériel reste notre propriété ; vous en avez l&#x27;usage.</li><li>Ces montants paient du développement de matériel de formation, une dépense que certains programmes publics financent — admissibilité à vérifier avec votre conseiller.</li></ul>
 </section>
 
 <section>
-  <h2>Les règles de décision</h2>
-  <div class="these"><p class="cle">On lit le direct de la classe item par item, par groupe, et on décide sur le matériel.</p></div>
-  <table class="cmp"><thead><tr><th>Ce qu'on voit</th><th>Ce qu'on en conclut</th><th>Ce qu'on fait</th></tr></thead><tbody>
-    <tr><td>Un item <b>raté au premier essai par la moitié</b> du groupe ou plus</td><td>L'item est en cause : image ambiguë, voix mal dite, distracteur trop proche</td><td>On le réécoute, on le regarde, on le refait</td></tr>
-    <tr><td>Un item <b>réussi par tous</b> au premier essai</td><td>Il n'apprend rien à ce groupe</td><td>On le garde pour les débutants, ou on le retire</td></tr>
-    <tr><td>Un cran du test que <b>personne ne franchit</b></td><td>Le cran est trop haut, ou mal construit</td><td>On relit ses items avant de toucher à la règle</td></tr>
-    <tr><td>Une situation du comptoir que <b>personne ne réussit</b></td><td>La situation est trop dure pour son palier, ou son geste clé mal annoncé</td><td>On relit ses faits et son écran ; on ne baisse pas la règle</td></tr>
-    <tr><td>Une <b>promesse hors règle</b> faite par la moitié</td><td>La règle du relais est mal enseignée, pas mal apprise</td><td>On revoit « Ce que je réponds » et la carte de la règle</td></tr>
-    <tr><td>Un bilan du comptoir que <b>le formateur contredit</b></td><td>Le juge se trompe sur cette situation</td><td>On note la partie (client, réplique, verdict) : c'est la donnée qui corrige le juge</td></tr>
-    <tr><td>Le bouton de traduction <b>jamais touché</b>, ou <b>à chaque mot</b></td><td>La langue d'appui ne joue pas son rôle</td><td>On revoit sa place et sa promesse</td></tr>
-  </tbody></table>
-  <div class="reserve"><p><strong>Trois limites, à dire soi-même :</strong> trois à six personnes par direction <b>révèlent</b>,
-  elles ne prouvent pas ; un groupe qui se sait observé ne joue pas comme seul ; et <b>ce qui remonte à l'employeur est
-  un constat sur le matériel, jamais sur une personne</b> — séance sans compte, aucun nom dans les traces.</p></div>
+  <h2>Où nous en sommes</h2>
+  <div class="reserve"><p><strong>La trousse est construite et jouable</strong>, et chacune de ses étapes est passée par
+  la boucle didactique jusqu'à zéro défaut majeur. Il lui reste : un pilote avec deux petits groupes de vrais réceptionnistes ; la relecture de l&#x27;anglais et de l&#x27;espagnol par un locuteur de chaque langue ; le choix, à l&#x27;oreille, de la prise de quelques lettres épelées. Le premier contrat se
+  construit donc avec vous, à votre réception.</p></div>
+  <p>La même méthode se transpose à un autre poste d'accueil — restaurant, clinique, location d'autos : on change
+  le lexique, le décor et les clients ; le reste suit.</p>
 </section>
 
-<section>
-  <h2>Le geste clé de chaque situation</h2>
-  <p>Une situation est réussie sans promesse hors règle, sans erreur de saisie, avec son geste clé, et les autres
-  gestes attendus (un seul peut manquer s'il en reste au moins deux). C'est ce que l'observateur regarde aussi.</p>
-  <table class="cmp"><thead><tr><th>Client</th><th>La situation</th><th>★ Geste clé</th></tr></thead><tbody><tr><td>Madame Bélanger</td><td>Elle arrive avec une réservation. Trouvez-la, et confirmez les dates.</td><td>Faire répéter ou épeler, Redire pour confirmer</td></tr><tr><td>Monsieur Okafor</td><td>Il n&#x27;a pas de réservation. Il veut une chambre pour ce soir.</td><td>Redire pour confirmer</td></tr><tr><td>Madame Hoang</td><td>Elle veut une chambre ce soir. L&#x27;hôtel est complet.</td><td>Refuser poliment et proposer</td></tr><tr><td>Monsieur Tremblay</td><td>Il revient au comptoir. Sa carte-clé ne marche pas.</td><td>Passer le relais au gérant, sans promettre</td></tr><tr><td>Madame Castillo</td><td>Elle part. Elle ne comprend pas un montant sur sa facture.</td><td>Expliquer un frais, Passer le relais au gérant, sans promettre</td></tr><tr><td>Monsieur Nakamura</td><td>Il veut des renseignements : le déjeuner et le Vieux-Port.</td><td>Redire pour confirmer</td></tr><tr><td>Monsieur Vuković</td><td>Il veut réserver. Pas de visage : faites répéter, épeler, confirmer.</td><td>Faire répéter ou épeler, Redire pour confirmer</td></tr><tr><td>Madame Leblanc</td><td>Elle demande deux faveurs pour son anniversaire de mariage.</td><td>Passer le relais au gérant, sans promettre</td></tr></tbody></table>
-</section>
-
-<section>
-  <h2>Les questions</h2>
-  <p><b>À chaud, fin de la séance 1</b> — dans leur langue si besoin :</p>
-  <ol class="simple"><li>Qu'est-ce qui était difficile à entendre ?</li><li>Qu'est-ce que vous voulez refaire ?</li></ol>
-  <p><b>Entretien, fin de la séance 2</b> :</p>
-  <ol class="simple">
-    <li>Au comptoir, quel client était le plus dur ? Pourquoi ?</li>
-    <li>Le bilan vous a-t-il dit quelque chose de juste ? De faux ?</li>
-    <li>Un mot ou une phrase appris ici que vous avez déjà entendu au travail ?</li>
-    <li>Qu'est-ce qui manque pour votre comptoir à vous ?</li>
-    <li>Le recommanderiez-vous à un collègue ? Que lui diriez-vous ?</li>
-  </ol>
-  <p><b>Les six gestes du comptoir</b>, à observer (★ : geste clé d'au moins une situation) :</p>
-  <ol class="simple"><li>Accueillir — « Bonjour, comment puis-je vous aider? »</li><li>★ Faire répéter ou épeler — « Pouvez-vous épeler votre nom, s&#x27;il vous plaît? »</li><li>★ Redire pour confirmer — « Donc, deux nuits, du 14 au 16 octobre, c&#x27;est bien ça? »</li><li>★ Refuser poliment et proposer — « Je suis désolé, c&#x27;est complet ce soir. Je peux vous proposer… »</li><li>★ Expliquer un frais — « Ce montant, c&#x27;est le stationnement : 15 $ par nuit, pour deux nuits. »</li><li>★ Passer le relais au gérant, sans promettre — « Ce n&#x27;est pas moi qui décide. Je transmets votre demande au gérant. »</li></ol>
-</section>
-
-<section class="grille-obs">
-  <h2>Grille d'observation <small>— à imprimer, une par séance</small></h2>
-  <p class="grille-tete">Groupe : ☐ A · fr → en &nbsp;&nbsp; ☐ B · es → fr &nbsp;&nbsp;&nbsp; Séance : ☐ 1 &nbsp; ☐ 2 &nbsp;&nbsp;&nbsp; Date : ____________</p>
-  <table class="cmp obs"><thead><tr><th>Repère (jamais un nom)</th><th>Où ça bloque</th><th>Traduction</th><th>Au comptoir : geste vu</th><th>Bilan contesté ?</th><th>Citation</th></tr></thead>
-  <tbody><tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td></tr></tbody></table>
-  <p><button type="button" class="btn-export" onclick="window.print()">Imprimer la grille</button></p>
-</section>
-
-<div class="pied"><p>Protocole produit par <code>build/hotel_pilote.py</code> — ne pas l'éditer.
-Plan : <a href="hotellerie-plan.html">hotellerie-plan.html</a> · cadrage : <a href="hotellerie-etape0.html">hotellerie-etape0.html</a>.</p></div>
+<div class="pied"><p>Page produite par <code>build/hotel_emballage.py</code> — chaque chiffre est lu dans le contenu.</p></div>
 </div></body></html>
