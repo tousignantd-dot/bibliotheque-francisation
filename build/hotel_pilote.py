@@ -74,8 +74,11 @@ def main():
          "d'ici. L'audit didactique ne vérifie pas la justesse de la langue.",
          "Un employé bilingue par langue, idéalement du pilote."),
         ("Créer les deux groupes et imprimer",
-         f"Deux groupes pilotes de niveau {E(act['level'].split()[-1])} (la trousse est l'atelier {act['id']}), "
-         "une séance sans compte par groupe, la feuille QR, et la grille d'observation plus bas, une par séance.",
+         f"Deux groupes pilotes <b>au niveau {E(act['level'].split()[-1])}</b> — un groupe d'un autre niveau ne peut pas "
+         f"ouvrir la séance (la trousse est l'atelier {act['id']}) —, une séance sans compte par groupe, la feuille QR, "
+         "et la grille d'observation plus bas, une par séance. Les décisions, le calendrier et les documents à "
+         "imprimer (lettre à l'hôtel, fiches des participants, feuille de route, rapport) sont dans "
+         "<a href=\"hotellerie-pilote-trousse.html\">Préparer le pilote</a>.",
          "Le formateur."),
     ]
     avant_html = "".join(f"<li><p><b>{E(t)}</b> — {d}</p><p class=\"qui\">{E(q)}</p></li>" for t, d, q in avant)
