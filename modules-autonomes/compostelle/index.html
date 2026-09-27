@@ -16,6 +16,13 @@
 /* Page produite par build/compostelle_app.py — ne pas l'éditer. */
 :root{--fleche:#F2C230;--fleche-ink:#5C4400;--fleche-bg:#FFF6D6;
   --encre-1:#9B2C2C;--encre-2:#1D4E89;--encre-3:#1F6F5C;--encre-4:#7A4B1E}
+/* Habit « La flèche et la borne » (variation B, choisie par Daniel le 26 sept. 2026,
+   avec les tampons rouges de la variation A) : la flèche jaune est l'action, le bleu
+   de la borne galicienne encadre, l'encre des tampons est le rouge de Santiago.
+   Voir assets/presentations/compostelle-variations.html. */
+:root{--surface-page:#E8ECEE;--accent:#F2C230;--accent-ink:#13233B;--accent-soft:#E3EBF7;
+  --text-accent:#1F4E9C;--text-strong:#13233B;--text-body:#22324A;--text-muted:#5B6979;
+  --audio:#1F4E9C;--borne:#1F4E9C;--borne-bg:#E3EBF7;--borne-trait:#AFBFD3;--tampon:#9B2C2C}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%}
@@ -38,7 +45,7 @@ button{font:inherit}
   border:1px solid var(--line-300,#D6D6D2);background:var(--surface-card,#fff);color:var(--text-strong);
   display:inline-flex;gap:8px;align-items:center;justify-content:center;text-decoration:none}
 .btn:active{transform:translateY(1px)}
-.btn--pri{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn--pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .btn--large{width:100%}
 .btn--son{background:var(--audio);border-color:var(--audio);color:#fff;min-width:48px;padding:10px 12px}
 .btn--petit{min-height:44px;padding:6px 12px;font-size:14.5px}
@@ -54,27 +61,36 @@ button{font:inherit}
 .heros{position:relative;border-radius:18px;overflow:hidden;background:#fff;border:1px solid var(--line-200)}
 .heros img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover}
 .heros .txt{padding:14px 16px 16px}
-.cred{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px 6px;background:#FBF6E9;border:1px solid #E6DCC3;
+.cred{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px 6px;background:#fff;border:1px solid var(--borne-trait);
   border-radius:14px;padding:10px 8px}
 .case-w{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0}
-.case-w small{font-size:9.5px;letter-spacing:-.2px;font-weight:800;color:#7A6A45;line-height:1.1;text-align:center;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.case{width:100%;aspect-ratio:1/1;border:1.5px dashed #CDBF9C;border-radius:10px;display:flex;align-items:center;
-  justify-content:center;cursor:pointer;background:transparent;padding:2px;color:#7A6A45}
+.case-w small{font-size:9.5px;letter-spacing:-.2px;font-weight:800;color:var(--text-muted);line-height:1.1;text-align:center;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.case{width:100%;aspect-ratio:1/1;border:1.5px dashed var(--borne-trait);border-radius:10px;display:flex;align-items:center;
+  justify-content:center;cursor:pointer;background:transparent;padding:2px;color:var(--text-muted)}
 .case span{font-size:20px;font-weight:900}
 .case.faite{border-style:solid;border-color:transparent;background:transparent}
 .case svg.tampon{width:100%;height:100%}
-.case.courante{border-color:var(--accent);border-style:solid;box-shadow:inset 0 0 0 2px var(--accent)}
+svg.tampon{opacity:.9}
+#app a{color:var(--text-accent)}
+.lien-guide{margin-top:10px;background:transparent;border-color:var(--borne-trait);color:var(--text-accent)}
+.g-phase{background:#fff;border:1px solid var(--line-200);border-left:4px solid var(--borne);border-radius:12px;padding:10px 14px;margin:8px 0}
+.g-phase .surtitre span{text-transform:none;letter-spacing:0;font-weight:700}
+.g-phase ol{margin:6px 0 0;padding-left:22px}.g-phase li{margin:4px 0;font-size:15.5px}
+.g-tamp{display:inline-block;font-size:12px;font-weight:900;color:var(--tampon);border:1.5px solid var(--tampon);border-radius:99px;padding:0 7px;line-height:1.5}
+.g-jours{padding-left:0;list-style:none;margin:8px 0}.g-jours li{background:#fff;border:1px solid var(--line-200);border-radius:12px;padding:9px 12px;margin:6px 0;font-size:15px}
+.g-liste{padding-left:20px}.g-liste li{margin:6px 0;font-size:15.5px}
+.case.courante{border-color:var(--accent);border-style:solid;box-shadow:inset 0 0 0 2px var(--accent);background:var(--fleche-bg);color:var(--accent-ink)}
 .outils{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .outil{display:flex;gap:10px;align-items:center;text-align:left;cursor:pointer;background:#fff;border:1px solid var(--line-200);
-  border-radius:14px;padding:12px;min-height:64px}
+  border-radius:14px;padding:12px;min-height:64px;border-left:4px solid var(--borne)}
 .outil svg{width:26px;height:26px;flex:none;color:var(--text-accent)}
 .outil b{display:block;font-size:15.5px;color:var(--text-strong)}
 .outil span{font-size:13px;color:var(--text-muted);line-height:1.3;display:block}
 .frise{width:100%;height:auto;display:block}
-.frise .ligne{stroke:#B99A4A;stroke-width:3;stroke-dasharray:1 7;stroke-linecap:round}
-.frise .ok{fill:var(--fleche);stroke:#8A6D1F;stroke-width:1.5}
-.frise .ko{fill:#fff;stroke:#B99A4A;stroke-width:1.5}
-.frise text{font:700 11px Nunito,system-ui,sans-serif;fill:#6B5A33;text-anchor:middle}
+.frise .ligne{stroke:var(--borne-trait);stroke-width:3;stroke-dasharray:1 7;stroke-linecap:round}
+.frise .ok{fill:var(--borne);stroke:var(--accent-ink);stroke-width:1.5}
+.frise .ko{fill:#fff;stroke:var(--borne-trait);stroke-width:1.5}
+.frise text{font:700 11px Nunito,system-ui,sans-serif;fill:var(--text-muted);text-anchor:middle}
 
 /* Journée */
 .bandeau{border-radius:16px;overflow:hidden;position:relative;background:#fff;border:1px solid var(--line-200)}
@@ -110,7 +126,7 @@ button{font:inherit}
 /* Exercices */
 .consigne{font-size:15.5px;color:var(--text-muted);margin:0 0 10px}
 .progres{height:8px;background:#EEE9DA;border-radius:99px;overflow:hidden;margin:6px 0 14px}
-.progres i{display:block;height:100%;background:var(--fleche);border-radius:99px;transition:width .3s}
+.progres i{display:block;height:100%;background:var(--borne);border-radius:99px;transition:width .3s}
 .choix{display:flex;flex-direction:column;gap:8px;margin:10px 0}
 .choix button{text-align:left;background:#fff;border:1.5px solid var(--line-300,#D6D6D2);border-radius:12px;padding:12px 14px;
   cursor:pointer;min-height:52px;font-size:16.5px;color:var(--text-strong);line-height:1.3}
@@ -147,7 +163,7 @@ button{font:inherit}
 .fil{display:flex;flex-direction:column;gap:10px}
 .bulle{max-width:88%;border-radius:16px;padding:10px 12px;background:#fff;border:1px solid var(--line-200);position:relative}
 .bulle.lui{align-self:flex-start;border-top-left-radius:4px}
-.bulle.moi{align-self:flex-end;background:var(--accent-soft,#E6F5EE);border-color:#BFE3CF;border-top-right-radius:4px}
+.bulle.moi{align-self:flex-end;background:var(--accent-soft,#E6F5EE);border-color:var(--borne-trait);border-top-right-radius:4px}
 .bulle .qui{font-size:13.5px;font-weight:900;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted);display:flex;gap:6px;align-items:center}
 .bulle .qui svg{width:14px;height:14px}
 .bulle .es{font-size:17px;color:var(--text-strong);font-weight:700}
@@ -216,6 +232,7 @@ const BASE = '/assets/interactive/compostelle/';
 const E = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const $ = s => document.querySelector(s);
 const ICO = {
+  guide:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>',
   son:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>',
   oeil:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
   retour:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>',
@@ -314,9 +331,8 @@ const plat = t => t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').repla
 function ordre(n, graine){ const o = [...Array(n).keys()]; const d = graine % n; return o.slice(d).concat(o.slice(0, d)); }
 
 /* ---------- le tampon ---------- */
-const ENCRES = ['--encre-1', '--encre-2', '--encre-3', '--encre-4'];
 function tampon(et, date){
-  const enc = `var(${ENCRES[et.n % 4]})`, rot = ((et.n * 37) % 17) - 8;
+  const enc = 'var(--tampon)', rot = ((et.n * 37) % 17) - 8;
   const nom = et.lieu.toUpperCase(), id = 'arc' + et.id.replace(/[^a-z]/g, '');
   const img = et.vignette ? `<clipPath id="c${id}"><circle cx="60" cy="60" r="30"/></clipPath>
     <image href="${BASE}etapes/${et.img}.jpg?v=${D.v}" x="15" y="30" width="90" height="60" clip-path="url(#c${id})" preserveAspectRatio="xMidYMid slice" style="filter:grayscale(1) sepia(.6) contrast(1.1)" opacity=".85"/>` : '';
@@ -352,6 +368,7 @@ function rendre(){
   arreterMicro(); lecteur.pause();
   const p = (location.hash.slice(1) || 'accueil').split('/');
   window.scrollTo(0, 0);
+  if (p[0] === 'guide') return vueGuide();
   if (!S.genre && p[0] !== 'reglages') return vueBienvenue();
   if (p[0] === 'jour' && etapeParId(p[1])) {
     const et = etapeParId(p[1]);
@@ -370,6 +387,53 @@ function rendre(){
   return vueAccueil();
 }
 
+/* ---------- comment ça marche ---------- */
+/* Demande de Daniel, 26 sept. 2026 : un lien sur la première page vers
+   l'explication de l'outil. La même route que l'infographie du classeur
+   (assets/presentations/compostelle-parcours.html), dite au pèlerin. */
+function vueGuide(){
+  const phases = [['Découvrir', 'vous recevez', ['lieu', 'mots', 'entends']],
+                  ['Comprendre', 'vous reconnaissez ce qu’on vous dit', ['repond']],
+                  ['Agir', 'vous parlez, vous jouez', ['scene', 'dire', 'soir']]];
+  const TAMP = ['repond', 'scene', 'dire', 'soir'];
+  const ph = phases.map(([nom, sous, ks]) => `<div class="g-phase"><p class="surtitre">${nom} <span>· ${sous}</span></p><ol>${
+    ks.map(k => { const i = TEMPS.findIndex(t => t[0] === k), t = TEMPS[i];
+      return `<li value="${i + 1}"><b>${E(t[1])}</b>${TAMP.includes(k) ? ' <span class="g-tamp" title="compte pour le tampon">✓ tampon</span>' : ''}<br><span class="muted">${E(t[2])}</span></li>`; }).join('')}</ol></div>`).join('');
+  const jours = D.etapes.map(e => `<li><b>Jour ${e.n} · ${E(e.lieu)}</b> <span class="muted">km ${e.km}</span><br>${E(e.objectif)}</li>`).join('');
+  app.innerHTML = `${retour(S.genre ? 'accueil' : '', S.genre ? 'La credencial' : 'Retour')}
+  <p class="surtitre">Le mode d'emploi</p><h1>Comment ça marche ?</h1>
+  <p>Dix journées, une par étape du Camino francés, de Roncesvalles à Santiago. Chaque journée prépare une situation dont vous aurez
+  besoin ce soir-là : trouver un lit, commander, vous soigner, demander votre chemin, parler avec les autres.</p>
+  <div class="objectif"><b>La règle du chemin :</b> comprendre avant de dire, dire avant de jouer, jouer avant d'y aller seul.</div>
+  <h2>Une journée, sept temps</h2>
+  <p>Toujours dans le même ordre. Touchez un temps dans la journée pour le faire ; vous pouvez le refaire autant que vous voulez.</p>
+  ${ph}
+  <h2>Le tampon</h2>
+  <p>Votre credencial se tamponne quand les quatre temps marqués <span class="g-tamp">✓ tampon</span> sont faits : comprendre,
+  jouer la scène, dire, parler le soir. Lire et écouter ne suffisent pas : sur le chemin, il faudra parler.</p>
+  <h2>Les dix journées</h2>
+  <p>Faites-les dans l'ordre : ce qui a été appris revient plus loin, sans prévenir (« Rappel · jour 2 »).
+  À <b>León</b>, votre allergie est éliminatoire : la rater fait rejouer la scène. Après León, elle revient chaque jour.</p>
+  <ol class="g-jours">${jours}</ol>
+  <h2>Et aussi</h2>
+  <ul class="g-liste">
+   <li><b>Parler librement</b> — au bas de chaque journée${D.jeuLibre ? '' : ' (bientôt)'} : la même personne vous répond vraiment, à votre vitesse, puis un bilan en français. Il faut un code, remis par votre groupe.</li>
+   <li><b>La poche</b> — les phrases du chemin, les urgences (112) et votre carte d'allergie en grand, à montrer. « Préparer pour le chemin » les garde dans le téléphone : elles marchent sans réseau.</li>
+   <li><b>Tous les mots</b> et <b>les faux amis</b> — pour revoir, quand vous voulez.</li>
+   <li><b>Suis-je prêt ?</b> — un quart d'heure de situations nouvelles avant le départ. Il vous situe (Solide · En route · À reprendre), il ne vous note pas.</li>
+   <li><b>La Compostela</b> — au dixième tampon, un souvenir à imprimer.</li>
+  </ul>
+  <h2>Conseils</h2>
+  <ul class="g-liste">
+   <li>Mettez des écouteurs, et parlez à voix haute : le micro vous écoute seulement quand vous le touchez.</li>
+   <li>Les voix vont trop vite ? Cochez « Voix plus lentes », dans la scène.</li>
+   <li>Pour l'avoir comme une application : menu du navigateur, « Ajouter à l'écran d'accueil ».</li>
+   <li>Rien ne quitte ce téléphone : aucun compte, aucune inscription. Changer de téléphone, c'est repartir de zéro.</li>
+  </ul>
+  ${S.genre ? `<button class="btn btn--pri btn--large" style="margin-top:14px" onclick="aller('accueil')">Reprendre la route</button>` :
+             `<button class="btn btn--pri btn--large" style="margin-top:14px" onclick="aller('')">Commencer</button>`}`;
+}
+
 /* ---------- bienvenue ---------- */
 function vueBienvenue(){
   app.innerHTML = `
@@ -385,7 +449,8 @@ function vueBienvenue(){
    <div class="rangee"><button class="btn btn--pri" onclick="choisirGenre('m')">Un pèlerin</button>
    <button class="btn btn--pri" onclick="choisirGenre('f')">Une pèlerine</button></div>
    <p class="avis-local" style="margin-top:12px">Puis : en espagnol, on ne dit pas la même chose à un pèlerin et à une pèlerine (<i>cansado</i>, <i>cansada</i>). Tout ce que vous faites ici reste dans ce téléphone : rien n'est envoyé.</p>
-  </div>`;
+  </div>
+  <button class="btn btn--large lien-guide" onclick="aller('guide')">${ICO.guide} Comment ça marche ?</button>`;
 }
 function choisirGenre(x){ S.genre = x; sauver(); location.hash = '#accueil'; rendre(); }
 
@@ -412,7 +477,8 @@ function vueAccueil(){
   <p class="surtitre">Ma credencial · ${faits} tampon${faits > 1 ? 's' : ''} sur 10</p>
   <h1>${faits === 10 ? '¡Lo has conseguido!' : pro ? 'Jour ' + pro.n + ' · ' + E(pro.lieu) : ''}</h1>
   ${pro ? `<p class="muted">${E(pro.titre)} — ${E(pro.region)}, km ${pro.km}</p>
-  <button class="btn btn--pri btn--large" onclick="aller('jour/${pro.id}')">Reprendre la route</button>` :
+  <button class="btn btn--pri btn--large" onclick="aller('jour/${pro.id}')">Reprendre la route</button>
+  <button class="btn btn--large lien-guide" onclick="aller('guide')">${ICO.guide} Comment ça marche ?</button>` :
   `<button class="btn btn--pri btn--large" onclick="aller('compostela')">Voir ma Compostela</button>`}
   <div style="margin:16px 0 6px">${frise()}</div>
   <div class="cred">${cases}</div>

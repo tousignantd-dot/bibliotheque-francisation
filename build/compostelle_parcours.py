@@ -27,8 +27,8 @@ TEMPS = [
     ("mots", "Les mots du jour", "decouvrir", "Des cartes dessinées. Je touche, j'entends ; la traduction reste cachée d'abord."),
     ("entends", "J'entends, je trouve", "decouvrir", "Un mot entendu, quatre images : je reconnais à l'oreille."),
     ("repond", "Ce qu'on me répond", "comprendre", "La personne du lieu répond à sa vitesse : que veut-elle dire ? Plus des rappels des jours passés."),
-    ("dire", "Je le dis", "agir", "La situation en français ; je la dis au micro, puis j'écoute le modèle."),
     ("scene", "La scène", "agir", "La situation jouée : j'écoute d'abord, je choisis ou je réponds à voix haute."),
+    ("dire", "Je le dis", "agir", "Ce que je viens d'entendre, à moi de le dire au micro ; puis j'écoute le modèle."),
     ("soir", "Le soir, avec Marta", "agir", "Une conversation entre pèlerins. Marta se souvient de ce que j'ai dit la veille."),
 ]
 TAMPON = ("repond", "dire", "scene", "soir")
@@ -176,7 +176,7 @@ en sept temps. Le pèlerin avance de lieu en lieu ; ce qui a été appris revien
     <div class="tampon">
       <svg width="54" height="54" viewBox="0 0 54 54" aria-hidden="true"><circle cx="27" cy="27" r="24" fill="none" stroke="#B3261E" stroke-width="3"/><circle cx="27" cy="27" r="19" fill="none" stroke="#B3261E" stroke-width="1.2" stroke-dasharray="2 3"/><path d="M27 14c-6 0-10 5-10 10 0 7 10 16 10 16s10-9 10-16c0-5-4-10-10-10z" fill="#B3261E" opacity=".85"/></svg>
       <div><b>Le tampon sur la credencial</b><br><span style="font-size:14.5px">Il se gagne quand les quatre temps marqués
-      <span style="color:#B3261E;font-weight:900">✓</span> sont faits : comprendre, dire, jouer la scène, parler le soir. Lire et écouter
+      <span style="color:#B3261E;font-weight:900">✓</span> sont faits : comprendre, jouer la scène, dire, parler le soir. Lire et écouter
       ne suffisent pas.</span></div>
     </div>
     <div class="bonus"><b>Et puis, librement</b><br>« Parler librement » : la même personne, au même endroit, mais qui répond
