@@ -20,7 +20,8 @@
    avec les tampons rouges de la variation A) : la flèche jaune est l'action, le bleu
    de la borne galicienne encadre, l'encre des tampons est le rouge de Santiago.
    Voir assets/presentations/compostelle-variations.html. */
-:root{--surface-page:#E8ECEE;--accent:#F2C230;--accent-ink:#13233B;--accent-soft:#E3EBF7;
+/* Fond beige « credencial » (26 sept. 2026 : Daniel préfère le beige au gris-bleu ; le bleu reste aux bornes). */
+:root{--surface-page:#F3ECDD;--accent:#F2C230;--accent-ink:#13233B;--accent-soft:#E3EBF7;
   --text-accent:#1F4E9C;--text-strong:#13233B;--text-body:#22324A;--text-muted:#5B6979;
   --audio:#1F4E9C;--borne:#1F4E9C;--borne-bg:#E3EBF7;--borne-trait:#AFBFD3;--tampon:#9B2C2C}
 *{box-sizing:border-box}
@@ -61,17 +62,20 @@ button{font:inherit}
 .heros{position:relative;border-radius:18px;overflow:hidden;background:#fff;border:1px solid var(--line-200)}
 .heros img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover}
 .heros .txt{padding:14px 16px 16px}
-.cred{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px 6px;background:#fff;border:1px solid var(--borne-trait);
+.cred{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px 6px;background:#FBF6E9;border:1px solid #E2D6BA;
   border-radius:14px;padding:10px 8px}
 .case-w{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0}
 .case-w small{font-size:9.5px;letter-spacing:-.2px;font-weight:800;color:var(--text-muted);line-height:1.1;text-align:center;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.case{width:100%;aspect-ratio:1/1;border:1.5px dashed var(--borne-trait);border-radius:10px;display:flex;align-items:center;
+.case{width:100%;aspect-ratio:1/1;border:1.5px dashed #CDBF9C;border-radius:10px;display:flex;align-items:center;
   justify-content:center;cursor:pointer;background:transparent;padding:2px;color:var(--text-muted)}
 .case span{font-size:20px;font-weight:900}
 .case.faite{border-style:solid;border-color:transparent;background:transparent}
 .case svg.tampon{width:100%;height:100%}
 svg.tampon{opacity:.9}
 #app a{color:var(--text-accent)}
+.tete-borne{display:flex;gap:14px;align-items:flex-end;justify-content:space-between;margin-bottom:12px}
+.tete-borne>div{min-width:0}
+svg.borne{width:62px;height:auto;flex:none;filter:drop-shadow(0 2px 2px rgba(60,50,30,.18))}
 .code-achat{font-size:34px;font-weight:900;letter-spacing:.18em;text-align:center;background:#fff;border:2px dashed var(--tampon);color:var(--tampon);border-radius:14px;padding:14px;margin:12px 0}
 .lien-guide{margin-top:10px;background:transparent;border-color:var(--borne-trait);color:var(--text-accent)}
 .g-phase{background:#fff;border:1px solid var(--line-200);border-left:4px solid var(--borne);border-radius:12px;padding:10px 14px;margin:8px 0}
@@ -349,6 +353,23 @@ function tampon(et, date){
 }
 const aujourdhui = () => new Date().toLocaleDateString('fr-CA', {day:'numeric', month:'short', year:'numeric'});
 
+/* ---------- la borne ---------- */
+/* Le mojón galicien : un poteau de béton, la céramique bleue à coquille jaune,
+   la flèche peinte, et la plaque des kilomètres qui restent jusqu'à Santiago.
+   Le pèlerin en voit des centaines ; ici, elle dit où il en est. */
+function borne(reste, classe){
+  const km = reste > 0 ? reste.toLocaleString('fr-CA') + ' km' : '0 km';
+  return `<svg class="borne ${classe || ''}" viewBox="0 0 60 104" role="img" aria-label="Borne : ${reste > 0 ? 'encore ' + km + ' jusqu’à Santiago' : 'Santiago'}">
+    <path d="M9 102V24Q9 5 30 5T51 24v78z" fill="#DAD6CC" stroke="#8C877B" stroke-width="2"/>
+    <path d="M13 99V25Q13 9 30 9" fill="none" stroke="#fff" stroke-opacity=".45" stroke-width="2"/>
+    <rect x="14" y="16" width="32" height="28" rx="2.5" fill="#1F4E9C"/>
+    <g stroke="#F2C230" stroke-width="2.2" stroke-linecap="round"><path d="M18 30 42 20M18 30 43 26M18 30 43 32M18 30 42 38M18 30 38 42M18 30 38 18"/></g>
+    <path d="M17 58h18v-5l10 8-10 8v-5H17z" fill="#F2C230" stroke="#B88B0A" stroke-width="1"/>
+    <rect x="13" y="76" width="34" height="15" rx="2" fill="#6F6A5F"/>
+    <text x="30" y="87" text-anchor="middle" font-family="Nunito,system-ui" font-weight="900" font-size="${km.length > 7 ? 7.6 : 9}" fill="#F3ECDD">${km}</text>
+  </svg>`;
+}
+
 /* ---------- navigation ---------- */
 const TEMPS = [
   ['lieu', 'Le lieu', 'Ce qu’on y voit, ce qu’on y visite'],
@@ -477,9 +498,12 @@ function vueAccueil(){
     return `<div class="case-w"><button class="case${pro && pro.id === e.id ? ' courante' : ''}" onclick="aller('jour/${e.id}')" aria-label="Jour ${e.n} : ${E(e.lieu)}"><span>${e.n}</span></button>${nom}</div>`;
   }).join('');
   app.innerHTML = `
+  <div class="tete-borne"><div>
   <p class="surtitre">Ma credencial · ${faits} tampon${faits > 1 ? 's' : ''} sur 10</p>
   <h1>${faits === 10 ? '¡Lo has conseguido!' : pro ? 'Jour ' + pro.n + ' · ' + E(pro.lieu) : ''}</h1>
-  ${pro ? `<p class="muted">${E(pro.titre)} — ${E(pro.region)}, km ${pro.km}</p>
+  ${pro ? `<p class="muted" style="margin:0">${E(pro.titre)} — ${E(pro.region)}, km ${pro.km}</p>` : ''}</div>
+  ${borne(pro ? 775 - pro.km : 0)}</div>
+  ${pro ? `
   <button class="btn btn--pri btn--large" onclick="aller('jour/${pro.id}')">Reprendre la route</button>
   <button class="btn btn--large lien-guide" onclick="aller('guide')">${ICO.guide} Comment ça marche ?</button>` :
   `<button class="btn btn--pri btn--large" onclick="aller('compostela')">Voir ma Compostela</button>`}
@@ -514,8 +538,9 @@ function vueJour(et){
       <span><b>Parler librement, avec l'assistant</b><span class="d">${E(D.perso[et.local].nom)} ou Marta vous répondent vraiment. Il faut du réseau et un code.</span></span></button></li></ul>` : '';
   app.innerHTML = `${retour('accueil', 'La credencial')}
   <div class="bandeau">${et.vignette ? `<img src="${BASE}etapes/${et.img}.jpg?v=${D.v}" alt="">` : ''}</div>
-  <p class="surtitre" style="margin-top:12px">Jour ${et.n} · ${E(et.region)} · km ${et.km}</p>
-  <h1>${E(et.lieu)}</h1><p class="muted">${E(et.titre)}</p>
+  <div class="tete-borne" style="margin-top:12px"><div>
+  <p class="surtitre">Jour ${et.n} · ${E(et.region)} · km ${et.km}</p>
+  <h1>${E(et.lieu)}</h1><p class="muted" style="margin:0">${E(et.titre)}</p></div>${borne(775 - et.km)}</div>
   <div class="objectif"><b>Aujourd'hui :</b> ${E(et.objectif)}</div>
   ${j.tampon ? `<div class="retro ok">✓ Tamponné le ${E(j.tampon)}. Vous pouvez rejouer chaque temps.</div>` :
    peutTamponner(et) ? `<button class="btn btn--pri btn--large" onclick="poserTampon(etapeParId('${et.id}'))">Faire tamponner ma credencial</button>` :
