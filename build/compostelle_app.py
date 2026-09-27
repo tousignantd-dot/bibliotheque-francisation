@@ -73,12 +73,19 @@ def donnees():
     TS.verifier()
     LX.verifier()
     PR = C.charger("preparation")
+    # Les leçons narrées (build/compostelle_lecons.py) : seulement celles qui ont leur son.
+    LE = C.charger("lecons").LECONS
+    temps_l = json.loads((C.CONTENU / "lecons_temps.json").read_text()) if (C.CONTENU / "lecons_temps.json").exists() else {}
+    lecons = {sid: {"segs": [list(x) for x in segs], "debuts": temps_l[sid]["debuts"], "duree": temps_l[sid]["duree"]}
+              for sid, segs in LE.items()
+              if sid in temps_l and len(temps_l[sid]["debuts"]) == len(segs) and (C.SONS / "prep" / sid / "lecon.mp3").exists()}
     PR.verifier({e[0] for e in LX.LEXIQUE}, PS.PERSONNAGES)
     global MOTS_IDS
     MOTS_IDS = {e[0] for e in LX.LEXIQUE}
     for e in verifier(ET):
         print("  à regarder :", e)
     sons = sorted(x["fichier"] for x in C.extraits() if (C.SONS / x["fichier"]).exists())
+    sons = sorted(sons + [f"prep/{sid}/lecon.mp3" for sid in lecons])
     tous = [x["fichier"] for x in C.extraits()]
     manque = len(tous) - len(sons)
     mots = {}
@@ -132,7 +139,7 @@ def donnees():
     return {"v": MEDIA_V, "jeuLibre": JEU_LIBRE, "alergenos": alergenos,
             "test": {"formes": TS.FORMES, "objectifs": TS.OBJECTIFS, "seuil": TS.SEUIL},
             "prep": {"seances": PR.SEANCES, "test": PR.TEST, "objectifs": PR.OBJECTIFS, "seuil": PR.SEUIL, "conseils": PR.CONSEILS,
-                     "fin": PR.FIN, "halte": PR.HALTE},
+                     "fin": PR.FIN, "halte": PR.HALTE, "lecons": lecons},
             "poids": round(poids / 1e6), "planches": LX.PLANCHES, "mots": mots, "pieges": pieges, "perso": perso,
             "etapes": etapes, "poche": poche, "sons": sons}, manque, len(tous)
 
@@ -256,6 +263,16 @@ svg.tampon{opacity:.9}
   border-left:5px solid var(--accent);border-radius:14px;padding:12px 14px;margin-bottom:12px;font:inherit;color:var(--text-body)}
 .carte-prep b{font-size:17px;color:var(--text-strong)}
 .carte-prep .muted{font-size:14px}
+.l-lecteur{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.l-jouer{display:inline-flex;align-items:center;gap:8px;min-height:48px}
+.l-barre{flex:1;min-width:120px;height:8px;border-radius:99px;background:var(--line-200);overflow:hidden}
+.l-barre span{display:block;height:100%;width:0;background:var(--borne);transition:width .25s linear}
+.l-temps{font-size:14px;font-variant-numeric:tabular-nums}
+.l-texte{margin-top:12px}
+.l-seg{margin:0 0 8px;padding:4px 8px;border-radius:8px;line-height:1.5;transition:background .2s;cursor:default}
+.l-es{font-weight:800;color:var(--borne);padding-left:14px;border-left:3px solid var(--accent)}
+.l-seg.actif{background:#FBF1CF}
+.lien-btn{background:none;border:0;padding:0;font:inherit;color:var(--borne);text-decoration:underline;cursor:pointer}
 .meca{background:#fff;border:1px solid var(--line-200);border-left:4px solid var(--borne);border-radius:12px;padding:10px 14px;margin:10px 0 14px}
 .meca ul{margin:6px 0 0;padding-left:18px}.meca li{margin:5px 0;font-size:15.5px;line-height:1.5}
 .liste-ecoute{padding:4px 0}
@@ -606,7 +623,7 @@ function etapeParId(id){ return D.etapes.find(e => e.id === id); }
 function prochaine(){ return D.etapes.find(e => !jour(e.id).tampon) || null; }
 
 function rendre(){
-  arreterMicro(); lecteur.pause();
+  arreterMicro(); lecteur.pause(); lecteur.ontimeupdate = null;
   const p = (location.hash.slice(1) || 'accueil').split('/');
   window.scrollTo(0, 0);
   if (p[0] === 'guide') return vueGuide();
@@ -1339,7 +1356,9 @@ function vueAchatAnnule(){
    conseillées, jamais verrouillées ; un encadré « la mécanique » par séance ;
    un test qui situe. Le contenu : build/contenu/compostelle/preparation.py.
    Révisé au tour 1 de la boucle didactique (27 sept.) : voir compostelle-audit.html. */
-const PREP_TEMPS = [['ecoute', 'J’écoute', 'Les phrases et les mots, avec leur voix'],
+// « La leçon » d'abord : quelqu'un explique avant qu'on joue (Daniel, 27 sept. 2026).
+const PREP_TEMPS = [...(D.prep.lecons && Object.keys(D.prep.lecons).length ? [['lecon', 'La leçon', 'On vous explique, en une ou deux minutes']] : []),
+                    ['ecoute', 'J’écoute', 'Les phrases et les mots, avec leur voix'],
                     ['quiz', 'Je reconnais', 'J’entends, je choisis'],
                     ['dire', 'Je le dis', 'Au micro, puis le modèle']];
 // La séance qui outille chaque halte (audit tour 1, D1/F3).
@@ -1372,7 +1391,7 @@ function vuePrep(){
 }
 function teteSeance(x, k){
   const i = PREP_TEMPS.findIndex(t => t[0] === k);
-  return `${retour('prep/' + x.id, 'Séance ' + numSeance(x) + ' · ' + x.titre)}<p class="surtitre">${i + 1} / 3</p><h1>${PREP_TEMPS[i][1]}</h1>`;
+  return `${retour('prep/' + x.id, 'Séance ' + numSeance(x) + ' · ' + x.titre)}<p class="surtitre">${i + 1} / ${PREP_TEMPS.length}</p><h1>${PREP_TEMPS[i][1]}</h1>`;
 }
 function finTemps(x, k){
   const e = prepEtat(x.id); e.faits[k] = true;
@@ -1388,6 +1407,7 @@ function finTemps(x, k){
 }
 function vueSeance(id, k){
   const x = seanceParId(id); if (!x) return vuePrep();
+  if (k === 'lecon') return seanceLecon(x);
   if (k === 'ecoute') return seanceEcoute(x);
   if (k === 'quiz') return seanceQuiz(x);
   if (k === 'dire') return seanceDire(x);
@@ -1401,6 +1421,55 @@ function vueSeance(id, k){
     <div class="meca"><p class="surtitre">La mécanique</p><ul>${x.meca.map(t => `<li>${g(t)}</li>`).join('')}</ul></div>
     <button class="btn btn--pri btn--large" onclick="aller('prep/${x.id}/${suivant[0]}')">${e.fin ? 'Refaire' : Object.keys(e.faits).length ? 'Continuer' : 'Commencer'} : ${suivant[1]}</button>
     <ul class="etapes-j">${liste}</ul>`;
+}
+/* La leçon narrée : la guide explique, la voix d'Espagne dit les exemples ; le
+   texte suit l'écoute. Le temps est fait quand on a écouté jusqu'au bout — ou
+   qu'on a choisi de lire (sans son, malentendant). */
+const blobLecon = {};
+function seanceLecon(x){
+  const L = D.prep.lecons[x.id];
+  if (!L) { prepEtat(x.id).faits.lecon = true; sauver(); return aller('prep/' + x.id + '/ecoute'); }
+  const mmss = t => Math.floor(t / 60) + ':' + String(Math.floor(t % 60)).padStart(2, '0');
+  const texte = L.segs.map(([l, t], k) => l === 'es'
+    ? `<p class="l-seg l-es" data-k="${k}" lang="es">${E(t)}</p>` : `<p class="l-seg" data-k="${k}">${E(t)}</p>`).join('');
+  app.innerHTML = `${teteSeance(x, 'lecon')}
+    <p class="consigne">Écoutez d'abord : on vous explique la mécanique, avec des exemples. Environ ${Math.max(1, Math.round(L.duree / 60))} minute${Math.round(L.duree / 60) > 1 ? 's' : ''}.</p>
+    <div class="carte l-lecteur">
+      <button class="btn btn--pri l-jouer" id="lJouer">${ICO.son} Écouter la leçon</button>
+      <div class="l-barre" aria-hidden="true"><span id="lPlein"></span></div>
+      <div class="muted l-temps"><span id="lT">0:00</span> / ${mmss(L.duree)}</div>
+    </div>
+    <div class="carte l-texte" id="lTexte">${texte}</div>
+    <div id="finLecon" style="margin-top:16px"><button class="btn btn--pri btn--large" id="lFini" disabled>J'ai écouté la leçon</button>
+      <p class="muted" style="font-size:14px;margin:8px 0 0">Pas de son ? <button class="lien-btn" id="lLire">J'ai lu le texte</button></p></div>`;
+  const segs = [...app.querySelectorAll('.l-seg')];
+  let joue = false, fini = false;
+  const maj = () => {
+    const t = lecteur.currentTime || 0;
+    $('#lT').textContent = mmss(t); $('#lPlein').style.width = Math.min(100, t / L.duree * 100) + '%';
+    let k = 0; L.debuts.forEach((d, j) => { if (t >= d - 0.05) k = j; });
+    segs.forEach((el, j) => el.classList.toggle('actif', joue && j === k));
+    if (t >= L.duree * 0.92) finir();
+  };
+  const finir = () => { if (fini) return; fini = true; const b = $('#lFini'); if (b) b.disabled = false; };
+  $('#lJouer').onclick = () => {
+    if (!joue) {
+      // Le fichier entier en mémoire : le serveur ne sert pas les plages
+      // (Range), et sans elles on ne peut pas revenir à une phrase touchée.
+      arreterMicro(); lecteur.pause(); joue = true; $('#lJouer').textContent = 'Chargement…';
+      const url = BASE + 'sons/prep/' + x.id + '/lecon.mp3?v=' + D.v;
+      (blobLecon[url] ? Promise.resolve(blobLecon[url]) : fetch(url).then(r => r.blob()).then(b => blobLecon[url] = URL.createObjectURL(b)))
+        .catch(() => url).then(src => {
+          if (!document.body.contains(segs[0])) return;
+          lecteur.src = src; lecteur.playbackRate = 1; lecteur.ontimeupdate = maj;
+          lecteur.onended = () => { maj(); finir(); $('#lJouer').innerHTML = ICO.son + ' Réécouter'; joue = false; };
+          lecteur.play().catch(() => {}); $('#lJouer').textContent = 'Pause'; });
+    } else if (lecteur.paused) { lecteur.play().catch(() => {}); $('#lJouer').textContent = 'Pause'; }
+    else { lecteur.pause(); $('#lJouer').innerHTML = ICO.son + ' Reprendre'; }
+  };
+  segs.forEach((el, j) => el.onclick = () => { if (!joue) return; lecteur.currentTime = L.debuts[j]; if (lecteur.paused) { lecteur.play().catch(() => {}); $('#lJouer').textContent = 'Pause'; } });
+  $('#lLire').onclick = () => { finir(); $('#lFini').click(); };
+  $('#lFini').onclick = () => { lecteur.pause(); lecteur.ontimeupdate = null; $('#finLecon').innerHTML = finTemps(x, 'lecon'); };
 }
 function seanceEcoute(x){
   // Audit tour 1 (G2) : le temps n'est fait qu'une fois chaque phrase écoutée.
