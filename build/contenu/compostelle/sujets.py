@@ -99,6 +99,87 @@ SUJETS = {
     "vidriera": ("objet", "a Gothic stained-glass window with a pointed arch, bright blue, red and gold pieces of glass."),
     "mercado": ("scene", "a covered market stall with fruit and vegetables in crates."),
     "bodega": ("scene", "a wine cellar with oak barrels lying in rows under a stone vault."),
+    # --- les mots sans objet (26 sept. 2026, « il manque des images ») : lieux et
+    # repas en `scene`, gestes et formules en `geste`. Tout ce qui porterait un
+    # texte (écriteau ouvert/fermé, horaire, billet, 112) est dessiné SANS lui.
+    "etapa": ("scene", "a winding dirt path across green hills from a small village in the foreground to another small village with a church tower far away, like one day's walk."),
+    "hospitalero": ("geste", "a friendly middle-aged hostel volunteer behind a simple wooden table in a stone entrance hall, welcoming a tired pilgrim with a backpack; bunk beds glimpsed through a doorway behind."),
+    "completo": ("scene", "a hostel dormitory seen from the doorway: every bunk bed taken, each with a backpack and a sleeping bag on it, boots lined up underneath; not one free bed."),
+    "donativo": ("objet", "a small rustic wooden box with a slot on top, standing on a stone table, a few coins beside it; nothing written on it."),
+    "pension": ("scene", "the front of a small family guesthouse in a Spanish town: a narrow three-storey house with wooden balconies and flower pots, a door open onto the street; the sign above the door is blank."),
+    "quedan": ("geste", "a pilgrim with a backpack at a hostel reception, pointing with a hopeful, questioning look towards a row of bunk beds; one bed is still empty."),
+    "desayuno": ("objet", "a Spanish breakfast on a café table: a cup of milky coffee, a small glass of fresh orange juice, and a slice of toasted bread with crushed tomato and olive oil."),
+    "comida": ("scene", "a sunny terrace at midday, a long table with plates of food, a jug of water and bread, the sun high overhead, short shadows."),
+    "cena": ("scene", "a small village restaurant in the evening: a table with a lit candle, plates and a bottle of red wine, dark blue sky through the window."),
+    "menu_peregrino": ("objet", "a pilgrim's meal set out on a tablecloth: a bowl of soup, a plate of roast chicken with fries, a small flan, a basket of bread and a bottle of red wine."),
+    "primero": ("objet", "a single bowl of vegetable soup with a spoon, on a white plate, the first course of a meal."),
+    "segundo": ("objet", "a single plate with a grilled fish fillet and fried potatoes, a main course, with knife and fork."),
+    "carta": ("objet", "an open restaurant menu folder on a table, its pages covered only with small drawings of dishes (a fish, a chicken leg, a bowl, a glass) and blank lines — no letters, no prices."),
+    "cuenta": ("objet", "a small saucer on a café table holding a folded blank paper bill, a few euro coins and a pen; nothing legible on the paper."),
+    "propina": ("objet", "a few small coins left on a saucer beside an empty coffee cup on a café table."),
+    "alergico": ("geste", "a pilgrim sitting at a restaurant table, one hand raised in a cautious 'stop' gesture over a plate, speaking to a waiter who listens attentively and leans in."),
+    "sin_gluten": ("objet", "a loaf of bread and a wheat ear, both inside a red circle crossed by a red diagonal bar, like a prohibition sign; no letters."),
+    "vegetariano": ("objet", "a colourful plate of grilled vegetables — peppers, courgette, aubergine, tomatoes — with a sprig of parsley, no meat, no fish."),
+    "marisco": ("objet", "a plate of seafood: prawns, mussels in their shells and a few clams, with a lemon wedge."),
+    "pescado": ("objet", "a whole fresh fish, silvery, lying on a plate with a lemon slice."),
+    "huevo": ("objet", "two brown eggs, one whole and one cracked open in a small bowl showing the yolk."),
+    "leche": ("objet", "a glass bottle of milk next to a full glass of milk; no label."),
+    "cacahuetes": ("objet", "a small heap of peanuts, some in their shells and some shelled, on a little dish."),
+    "sesamo": ("objet", "a small wooden spoon full of pale sesame seeds, a few seeds scattered, and a bread roll covered in sesame seeds."),
+    "lleva": ("geste", "a pilgrim at a bar counter pointing at one sandwich in the glass display case, with a questioning look at the barman, who is about to answer."),
+    "a_que_hora": ("geste", "a pilgrim with a backpack pointing to a round wall clock (hands and tick marks only, no numbers) while looking questioningly at a hostel volunteer."),
+    "abierto": ("scene", "a small village shop with its door wide open, warm light inside, crates of fruit on the pavement outside; no sign, no writing."),
+    "cerrado": ("scene", "the same kind of small village shop with its metal rolling shutter pulled all the way down, the street empty in the hot early afternoon; no sign, no writing, no graffiti."),
+    "manana": ("scene", "a bunk bed with a sleeping pilgrim at night, and through the window beside it a sun beginning to rise over the hills — tonight, then tomorrow."),
+    "por_la_tarde": ("scene", "a village square in warm late-afternoon light, long shadows, people sitting at a café terrace."),
+    "por_la_noche": ("scene", "a village street at night under a crescent moon and stars, a few lit windows and a street lamp."),
+    "siesta": ("geste", "a man dozing in the shade on a bench under a tree, hat over his eyes, in a quiet sunny village street with closed shutters."),
+    "tienda": ("scene", "the inside of a small village grocery: wooden shelves with jars, bread, fruit in crates, a counter with an old scale; no labels, no writing."),
+    "supermercado": ("scene", "a supermarket aisle with a shopping trolley, shelves of colourful products seen from a distance; no labels, no brand, no price tags."),
+    "panaderia": ("scene", "a bakery counter with round country loaves, baguettes and pastries on wooden shelves behind a glass counter; no writing."),
+    "cuanto": ("geste", "a pilgrim holding up a bunch of bananas at a market stall with a questioning look, the grocer about to answer; no prices, no numbers."),
+    "kilo": ("objet", "an old kitchen scale with a metal pan holding a small pile of red apples; the dial shows only tick marks, no numbers."),
+    "ibuprofeno": ("objet", "a small white pill box with a blister strip of round white tablets half pushed out beside it; nothing written anywhere."),
+    "me_duele": ("corps", "a standing human figure seen from the front, one hand on the knee, which is the coral red part: pain in the knee."),
+    "tendinitis": ("corps", "a lower leg and foot seen from the side, the Achilles tendon at the back of the ankle in coral red."),
+    "constipado": ("geste", "a pilgrim sitting on a bunk bed, wrapped in a blanket, blowing their nose into a tissue, a box of tissues beside them."),
+    "guardia": ("scene", "a pharmacy front at night: a lit green cross sign glowing above a small lit door, the rest of the street dark; no writing."),
+    "centro_salud": ("scene", "a modern low health-centre building with glass doors and a simple red cross above the entrance, a bench outside; no writing."),
+    "emergencias": ("scene", "a white ambulance with blue lights flashing, parked on a country road; no writing, no numbers on the vehicle."),
+    "calor": ("scene", "a dusty track under a blazing sun, heat shimmering over dry golden fields, a pilgrim drinking from a water bottle."),
+    "frio": ("scene", "a mountain path in cold fog and light snow, a pilgrim wrapped in a scarf and woolly hat, breath visible."),
+    "parada": ("scene", "a small rural bus shelter by the roadside with a bench, a pilgrim waiting with a backpack; the shelter has no writing and no timetable."),
+    "billete": ("objet", "a small blank paper ticket held between two fingers, with a torn perforated edge; nothing printed on it."),
+    "salida": ("scene", "an open door at the end of a corridor leading to bright daylight outside, with a green running-man pictogram above it; no letters."),
+    "buenos_dias": ("geste", "early morning: two pilgrims with backpacks greeting each other with a wave on a path, the sun rising behind the hills."),
+    "buenas_tardes": ("geste", "a pilgrim greeting a shopkeeper with a smile and a small wave, in warm afternoon light at a shop doorway."),
+    "buenas_noches": ("geste", "two pilgrims in a dim dormitory waving goodnight from their bunk beds, a small bedside lamp, the night through the window."),
+    "buen_camino": ("geste", "a villager at her doorway waving cheerfully at a pilgrim with a backpack walking past on the path."),
+    "vale": ("geste", "a waiter with a notepad giving a relaxed thumbs-up with a smile to a pilgrim seated at a table."),
+    "perdone": ("geste", "a pilgrim lightly touching the shoulder of a passer-by from behind to get attention, polite apologetic expression."),
+    "no_entiendo": ("geste", "a pilgrim with a puzzled expression, palms turned up and shoulders shrugged, facing a local person who is talking."),
+    "despacio": ("geste", "a pilgrim facing a talkative local, making a calming gesture with both hands pressed slowly downwards, meaning 'slow down'."),
+    "repetir": ("geste", "a pilgrim leaning in with a hand cupped behind the ear, towards a smiling local person."),
+    "como_se_dice": ("geste", "a pilgrim pointing at a loaf of bread on a counter with a questioning look towards the baker."),
+    "lo_siento": ("geste", "a pilgrim with a hand on the heart and an apologetic face, having just bumped a chair, facing another person."),
+    "de_nada": ("geste", "a local woman smiling and waving a hand dismissively in a friendly 'it was nothing' gesture, after handing a pilgrim a bottle of water."),
+    "entrada": ("scene", "the arched stone entrance door of a church, open, with a few visitors going in."),
+    "horario": ("objet", "a round wall clock with hands and tick marks only, no numbers, next to a heavy old wooden church door."),
+    "visita_guiada": ("geste", "a small group of visitors with backpacks inside a Gothic cathedral nave, following a guide who points up at the stained-glass windows."),
+    "misa": ("scene", "the interior of a stone church during a service: rows of pews with seated people, candles and a priest at the altar, seen from the back."),
+    "descuento": ("geste", "at a museum ticket window, a pilgrim showing an open folded pilgrim passport covered with red ink stamps; the clerk smiles and nods."),
+    "de_donde": ("geste", "two pilgrims sitting on a low stone wall with their backpacks beside them, chatting, one asking the other with an open hand gesture."),
+    "soy_de": ("geste", "a pilgrim with a small red maple leaf patch on the backpack, pointing to themselves with a smile while talking to another pilgrim."),
+    "por_que": ("geste", "two pilgrims walking side by side on the Meseta, one turning to the other with a curious, thoughtful look."),
+    "desde_donde": ("geste", "two pilgrims looking back together at a long path winding down from far-away mountains behind them."),
+    "hasta_donde": ("geste", "two pilgrims looking ahead together at a long path leading to a distant village with a church tower, one pointing forward."),
+    "kilometros": ("scene", "a long straight dirt track stretching to the horizon, with plain stone waymarker posts at regular intervals along it (no numbers), a pair of boots in the foreground."),
+    "cansado": ("geste", "an exhausted pilgrim sitting on the ground against a stone wall, boots off, backpack dropped beside, head tilted back, eyes closed."),
+    "donde_duermes": ("geste", "two pilgrims at dusk on a village street, one pointing questioningly towards a hostel with bunk beds visible through a window."),
+    "estas_bien": ("geste", "a pilgrim bending with concern over another pilgrim who sits on a rock holding an ankle, offering a hand."),
+    "encantado": ("geste", "two pilgrims shaking hands warmly with a smile, meeting for the first time, backpacks on."),
+    "nos_vemos": ("geste", "two pilgrims parting at a fork in a path, waving to each other with a smile over their shoulders."),
+    "embarazada": ("geste", "a pilgrim blushing, one hand on the cheek, looking down with an embarrassed smile, in a small group of people at a table."),
 }
 
 # Les deux préambules propres à Compostelle, écrits sur le modèle d'OBJET :
@@ -117,6 +198,14 @@ SCENE = (
     "fading softly into a pure white background at its edges. A flat scan of the drawing, not a "
     "photograph of a sketchbook: no page edge, no paper shadow. No people in close-up. No text, "
     "no letters, no numbers, no signs, no logo. No frame, no border.\n\n"
+    "THE SCENE: ")
+GESTE = (
+    "A small travel-sketchbook vignette in ink and light wash: one or two people shown full-length or "
+    "from the waist up, their gesture and expression clearly readable, in a simple setting on the "
+    "Way of St James; crisp black ink line of even weight, a few flat, soft, slightly muted colour "
+    "fills, centred in a square frame, fading softly into a pure white background at its edges. A flat "
+    "scan of the drawing, not a photograph of a sketchbook. No speech bubbles, no text, no letters, no "
+    "numbers, no signs, no logo. No frame, no border.\n\n"
     "THE SCENE: ")
 PORTRAIT = (
     "A travel-sketchbook portrait in ink and light wash: head and shoulders of ONE person, facing "

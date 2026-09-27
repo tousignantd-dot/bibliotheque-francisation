@@ -104,7 +104,7 @@ def cibles_connues():
     t = {}
     for k, quoi in SUJETS.items():
         t[("vignette", k)] = (REGISTRE + quoi, "3:2", BASE / "etapes", 1200)
-    pre = {"objet": FC.PREAMBULES["objet"], "corps": SJ.CORPS, "scene": SJ.SCENE}
+    pre = {"objet": FC.PREAMBULES["objet"], "corps": SJ.CORPS, "scene": SJ.SCENE, "geste": SJ.GESTE}
     for e in LEXIQUE:
         if e[4] == "croquis":
             if e[0] not in SJ.SUJETS:
