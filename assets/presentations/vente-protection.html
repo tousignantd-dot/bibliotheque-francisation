@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vendre au public — se protéger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   UN MODULE POUR LA VENTE DE CHAUSSURES — LE CADRAGE
+   Chantier « formation en entreprise », second secteur :
+   le commerce de détail. Écrite à la main, comme
+   analyse-marche.html — ses chiffres viennent d'ailleurs et
+   doivent vieillir visiblement.
+
+   Vert : ce que le tour de main actuel produit déjà.
+   Ambre : ce qui attend votre décision.
+   Rouge : l'argument de vente qui tient à une obligation légale.
+   L'acier ne fait que la structure.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+
+  --fait:#0A8F5B;    --fait-bg:#E6F5EE;
+  --decid:#C07A08;   --decid-bg:#FBF2E2;
+  --loi:#C7302B;     --loi-bg:#FBEDEC;
+  --acier:#1D6B8F;   --acier-bg:#E7F0F6;
+
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --fait:#4BC48D; --fait-bg:#12291F;
+    --decid:#E0A63F; --decid-bg:#2C2213;
+    --loi:#EE7A73; --loi-bg:#2E1917;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --loi:#EE7A73; --loi-bg:#2E1917;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+em.art{font-style:normal;font-family:var(--mono);font-size:.82em;color:var(--muted);
+  white-space:nowrap}
+
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+
+/* ── Les décisions ─────────────────────────────────────── */
+.decisions{display:flex;flex-direction:column;gap:2px;counter-reset:d}
+.dec{counter-increment:d;background:var(--card);border:1px solid var(--line);
+  border-left:5px solid var(--decid);border-radius:3px;padding:19px 22px 19px 60px;
+  position:relative;display:flex;flex-direction:column;gap:8px}
+.dec.ok{border-left-color:var(--fait)}
+.dec::before{content:counter(d);position:absolute;left:24px;top:18px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+.dec .ligne{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  justify-content:space-between}
+.dec p{font-size:15.5px}
+.dec .defaut{font-size:13.5px;color:var(--muted);font-style:italic}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-fait{background:var(--fait-bg);color:var(--fait)}
+.b-dec{background:var(--decid-bg);color:var(--decid)}
+.b-loi{background:var(--loi-bg);color:var(--loi)}
+.b-n{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+
+/* ── Tableaux ──────────────────────────────────────────── */
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:640px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:3px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tr.l td:first-child{border-left-color:var(--loi)}
+tr.d td:first-child{border-left-color:var(--decid)}
+tr.f td:first-child{border-left-color:var(--fait)}
+
+/* ── Chiffres ──────────────────────────────────────────── */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--acier);padding:15px 16px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;margin-top:7px}
+
+/* ── Marche à suivre ───────────────────────────────────── */
+ol.actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;
+  counter-reset:a}
+ol.actions li{counter-increment:a;background:var(--card);border:1px solid var(--line);
+  border-radius:3px;padding:18px 22px 18px 62px;position:relative;display:flex;
+  flex-direction:column;gap:6px}
+ol.actions li::before{content:counter(a);position:absolute;left:22px;top:17px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+ol.actions li p{font-size:15.5px}
+.qui{font-size:13px;color:var(--muted);font-style:italic}
+
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.avert{background:var(--loi-bg);border:1px solid var(--loi);border-radius:3px;
+  padding:20px 24px;display:flex;flex-direction:column;gap:9px}
+.avert strong{color:var(--ink)}
+.avert p{font-size:15.5px;color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} }
+
+/* ── décisions à boutons (plan magasin de vêtements) ── */
+.dec2{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0}
+.dq{margin:0 0 10px;font-weight:700;color:var(--ink)}
+.dn{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--decid-bg);color:var(--decid);font-size:13px;margin-right:8px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{font:inherit;font-size:15px;text-align:left;cursor:pointer;background:var(--sunken);color:var(--body);border:1px solid var(--line-fort);border-radius:10px;padding:8px 12px}
+.opt:hover{border-color:var(--acier)}
+.opt[aria-pressed="true"]{background:var(--fait-bg);border-color:var(--fait);color:var(--ink);font-weight:700}
+.opt .tag{font-size:12px;color:var(--decid);font-weight:700;margin-left:4px}
+.dw{margin:10px 0 0;font-size:15px;color:var(--muted)}
+.btn-export{font:inherit;font-weight:700;cursor:pointer;background:var(--acier);color:#fff;border:0;border-radius:10px;padding:10px 16px}
+.etat{margin-left:12px;color:var(--muted);font-size:15px}
+table{display:block;overflow-x:auto}
+
+table.cmp{display:table;width:100%;min-width:0;table-layout:fixed}
+table.cmp th:last-child,table.cmp td:last-child{width:34%}
+.cmp td{overflow-wrap:anywhere}
+.cmp td.num{text-align:right}
+.autre{display:none;margin-top:10px;gap:8px;flex-wrap:wrap;align-items:center}
+.autre.ouvert{display:flex}
+.autre input{font:inherit;font-size:15px;padding:7px 10px;border:1px solid var(--line-fort);border-radius:8px;
+  background:var(--card);color:var(--ink);width:9.5em}
+.actuel{font-size:14px;color:var(--muted);margin:0 0 10px}
+.actuel b{color:var(--ink)}
+textarea{font:inherit;font-size:15px;width:100%;padding:10px;border:1px solid var(--line-fort);border-radius:10px;
+  background:var(--card);color:var(--ink);box-sizing:border-box}
+
+/* ── Palette Rive-Claire (build/hotel_rive.py) ── */
+:root{
+  --ground:#F3EFE6; --card:#FFFFFF; --sunken:#ECE6DA;
+  --ink:#132A2C; --body:#223A3C; --muted:#4D5E5F;
+  --line:#DFD8C9; --line-fort:#C9C0AE;
+  --acier:#0F5E63; --acier-bg:#DDEDEC;
+  --surpiqure:#C4613A;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0F1A1B; --card:#152324; --sunken:#1A2B2C;
+    --ink:#EEF3F2; --body:#C6D3D2; --muted:#93A5A4;
+    --line:#26393A; --line-fort:#34494A;
+    --acier:#7CC4C4; --acier-bg:#13302F;
+    --surpiqure:#E0875F;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0F1A1B; --card:#152324; --sunken:#1A2B2C;
+  --ink:#EEF3F2; --body:#C6D3D2; --muted:#93A5A4;
+  --line:#26393A; --line-fort:#34494A;
+  --acier:#7CC4C4; --acier-bg:#13302F;
+  --surpiqure:#E0875F;
+}
+body{border-top:4px solid var(--surpiqure)}
+</style>
+<style>
+  .doc{padding-top:26px}
+  .retour{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+    color:var(--muted);text-decoration:none;margin-bottom:34px}
+  .retour:hover{color:var(--acier)}
+  table.cmp{width:100%;border-collapse:collapse;font-size:15px;background:var(--card);
+    border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  table.cmp th,table.cmp td{padding:13px 15px;text-align:left;vertical-align:top;
+    border-bottom:1px solid var(--line)}
+  table.cmp thead th{background:var(--sunken);font-size:12px;font-weight:800;
+    letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  table.cmp tbody tr:last-child td{border-bottom:0}
+  table.cmp td:first-child{font-weight:700;color:var(--ink)}
+  .roule{overflow-x:auto}
+  .voie{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:24px 26px;display:flex;flex-direction:column;gap:11px}
+  .voie.oui{border-color:var(--fait);border-width:2px;padding:23px 25px}
+  .voie.non{border-left:5px solid var(--loi)}
+  .voie h3{font-size:19px;font-family:Newsreader,Georgia,serif;font-weight:600;margin:0}
+  .voie .cout{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .verdict{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 10px;border-radius:99px;align-self:flex-start}
+  .v-oui{background:var(--fait-bg);color:var(--fait)}
+  .v-peut{background:var(--decid-bg);color:var(--decid)}
+  .v-non{background:var(--loi-bg);color:var(--loi)}
+  .mes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;
+    background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .mes div{background:var(--card);padding:16px 18px}
+  .mes b{display:block;font-family:Newsreader,Georgia,serif;font-size:27px;font-weight:500;
+    color:var(--ink);line-height:1.1}
+  .mes span{font-size:13px;color:var(--muted)}
+  .planche{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .planche figure{margin:0;background:var(--card);border:1px solid var(--line);
+    border-radius:3px;overflow:hidden;display:flex;flex-direction:column}
+  .planche figure.large{grid-column:1 / -1}
+  .planche img{display:block;width:100%;height:auto;background:var(--sunken)}
+  .planche figcaption{padding:13px 16px 15px;font-size:14px;line-height:1.5;color:var(--muted);
+    border-top:1px solid var(--line)}
+  .planche figcaption b{display:block;color:var(--ink);font-size:14.5px;margin-bottom:2px}
+  @media (max-width:620px){ .planche{grid-template-columns:1fr} }
+  .doc p a,.doc li a,.doc td a{color:var(--acier);text-decoration:underline;
+    text-underline-offset:2px;text-decoration-thickness:1px}
+  ul.src{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px;font-size:14.5px}
+  ul.src li{color:var(--muted)} ul.src .d{font-family:var(--mono);font-size:12.5px}
+  h3.sous{font-family:Newsreader,Georgia,serif;font-size:21px;font-weight:600;
+    letter-spacing:-.01em;color:var(--ink);margin:14px 0 0}
+  @media (max-width:640px){ .doc{padding-left:18px;padding-right:18px} }
+</style>
+<style>
+.conditions{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 22px;font-size:15.5px}
+.conditions h3{font-size:16.5px;margin:18px 0 6px;color:var(--ink)} .conditions h3:first-child{margin-top:0}
+.conditions p{margin:0 0 8px;max-width:72ch}
+mark.trou{background:var(--decid-bg);color:var(--decid);border:1px dashed var(--decid);border-radius:6px;padding:0 5px;font-weight:700}
+.risques{counter-reset:r;list-style:none;padding:0;margin:0}
+.risques li{counter-increment:r;position:relative;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px 12px 50px;margin:8px 0;font-size:15.5px}
+.risques li::before{content:counter(r);position:absolute;left:14px;top:12px;width:24px;height:24px;border-radius:50%;background:var(--decid-bg);color:var(--decid);font-weight:900;display:grid;place-items:center;font-size:13px}
+.risques li.fait::before{content:"✓";background:var(--fait-bg);color:var(--fait)}
+.assur{display:grid;gap:10px}
+.assur div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 16px;font-size:15px}
+.assur b{color:var(--ink)} .assur em{font-style:normal;color:var(--muted);font-size:13.5px;margin-left:6px}
+</style>
+</head>
+<body><div class="doc">
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
+<p class="eyebrow">Vente au public &middot; Compostelle, Maison Francœur, Hôtel Rive-Claire</p>
+<h1>Vendre au public sans s'exposer</h1>
+<div class="these"><p class="cle">Ce qui protège le plus une personne qui vend seule, c'est l'assurance, un contenu vérifié et des
+conditions de vente claires. Une société protège des dettes, pas de sa propre faute ; elle viendra plus tard.</p></div>
+<p class="chapeau">Page préparée pour décider avant d'ouvrir le compte Stripe, et pour une heure avec un avocat. <b>Ce n'est pas un avis
+juridique.</b> Les règles de la vente à distance viennent des pages de l'Office de la protection du consommateur, lues le
+28 septembre 2026 ; le reste est à faire confirmer.</p>
+
+<section>
+  <h2>D'où viendrait une poursuite</h2>
+  <ol class="risques">
+    <li class="fait"><b>Un tort causé par le contenu</b> — le plus sérieux, et surtout la carte d'allergie de Compostelle : une phrase fausse, et
+      c'est un préjudice corporel. <b>Décidé le 28 septembre : l'allergie est retirée</b> de l'application. Restent les urgences (le 112) et la
+      pharmacie, à faire relire par un hispanophone.</li>
+    <li><b>Les renseignements personnels (Loi 25)</b> — déjà très réduit : aucun compte, aucun courriel, rien de la personne chez nous ; Stripe
+      tient la carte. C'est aussi un argument pour baisser la prime d'assurance.</li>
+    <li><b>Les litiges d'achat</b> — remboursements et contestations de carte : petits montants, évités par une politique claire, annoncée avant.</li>
+    <li><b>Ce qu'un personnage animé par l'IA dirait de travers</b> — faible, encadré par les consignes ; les conditions le disent.</li>
+    <li><b>Une vente non conforme à la loi</b> — des renseignements manquants avant l'achat permettent au client d'annuler pendant 30 jours ;
+      un exemplaire du contrat non transmis dans les 15 jours, en tout temps avant d'avoir reçu le service. Le brouillon ci-dessous y répond.</li>
+  </ol>
+</section>
+
+<section>
+  <h2>Ce que la loi demande avant l'achat</h2>
+  <p>Selon l'Office, avant un contrat conclu par Internet, le commerçant donne, de façon évidente et avant le paiement :</p>
+  <ul class="simple">
+    <li>son nom, son adresse, son téléphone et son courriel — <b>d'où l'immatriculation et une adresse postale</b> ;</li>
+    <li>une description détaillée du service, le prix, les taxes, le total, les modalités de paiement ;</li>
+    <li>la date où le service est fourni, et les conditions d'annulation et de remboursement ;</li>
+    <li>toute autre restriction (durée, plafond de conversations, par jour).</li>
+  </ul>
+  <p style="margin-top:10px">Le contrat doit ensuite porter le nom et l'adresse du consommateur et la date, et un exemplaire lui être transmis dans les
+  15 jours, qu'il peut garder et imprimer. Le paiement d'avance n'est permis que par carte de crédit. Les décisions 5 à 7 règlent ces trois points.</p>
+</section>
+
+<section>
+  <h2>Des assureurs pour la responsabilité</h2>
+  <p>Je ne peux pas vous dire qui acceptera ce profil ni à quel prix : c'est le courtier qui le trouve. Voici où chercher.</p>
+  <div class="assur"><div><b>Passer par un courtier en assurance de dommages des entreprises</b><em>le chemin recommandé</em><br>Un courtier compare plusieurs assureurs et place les risques moins courants — une plateforme éducative qui vend en ligne et fait parler une IA en est un. Vérifiez qu&#x27;il est inscrit au registre de l&#x27;Autorité des marchés financiers (AMF). Demandez-lui : responsabilité civile générale, erreurs et omissions « technologie » et cyberrisque, idéalement dans une même police « Tech E&amp;O », avec une date de rétroactivité qui couvre le début de la plateforme.</div><div><b>Les grands assureurs d&#x27;entreprises au Québec</b><em>par un courtier ou en direct</em><br>Intact Assurance, Desjardins Assurances (entreprises), Northbridge, Travelers Canada, Chubb, Aviva Canada. Tous ont des produits pour petites entreprises de services ; la cyber et les erreurs et omissions « technologie » ne sont pas offertes partout ni à tout profil.</div><div><b>Les spécialistes technologie et cyber</b><em>presque toujours par un courtier</em><br>CFC Underwriting (erreurs et omissions technologie et cyber, très présent au Canada), Coalition (cyber), Beazley. Ce sont souvent eux qui assurent les petites entreprises de logiciel.</div><div><b>Les courtiers en ligne pour petites entreprises</b><em>rapide pour une première soumission</em><br>Zensurance, APOLLO Insurance : une soumission en ligne en quelques minutes, surtout pour la générale et les erreurs et omissions. Vérifiez qu&#x27;ils sont inscrits à l&#x27;AMF pour le Québec, et lisez les exclusions liées à l&#x27;IA et aux données.</div></div>
+  <div class="reserve" style="margin-top:12px"><p><strong>À dire au courtier :</strong> trois applications d'apprentissage des langues, vendues au
+  public par code (environ 10 $), aucun compte ni courriel, renseignements minimaux (effacés après expiration), paiement chez Stripe,
+  personnages animés par une IA d'Anthropic, hébergement Railway. Moins on détient de dossiers, plus la prime baisse.</p></div>
+</section>
+
+<section>
+  <h2>Les décisions</h2>
+  <div id="decisions"></div>
+  <p style="margin-top:14px"><b>Un mot</b> (facultatif) — une réponse de l'avocat, un nom d'assureur, une réserve :</p>
+  <textarea id="note" rows="3"></textarea>
+  <p style="margin-top:1.4rem"><button type="button" class="btn-export" id="exporter">Exporter mes décisions</button>
+  <span id="etat" class="etat"></span></p>
+</section>
+
+<section>
+  <h2>Le brouillon des conditions de vente</h2>
+  <p>Écrit avec les options recommandées ; les montants sont ceux que la caisse facture aujourd'hui. Il manque 4 renseignements sur le vendeur, en ambre : ils arrivent avec l'immatriculation.
+  Une fois relu, il deviendra une page publique liée sous chaque offre d'achat.</p>
+  <div class="conditions"><h3>1. Qui vend</h3><p>Ces conditions s&#x27;appliquent à l&#x27;achat d&#x27;un code d&#x27;accès aux jeux de rôle de francis, vendus par <mark class="trou">à remplir : nom de l&#x27;entreprise</mark> (<mark class="trou">à remplir : NEQ</mark>), <mark class="trou">à remplir : adresse postale</mark>, téléphone <mark class="trou">à remplir : téléphone</mark>, courriel support@edufrancis.ca.</p><h3>2. Ce que vous achetez</h3><p>Un code d&#x27;accès personnel à UN des produits suivants, selon la page où vous l&#x27;achetez :</p><p>• « Parler librement », dans En route vers Compostelle : des conversations en espagnol avec les personnages du chemin ;</p><p>• le magasin joué, dans la Maison Francœur : des clients à servir en français ;</p><p>• le comptoir joué, dans l&#x27;Hôtel Rive-Claire : des clients à accueillir en français, en anglais ou en espagnol.</p><p>Le code donne droit à 100 conversations pendant 12 mois à compter du paiement. Une conversation compte au plus 16 échanges ; on peut en commencer au plus 30 par jour. Tout le reste de chaque application (mots, exercices, tests, fiches) est gratuit et ne demande aucun code.</p><p>Les personnages sont animés par un modèle d&#x27;intelligence artificielle (Anthropic). Ils peuvent se tromper ou mal comprendre ; ils servent à pratiquer une langue, pas à donner un renseignement fiable.</p><h3>3. Le prix</h3><p>Le prix d'un code est de 9,99 $ au lieu de 19,99 $, prix de lancement jusqu&#x27;au 31 décembre 2026 inclusivement. Des conversations supplémentaires peuvent être ajoutées au même code : 50 conversations pour 4,99 $, sans prolonger la durée.</p><p>Le prix ne comprend aucune taxe : le vendeur est un petit fournisseur non inscrit aux fichiers de la TPS et de la TVQ.</p><p>Le paiement se fait par carte de crédit, chez Stripe. Nous ne recevons ni votre numéro de carte ni votre adresse ; Stripe les garde selon ses propres conditions.</p><h3>4. Quand vous recevez votre code</h3><p>Tout de suite : il s&#x27;affiche à l&#x27;écran au retour du paiement et s&#x27;enregistre dans votre navigateur. Il est aussi écrit sur le reçu que Stripe vous envoie par courriel, qui vaut exemplaire de ce contrat, avec le lien vers ces conditions. Gardez ce reçu : c&#x27;est lui qui permet de retrouver le code sur un autre appareil.</p><h3>5. Remboursement</h3><p>Vous pouvez demander le remboursement complet dans les 14 jours suivant l&#x27;achat, si vous avez utilisé au plus 3 conversations.</p><p>Pour le demander : écrivez à support@edufrancis.ca en indiquant votre code. Le remboursement est fait sur la carte utilisée, dans les 15 jours.</p><p>Ces conditions n&#x27;enlèvent aucun des droits que vous accorde la Loi sur la protection du consommateur, notamment celui d&#x27;annuler si nous ne respectons pas nos obligations.</p><h3>6. Si le service s&#x27;arrête</h3><p>Si nous cessons d&#x27;offrir un produit avant la fin de la durée d&#x27;un code, nous remboursons la part non utilisée, au prorata des conversations restantes. Une panne passagère n&#x27;est pas un arrêt : une conversation qui échoue n&#x27;est pas décomptée.</p><h3>7. Ce que l&#x27;outil ne fait pas</h3><p>Les applications de francis aident à apprendre une langue. Elles ne donnent aucun conseil médical, juridique ou de sécurité, et ne remplacent ni un interprète ni un professionnel. En cas d&#x27;urgence, appelez les services d&#x27;urgence du pays où vous êtes.</p><h3>8. Votre code, votre usage</h3><p>Le code est pour une personne. Il ne se revend pas. Un usage automatisé ou abusif (par exemple, faire tenir au personnage des propos haineux ou illégaux) peut entraîner la suspension du code, avec remboursement de la part non utilisée.</p><p>L&#x27;achat est réservé aux personnes majeures ; une personne mineure doit avoir l&#x27;accord d&#x27;un parent.</p><h3>9. Vos renseignements</h3><p>Nous ne gardons que le code, ses dates et son compteur de conversations ; ils sont effacés 365 jours après l&#x27;expiration. Le détail est dans la page de confidentialité de chaque application.</p><h3>10. Si ces conditions changent</h3><p>Un changement ne s&#x27;applique pas à un code déjà acheté, sauf s&#x27;il vous est plus favorable.</p><h3>11. Loi applicable et langue</h3><p>Ces conditions sont régies par les lois du Québec. Elles sont rédigées en français ; une traduction peut être offerte pour faciliter la lecture, et la version française prévaut.</p><p style="color:var(--muted);font-size:13.5px;margin-top:14px">Conditions de vente — brouillon du 28 septembre 2026.</p></div>
+</section>
+
+<section>
+  <h2>Les questions pour l'avocat</h2>
+  <ol class="risques"><li>Le reçu de Stripe, avec le lien vers les conditions et le nom et l&#x27;adresse que Stripe demande, suffit-il comme « exemplaire du contrat » transmis dans les 15 jours, sans que nous recevions nous-mêmes le nom et l&#x27;adresse ?</li><li>Un code fourni à l&#x27;instant du paiement est-il un service « fourni » avant le paiement, ce qui permettrait le débit ? Sinon, la carte de crédit seule suffit-elle ?</li><li>L&#x27;entreprise individuelle suffit-elle pour vendre trois produits au public, ou faut-il la société dès maintenant ?</li><li>La phrase « ne donnent aucun conseil médical, juridique ou de sécurité » est-elle utile, sachant qu&#x27;on ne peut pas exclure sa responsabilité pour sa propre faute envers un consommateur ?</li><li>Les personnages animés par une IA : faut-il une mention de plus, au Québec, ou pour des acheteurs d&#x27;Europe (pèlerins français, par exemple) ?</li><li>Les conditions offertes en anglais et en espagnol à côté du français (Hôtel Rive-Claire) : la mention « la version française prévaut » est-elle suffisante au regard de la Charte de la langue française ?</li></ol>
+</section>
+
+<div class="pied"><p>Page produite par <code>build/vente_protection.py</code> — ne pas l'éditer. Le brouillon vit dans
+<code>build/contenu/vente/conditions.py</code> ; les montants viennent de <code>pelerins.offre()</code>.</p></div>
+</div>
+<script>
+(function(){
+  var D=[{"k": "forme", "q": "La forme juridique pour vendre", "o": [["ei", "Une entreprise individuelle immatriculée (environ 41 $), sous un nom neutre", true], ["societe", "Une société par actions tout de suite", false], ["nom-propre", "En mon nom, sans immatriculer", false]], "w": "Une société protège des dettes et des contrats, <b>pas de votre propre faute</b> : si c'est vous qui avez écrit le contenu fautif, on peut vous poursuivre personnellement, société ou pas. Contre ce risque-là, c'est l'assurance qui protège. L'entreprise individuelle donne un nom au vendeur, sur le reçu et dans Stripe, pour le centième du coût d'une société. Déclencheur pour passer en société (analyse du 1er septembre) : un deuxième produit ou un premier client privé — trois produits au public s'en approchent, question à poser à l'avocat."}, {"k": "nom", "q": "Le nom de l'entité (celui du reçu)", "o": [["trame", "Trame", true], ["cordee", "Cordée", false], ["tuilage", "Tuilage", false], ["autre", "Un autre nom", false]], "w": "Les trois candidats du 1er septembre, choisis pour ne pas dire le produit. Trame : la structure sous le tissu, donc le moteur commun ; « trama » a le même sens en espagnol. Avant de l'immatriculer : le registre des entreprises (nom trop proche refusé) et la base des marques de commerce."}, {"k": "assurance", "q": "L'assurance, avant la première vente", "o": [["trois", "Générale, professionnelle et cyber — la professionnelle et la cyber chez le même assureur", true], ["pro-cyber", "Professionnelle et cyber seulement", false], ["plus-tard", "Plus tard, après les premières ventes", false]], "w": "2 000 à 4 000 $ par année pour les trois (relevé du 2 septembre). Deux pièges : la <b>date de rétroactivité</b> (elle doit couvrir le début réel de la plateforme, pas le jour de la signature) et l'intervalle entre deux assureurs quand une faute de programmation cause une fuite. Aucune police ne paie une amende ni une faute intentionnelle."}, {"k": "remboursement", "q": "La politique de remboursement", "o": [["14j-peu-utilise", "14 jours, si 3 conversations ou moins ont servi", true], ["30j", "Satisfait ou remboursé, 30 jours, quel que soit l'usage", false], ["loi-seulement", "Aucun remboursement hors des cas prévus par la loi", false]], "w": "La loi laisse libre de fixer sa politique, à condition de l'annoncer <b>avant</b> l'achat et de la respecter. À 9,99 $, une contestation de carte coûte plus cher en temps que le remboursement ; une politique claire et généreuse évite les rétrofacturations. Le seuil de 3 conversations empêche d'utiliser tout le code puis de se faire rembourser."}, {"k": "paiement", "q": "Les moyens de paiement acceptés", "o": [["credit", "Carte de crédit seulement", true], ["tout", "Tout ce que Stripe offre (débit, portefeuilles…)", false]], "w": "Selon l'Office, dans un contrat à distance, on ne peut percevoir un paiement avant de fournir le service <b>que par carte de crédit</b>. Le code est fourni à l'instant du paiement, ce qui peut suffire ; à faire confirmer. En attendant, la carte de crédit seule est le choix sûr, et elle ouvre la rétrofacturation, que la loi prévoit."}, {"k": "acheteur", "q": "Le nom et l'adresse de l'acheteur, que le contrat doit porter", "o": [["stripe", "Stripe les demande au paiement et les porte sur le reçu ; nous ne les recevons pas", true], ["nous", "Nous les recevons et les gardons", false]], "w": "L'Office dit que le contrat à distance doit porter <b>le nom et l'adresse du consommateur</b>, et qu'un exemplaire doit lui être transmis dans les 15 jours. Stripe Checkout peut exiger l'adresse de facturation et envoyer le reçu. Nous tenons ainsi la promesse de la page de confidentialité (« nous ne voyons ni votre nom, ni votre courriel ») : à faire confirmer par l'avocat, c'est le point le plus délicat."}, {"k": "accepter", "q": "L'acceptation des conditions", "o": [["case", "Une case « J'ai lu les conditions » obligatoire au paiement (Stripe), et le lien sous l'offre", true], ["lien", "Le lien sous l'offre seulement", false]], "w": "L'Office demande que les renseignements soient portés <b>expressément</b> à la connaissance du consommateur, par exemple en le faisant passer par une page qui les contient. La case de Stripe Checkout (conditions d'utilisation) fait exactement ça, sans rien coder chez nous."}, {"k": "age", "q": "L'âge", "o": [["18-ou-parent", "Réservé aux majeurs, ou avec l'accord d'un parent", true], ["aucune", "Aucune mention", false]], "w": "Un contrat avec une personne mineure peut être annulé pour lésion. La mention coûte une ligne."}, {"k": "taxes", "q": "La TPS et la TVQ", "o": [["petit-fournisseur", "Petit fournisseur : pas d'inscription tant que les ventes restent sous 30 000 $ par année", true], ["inscrit", "S'inscrire tout de suite", false]], "w": "Sous 30 000 $ de ventes taxables sur quatre trimestres, l'inscription est facultative. Le seuil compte <b>toutes</b> vos ventes, pilotes en entreprise compris : à surveiller dès qu'un contrat d'entreprise se signe. La page de vente doit dire si les taxes s'appliquent."}, {"k": "avocat", "q": "La relecture par un avocat", "o": [["avant", "Une heure avec un avocat avant d'ouvrir la vente, ce brouillon en main", true], ["apres", "Après les premières ventes", false]], "w": "Le brouillon ci-dessous et les questions de la dernière section tiennent en une rencontre. Le Barreau du Québec a un service de référence ; certains avocats offrent une première consultation à prix fixe."}];
+  var CLE='vente-protection', s={choix:{},montant:{},note:''};
+  try{ var l=JSON.parse(localStorage.getItem(CLE)||'null'); if(l&&l.choix) s=l; }catch(e){}
+  function sv(){ try{ localStorage.setItem(CLE,JSON.stringify(s)); }catch(e){} }
+  var zone=document.getElementById('decisions');
+  D.forEach(function(d,i){
+    var div=document.createElement('div'); div.className='dec2';
+    var h='<p class="dq"><span class="dn">'+(i+1)+'</span>'+d.q+'</p><div class="opts">';
+    d.o.forEach(function(o){
+      h+='<button type="button" class="opt" data-k="'+d.k+'" data-v="'+o[0]+'" aria-pressed="false">'+o[1]+(o[2]?' <span class="tag">recommandé</span>':'')+'</button>';
+    });
+    h+='</div>';
+    if(d.o.some(function(o){return o[0]==='autre';}))
+      h+='<div class="autre" data-k="'+d.k+'"><label>Lequel : <input type="text" data-k="'+d.k+'"></label></div>';
+    div.innerHTML=h+'<p class="dw">'+d.w+'</p>'; zone.appendChild(div);
+  });
+  var note=document.getElementById('note'); note.value=s.note||'';
+  note.addEventListener('input',function(){ s.note=note.value; sv(); });
+  zone.querySelectorAll('input').forEach(function(i){ i.value=s.montant[i.dataset.k]||''; i.addEventListener('input',function(){ s.montant[i.dataset.k]=i.value; sv(); }); });
+  function peindre(){
+    zone.querySelectorAll('.opt').forEach(function(b){ b.setAttribute('aria-pressed', s.choix[b.dataset.k]===b.dataset.v?'true':'false'); });
+    zone.querySelectorAll('.autre').forEach(function(a){ a.classList.toggle('ouvert', s.choix[a.dataset.k]==='autre'); });
+    var n=Object.keys(s.choix).length; document.getElementById('etat').textContent=n+' décision'+(n>1?'s':'')+' sur '+D.length;
+  }
+  zone.addEventListener('click',function(e){
+    var b=e.target.closest('.opt'); if(!b) return;
+    if(s.choix[b.dataset.k]===b.dataset.v) delete s.choix[b.dataset.k]; else s.choix[b.dataset.k]=b.dataset.v;
+    sv(); peindre();
+  });
+  document.getElementById('exporter').addEventListener('click',function(){
+    var out={page:'vente-protection', date:new Date().toISOString().slice(0,10), decisions:{}, note:s.note||''};
+    D.forEach(function(d){ var v=s.choix[d.k], o=d.o.filter(function(x){return x[0]===v;})[0];
+      out.decisions[d.k]= !o ? null : (v==='autre' ? {choix:'autre', valeur:s.montant[d.k]||''} : o[1]); });
+    var t=JSON.stringify(out,null,2);
+    var fin=function(){ document.getElementById('etat').textContent='Copié — recolle-le-moi.'; };
+    if(navigator.clipboard) navigator.clipboard.writeText(t).then(fin,function(){prompt('Copiez :',t);}); else prompt('Copiez :',t);
+  });
+  peindre();
+})();
+</script>
+</body></html>
