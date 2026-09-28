@@ -655,7 +655,7 @@ function vueConfidentialite(){
     <h2>Ce qui sort du Québec</h2>
     <p>Certains services sont situés à l'extérieur du Québec. Voici lesquels, et ce qu'ils reçoivent :</p>
     <div class="carte">${C.hors.map(([qui, quoi, ou]) => `<p class="cf-hors"><b>${E(qui)}</b> — ${E(quoi)} <span class="muted">(${E(ou)})</span></p>`).join('')}</div>
-    <p>Vous pouvez éviter l'envoi de votre voix : n'ouvrez pas le micro ; dites les phrases à voix haute et touchez « je l'ai dit » (elles ne sont alors pas vérifiées). Vous pouvez éviter l'envoi à Anthropic : n'utilisez pas « Parler librement ». Le reste de l'application fonctionne sans.</p>
+    <p>Vous pouvez éviter l'envoi de votre voix : n'ouvrez pas le micro ; dites les phrases à voix haute et touchez « C'est dit ! » (elles ne sont alors pas vérifiées). Vous pouvez éviter l'envoi à Anthropic : n'utilisez pas « Parler librement ». Le reste de l'application fonctionne sans.</p>
     <h2>Ce que nous ne faisons pas</h2><ul>${C.nefait.map(t => `<li>${E(t)}</li>`).join('')}</ul>
     <h2>Vos droits</h2>
     <p>Vous pouvez demander à savoir ce que nous détenons à votre sujet, le faire corriger ou effacer. Comme nous ne savons pas qui vous êtes, donnez-nous votre <b>code d'accès</b> : c'est tout ce que nous avons.
@@ -994,7 +994,7 @@ function vueRepond(et){
 }
 
 /* 5. je le dis — audit tour 1 (D1/A2) : le modèle ne s'ouvre qu'après une
-   tentative (micro, ou « je l'ai dit ») ; le temps n'est « fait » que si la
+   tentative (micro, ou « C'est dit ! ») ; le temps n'est « fait » que si la
    moitié des phrases ont été dites, et le tampon l'exige. */
 function choixVar(nom){
   for (const e of D.etapes) for (const bloc of ['scene', 'soir']) {
@@ -1035,7 +1035,7 @@ function vueDire(et){
       ${Reco ? `<div class="micro"><button class="btn-micro" id="mic" aria-label="Parler">${ICO.micro}</button>
         <div class="muted" id="micEtat" style="font-size:14px">Touchez le micro, dites-le en espagnol.</div>
         <div class="entendu" id="entendu"></div></div>` : ''}
-      <button class="btn btn--large" id="dit" style="margin:6px 0">Je l'ai dit à voix haute</button>
+      <button class="btn btn--large" id="dit" style="margin:6px 0">C'est dit !</button>
       <div id="r"></div>
       <div class="rangee" style="margin-top:10px"><button class="btn" id="modele" disabled>${ICO.son} Le modèle</button>
        <button class="btn btn--pri" id="suite" style="flex:1" disabled>Suivant</button></div>
@@ -1060,7 +1060,7 @@ function vueDire(et){
       : 'Cette phrase-ci ne se passe pas. Exercice : les noix — choisissez votre allergie dans les réglages.';
     $('#dit').onclick = () => {
       if (!it.oblig) { essaye(); $('#dit').disabled = true; montrerModele(); return; }
-      if (!redire) { redire = true; montrerModele(); $('#dit').textContent = 'Je l\u2019ai redite, comme le modèle'; return; }
+      if (!redire) { redire = true; montrerModele(); $('#dit').textContent = 'C\u2019est redit, comme le modèle !'; return; }
       essaye(); $('#dit').disabled = true;
     };
     if (Reco) {
@@ -1071,7 +1071,7 @@ function vueDire(et){
         ecouterMicro(t => { $('#entendu').textContent = '« ' + t + ' »'; }, final => {
           mic.classList.remove('ecoute'); mic.innerHTML = ICO.micro; $('#micEtat').textContent = 'Touchez le micro pour réessayer.';
           if (!final) { $('#r').querySelectorAll(':scope > :not(.modele-carte)').forEach(x => x.remove());
-            $('#r').insertAdjacentHTML('afterbegin', `<div class="retro info">${rienEntendu('Je n\u2019ai rien entendu. Vérifiez que le micro est permis, ou dites-le et touchez « Je l\u2019ai dit ».')}</div>`); return; }
+            $('#r').insertAdjacentHTML('afterbegin', `<div class="retro info">${rienEntendu('Je n\u2019ai rien entendu. Vérifiez que le micro est permis, ou dites-le et touchez « C\u2019est dit ! ».')}</div>`); return; }
           const t = ' ' + plat(final).replace(/ o no$/, '') + ' ';
           const manque = it.cles.map(c => g(c)).filter(c => !c.split('|').some(a => t.includes(' ' + plat(a) + ' ') || t.includes(plat(a))));
           // Audit tour 2 (E1) : « no quedan camas » passait pour « quedan camas ».
@@ -1682,7 +1682,7 @@ function seanceDire(x){
       <div class="carte"><p class="surtitre">À vous</p><p style="font-size:19px;font-weight:800;color:var(--text-strong);margin:4px 0 0">${E(g(fr))}</p></div>
       ${Reco ? `<div class="micro"><button class="btn-micro" id="mic" aria-label="Parler">${ICO.micro}</button>
         <div class="muted" id="micEtat" style="font-size:14px">Touchez le micro, dites-le en espagnol.</div><div class="entendu" id="entendu"></div></div>` : ''}
-      <button class="btn btn--large" id="dit" style="margin:6px 0">Je l'ai dit à voix haute</button><div id="r"></div>
+      <button class="btn btn--large" id="dit" style="margin:6px 0">C'est dit !</button><div id="r"></div>
       <div class="rangee" style="margin-top:10px"><button class="btn" id="modele" disabled>${ICO.son} Le modèle</button>
        <button class="btn btn--pri" id="suite" style="flex:1" disabled>Suivant</button></div>
       <p class="avis-local" style="margin-top:8px">Le modèle s'ouvre après votre essai : on cherche d'abord, on compare ensuite.</p>
@@ -1704,7 +1704,7 @@ function seanceDire(x){
       mic.classList.add('ecoute'); mic.innerHTML = ICO.stop; $('#micEtat').textContent = 'Je vous écoute… touchez pour arrêter.';
       ecouterMicro(t => { $('#entendu').textContent = '« ' + t + ' »'; }, final => {
         mic.classList.remove('ecoute'); mic.innerHTML = ICO.micro; $('#micEtat').textContent = 'Touchez le micro pour réessayer.';
-        if (!final) { poserR(`<div class="retro info">${rienEntendu('Je n\u2019ai rien entendu. Vérifiez que le micro est permis, ou dites-le et touchez « Je l\u2019ai dit ».')}</div>`); return; }
+        if (!final) { poserR(`<div class="retro info">${rienEntendu('Je n\u2019ai rien entendu. Vérifiez que le micro est permis, ou dites-le et touchez « C\u2019est dit ! ».')}</div>`); return; }
         essais++;
         const manque = cles.map(c => g(algDe(c))).filter(c => !trouve(final, c));
         const algCle = cles.find(c => /\{alg:/.test(c));
@@ -1748,7 +1748,7 @@ function vuePrepTest(){
       let prises = 0;
       app.innerHTML = `${tete2}<h1>Dites-le</h1><div class="carte"><p style="font-size:18px;font-weight:800;margin:0">${E(g(it.fr))}</p></div>
         ${Reco ? `<div class="micro"><button class="btn-micro" id="mic" aria-label="Parler">${ICO.micro}</button><div class="muted" id="micEtat" style="font-size:14px">Deux essais.</div><div class="entendu" id="entendu"></div></div>` : ''}
-        <div id="r"></div><button class="btn btn--large" id="sansmic" style="margin-top:8px">${Reco ? 'Sans micro : je l’ai dit à voix haute' : 'Je l’ai dit à voix haute'}</button>`;
+        <div id="r"></div><button class="btn btn--large" id="sansmic" style="margin-top:8px">${Reco ? 'Sans micro : c’est dit !' : 'C’est dit !'}</button>`;
       const fin = (ok, verifie) => { if (verifie) noter(ok); else { compte = true; nonVerif[it.obj] = (nonVerif[it.obj] || 0) + 1; }
         if ($('#sansmic')) $('#sansmic').remove(); if ($('#mic')) $('#mic').disabled = true;
         $('#r').insertAdjacentHTML('beforeend', `<div class="retro ${!verifie ? 'info' : ok ? 'ok' : 'no'}">${!verifie ? 'Non vérifié : cette question ne compte pas.' : ok ? '✓ On vous a compris.' : 'Deux essais sans qu’on vous comprenne tout à fait.'}</div>
@@ -1985,7 +1985,7 @@ function vueTest(){
       let prises = 0;
       app.innerHTML = `${tete2}<h1>Dites-le</h1><div class="carte"><p style="font-size:18px;font-weight:800;margin:0">${E(g(it.fr))}</p></div>
         ${Reco ? `<div class="micro"><button class="btn-micro" id="mic" aria-label="Parler">${ICO.micro}</button><div class="muted" id="micEtat" style="font-size:14px">Trois essais ; le meilleur compte.</div><div class="entendu" id="entendu"></div></div>` : ''}
-        <div id="r"></div><button class="btn btn--large" id="sansmic" style="margin-top:8px">${Reco ? 'Sans micro : je l’ai dit à voix haute' : 'Je l’ai dit à voix haute'}</button>
+        <div id="r"></div><button class="btn btn--large" id="sansmic" style="margin-top:8px">${Reco ? 'Sans micro : c’est dit !' : 'C’est dit !'}</button>
         ${Reco ? '' : '<p class="avis-local">Ce navigateur ne reconnaît pas la voix : cette question ne sera pas vérifiée.</p>'}`;
       const modele = () => `<div class="retro info"><span class="surtitre">Le modèle</span><div class="phrase-es">${E(g(it.modele || ''))}</div></div>`;
       const fin = (ok, verifie) => {
