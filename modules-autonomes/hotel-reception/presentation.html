@@ -90,6 +90,28 @@ h2{font-size:clamp(26px,3.6vw,36px);line-height:1.1;margin:0 0 8px;color:var(--f
 .employeur{margin-top:22px;border-left:4px solid var(--accent);background:#fff;border-radius:0 14px 14px 0;padding:16px 20px}
 .employeur h3{margin:0 0 4px;font-size:19px;color:var(--fonce)}
 .employeur p{margin:0;font-size:15.5px}
+/* pourquoi payer le jeu de rôle (Daniel, 28 sept. 2026) */
+.versus{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:6px}
+.versus article{border-radius:18px;padding:18px 20px;border:1px solid var(--filet);background:var(--papier)}
+.versus article.libre{background:var(--fonce);color:#E9EEF2;border-color:var(--fonce)}
+.versus h3{margin:0 0 2px;font-size:21px;color:var(--fonce)} .versus .libre h3{color:#fff}
+.versus .etiq{font-size:12.5px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--doux);margin:0 0 10px}
+.versus .libre .etiq{color:var(--halo)}
+.versus ul{margin:0;padding:0;list-style:none}
+.versus li{padding:7px 0 7px 28px;position:relative;font-size:15.5px;border-top:1px solid rgba(0,0,0,.06)}
+.versus .libre li{border-top-color:rgba(255,255,255,.12)}
+.versus li::before{content:"•";position:absolute;left:8px;top:6px;font-weight:900;color:var(--doux)}
+.versus .libre li::before{content:"✓";left:4px;color:var(--halo)}
+.vraie{display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:start;margin-top:26px}
+.vraie .tel{max-width:230px}
+.notes{display:flex;flex-direction:column;gap:12px;padding-top:26px}
+.note{background:#fff;border:1px solid var(--filet);border-left:5px solid var(--accent);border-radius:12px;padding:12px 14px;font-size:15.5px}
+.note b{color:var(--fonce)}
+.pourqui{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}
+.pourqui div{background:var(--papier);border:1px solid var(--filet);border-radius:14px;padding:14px 16px;font-size:15.5px}
+.pourqui b{display:block;color:var(--fonce);font-size:17px;margin-bottom:2px}
+.cout{margin-top:18px;background:#FBEFC4;border:1px solid #E7C75A;border-radius:14px;padding:14px 18px;font-size:16.5px}
+@media (max-width:860px){ .versus,.pourqui{grid-template-columns:1fr} .vraie{grid-template-columns:1fr} .vraie .tel{margin:0 auto} .notes{padding-top:0} }
 .fin{margin:60px 0 0;background:var(--halo);border-radius:24px;padding:30px;text-align:center}
 .fin h2{margin-bottom:6px}
 .fin p{margin:0 0 16px;font-size:18px}
@@ -162,7 +184,25 @@ footer{text-align:center;font-size:13px;color:var(--doux);padding:26px 0 40px}
 </section>
 
 <section>
-  <h2><span class="num">3</span>Ce que ça coûte</h2>
+  <h2><span class="num">3</span>Gratuit, vous apprenez le comptoir. Avec le comptoir joué, vous le vivez.</h2>
+  <p class="intro">Les mots, le comptoir, les exercices et le test sont gratuits, et ils suffisent pour apprendre les phrases. Mais un vrai client ne suit pas l&#x27;exercice : il insiste, demande une faveur, épelle son nom au téléphone. Le comptoir joué vous y prépare.</p>
+  <div class="versus">
+    <article><p class="etiq">Compris · gratuit</p><h3>Les exercices</h3><ul><li>Un client parle, et vous trouvez la bonne chambre, le bon prix, la bonne date.</li><li>«&nbsp;Ce que je réponds&nbsp;» : vous choisissez la bonne réplique parmi trois.</li><li>On vous dit si c'était juste, et pourquoi.</li><li>Idéal pour <b>apprendre</b> les mots et les gestes du comptoir.</li></ul></article>
+    <article class="libre"><p class="etiq">En option · 9,99 $</p><h3>Le comptoir joué</h3><ul><li>Vous parlez au client <b>dans la langue que vous apprenez</b>, au micro ou par écrit.</li><li>Huit clients devant le même comptoir, dont un au téléphone : ils vous répondent <b>à vous</b>, et ils insistent.</li><li>Votre écran vous montre la réservation, comme au vrai poste.</li><li>Un <b>bilan geste par geste</b>, dans votre langue, qui relève toute promesse que l'hôtel ne pourrait pas tenir.</li><li>Idéal pour <b>oser</b>, avant votre premier quart de travail.</li></ul></article>
+  </div>
+  <div class="vraie">
+    <div class="tel"><img src="depliant/libre_conv.jpg" alt="Une vraie conversation au comptoir : Ms. Leblanc et la réceptionniste" loading="lazy"></div>
+    <div class="notes"><div class="note"><b>Une vraie conversation, telle quelle.</b> Ms. Leblanc fête son anniversaire de mariage et demande une suite gratuite. Ce n&#x27;est pas à la réceptionniste de décider : elle passe le relais au gérant.</div><div class="note"><b>La cliente insiste, comme en vrai.</b> «&nbsp;Could you please ask him to make an exception?&nbsp;» La réceptionniste tient bon sans rien promettre, puis propose ce qu&#x27;elle a le droit d&#x27;offrir : une table au restaurant, une carte dans la chambre.</div><div class="note"><b>Et le bilan, geste par geste.</b> Le geste clé — passer le relais sans promettre — est réussi. Et la phrase à reprendre : «&nbsp;it&#x27;s not me who decide&nbsp;» devient «&nbsp;that&#x27;s not my decision to make&nbsp;».</div></div>
+    <div class="tel"><img src="depliant/libre_bilan.jpg" alt="Le bilan de la conversation, geste par geste" loading="lazy"></div>
+  </div>
+  <div class="pourqui"><div><b>Vous commencez à la réception</b>Quelques clients par semaine, et le premier «&nbsp;I have a reservation&nbsp;» ne vous prend plus de court.</div><div><b>La langue apprise vous gêne au téléphone</b>Un des huit clients appelle : pas de visage, seulement la voix.</div><div><b>Vous voulez éviter la promesse de trop</b>Le bilan relève tout engagement que l&#x27;hôtel ne pourrait pas tenir, avant qu&#x27;il coûte cher.</div></div>
+  <p class="cout"><b>Moins de 10 ¢ la conversation</b> au prix de lancement :
+  100 conversations pour 9,99 $, pendant 12 mois. Essayez d'abord tout le reste gratuitement ;
+  le code s'achète en une minute, quand vous voulez.</p>
+</section>
+
+<section>
+  <h2><span class="num">4</span>Ce que ça coûte</h2>
   <div class="prix">
     <div class="offre">
       <p class="etiq">Tout le reste</p>

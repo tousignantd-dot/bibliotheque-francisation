@@ -86,6 +86,32 @@ def francoeur():
                      "<b>Un bilan geste par geste</b> après chaque visite, dans votre langue : ce que vous avez fait, ce qui manquait.",
                      "<b>Le niveau des clients</b> suit le vôtre : débutant, fonctionnel ou à l'aise."],
         "bande_caps": ("scene",),
+        "libre": {
+            "titre": "Gratuit, vous apprenez le magasin. Avec le magasin joué, vous le vivez.",
+            "intro": "Les mots, les exercices, le test et la fiche sont gratuits, et ils suffisent pour apprendre les phrases. "
+                     "Mais un vrai client ne suit pas l'exercice : il ne connaît pas sa taille, il change d'idée, il pose une "
+                     "question de plus. Le magasin joué vous y prépare.",
+            "gratuit": ["Un client parle, et vous touchez ce qu'il demande.",
+                        "« Ce que je réponds » : vous choisissez la bonne réplique parmi trois.",
+                        "On vous dit si c'était juste, et pourquoi.",
+                        "Idéal pour <b>apprendre</b> les mots et les gestes du vendeur."],
+            "payant": ["Vous parlez au client <b>comme au magasin</b>, au micro ou par écrit.",
+                       "Huit clients, chacun avec son idée : il vous répond <b>à vous</b>, et son visage change selon ce que vous dites.",
+                       "Un <b>bilan geste par geste</b>, dans votre langue : faire préciser, faire répéter, vérifier, passer le relais.",
+                       "Vos phrases, corrigées.",
+                       "Idéal pour <b>oser</b>, avant votre premier client."],
+            "notes": [("Une vraie visite, telle quelle.", "Madame Ouellet cherche un chandail, mais ne connaît pas sa taille ici. "
+                       "Le vendeur lui demande une chose à la fois : la couleur, puis la taille."),
+                      ("Elle répond comme une vraie cliente.", "« Chez nous, je fais du moyen ou du grand, ça dépend. » Le vendeur "
+                       "explique les tailles d'ici et va vérifier en arrière."),
+                      ("Et le bilan, geste par geste.", "Faire préciser une chose à la fois, redire, vérifier : chaque geste réussi "
+                       "est cité avec la phrase exacte, et ce qui n'était pas nécessaire est dit aussi.")],
+            "pourqui": [("Vous commencez bientôt en magasin", "Quelques visites par semaine, et le premier « je cherche… » ne vous prend plus de court."),
+                        ("Vous comprenez, mais vous figez pour répondre", "Personne ne vous juge : vous recommencez avec le même client, ou un autre."),
+                        ("Vous voulez savoir ce qui vous manque", "Le bilan nomme le geste à travailler : faire répéter, passer le relais à la gérante…")],
+            "conv_alt": "Une vraie visite au magasin : Madame Ouellet et le vendeur",
+            "bilan_alt": "Le bilan de la visite, geste par geste",
+        },
         "appui_tit": "Votre langue vous aide, sans prendre la place",
         "appui": [("langue", "Onze langues d'appui", "Les consignes s'affichent dans votre langue : " + ", ".join(langues) + ". Les mots, eux, restent en français."),
                   ("fiche", "Chaque mot a sa fiche", "La voix, l'image, ce qu'on entend aussi au Québec, et le piège à éviter. La traduction ne paraît que si vous la demandez.")],
@@ -144,6 +170,33 @@ def hotel():
                      "<b>Un bilan geste par geste</b> après chaque client, dans votre langue : ce que vous avez fait, ce qui manquait.",
                      "<b>Promettre ce que l'hôtel ne peut pas tenir</b> fait échouer la situation : on l'apprend avant d'y être."],
         "bande_caps": ("jeu",),
+        "libre": {
+            "titre": "Gratuit, vous apprenez le comptoir. Avec le comptoir joué, vous le vivez.",
+            "intro": "Les mots, le comptoir, les exercices et le test sont gratuits, et ils suffisent pour apprendre les phrases. "
+                     "Mais un vrai client ne suit pas l'exercice : il insiste, demande une faveur, épelle son nom au téléphone. "
+                     "Le comptoir joué vous y prépare.",
+            "gratuit": ["Un client parle, et vous trouvez la bonne chambre, le bon prix, la bonne date.",
+                        "« Ce que je réponds » : vous choisissez la bonne réplique parmi trois.",
+                        "On vous dit si c'était juste, et pourquoi.",
+                        "Idéal pour <b>apprendre</b> les mots et les gestes du comptoir."],
+            "payant": ["Vous parlez au client <b>dans la langue que vous apprenez</b>, au micro ou par écrit.",
+                       "Huit clients devant le même comptoir, dont un au téléphone : ils vous répondent <b>à vous</b>, et ils insistent.",
+                       "Votre écran vous montre la réservation, comme au vrai poste.",
+                       "Un <b>bilan geste par geste</b>, dans votre langue, qui relève toute promesse que l'hôtel ne pourrait pas tenir.",
+                       "Idéal pour <b>oser</b>, avant votre premier quart de travail."],
+            "notes": [("Une vraie conversation, telle quelle.", "Ms. Leblanc fête son anniversaire de mariage et demande une suite "
+                       "gratuite. Ce n'est pas à la réceptionniste de décider : elle passe le relais au gérant."),
+                      ("La cliente insiste, comme en vrai.", "« Could you please ask him to make an exception? » La réceptionniste "
+                       "tient bon sans rien promettre, puis propose ce qu'elle a le droit d'offrir : une table au restaurant, une carte "
+                       "dans la chambre."),
+                      ("Et le bilan, geste par geste.", "Le geste clé — passer le relais sans promettre — est réussi. Et la phrase à "
+                       "reprendre : « it's not me who decide » devient « that's not my decision to make ».")],
+            "pourqui": [("Vous commencez à la réception", "Quelques clients par semaine, et le premier « I have a reservation » ne vous prend plus de court."),
+                        ("La langue apprise vous gêne au téléphone", "Un des huit clients appelle : pas de visage, seulement la voix."),
+                        ("Vous voulez éviter la promesse de trop", "Le bilan relève tout engagement que l'hôtel ne pourrait pas tenir, avant qu'il coûte cher.")],
+            "conv_alt": "Une vraie conversation au comptoir : Ms. Leblanc et la réceptionniste",
+            "bilan_alt": "Le bilan de la conversation, geste par geste",
+        },
         "appui_tit": "Trois langues, à égalité",
         "appui": [("langue", "Vous choisissez", "Je parle français, j'apprends l'anglais ; je parle espagnol, j'apprends le français… L'écran est dans votre langue ; ce que vous entendez et dites, dans celle que vous apprenez."),
                   ("comptoir", "Votre poste, vu de votre place", "Le comptoir dessiné sert du début à la fin : on y touche d'abord les objets, puis les clients s'y présentent, devant le même décor.")],
@@ -244,6 +297,28 @@ h2{font-size:clamp(26px,3.6vw,36px);line-height:1.1;margin:0 0 8px;color:var(--f
 .employeur{margin-top:22px;border-left:4px solid var(--accent);background:#fff;border-radius:0 14px 14px 0;padding:16px 20px}
 .employeur h3{margin:0 0 4px;font-size:19px;color:var(--fonce)}
 .employeur p{margin:0;font-size:15.5px}
+/* pourquoi payer le jeu de rôle (Daniel, 28 sept. 2026) */
+.versus{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:6px}
+.versus article{border-radius:18px;padding:18px 20px;border:1px solid var(--filet);background:var(--papier)}
+.versus article.libre{background:var(--fonce);color:#E9EEF2;border-color:var(--fonce)}
+.versus h3{margin:0 0 2px;font-size:21px;color:var(--fonce)} .versus .libre h3{color:#fff}
+.versus .etiq{font-size:12.5px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--doux);margin:0 0 10px}
+.versus .libre .etiq{color:var(--halo)}
+.versus ul{margin:0;padding:0;list-style:none}
+.versus li{padding:7px 0 7px 28px;position:relative;font-size:15.5px;border-top:1px solid rgba(0,0,0,.06)}
+.versus .libre li{border-top-color:rgba(255,255,255,.12)}
+.versus li::before{content:"•";position:absolute;left:8px;top:6px;font-weight:900;color:var(--doux)}
+.versus .libre li::before{content:"✓";left:4px;color:var(--halo)}
+.vraie{display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:start;margin-top:26px}
+.vraie .tel{max-width:230px}
+.notes{display:flex;flex-direction:column;gap:12px;padding-top:26px}
+.note{background:#fff;border:1px solid var(--filet);border-left:5px solid var(--accent);border-radius:12px;padding:12px 14px;font-size:15.5px}
+.note b{color:var(--fonce)}
+.pourqui{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}
+.pourqui div{background:var(--papier);border:1px solid var(--filet);border-radius:14px;padding:14px 16px;font-size:15.5px}
+.pourqui b{display:block;color:var(--fonce);font-size:17px;margin-bottom:2px}
+.cout{margin-top:18px;background:#FBEFC4;border:1px solid #E7C75A;border-radius:14px;padding:14px 18px;font-size:16.5px}
+@media (max-width:860px){ .versus,.pourqui{grid-template-columns:1fr} .vraie{grid-template-columns:1fr} .vraie .tel{margin:0 auto} .notes{padding-top:0} }
 .fin{margin:60px 0 0;background:var(--halo);border-radius:24px;padding:30px;text-align:center}
 .fin h2{margin-bottom:6px}
 .fin p{margin:0 0 16px;font-size:18px}
@@ -272,7 +347,7 @@ def images(t):
     src = RACINE / "assets" / "presentations" / t["captures"]
     dest = RACINE / "assets" / "presentations" / t["sortie"]
     dest.mkdir(parents=True, exist_ok=True)
-    noms = set(t["une"]) | {e[0] for e in t["ecrans"]} | set(t["bande_caps"]) | {a[0] for a in t["appui"]}
+    noms = set(t["une"]) | {e[0] for e in t["ecrans"]} | set(t["bande_caps"]) | {a[0] for a in t["appui"]} | {"libre_conv", "libre_bilan"}
     for n in sorted(noms):
         im = Image.open(src / f"{n}.png").convert("RGB")
         im = im.resize((520, round(im.height * 520 / im.width)), Image.LANCZOS)
@@ -294,6 +369,25 @@ def page(t):
     barre = f'<s class="barre">{prix(o["prixRegulier"])}</s> ' if o["promo"] else ""
     lancement = (f'<p class="lancement">Prix de lancement, pour un temps limité'
                  f'{" — jusqu’au " + date_fr(o["promoFin"]) + " inclusivement" if o["promoFin"] else ""}.</p>') if o["promo"] else ""
+    L = t["libre"]
+    nbsp = lambda x: x.replace("« ", "«&nbsp;").replace(" »", "&nbsp;»")
+    libre_html = f"""<section>
+  <h2><span class="num">3</span>{nbsp(E(L['titre']))}</h2>
+  <p class="intro">{nbsp(E(L['intro']))}</p>
+  <div class="versus">
+    <article><p class="etiq">Compris · gratuit</p><h3>Les exercices</h3><ul>{"".join(f"<li>{nbsp(x)}</li>" for x in L['gratuit'])}</ul></article>
+    <article class="libre"><p class="etiq">En option · {prix(o["prix"])}</p><h3>{E(t['jeu_nom'])}</h3><ul>{"".join(f"<li>{nbsp(x)}</li>" for x in L['payant'])}</ul></article>
+  </div>
+  <div class="vraie">
+    {tel('libre_conv', L['conv_alt'])}
+    <div class="notes">{"".join(f'<div class="note"><b>{E(a)}</b> {nbsp(E(b))}</div>' for a, b in L['notes'])}</div>
+    {tel('libre_bilan', L['bilan_alt'])}
+  </div>
+  <div class="pourqui">{"".join(f"<div><b>{E(a)}</b>{nbsp(E(b))}</div>" for a, b in L['pourqui'])}</div>
+  <p class="cout"><b>Moins de {round(o["prix"] / o["conversations"])} ¢ la conversation</b>{" au prix de lancement" if o["promo"] else ""} :
+  {o["conversations"]} conversations pour {prix(o["prix"])}, pendant {o["jours"] // 30} mois. Essayez d'abord tout le reste gratuitement ;
+  le code s'achète en une minute, quand vous voulez.</p>
+</section>"""
     return f"""<!doctype html>
 <html lang="fr">
 <head>
@@ -355,8 +449,10 @@ def page(t):
   <div class="duo">{appui}</div>
 </section>
 
+{libre_html}
+
 <section>
-  <h2><span class="num">3</span>Ce que ça coûte</h2>
+  <h2><span class="num">4</span>Ce que ça coûte</h2>
   <div class="prix">
     <div class="offre">
       <p class="etiq">Tout le reste</p>

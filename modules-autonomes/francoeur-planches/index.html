@@ -1314,7 +1314,9 @@ async function bilanMagasin() {
   try {
     const r = await fetch('/api/correct-french', {method: 'POST', headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({code: codeAcces, text: mes.join(' '),
-        question: "Vous êtes vendeur dans un magasin de vêtements et vous répondez à un client."})});
+        // 28 sept. 2026 : sans ce contexte, le correcteur « accordait » les tailles (« petite, moyenne »)
+        // et réécrivait le style de phrases justes. Il reste imparfait (il retouche parfois « le moyen »).
+        question: "Vous êtes vendeur dans un magasin de vêtements, au Québec, et vous répondez à une cliente. À l'oral, en français québécois courant : les tailles se nomment petit, moyen, grand, et « on a le moyen », « du moyen », « en moyen » sont tous justes ; « Quelle couleur vous aimez ? » est une question orale correcte. Ne corrige que les vraies fautes de français (grammaire, prépositions, accords), jamais le style, le registre ni une tournure déjà juste, et explique chaque correction."})});
     const d = await r.json();
     if (!r.ok) { corr.innerHTML = '<p>' + esc(d.error || FR.erreur_reseau) + '</p>'; return; }
     corr.innerHTML = '<p style="font-size:18px;font-weight:700;color:var(--text-strong)">' + esc(d.corrige) + '</p>'
