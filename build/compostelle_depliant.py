@@ -20,6 +20,7 @@ import compostelle_commun as C  # noqa: E402
 import pelerins  # noqa: E402
 
 SORTIE = RACINE / "assets" / "presentations" / "compostelle-depliant.html"
+PUBLIC = RACINE / "modules-autonomes" / "compostelle" / "depliant"
 CAP = "compostelle-depliant/"
 MEDIA = "../interactive/compostelle/"
 APP = "/modules-autonomes/compostelle/"
@@ -369,6 +370,18 @@ footer{{text-align:center;font-size:13px;color:var(--doux);padding:26px 0 40px}}
 </html>
 """
     SORTIE.write_text(page, encoding="utf-8")
+    # La copie publique (pilote du 27 sept. 2026) : le classeur demande une
+    # connexion, les amis pèlerins n'en ont pas. Même page, à côté de
+    # l'application (publique), sans le lien vers le classeur, non indexée.
+    pub = (page.replace(f'src="{CAP}', 'src="depliant/')
+               .replace(f'src="{MEDIA}', 'src="/assets/interactive/compostelle/')
+               .replace('<a class="retour" href="/presentations.html">&#8592; Le classeur</a>', '')
+               .replace('<meta charset="utf-8">', '<meta charset="utf-8">\n<meta name="robots" content="noindex">'))
+    assert CAP not in pub and "../interactive" not in pub
+    PUBLIC.mkdir(parents=True, exist_ok=True)
+    for f in (RACINE / "assets" / "presentations" / "compostelle-depliant").glob("*.jpg"):
+        (PUBLIC / f.name).write_bytes(f.read_bytes())
+    (PUBLIC.parent / "presentation.html").write_text(pub, encoding="utf-8")
     print(SORTIE.relative_to(RACINE), f"— {len(etapes)} étapes, {len(seances)} entraînements, {prix(o['prix'])}")
 
 

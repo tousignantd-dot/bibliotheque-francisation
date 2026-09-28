@@ -36,6 +36,16 @@ import base64, datetime as _dt, hashlib, hmac, json, os, secrets, time, urllib.e
 SCENARIO = "camino-es-fr"
 PREFIXE, LONGUEUR = "PC", 8
 ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"   # sans 0/O, 1/I/L : il se recopie à la main
+
+# Les codes d'essai du pilote (27 sept. 2026) : Daniel fait valider l'outil
+# par des amis pèlerins et des hispanophones avant de vendre. Gratuits, chacun
+# ouvre « Parler librement » pour ESSAI_CONVERSATIONS conversations jusqu'à
+# ESSAI_FIN inclus ; l'enregistrement se crée au premier usage. Coût plafonné :
+# 12 × 25 conversations × ~8 ¢ ≈ 24 $ US au pire. Pour en couper un, le retirer
+# d'ici ; pour tous, vider la liste.
+ESSAI_FIN = "2026-10-18"
+ESSAI_CONVERSATIONS = 25
+CODES_ESSAI = {"PCF8D9GQ": "essai 01", "PCM6WNSV": "essai 02", "PCEAN6WQ": "essai 03", "PC72J5U8": "essai 04", "PC8JSFQV": "essai 05", "PCZ4VRGX": "essai 06", "PCBPQ8RW": "essai 07", "PCRWZECQ": "essai 08", "PCF8XAJQ": "essai 09", "PCZ4YFPX": "essai 10", "PCDUKPKG": "essai 11", "PCK3WC4E": "essai 12"}
 # Réglable pour les essais seulement (un faux Stripe local) ; jamais en production.
 API = os.environ.get("STRIPE_API", "https://api.stripe.com/v1")
 TOLERANCE_S = 300                              # âge maximal d'une signature de webhook
@@ -166,7 +176,22 @@ class Registre:
     def trouver(self, code):
         if not est_code(code):
             return None
-        return next((p for p in self.charger() if p.get("code") == code), None)
+        p = next((p for p in self.charger() if p.get("code") == code), None)
+        if p is None and code in CODES_ESSAI:
+            p = self._ouvrir_essai(code)
+        return p
+
+    def _ouvrir_essai(self, code):
+        """Un code d'essai du pilote, créé à son premier usage (voir CODES_ESSAI)."""
+        with self.verrou:
+            tous = self.charger()
+            p = next((x for x in tous if x.get("code") == code), None)
+            if p is None:
+                p = {"code": code, "etat": "actif", "essai": CODES_ESSAI[code], "cree": _maintenant(), "active": _maintenant(),
+                     "conversations": ESSAI_CONVERSATIONS, "utilisees": 0, "parJour": {}, "expire": ESSAI_FIN, "sessions": []}
+                tous.append(p)
+                self.sauver(tous)
+            return p
 
     def _nouveau_code(self, pris):
         while True:

@@ -138,6 +138,15 @@ os.environ["COMPOSTELLE_PROMO_CENTS"] = "0"
 ok(P.offre()["prix"] == 1999, "COMPOSTELLE_PROMO_CENTS=0 coupe la promotion")
 del os.environ["COMPOSTELLE_PROMO_FIN"], os.environ["COMPOSTELLE_PROMO_CENTS"]
 
+print("Les codes d'essai du pilote")
+ok(all(P.est_code(c) for c in P.CODES_ESSAI) and len(set(P.CODES_ESSAI)) == len(P.CODES_ESSAI), "les codes d'essai sont des codes de pèlerin valides et distincts")
+ce = next(iter(P.CODES_ESSAI)); avant = len(MEMOIRE)
+pe = R.trouver(ce)
+ok(pe and pe["etat"] == "actif" and pe["conversations"] == P.ESSAI_CONVERSATIONS and len(MEMOIRE) == avant + 1, "un code d'essai s'ouvre à son premier usage")
+ok(R.trouver(ce) is not None and len(MEMOIRE) == avant + 1, "…une seule fois")
+ok(R.refus(pe, "louer", 0, True)[1] == 403, "un code d'essai n'ouvre que Compostelle")
+ok(R.trouver("PCZZZZZZ") is None or "PCZZZZZZ" in P.CODES_ESSAI, "un code inventé n'ouvre rien")
+
 print("Les codes")
 ok(not P.est_code("ABC123") and not P.est_code("S" + "X" * 16), "un code d'élève ou un jeton de séance n'est pas un code de pèlerin")
 ok(not P.est_code("PC0OIL11"), "l'alphabet exclut 0, O, I, L, 1")

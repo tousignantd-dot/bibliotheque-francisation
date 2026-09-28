@@ -201,6 +201,7 @@ GABARIT = r"""<!DOCTYPE html>
 <link rel="apple-touch-icon" href="/modules-autonomes/compostelle/icones/icone-180.png">
 <meta name="apple-mobile-web-app-title" content="Compostelle">
 <meta name="theme-color" content="#FFFFFF">
+<meta name="robots" content="noindex">
 <style>
 /* Page produite par build/compostelle_app.py — ne pas l'éditer. */
 :root{--fleche:#F2C230;--fleche-ink:#5C4400;--fleche-bg:#FFF6D6;
@@ -311,6 +312,7 @@ svg.tampon{opacity:.9}
 .acc-temps--fait{padding-bottom:12px}
 .acc-h{margin:2px 0 6px;font-size:26px;line-height:1.15}
 .acc-p{margin:0 0 12px;font-size:16px}
+.bandeau-essai{background:#E2EAF6;border:1px solid #9DB6DD;color:#13233B;border-radius:12px;padding:10px 14px;margin:0 0 12px;font-size:14.5px;display:flex;flex-wrap:wrap;gap:4px 12px;justify-content:space-between}
 .btn-ferme{display:inline-flex;align-items:center;justify-content:center;gap:8px;opacity:.75;cursor:not-allowed}
 .acc-temps .btn--large{white-space:normal;line-height:1.25}
 .acc-note{font-size:14px;margin:8px 0 0;text-align:center}
@@ -534,7 +536,7 @@ details.rub summary span{font-size:13px;color:var(--text-muted);font-weight:700;
   <span class="secteur"><small>Voyage · chemin de Saint-Jacques</small><b>En route vers Compostelle</b></span>
 </div></div>
 <main id="app"></main>
-<footer class="pied"><a href="#guide">Comment ça marche ?</a> · <a href="#confidentialite">Confidentialité</a></footer>
+<footer class="pied"><a href="#guide">Comment ça marche ?</a> · <a href="#avis">Donner mon avis</a> · <a href="#confidentialite">Confidentialité</a></footer>
 <audio id="lecteur" preload="none"></audio>
 <script>
 const D = %%DONNEES%%;
@@ -743,15 +745,18 @@ function etapeParId(id){ return D.etapes.find(e => e.id === id); }
 /* Le chemin s'ouvre quand le sac est prêt (Daniel, 27 sept. 2026 : « on ne
    puisse pas aller sur le Camino si on n'a pas fait l'entraînement »).
    Un pèlerin déjà en route (au moins un tampon) garde son chemin ouvert. */
-function cheminOuvert(){ return prepFaites() === D.prep.seances.length || D.etapes.some(e => (S.jours[e.id] || {}).tampon); }
+function cheminOuvert(){ return !!S.essai || prepFaites() === D.prep.seances.length || D.etapes.some(e => (S.jours[e.id] || {}).tampon); }
 function prochaine(){ return D.etapes.find(e => !jour(e.id).tampon) || null; }
 
 function rendre(){
   arreterMicro(); lecteur.pause(); lecteur.ontimeupdate = null;
+  if (!/^#(avis|essai)/.test(location.hash)) { try { sessionStorage.setItem('compostelle:vu', location.hash); } catch(e) {} }
   const p = (location.hash.slice(1) || 'accueil').split('/');
   window.scrollTo(0, 0);
   if (p[0] === 'guide') return vueGuide();
   if (p[0] === 'confidentialite') return vueConfidentialite();
+  if (p[0] === 'avis') return vueAvis();
+  if (p[0] === 'essai') { S.essai = p[1] === 'fin' ? null : aujourdhui(); sauver(); history.replaceState(null, '', '#accueil'); return rendre(); }
   if (p[0] === 'achat') return vueAchat(p[1]);
   if (p[0] === 'achat-annule') return vueAchatAnnule();
   if (!S.genre && p[0] !== 'reglages') return vueBienvenue();
@@ -774,6 +779,28 @@ function rendre(){
   if (p[0] === 'test') return vueTest();
   if (p[0] === 'compostela') return vueCompostela();
   return vueAccueil();
+}
+
+/* ---------- donner son avis (pilote, 27 sept. 2026) ---------- */
+/* Daniel fait valider l'outil par des amis pèlerins et des hispanophones.
+   L'avis part par courriel : rien n'est gardé dans l'application. */
+const AVIS_COURRIEL = 'support@edufrancis.ca';
+function vueAvis(){
+  const ici = decodeURIComponent((sessionStorage.getItem('compostelle:vu') || '').replace(/^#/, '')) || 'accueil';
+  const corps = `Écran où j'étais : ${ici}\nNavigateur : ${navigator.userAgent.slice(0, 120)}\n\n`
+    + `1. Ce qui est clair :\n\n2. Ce qui est confus ou bloque :\n\n3. L'espagnol (une phrase, un mot, une voix qui sonne faux) :\n\n4. Ce qui manque pour un vrai pèlerin :\n\n5. Payeriez-vous 9,99 $ pour « Parler librement » ?\n`;
+  const lien = `mailto:${AVIS_COURRIEL}?subject=${encodeURIComponent('Compostelle — mon avis')}&body=${encodeURIComponent(corps)}`;
+  app.innerHTML = `${retour(S.genre ? 'accueil' : '', S.genre ? 'Accueil' : 'Retour')}
+    <p class="surtitre">Essai avant le lancement</p><h1>Donner mon avis</h1>
+    <p>Merci de relire « En route vers Compostelle ». Tout nous aide : une consigne confuse, un mot espagnol qui ne se dit pas en Espagne,
+    une voix qui sonne faux, un bouton qui ne répond pas.</p>
+    <div class="carte"><h3 style="margin-top:0">Ce qui nous aide le plus</h3><ul style="margin:0;padding-left:20px">
+      <li><b>Pèlerins</b> : les situations sont-elles celles du vrai chemin ? Manque-t-il quelque chose ?</li>
+      <li><b>Hispanophones</b> : l'espagnol est-il juste, naturel, et bien prononcé ? Notez le mot, la phrase et l'écran.</li>
+      <li><b>Tous</b> : où avez-vous hésité, et combien de temps a pris un entraînement ou une étape ?</li></ul></div>
+    <a class="btn btn--pri btn--large" href="${lien}">Écrire mon avis (courriel)</a>
+    <p class="muted" style="font-size:14px;margin-top:8px">Le courriel s'ouvre avec les questions déjà écrites. Ou écrivez directement à <a href="mailto:${AVIS_COURRIEL}">${AVIS_COURRIEL}</a>.</p>
+    ${S.essai ? '' : `<p class="muted" style="font-size:14px">Pour tout ouvrir sans faire les entraînements d'abord : <a href="#essai">passer en mode essai</a>.</p>`}`;
 }
 
 /* ---------- confidentialité (Loi 25) ---------- */
@@ -941,7 +968,9 @@ function vueAccueil(refuse){
       <p style="margin:0">Une erreur ne pardonne pas : <b>l'allergie</b>. À León comme au test « Suis-je prêt ? », la rater fait recommencer.
       ${S.alergia ? 'La vôtre : ' + E(allergie().fr) + '.' : 'Choisissez la vôtre dans les réglages.'}</p></div></details>
   </section>`;
-  app.innerHTML = `${refuse ? `<div class="retro info" style="margin-bottom:10px">Le chemin s'ouvre quand votre sac est prêt : faites d'abord les huit entraînements (${nP} sur ${totP}).</div>` : ''}
+  const essai = S.essai ? `<div class="bandeau-essai"><b>Mode essai</b> — tout est ouvert, dans n'importe quel ordre, pour la relecture.
+    <span><a href="#avis">Donner mon avis</a> · <a href="#essai/fin">Quitter le mode essai</a></span></div>` : '';
+  app.innerHTML = `${essai}${refuse ? `<div class="retro info" style="margin-bottom:10px">Le chemin s'ouvre quand votre sac est prêt : faites d'abord les huit entraînements (${nP} sur ${totP}).</div>` : ''}
   <ol class="deux-temps">
     <li class="${sacPret ? 'fait' : 'actif'}"><a href="#accueil" onclick="event.preventDefault();document.getElementById('sac').scrollIntoView({behavior:'smooth'})"><span>${sacPret ? '✓' : '1'}</span><b>Préparer mon sac</b><small>${nP} / ${totP} entraînements</small></a></li>
     <li class="${sacPret || faits ? 'actif' : ''}${faits === 10 ? ' fait' : ''}"><a href="#accueil" onclick="event.preventDefault();document.getElementById('chemin').scrollIntoView({behavior:'smooth'})"><span>${faits === 10 ? '✓' : ouvert ? '2' : CADENAS}</span><b>Marcher le chemin</b><small>${faits} / 10 étapes</small></a></li>
@@ -993,7 +1022,7 @@ function fini(et, k){
    dans l'ordre — découvrir, comprendre, agir — le suivant s'ouvre quand le
    précédent est fait ; une étape tamponnée se rejoue librement. */
 const TEMPS_COURT = {lieu: 'Lieu', mots: 'Mots', entends: 'Écoute', repond: 'Réponse', scene: 'Scène', dire: 'Je le dis', soir: 'Soir'};
-function tempsEtapeOuvert(et, j){ const x = jour(et.id); return !!x.tampon || TEMPS.slice(0, j).every(([t]) => x.faits[t]); }
+function tempsEtapeOuvert(et, j){ const x = jour(et.id); return !!S.essai || !!x.tampon || TEMPS.slice(0, j).every(([t]) => x.faits[t]); }
 function filEtape(et, actif){
   const x = jour(et.id);
   return `<ol class="ariane ariane--7" aria-label="Les temps de l'étape">${TEMPS.map(([t, nom], j) => {
@@ -1617,7 +1646,7 @@ function vuePrep(){
    s'ouvre qu'une fois le précédent fait ; un entraînement terminé se refait
    dans n'importe quel ordre. */
 const CADENAS = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
-function tempsOuvert(x, j){ const e = prepEtat(x.id); return !!e.fin || PREP_TEMPS.slice(0, j).every(([t]) => e.faits[t]); }
+function tempsOuvert(x, j){ const e = prepEtat(x.id); return !!S.essai || !!e.fin || PREP_TEMPS.slice(0, j).every(([t]) => e.faits[t]); }
 function filSeance(x, actif){
   const e = prepEtat(x.id);
   return `<ol class="ariane" aria-label="Les temps de l'entraînement">${PREP_TEMPS.map(([t, nom], j) => {
