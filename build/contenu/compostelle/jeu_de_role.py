@@ -139,6 +139,16 @@ BILAN = (
 )
 
 
+def bilan(cas_id, genre=None):
+    """La consigne du bilan, accordée au genre choisi par le pèlerin quand la page
+    l'envoie (« m » ou « f ») ; sinon, la règle neutre de BILAN s'applique."""
+    if genre == "f":
+        return BILAN + "\nLa personne est une PÈLERINE : en français, accorde au féminin (« végétarienne », « prête », « débrouillée »)."
+    if genre == "m":
+        return BILAN + "\nLa personne est un PÈLERIN : en français, accorde au masculin."
+    return BILAN
+
+
 def scenario_serveur():
     cas = {}
     for et in ET.ETAPES:
@@ -151,7 +161,7 @@ def scenario_serveur():
         "ouverture": {"pelerin": "¡Hola! ¡Buen Camino!", "client": "¡Hola! ¡Buen Camino!"},
         "roles": {"client": {"qui": "", "conduite": ""}, "pelerin": {"qui": "", "conduite": ""}},
         "paliers": PALIERS,
-        "bilan": BILAN,
+        "bilan": bilan,
         "systeme": systeme,
         "etiquettes": ("PERSONNE", "PÈLERIN"),
         "voix": [],

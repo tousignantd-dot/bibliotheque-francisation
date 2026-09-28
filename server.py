@@ -21168,7 +21168,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             # Un scénario peut rendre une consigne PAR CAS (le comptoir : le juge
             # reçoit les faits du client et les gestes attendus).
             if callable(consigne):
-                consigne = consigne(cas)
+                # Compostelle (28 sept. 2026) : le bilan reçoit aussi le genre choisi
+                # (« m » ou « f »), sans quoi il accordait au masculin une pèlerine.
+                genre = body.get("genre") if body.get("genre") in ("m", "f") else None
+                consigne = (consigne(cas, genre) if getattr(consigne, "__code__", None)
+                            and consigne.__code__.co_argcount >= 2 else consigne(cas))
             if not consigne:
                 json_response(self, {"error": "Pas de bilan pour ce scénario"}, 400)
                 return

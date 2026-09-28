@@ -1296,7 +1296,7 @@ function vueLibre(et){
       fini = true; $('#saisie').innerHTML = `<div class="muted">Le bilan arrive…</div>`;
       try {
         const r = await fetch('/api/jeu-de-role', {method:'POST', headers:{'Content-Type':'application/json'},
-          body: JSON.stringify({code, scenario:'camino-es-fr', cas, role:'pelerin', bilan:true, historique:hist.slice(1)})});
+          body: JSON.stringify({code, scenario:'camino-es-fr', cas, role:'pelerin', bilan:true, genre:S.genre, historique:hist.slice(1)})});
         const d = await r.json().catch(() => ({})), b = d.bilan;
         if (!r.ok || !b) { $('#saisie').innerHTML = `<div class="retro no">${E(d.error || 'Pas de bilan cette fois.')}</div>`; return; }
         $('#saisie').innerHTML = `<h2>Le bilan</h2>
