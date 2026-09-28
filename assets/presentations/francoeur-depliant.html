@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Maison Francœur — comment ça marche</title>
+<meta name="description" content="Pour qui travaille, ou veut travailler, dans un magasin de vêtements.">
+<link rel="stylesheet" href="/assets/design-system/styles.css">
+<link rel="stylesheet" href="/assets/design-system/marque-francis.css">
+<link rel="icon" href="/assets/design-system/marque-francis-favicon.svg">
+<style>
+:root{--fond:#EDF1F5;--papier:#F7F9FB;--action:#2B4A78;--fonce:#16243A;--accent:#C8692A;--halo:#FBE9DC;
+ --texte:#1E2733;--doux:#4F5B6A;--filet:#D5DDE7}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--texte);font:17px/1.5 Nunito,system-ui,sans-serif}
+.cadre{max-width:1040px;margin:0 auto;padding:0 20px}
+a{color:var(--action)}
+.retour{display:inline-block;margin:14px 0 0;font-size:14px;color:var(--doux);text-decoration:none}
+.fr-barre{background:#fff;border-bottom:3px solid var(--accent)}
+.fr-barre__in{max-width:1040px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.secteur{text-align:right;line-height:1.2}
+.secteur small{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--doux);font-weight:800}
+.secteur b{color:var(--action);font-size:17px}
+.une{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:center;padding:34px 0 10px}
+.sur{font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:900;color:var(--accent);margin:0 0 8px}
+h1{font-size:clamp(34px,5.4vw,54px);line-height:1.04;margin:0 0 14px;color:var(--fonce);letter-spacing:-.01em}
+h1 span{background:linear-gradient(transparent 60%,var(--halo) 60%)}
+.chapeau{font-size:19px;line-height:1.5;margin:0 0 18px}
+.cta{display:inline-block;background:var(--action);color:#fff;font-weight:900;text-decoration:none;padding:13px 22px;border-radius:12px;font-size:17px}
+.cta:hover{filter:brightness(1.08)}
+.une .visuel{position:relative;min-height:420px}
+.tel{width:100%;max-width:250px;border-radius:30px;background:#111;padding:9px;box-shadow:0 18px 40px rgba(0,0,0,.22)}
+.tel img{display:block;width:100%;border-radius:22px;aspect-ratio:390/760;object-fit:cover;object-position:top}
+.une .tel{position:absolute}
+.une .tel.a{left:0;top:0;transform:rotate(-4deg);max-width:230px}
+.une .tel.b{right:0;top:40px;transform:rotate(4deg);max-width:230px}
+.tampon{position:absolute;left:38%;bottom:-6px;width:120px;height:120px;border-radius:50%;border:4px solid var(--accent);
+ color:var(--accent);display:grid;place-items:center;text-align:center;font-weight:900;font-size:12.5px;line-height:1.15;
+ transform:rotate(-12deg);background:rgba(255,255,255,.92);letter-spacing:.06em;text-transform:uppercase;z-index:2}
+.tampon b{display:block;font-size:30px;letter-spacing:0}
+.chiffres{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:34px 0 8px}
+.chiffres div{background:var(--papier);border:1px solid var(--filet);border-radius:14px;padding:14px 16px}
+.chiffres b{display:block;font-size:34px;line-height:1;color:var(--action);font-weight:900}
+.chiffres span{font-size:14.5px;color:var(--doux)}
+section{margin-top:58px}
+h2{font-size:clamp(26px,3.6vw,36px);line-height:1.1;margin:0 0 8px;color:var(--fonce)}
+.intro{font-size:18px;max-width:720px;margin:0 0 22px}
+.num{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--accent);color:#fff;
+ font-weight:900;font-size:19px;margin-right:12px;vertical-align:4px}
+.etapes{list-style:none;margin:0 0 26px;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:10px;counter-reset:e}
+.etapes li{background:var(--papier);border:1px solid var(--filet);border-radius:14px;padding:12px 14px;counter-increment:e;font-size:14.5px;color:var(--doux)}
+.etapes li b{display:block;color:var(--fonce);font-size:16px;margin-bottom:2px}
+.etapes li b::before{content:counter(e);display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--action);color:#fff;font-size:13px;margin-right:7px;vertical-align:1px}
+.trois{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:start}
+.ecran{text-align:center}
+.ecran .tel{margin:0 auto 14px;max-width:236px}
+.phase{display:inline-block;font-size:12.5px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;border-radius:99px;padding:4px 11px;margin-bottom:6px;background:var(--halo);color:var(--fonce)}
+.ecran h3{margin:2px 0 4px;font-size:19px;color:var(--fonce)}
+.ecran p{margin:0 auto;font-size:15px;max-width:290px;color:var(--doux)}
+.bande{background:var(--fonce);color:#E9EEF2;border-radius:24px;padding:32px;display:grid;grid-template-columns:1fr auto;gap:26px;align-items:center}
+.bande h2{color:#fff}
+.bande .intro{color:#CBD5DC}
+.bande ul{margin:0;padding:0;list-style:none}
+.bande li{padding:8px 0 8px 32px;position:relative;font-size:16px}
+.bande li::before{content:"✓";position:absolute;left:0;top:8px;width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-weight:900;font-size:13px;display:grid;place-items:center}
+.gestes{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 0;padding:0;list-style:none}
+.gestes li{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);border-radius:99px;padding:5px 12px;font-size:14px;font-weight:700}
+.gestes li::before{display:none}
+.tels{display:flex;gap:16px;justify-content:center}
+.bande .tel{max-width:200px;box-shadow:0 14px 34px rgba(0,0,0,.4)}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.carte{background:var(--papier);border:1px solid var(--filet);border-radius:20px;padding:22px;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start}
+.carte .tel{max-width:170px;padding:7px;border-radius:24px}
+.carte .tel img{border-radius:18px}
+.carte h3{margin:4px 0 6px;font-size:22px;color:var(--fonce)}
+.carte p{margin:0;font-size:15.5px}
+.prix{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.offre{border-radius:20px;padding:24px;border:2px solid var(--filet);background:var(--papier)}
+.offre.plus{border-color:var(--action);background:#fff}
+.offre .etiq{font-size:13px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--doux)}
+.offre .montant{font-size:46px;font-weight:900;color:var(--fonce);line-height:1.1;margin:4px 0 2px}
+.offre .montant small{font-size:16px;color:var(--doux);font-weight:700}
+.offre ul{margin:12px 0 0;padding-left:20px;font-size:15.5px}
+.offre .barre{font-size:26px;color:var(--doux);font-weight:700}
+.lancement{display:inline-block;background:#FBEFC4;color:#5C4400;border:1px solid #E7C75A;border-radius:99px;padding:4px 12px;font-size:14px;font-weight:800;margin:4px 0 0}
+.besoin{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 0;padding:0;list-style:none}
+.besoin li{background:#fff;border:1px solid var(--filet);border-radius:12px;padding:10px 14px;font-size:15px}
+.besoin b{color:var(--fonce)}
+.employeur{margin-top:22px;border-left:4px solid var(--accent);background:#fff;border-radius:0 14px 14px 0;padding:16px 20px}
+.employeur h3{margin:0 0 4px;font-size:19px;color:var(--fonce)}
+.employeur p{margin:0;font-size:15.5px}
+.fin{margin:60px 0 0;background:var(--halo);border-radius:24px;padding:30px;text-align:center}
+.fin h2{margin-bottom:6px}
+.fin p{margin:0 0 16px;font-size:18px}
+footer{text-align:center;font-size:13px;color:var(--doux);padding:26px 0 40px}
+@media (max-width:860px){
+ .une{grid-template-columns:1fr} .une .visuel{min-height:370px;max-width:420px;margin:0 auto;width:100%}
+ .chiffres{grid-template-columns:repeat(2,1fr)} .etapes{grid-template-columns:1fr 1fr}
+ .trois,.duo,.prix{grid-template-columns:1fr}
+ .bande{grid-template-columns:1fr;padding:24px} .bande .tel{max-width:46%}
+ .carte{grid-template-columns:1fr} .carte .tel{margin:0 auto}
+}
+@media (max-width:420px){
+ .une .tel.a,.une .tel.b{max-width:175px} .tampon{width:96px;height:96px;font-size:10.5px} .tampon b{font-size:24px}
+ .une .visuel{min-height:310px} .etapes{grid-template-columns:1fr}
+}
+@media print{
+ @page{size:letter;margin:12mm}
+ body{-webkit-print-color-adjust:exact;print-color-adjust:exact;font-size:12px}
+ .retour,.cta{display:none} section{margin-top:22px;break-inside:avoid} .tel{box-shadow:none}
+}
+</style>
+</head>
+<body>
+<div class="fr-barre"><div class="fr-barre__in">
+  <span class="fr-lockup"><span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span><span class="fr-trait" aria-hidden="true"></span><span class="fr-desc">Aide à l&#x27;apprentissage du français</span></span>
+  <span class="secteur"><small>Vente au détail · Vêtements</small><b>Maison Francœur</b></span>
+</div></div>
+
+<div class="cadre">
+<a class="retour" href="/presentations.html">&#8592; Le classeur</a>
+
+<header class="une">
+  <div>
+    <p class="sur">Pour qui travaille, ou veut travailler, dans un magasin de vêtements</p>
+    <h1>Le français du magasin, <span>client par client</span>.</h1>
+    <p class="chapeau">Une tuque, un chandail en moyen, « je vais vérifier en arrière » : vous apprenez les mots et les phrases du plancher, en images et à l&#x27;oreille, puis vous servez de vrais clients qui vous répondent. Votre langue vous aide à comprendre ; ce que vous entendez et ce que vous dites reste en français du Québec.</p>
+    <a class="cta" href="/modules-autonomes/francoeur-planches/" target="_blank" rel="noopener">Essayer gratuitement</a>
+  </div>
+  <div class="visuel" aria-hidden="true">
+    <div class="tel a"><img src="francoeur-depliant/planche.jpg" alt=""></div>
+    <div class="tel b"><img src="francoeur-depliant/scene.jpg" alt=""></div>
+    <div class="tampon"><span><b>8</b>clients<br>à servir</span></div>
+  </div>
+</header>
+
+<div class="chiffres"><div><b>149</b><span>mots du magasin, dessinés, répartis en 11 rayons</span></div><div><b>11</b><span>langues d&#x27;appui, de l&#x27;arabe au tigrigna ; ou le français seul</span></div><div><b>8</b><span>clients qui vous parlent vraiment, et 5 gestes du vendeur</span></div><div><b>0 $</b><span>pour les mots, les exercices, le test et la fiche ; aucune inscription</span></div></div>
+
+<section>
+  <h2><span class="num">1</span>Cinq étapes, du mot au client</h2>
+  <p class="intro">L&#x27;écran vous dit toujours quelle est la prochaine étape. Rien à planifier : vous faites un peu chaque jour.</p>
+  <ol class="etapes"><li><b>Mon niveau</b>Un court test pour savoir par où commencer : débutant, fonctionnel ou à l&#x27;aise.</li><li><b>Apprendre les mots</b>Les rayons du magasin, vêtement par vêtement. Vous touchez, vous entendez.</li><li><b>Je m&#x27;exerce</b>Ce que le client veut, ranger le rayon, ce que la gérante demande, ce que je réponds.</li><li><b>Les gestes du vendeur</b>Les phrases qui tirent d&#x27;affaire : faire préciser, faire répéter, passer le relais.</li><li><b>Le magasin</b>Les clients entrent. Vous les servez, à voix haute.</li></ol>
+  <div class="trois"><div class="ecran"><div class="tel"><img src="francoeur-depliant/rayons.jpg" alt="Les rayons du magasin" loading="lazy"></div><span class="phase">Découvrir</span><h3>Les rayons du magasin</h3><p>Chaque vêtement est dessiné et dit par une voix d&#x27;ici. Votre langue reste cachée tant que vous ne la demandez pas.</p></div><div class="ecran"><div class="tel"><img src="francoeur-depliant/client.jpg" alt="Ce que le client veut" loading="lazy"></div><span class="phase">Comprendre</span><h3>Ce que le client veut</h3><p>Un client parle, vite, comme en vrai. Vous touchez ce qu&#x27;il demande : la couleur, la taille, le bon article.</p></div><div class="ecran"><div class="tel"><img src="francoeur-depliant/magasin.jpg" alt="Le magasin" loading="lazy"></div><span class="phase">Agir</span><h3>Le magasin</h3><p>Vous choisissez le niveau des clients, puis un client. Il entre ; à vous de le servir.</p></div></div>
+</section>
+
+<section>
+  <div class="bande">
+    <div>
+      <h2>Vous parlez, pour vrai</h2>
+      <p class="intro">Le magasin est la dernière étape : huit clients, chacun avec son idée en tête.</p>
+      <ul><li><b>Monsieur Gagnon</b> regarde et ne veut pas qu'on le pousse ; <b>Madame Ouellet</b> ne connaît pas sa taille ici ; d'autres cherchent un cadeau, un retour, un article en rupture.</li><li><b>Un bilan geste par geste</b> après chaque visite, dans votre langue : ce que vous avez fait, ce qui manquait.</li><li><b>Le niveau des clients</b> suit le vôtre : débutant, fonctionnel ou à l'aise.</li></ul>
+      <ul class="gestes" aria-label="Les gestes travaillés"><li>Laisser la porte ouverte</li><li>Faire préciser une chose à la fois</li><li>Faire répéter</li><li>Redire et vérifier</li><li>Passer le relais</li></ul>
+    </div>
+    <div class="tels"><div class="tel"><img src="francoeur-depliant/scene.jpg" alt="" loading="lazy"></div></div>
+  </div>
+</section>
+
+<section>
+  <h2><span class="num">2</span>Votre langue vous aide, sans prendre la place</h2>
+  <div class="duo"><div class="carte"><div class="tel"><img src="francoeur-depliant/langue.jpg" alt="Onze langues d&#x27;appui" loading="lazy"></div><div><h3>Onze langues d&#x27;appui</h3><p>Les consignes s&#x27;affichent dans votre langue : anglais, arabe, chinois, espagnol, ourdou, persan, portugais, roumain, russe, tigrigna, ukrainien. Les mots, eux, restent en français.</p></div></div><div class="carte"><div class="tel"><img src="francoeur-depliant/fiche.jpg" alt="Chaque mot a sa fiche" loading="lazy"></div><div><h3>Chaque mot a sa fiche</h3><p>La voix, l&#x27;image, ce qu&#x27;on entend aussi au Québec, et le piège à éviter. La traduction ne paraît que si vous la demandez.</p></div></div></div>
+</section>
+
+<section>
+  <h2><span class="num">3</span>Ce que ça coûte</h2>
+  <div class="prix">
+    <div class="offre">
+      <p class="etiq">Tout le reste</p>
+      <p class="montant">Gratuit</p>
+      <ul><li>les 149 mots et leurs voix ;</li><li>les exercices et les gestes du vendeur ;</li><li>le test de niveau ;</li><li>la fiche de poche, à garder sur soi.</li></ul>
+    </div>
+    <div class="offre plus">
+      <p class="etiq">En option · Le magasin joué</p>
+      <p class="montant"><s class="barre">19,99 $</s> 9,99 $ <small>une fois, pour 12 mois</small></p>
+      <p class="lancement">Prix de lancement, pour un temps limité — jusqu’au 31 décembre 2026 inclusivement.</p>
+      <ul><li>100 visites de clients, sur 12 mois ;</li><li>des clients qui répondent à ce que vous dites, à voix haute ;</li><li>un bilan geste par geste après chaque visite ;</li><li>au besoin, 50 visites de plus pour 4,99 $.</li></ul>
+    </div>
+  </div>
+  <ul class="besoin">
+    <li><b>Un téléphone</b> (ou une tablette), dans le navigateur — rien à installer</li>
+    <li><b>Des écouteurs</b>, pour l'autobus</li>
+    <li><b>Un micro</b> : celui du téléphone suffit</li>
+    <li><b>Quinze minutes</b> par jour</li>
+  </ul>
+  <div class="employeur"><h3>Vous êtes employeur ?</h3><p>La trousse s&#x27;ajuste à votre magasin : vos rayons, vos mots, votre politique de retour. Pilote avec votre équipe, trousse à votre enseigne ou licence annuelle, à prix fixe. Écrivez-nous : <a href="mailto:support@edufrancis.ca">support@edufrancis.ca</a>.</p></div>
+</section>
+
+<div class="fin">
+  <h2>Bonne première journée !</h2>
+  <p>Commencez par le test : cinq minutes, et vous savez par où continuer.</p>
+  <a class="cta" href="/modules-autonomes/francoeur-planches/" target="_blank" rel="noopener">Ouvrir la Maison Francœur</a>
+</div>
+
+<footer>francis · Maison Francœur · portail.edufrancis.ca/modules-autonomes/francoeur-planches/</footer>
+</div>
+</body>
+</html>
