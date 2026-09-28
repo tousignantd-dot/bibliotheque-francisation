@@ -1230,18 +1230,25 @@ function vueDire(et){
        <button class="btn btn--pri" id="suite" style="flex:1" disabled>Suivant</button></div>
       <p class="avis-local" style="margin-top:8px">Le modèle s'ouvre après votre essai : on cherche d'abord, on compare ensuite. <a href="#" id="passer">Passer</a></p>`;
     const zoneR = $('#r');
-    const montrerModele = () => { if (!document.body.contains(zoneR)) return; zoneR.insertAdjacentHTML('beforeend', `<div class="retro info"><span class="surtitre">${it.exemple ? 'Un exemple (dites la vôtre)' : 'Le modèle'}</span><div class="phrase-es">${E(g(it.es))}</div></div>`); jouer(it.fichier); };
+    const poserR = h => { zoneR.querySelectorAll(':scope > :not(.modele-carte)').forEach(x => x.remove()); zoneR.insertAdjacentHTML('afterbegin', h); };
+    // 28 sept. (Daniel) : un seul modèle par phrase ; une fois montré, le bouton le RÉÉCOUTE
+    // au lieu d'ajouter une carte, et reste actif.
+    let modeleVu = false;
+    const montrerModele = () => { if (!document.body.contains(zoneR)) return;
+      if (!modeleVu) { modeleVu = true; zoneR.insertAdjacentHTML('beforeend', `<div class="retro info modele-carte"><span class="surtitre">${it.exemple ? 'Un exemple (dites la vôtre)' : 'Le modèle'}</span><div class="phrase-es">${E(g(it.es))}</div></div>`);
+        $('#modele').innerHTML = `${ICO.son} Réécouter`; }
+      $('#modele').disabled = false; jouer(it.fichier); };
     const essaye = () => { if (!tente) { tente = true; dites++; it.dit = true; } $('#modele').disabled = false; $('#suite').disabled = false; };
     // Audit tour 3 (M2) : une phrase d'allergie ne compte que DITE JUSTE —
     // reconnue au micro, ou, sans micro, redite après avoir écouté le modèle.
     let redire = false;
-    $('#modele').onclick = () => { $('#modele').disabled = true; montrerModele(); };
+    $('#modele').onclick = montrerModele;
     $('#suite').onclick = () => { n++; tour(); };
     $('#passer').onclick = e => { e.preventDefault(); n++; tour(); };
     if (it.oblig) $('#passer').parentNode.innerHTML = S.alergia ? 'Cette phrase-ci ne se passe pas : c\u2019est celle de votre allergie.'
       : 'Cette phrase-ci ne se passe pas. Exercice : les noix — choisissez votre allergie dans les réglages.';
     $('#dit').onclick = () => {
-      if (!it.oblig) { essaye(); $('#modele').disabled = true; montrerModele(); return; }
+      if (!it.oblig) { essaye(); $('#dit').disabled = true; montrerModele(); return; }
       if (!redire) { redire = true; montrerModele(); $('#dit').textContent = 'Je l\u2019ai redite, comme le modèle'; return; }
       essaye(); $('#dit').disabled = true;
     };
@@ -1252,17 +1259,18 @@ function vueDire(et){
         mic.classList.add('ecoute'); mic.innerHTML = ICO.stop; $('#micEtat').textContent = 'Je vous écoute… touchez pour arrêter.';
         ecouterMicro(t => { $('#entendu').textContent = '« ' + t + ' »'; }, final => {
           mic.classList.remove('ecoute'); mic.innerHTML = ICO.micro; $('#micEtat').textContent = 'Touchez le micro pour réessayer.';
-          if (!final) { $('#r').innerHTML = `<div class="retro info">${rienEntendu('Je n\u2019ai rien entendu. Vérifiez que le micro est permis, ou dites-le et touchez « Je l\u2019ai dit ».')}</div>`; return; }
+          if (!final) { $('#r').querySelectorAll(':scope > :not(.modele-carte)').forEach(x => x.remove());
+            $('#r').insertAdjacentHTML('afterbegin', `<div class="retro info">${rienEntendu('Je n\u2019ai rien entendu. Vérifiez que le micro est permis, ou dites-le et touchez « Je l\u2019ai dit ».')}</div>`); return; }
           const t = ' ' + plat(final).replace(/ o no$/, '') + ' ';
           const manque = it.cles.map(c => g(c)).filter(c => !c.split('|').some(a => t.includes(' ' + plat(a) + ' ') || t.includes(plat(a))));
           // Audit tour 2 (E1) : « no quedan camas » passait pour « quedan camas ».
           const nonEnTrop = / no /.test(t) && !/ no /.test(' ' + plat(g(it.es)) + ' ');
-          $('#r').innerHTML = manque.length ? `<div class="retro no">Presque. Il manque : <b>${manque.map(c => E(c.split('|')[0])).join(', ')}</b>. Comparez avec le modèle, puis réessayez.</div>`
+          poserR(manque.length ? `<div class="retro no">Presque. Il manque : <b>${manque.map(c => E(c.split('|')[0])).join(', ')}</b>. Comparez avec le modèle, puis réessayez.</div>`
             : nonEnTrop ? `<div class="retro no">Attention : j'ai entendu « no ». Votre phrase dit peut-être le contraire. Comparez avec le modèle.</div>`
-            : `<div class="retro ok">✓ ¡Muy bien! On vous a compris.</div>`;
+            : `<div class="retro ok">✓ ¡Muy bien! On vous a compris.</div>`);
           if (!it.oblig || (!manque.length && !nonEnTrop)) essaye();
-          else if (it.oblig) $('#r').insertAdjacentHTML('beforeend', `<div class="retro info">Cette phrase-là doit être dite juste pour compter. Réessayez.</div>`);
-          $('#modele').disabled = true; setTimeout(montrerModele, manque.length ? 0 : 600);
+          else if (it.oblig) zoneR.firstElementChild.insertAdjacentHTML('afterend', `<div class="retro info">Cette phrase-là doit être dite juste pour compter. Réessayez.</div>`);
+          setTimeout(montrerModele, manque.length ? 0 : 600);
         });
       };
     }
@@ -1870,9 +1878,12 @@ function seanceDire(x){
       <button class="btn btn--petit" id="passer" style="margin-top:4px">Passer cette phrase</button>`;
     // La zone de CETTE phrase : un modèle différé ne doit jamais tomber sur la suivante.
     const zone = $('#r');
-    const montrer = () => { if (modeleVu || !document.body.contains(zone)) return; modeleVu = true; $('#modele').disabled = true;
-      zone.insertAdjacentHTML('beforeend', `<div class="retro info"><span class="surtitre">Le modèle</span><div class="phrase-es">${E(g(es))}</div></div>`); jouer(fichier); };
-    const essaye = () => { if (!tente) { tente = true; dites++; } $('#modele').disabled = modeleVu; $('#suite').disabled = false; };
+    const poserR = h => { zone.querySelectorAll(':scope > :not(.modele-carte)').forEach(x => x.remove()); zone.insertAdjacentHTML('afterbegin', h); };
+    const montrer = () => { if (!document.body.contains(zone)) return;
+      if (!modeleVu) { modeleVu = true; $('#modele').innerHTML = `${ICO.son} Réécouter`; $('#dit').disabled = true;
+        zone.insertAdjacentHTML('beforeend', `<div class="retro info modele-carte"><span class="surtitre">Le modèle</span><div class="phrase-es">${E(g(es))}</div></div>`); }
+      $('#modele').disabled = false; jouer(fichier); };
+    const essaye = () => { if (!tente) { tente = true; dites++; } $('#modele').disabled = false; $('#suite').disabled = false; };
     $('#modele').onclick = montrer;
     $('#suite').onclick = () => { n++; tour(); };
     $('#passer').onclick = () => { n++; tour(); };
@@ -1882,16 +1893,16 @@ function seanceDire(x){
       mic.classList.add('ecoute'); mic.innerHTML = ICO.stop; $('#micEtat').textContent = 'Je vous écoute… touchez pour arrêter.';
       ecouterMicro(t => { $('#entendu').textContent = '« ' + t + ' »'; }, final => {
         mic.classList.remove('ecoute'); mic.innerHTML = ICO.micro; $('#micEtat').textContent = 'Touchez le micro pour réessayer.';
-        if (!final) { $('#r').innerHTML = `<div class="retro info">${rienEntendu('Je n\u2019ai rien entendu. Vérifiez que le micro est permis, ou dites-le et touchez « Je l\u2019ai dit ».')}</div>`; return; }
+        if (!final) { poserR(`<div class="retro info">${rienEntendu('Je n\u2019ai rien entendu. Vérifiez que le micro est permis, ou dites-le et touchez « Je l\u2019ai dit ».')}</div>`); return; }
         essais++;
         const manque = cles.map(c => g(algDe(c))).filter(c => !trouve(final, c));
         const algCle = cles.find(c => /\{alg:/.test(c));
         const alg = algCle && manque.length === 1 && manque[0] === g(algDe(algCle));
         if (!manque.length) { if (essais <= 2 && !modeleVu) comprises++;
-          $('#r').innerHTML = `<div class="retro ok">✓ ¡Muy bien! On vous a compris.</div>`; essaye(); setTimeout(montrer, 600); return; }
+          poserR(`<div class="retro ok">✓ ¡Muy bien! On vous a compris.</div>`); essaye(); setTimeout(montrer, 600); return; }
         const presque = manque.length <= cles.length / 2;
-        $('#r').innerHTML = `<div class="retro no">${alg ? 'On sait que vous êtes allergique, mais pas à quoi : dites l’aliment. '
-          : presque ? `Presque. Il manque : <b>${manque.map(c => E(motDuModele(es, c))).join(', ')}</b>. ` : 'Je n’ai pas reconnu la phrase. '}${essais < 2 && !modeleVu ? 'Réessayez, sans regarder le modèle.' : 'Comparez avec le modèle.'}</div>`;
+        poserR(`<div class="retro no">${alg ? 'On sait que vous êtes allergique, mais pas à quoi : dites l’aliment. '
+          : presque ? `Presque. Il manque : <b>${manque.map(c => E(motDuModele(es, c))).join(', ')}</b>. ` : 'Je n’ai pas reconnu la phrase. '}${essais < 2 && !modeleVu ? 'Réessayez, sans regarder le modèle.' : 'Comparez avec le modèle.'}</div>`);
         essaye();
         // Audit tour 1 (D1) : un deuxième essai à l'aveugle avant le modèle.
         if (essais >= 2) montrer(); else $('#modele').disabled = false;
