@@ -57,7 +57,7 @@ def francoeur():
         "titre": "Maison Francœur — comment ça marche",
         "descripteur": "Aide à l'apprentissage du français", "secteur": "Vente au détail · Vêtements",
         "enseigne": "Maison Francœur",
-        "couleurs": {"fond": "#EDF1F5", "papier": "#F7F9FB", "action": "#2B4A78", "fonce": "#16243A", "accent": "#C8692A",
+        "couleurs": {"fond": "#FAFBFD", "papier": "#FFFFFF", "action": "#2B4A78", "fonce": "#16243A", "accent": "#C8692A",
                      "halo": "#FBE9DC", "texte": "#1E2733", "doux": "#4F5B6A", "filet": "#D5DDE7"},
         "sur": "Pour qui travaille, ou veut travailler, dans un magasin de vêtements",
         "h1": "Le français du magasin, <span>client par client</span>.",
@@ -115,7 +115,7 @@ def hotel():
         "titre": "Hôtel Rive-Claire — comment ça marche",
         "descripteur": "français · anglais · espagnol", "secteur": "Hôtellerie · Réception",
         "enseigne": "Hôtel Rive-Claire",
-        "couleurs": {"fond": "#F3EFE6", "papier": "#FBF8F2", "action": "#0F5E63", "fonce": "#0B3437", "accent": "#C4613A",
+        "couleurs": {"fond": "#FDFBF7", "papier": "#FFFFFF", "action": "#0F5E63", "fonce": "#0B3437", "accent": "#C4613A",
                      "halo": "#F6E3D9", "texte": "#23282A", "doux": "#5E625F", "filet": "#E0D8C8"},
         "sur": "Pour qui travaille, ou veut travailler, à la réception d'un hôtel",
         "h1": "L'accueil à la réception, <span>dans la langue du client</span>.",
@@ -161,6 +161,8 @@ def hotel():
     }
 
 
+# Fond plus pâle que celui des applications (Daniel, 28 sept. 2026) : sinon les
+# captures se fondent dans la page. Les cartes passent au blanc.
 CSS = """
 :root{--fond:%(fond)s;--papier:%(papier)s;--action:%(action)s;--fonce:%(fonce)s;--accent:%(accent)s;--halo:%(halo)s;
  --texte:%(texte)s;--doux:%(doux)s;--filet:%(filet)s}
