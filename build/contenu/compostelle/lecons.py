@@ -13,7 +13,7 @@ Règles d'écriture :
 - 1 min 30 à 2 min : une idée par phrase, des phrases courtes, à l'oral ;
 - la règle d'abord par un exemple entendu, jamais une liste à retenir ;
 - chaque leçon finit par ce qu'on fera ensuite dans la séance ;
-- ni genre ni allergie dans l'audio (le son est le même pour tous) : on dit
+- pas de genre dans l'audio (le son est le même pour tous) : on dit
   les deux formes quand il le faut.
 """
 
@@ -135,13 +135,13 @@ LECONS = {
     ("es", "Hago el Camino por el deporte. Por mi familia. Por la fe."),
     ("fr", "Si c'est pour faire quelque chose, on change de petit mot. Pour réfléchir :"),
     ("es", "Para pensar."),
-    ("fr", "Maintenant, une petite subtilité : l'espagnol a deux verbes être. Le premier, pour ce que vous êtes de façon durable, par exemple allergique. Le second, pour ce qui passe, comme être fatigué. Écoutez-les :"),
+    ("fr", "Maintenant, une petite subtilité : l'espagnol a deux verbes être. Le premier, pour ce que vous êtes de façon durable, par exemple pèlerin. Le second, pour ce qui passe, comme être fatigué. Écoutez-les :"),
     ("es", "Soy. Estoy."),
     ("fr", "Et le mot qui suit change selon que vous êtes un homme ou une femme :"),
-    ("es", "Soy alérgico. Soy alérgica."),
+    ("es", "Soy peregrino. Soy peregrina."),
     ("es", "Estoy cansado. Estoy cansada."),
-    ("fr", "Si vous n'avez pas d'allergie, dites simplement :"),
-    ("es", "No tengo alergias."),
+    ("fr", "Et pour dire d'où vous êtes parti, par exemple de Roncesvalles :"),
+    ("es", "Empecé en Roncesvalles."),
     ("fr", "Entre pèlerins, on se tutoie. On vous demandera :"),
     ("es", "¿De dónde eres? ¿Por qué haces el Camino?"),
     ("fr", "Dans cet entraînement, les phrases s'accordent à ce que vous avez choisi au départ. Écoutez-les, puis dites vos vraies réponses."),
@@ -159,7 +159,7 @@ LECONS = {
     ("es", "Quedan. Está completo."),
     ("fr", "À droite, à gauche, tout droit :"),
     ("es", "A la derecha. A la izquierda. Todo recto."),
-    ("fr", "Et pour les allergies, le plus important : ça en contient, ou ça n'en contient pas :"),
+    ("fr", "Et au restaurant, ce que contient un plat : ça en contient, ou ça n'en contient pas :"),
     ("es", "Lleva. No lleva."),
     ("fr", "Souvent, les Espagnols répètent le oui et le non, comme ceci :"),
     ("es", "Sí, sí. No, no."),

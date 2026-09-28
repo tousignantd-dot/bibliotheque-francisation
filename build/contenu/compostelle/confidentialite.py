@@ -22,7 +22,7 @@ MISE_A_JOUR = "27 septembre 2026"
 
 EN_BREF = [
     "Pas de compte, pas de mot de passe, pas de courriel : l'application ne vous demande pas qui vous êtes.",
-    "Votre progression, le nom de votre Compostela, votre genre et votre allergie restent <b>dans votre téléphone</b>. Nous ne les recevons pas.",
+    "Votre progression, le nom de votre Compostela et votre genre restent <b>dans votre téléphone</b>. Nous ne les recevons pas.",
     "Le micro passe par la reconnaissance vocale de <b>votre navigateur</b> : votre voix va chez Google, Apple ou Microsoft, selon le navigateur — pas chez nous.",
     "« Parler librement » (payant) envoie vos phrases à notre serveur puis à Anthropic, aux États-Unis, pour que le personnage vous réponde. Nous ne gardons pas la conversation.",
     "Le paiement se fait chez Stripe. Nous ne voyons ni votre nom, ni votre courriel, ni votre carte.",
@@ -33,8 +33,8 @@ EN_BREF = [
 DONNEES = [
     ("Votre progression, vos tampons, vos réponses aux exercices", "dans votre téléphone (stockage du navigateur)",
      "vous seul", "jusqu'à ce que vous effaciez (Réglages → recommencer) ou videz le navigateur"),
-    ("Le nom écrit sur votre Compostela, pèlerin ou pèlerine, votre allergie", "dans votre téléphone",
-     "vous seul — l'allergie est un renseignement de santé : elle ne quitte jamais le téléphone",
+    ("Le nom écrit sur votre Compostela, pèlerin ou pèlerine", "dans votre téléphone",
+     "vous seul",
      "jusqu'à ce que vous effaciez (Réglages → recommencer) ou videz le navigateur"),
     ("Votre voix, quand vous touchez le micro", "chez le fournisseur de votre navigateur (voir plus bas)",
      "ce fournisseur, pour la transcrire ; nous ne recevons que le texte, dans votre téléphone, et ne le gardons pas", "selon ce fournisseur"),

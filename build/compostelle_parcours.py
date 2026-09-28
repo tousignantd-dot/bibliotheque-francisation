@@ -127,16 +127,11 @@ section.bloc>h2{display:flex;align-items:center}
         f'<div class="temps">{temps_html(ph)}</div></div>' for ph in PHASES)
 
     li = []
-    leon = next(i for i, e in enumerate(etapes) if e.get("eliminatoire"))
     avant, total_jours = 0, 0
     for i, e in enumerate(etapes):
         j = max(1, math.ceil((e["km"] - avant) / 25 - 0.2)); avant = e["km"]; total_jours += j
         marque = ""
-        if e.get("eliminatoire"):
-            marque = '<span class="elim">Éliminatoire : l\'allergie</span>'
-        elif i > leon:
-            marque = '<span class="rappel">+ rappel de l\'allergie</span>'
-        elif i >= 1:
+        if i >= 1:
             marque = '<span class="rappel">+ rappels des jours passés</span>'
         li.append(
             f'<li><img class="img" src="{MEDIA}etapes/{E(e["img"])}.jpg" alt="" loading="lazy">'
@@ -163,13 +158,10 @@ en sept temps. Le pèlerin avance de lieu en lieu ; ce qui a été appris revien
 <p class="devise"><span>Comprendre avant de dire. Dire avant de jouer. Jouer avant d'y aller seul.</span></p>
 
 <section class="bloc">
-  <h2><span class="etape-num">1</span>Avant de partir : deux réglages</h2>
+  <h2><span class="etape-num">1</span>Avant de partir : un réglage</h2>
   <div class="duo">
-    <div class="carte"><h3>Pèlerin ou pèlerine</h3><p>L'espagnol accorde : <i>cansado</i>, <i>cansada</i> ; <i>alérgico</i>,
-      <i>alérgica</i>. Chaque modèle, chaque phrase à dire, chaque réponse attendue est au bon genre.</p></div>
-    <div class="carte"><h3>Mon allergie, parmi huit</h3><p>Noix, arachides, gluten, lait, œufs, poisson, fruits de mer,
-      sésame. Elle traverse tout : la scène de León, le comptoir de Pamplona, la trousse, le test, et un son par allergène.</p>
-      <p class="fleche">➜ Le même parcours, mais c'est <b>son</b> allergie qu'on apprend à dire.</p></div>
+    <div class="carte"><h3>Pèlerin ou pèlerine</h3><p>L'espagnol accorde : <i>cansado</i>, <i>cansada</i> ; <i>peregrino</i>,
+      <i>peregrina</i>. Chaque modèle, chaque phrase à dire, chaque réponse attendue est au bon genre.</p></div>
   </div>
 </section>
 
@@ -205,13 +197,12 @@ en sept temps. Le pèlerin avance de lieu en lieu ; ce qui a été appris revien
   <h2><span class="etape-num">3</span>Le chemin : dix étapes choisies, du plus urgent au plus riche</h2>
   <div class="progression">
     <div><b>D'abord survivre</b>un lit, un repas, son chemin, une pharmacie (jours 1 à 4)</div>
-    <div><b>Puis se débrouiller</b>« complet », le téléphone, l'allergie qui ne pardonne pas (jours 5 à 7)</div>
+    <div><b>Puis se débrouiller</b>« complet », le téléphone, le menu du pèlerin (jours 5 à 7)</div>
     <div><b>Enfin, parler</b>la météo, le marché, le bureau du pèlerin, et les autres (jours 8 à 10)</div>
   </div>
   <ol class="chemin">{"".join(li)}</ol>
   <p style="font-size:14.5px;color:var(--muted);margin-top:8px">Les rappels : dans « Ce qu'on me répond », une ou deux
-  réponses d'une étape passée reviennent, mêlées aux nouvelles. Après León, c'est l'allergie qui revient chaque jour —
-  l'erreur qui coûte le plus est aussi celle qu'on revoit le plus.</p>
+  réponses d'une étape passée reviennent, mêlées aux nouvelles.</p>
 </section>
 
 <section class="bloc">
@@ -219,7 +210,7 @@ en sept temps. Le pèlerin avance de lieu en lieu ; ce qui a été appris revien
   <div class="carte">
     <p>Un quart d'heure, <b>{n_items} situations nouvelles</b> — jamais celles des étapes. {n_formes} formes équivalentes, tirées au hasard, pour qu'une reprise ne soit pas une récitation. Cinq objectifs :</p>
     <ul class="objectifs">{objectifs}</ul>
-    <p style="margin-top:12px">L'allergie y est <b>éliminatoire</b>, et le test le dit avant de commencer. Il situe, il ne note pas :</p>
+    <p style="margin-top:12px">Il situe, il ne note pas :</p>
     <div class="verdicts">
       <div class="v1"><b>Solide</b>tout est juste pour cet objectif</div>
       <div class="v2"><b>En route</b>au moins une réponse juste</div>
@@ -233,7 +224,7 @@ en sept temps. Le pèlerin avance de lieu en lieu ; ce qui a été appris revien
   <h2><span class="etape-num">5</span>Toujours dans la trousse</h2>
   <div class="duo">
     <div class="carte"><h3>Ma trousse, hors ligne</h3><p>Les phrases du chemin en onze rubriques, les urgences (112),
-      la carte d'allergie en grand à montrer, « Me présenter ». « Préparer pour le chemin » met tout dans le téléphone :
+      « Montrer » en grand, « Me présenter ». « Préparer pour le chemin » met tout dans le téléphone :
       on marche sans réseau.</p></div>
     <div class="carte"><h3>Les mots et les faux amis</h3><p>Tous les mots en onze planches, chacun avec son dessin et sa voix.
       Les faux amis dans leur phrase : <i>constipado</i> (enrhumé), <i>embarazada</i> (enceinte), <i>la comida</i> (le dîner).</p></div>
@@ -245,8 +236,7 @@ en sept temps. Le pèlerin avance de lieu en lieu ; ce qui a été appris revien
   <div class="principes">
     <div class="carte"><h3>L'oreille d'abord</h3><p>Les scènes s'écoutent avant de se lire : le texte reste fermé jusqu'à ce qu'on le demande.
       Sur le chemin, personne n'affiche ses répliques.</p></div>
-    <div class="carte"><h3>On essaie avant le modèle</h3><p>« Je le dis » exige une tentative avant de faire entendre la bonne phrase ;
-      la phrase d'allergie ne compte que dite juste.</p></div>
+    <div class="carte"><h3>On essaie avant le modèle</h3><p>« Je le dis » exige une tentative avant de faire entendre la bonne phrase.</p></div>
     <div class="carte"><h3>Chaque erreur a sa réponse</h3><p>Aucun « Bravo ! » vide : chaque mauvais choix dit ce qu'il aurait
       fait comprendre, et ce qui se serait passé.</p></div>
     <div class="carte"><h3>Rien ne quitte le téléphone</h3><p>Aucun compte, aucune connexion : l'avancement vit dans l'appareil.

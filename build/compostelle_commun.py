@@ -15,7 +15,6 @@ RACINE = pathlib.Path(__file__).resolve().parent.parent
 CONTENU = RACINE / "build" / "contenu" / "compostelle"
 SONS = RACINE / "assets" / "interactive" / "compostelle" / "sons"
 GENRE = re.compile(r"\{([^{}|]*)\|([^{}|]*)\}")
-ALG = re.compile(r"\{alg:(\w+)\}")
 
 
 def charger(nom):
@@ -37,19 +36,9 @@ def a_dire(texte):
     return re.sub(r"\s*\([^)]*\)", "", texte).replace("…", "").strip()
 
 
-def allergenes(texte):
-    """[(suffixe, texte)] : une forme par allergène si le texte porte {alg:…}
-    (audit tour 2 : l'allergie choisie traverse la scène de León et le test).
-    Le suffixe `-a<code>` précède celui du genre."""
-    if not ALG.search(texte):
-        return [("", texte)]
-    PO = charger("poche")
-    return [(f"-a{c}", ALG.sub(lambda m: PO.formes(c)[m.group(1)], texte)) for c, *_ in PO.ALERGENOS]
-
-
 def _pour(fichier, texte, perso, emo=None, tel=False):
-    for sa, ta in allergenes(texte):
-        yield from _pour_genre(fichier + sa, ta, perso, emo, tel)
+    # L'allergie (et ses variantes `-a<code>`) est retirée le 28 sept. 2026.
+    yield from _pour_genre(fichier, texte, perso, emo, tel)
 
 
 def _pour_genre(fichier, texte, perso, emo=None, tel=False):
@@ -67,8 +56,6 @@ def extraits():
     PO = charger("poche")
     for i, es, _ in PO.URGENCES:
         yield from _pour(f"poche/{i}", es, "narratrice")
-    for code, *_ in PO.ALERGENOS:
-        yield from _pour(f"poche/alergia-{code}", PO.phrase_alergia(code), "narratrice")
     TS = charger("test"); TS.verifier()
     for f, forme in enumerate(TS.FORMES):
         for n, it in enumerate(forme):
@@ -89,15 +76,11 @@ def extraits():
                 yield from _pour(f"{d}/q{i}", q["es"], q.get("qui", "narratrice"))
         for i, di in enumerate(se["dire"]):
             yield from _pour(f"{d}/d{i}", di[1], "narratrice")
-            if len(di) > 3:   # la variante du pèlerin sans allergie (tour 2, A3)
-                yield from _pour(f"{d}/d{i}-sans", di[3]["sans"][1], "narratrice")
     for f, forme in enumerate(PR.TEST):
         for i, it in enumerate(forme):
             base = f"prep/test/{f}-{i}"
             if it["type"] == "oral":
                 yield from _pour(base + "-m", it["modele"], "narratrice")
-                if "sans" in it:
-                    yield from _pour(base + "-m-sans", it["sans"]["modele"], "narratrice")
             elif it["type"] == "dire":
                 yield from _pour(base + "-c0", it["choix"][0][0], "narratrice")
             else:

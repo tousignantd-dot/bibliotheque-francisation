@@ -19,7 +19,7 @@ Formats :
 - `dire`    : [(situation fr, modèle es, mots-clés attendus)] — `a|b` dans un
   mot-clé accepte l'un ou l'autre.
 - `mots`    : identifiants du lexique réemployés (cartes dessinées).
-`{o|a}` accorde au genre choisi ; `{alg:…}` à l'allergie (voir poche.py).
+`{o|a}` accorde au genre choisi.
 
     python3 build/contenu/compostelle/preparation.py   # vérifie et compte
 """
@@ -37,14 +37,14 @@ OBJECTIFS = {
 # accents, chiffres en lettres). La raison refuse le « por favor » réflexe.
 ORIGINE = "~(^| )(soy de|soy del|vengo de|soy canadiens[ea]|soy quebequens[ea])( |$)"
 RAISON = "~(^| )(por|para|porque)( |$)(?!favor)"
-SANS_ALLERGIE = "~(no tengo|no soy|ninguna|sin)( [a-z]+)* alergi"
-ALLERGIQUE = "alergic{o|a}|alergia|celiac{o|a}"
+# D'où l'on est parti (remplace l'allergie, retirée le 28 sept. 2026 à la demande de Daniel).
+DEPART = "~(^| )(empece|sali|empiezo|salgo|desde)( |$)"
 
 FIN = {
     "P1": "À la fin, vous direz ces formules au micro, sans les lire, et on vous comprendra du premier ou du deuxième coup — 8 fois sur 10.",
     "P2": "À la fin, vous comprendrez un prix ou une heure entendus une seule fois, sans confondre les nombres qui se ressemblent — 8 fois sur 10.",
     "P3": "À la fin, vous saurez demander ce qu'il vous faut, dans une situation que vous n'avez jamais vue.",
-    "P4": "À la fin, vous vous présenterez en trois phrases — d'où, pourquoi, votre allergie (ou le fait de ne pas en avoir) — sans aide.",
+    "P4": "À la fin, vous vous présenterez en trois phrases — d'où vous venez, pourquoi vous marchez, d'où vous êtes parti — sans aide.",
     "P5": "À la fin, vous saisirez le mot qui décide dans une réponse dite vite : oui, non, il en reste, à gauche, ça en contient.",
 }
 # La halte où chaque objectif servira d'abord (lien du bilan du test, F2).
@@ -213,14 +213,14 @@ SEANCES = [
    "meca": [
      "<b>Soy de…</b> pour l'origine : <i>soy de Quebec, en Canadá</i>.",
      '<b>Hago el Camino por…</b> pour la raison : <i>por el deporte, por mi familia, por la fe</i> — ou <i>para pensar</i>.',
-     "<b>Soy</b> pour ce qu'on est (<i>alérgic{<b>o</b>|<b>a</b>}</i>), <b>estoy</b> pour ce qui passe (<i>cansad{<b>o</b>|<b>a</b>}</i>).",
-     "Pas d'allergie ? <i>No tengo alergias</i>.",
+     "<b>Soy</b> pour ce qu'on est (<i>peregrin{<b>o</b>|<b>a</b>}</i>), <b>estoy</b> pour ce qui passe (<i>cansad{<b>o</b>|<b>a</b>}</i>).",
+     "D'où êtes-vous parti{|e} ? <i>Empecé en Roncesvalles</i> : j'ai commencé à Roncesvalles.",
      'Entre pèlerins, on se tutoie : <i>¿De dónde eres? ¿Por qué haces el Camino?</i>'],
    "ecoute": [("Soy de Quebec, en Canadá.", "Je viens du Québec, au Canada."), ("Hago el Camino por el deporte.", "Je fais le Chemin pour le sport."),
-              ("Hago el Camino por mi familia.", "Je fais le Chemin pour ma famille."), ("Soy alérgic{o|a} {alg:a}.", "Je suis allergique {alg:fr}."),
+              ("Hago el Camino por mi familia.", "Je fais le Chemin pour ma famille."), ("Empecé en Roncesvalles.", "J'ai commencé à Roncesvalles."),
               ("Estoy cansad{o|a}.", "Je suis fatigué{|e}."), ("¿De dónde eres?", "D'où viens-tu ?"),
               ("¿Por qué haces el Camino?", "Pourquoi fais-tu le Chemin ?"), ("Encantad{o|a}.", "Enchanté{|e}.")],
-   "mots": ["soy_de", "de_donde", "por_que", "desde_donde", "encantado", "alergico", "cansado", "peregrino"],
+   "mots": ["soy_de", "de_donde", "por_que", "desde_donde", "encantado", "cansado", "peregrino"],
    "quiz": [
      {"type": "rep", "qui": "marta", "es": "¿De dónde eres?", "choix": [("D'où viens-tu ?", None), ("Où dors-tu ce soir ?", "Ce serait ¿dónde duermes? Ici : ¿de dónde eres?, d'où viens-tu."), ("Où vas-tu aujourd'hui ?", "Ce serait ¿hasta dónde vas? Ici, on te demande ton pays.")]},
      {"type": "rep", "qui": "marta", "es": "¿Y por qué haces el Camino?", "choix": [("Et pourquoi fais-tu le Chemin ?", None), ("Et depuis quand marches-tu ?", "Ce serait ¿desde cuándo? Por qué, c'est pourquoi."), ("Et combien de kilomètres fais-tu ?", "Ce serait ¿cuántos kilómetros? Por qué : pourquoi.")]},
@@ -231,14 +231,10 @@ SEANCES = [
    ],
    "dire": [("Dites d'où vous venez.", "Soy de Quebec, en Canadá.", [ORIGINE]),
             ("Dites pourquoi vous marchez — par exemple, pour le sport.", "Hago el Camino por el deporte.", ["camino", RAISON]),
-            ("Dites votre allergie.", "Soy alérgic{o|a} {alg:a}.", [ALLERGIQUE, "{alg:sans}"],
-             {"sans": ("Dites que vous n'avez pas d'allergie.", "No tengo alergias.", [SANS_ALLERGIE])}),
-            ("Présentez-vous : les trois phrases de suite — d'où, pourquoi, votre allergie.",
-             "Soy de Quebec, en Canadá. Hago el Camino por el deporte. Soy alérgic{o|a} {alg:a}.",
-             [ORIGINE, "camino", RAISON, ALLERGIQUE, "{alg:sans}"],
-             {"sans": ("Présentez-vous : les trois phrases de suite — d'où, pourquoi, et que vous n'avez pas d'allergie.",
-                       "Soy de Quebec, en Canadá. Hago el Camino por el deporte. No tengo alergias.",
-                       [ORIGINE, "camino", RAISON, SANS_ALLERGIE])}),
+            ("Dites d'où vous êtes parti{|e} — par exemple, de Roncesvalles.", "Empecé en Roncesvalles.", [DEPART]),
+            ("Présentez-vous : les trois phrases de suite — d'où vous venez, pourquoi vous marchez, d'où vous êtes parti{|e}.",
+             "Soy de Quebec, en Canadá. Hago el Camino por el deporte. Empecé en Roncesvalles.",
+             [ORIGINE, "camino", RAISON, DEPART]),
             ("Demandez à un pèlerin d'où il vient.", "¿De dónde eres?", ["de donde"])]},
 
   {"id": "p8", "titre": "Comprendre la réponse", "obj": "P5", "minutes": 15,
@@ -271,8 +267,8 @@ SEANCES = [
 # Le test « Prêt à partir ? » (révisé au tour 1 de la boucle, A3/F1) : chaque
 # objectif est mesuré comme son critère le dit. P1 et P3 : DITS au micro, deux
 # essais au plus (« au 1er ou au 2e essai »). P2 et P5 : entendus UNE fois, au
-# débit naturel. P4 : une seule tâche, se présenter en trois phrases, dont
-# l'allergie et l'accord. Deux formes parallèles ; phrases surtout nouvelles
+# débit naturel. P4 : une seule tâche, se présenter en trois phrases (d'où,
+# pourquoi, d'où l'on est parti). Deux formes parallèles ; phrases surtout nouvelles
 # (les formules figées de P1 sont, par nature, celles des séances).
 TEST = [
   [
@@ -286,14 +282,10 @@ TEST = [
     {"obj": "P3", "type": "oral", "fr": "À la pharmacie, demandez de la crème solaire.", "cles": ["quisiera|tiene|tienen|necesito|me gustaria|quiero|por favor", "crema"], "modele": "Quisiera crema solar, por favor."},
     {"obj": "P3", "type": "oral", "fr": "Demandez où est la fontaine.", "cles": ["donde", "fuente"], "modele": "¿Dónde está la fuente?"},
     {"obj": "P3", "type": "oral", "fr": "Une ampoule : vous avez mal au pied. Dites-le à la pharmacienne.", "cles": ["duele", "pie"], "modele": "Me duele el pie."},
-    {"obj": "P4", "type": "oral", "fr": "Présentez-vous en trois phrases : d'où vous venez, pourquoi vous marchez, et votre allergie.",
-     "cles": [ORIGINE, "camino", RAISON, ALLERGIQUE, "{alg:sans}"],
-     "parties": ["d'où vous venez (soy de…)", "le Chemin (hago el Camino…)", "la raison (por…, para…, porque…)", "allergique (au bon genre) ou « tengo alergia »", "l'aliment de votre allergie"],
-     "sans": {"modele": "Soy de Quebec, en Canadá. Hago el Camino por el deporte. No tengo alergias.",
-              "fr": "Présentez-vous en trois phrases : d'où vous venez, pourquoi vous marchez, et que vous n'avez pas d'allergie.",
-              "cles": [ORIGINE, "camino", RAISON, SANS_ALLERGIE],
-              "parties": ["d'où vous venez (soy de…)", "le Chemin (hago el Camino…)", "la raison (por…, para…, porque…)", "que vous n'avez pas d'allergie (no tengo alergias)"]},
-     "modele": "Soy de Quebec, en Canadá. Hago el Camino por el deporte. Soy alérgic{o|a} {alg:a}."},
+    {"obj": "P4", "type": "oral", "fr": "Présentez-vous en trois phrases : d'où vous venez, pourquoi vous marchez, et d'où vous êtes parti{|e}.",
+     "cles": [ORIGINE, "camino", RAISON, DEPART],
+     "parties": ["d'où vous venez (soy de…)", "le Chemin (hago el Camino…)", "la raison (por…, para…, porque…)", "d'où vous êtes parti (empecé en…)"],
+     "modele": "Soy de Quebec, en Canadá. Hago el Camino por el deporte. Empecé en Roncesvalles."},
     {"obj": "P5", "type": "rep", "qui": "javier", "es": "No, ya no quedan camas. Hay un hostal en la plaza.", "choix": [("Plus de lits ; il y a un petit hôtel sur la place.", None), ("Il reste des lits, sur la place.", "Ya no quedan : il n'en reste plus. L'hostal, lui, est sur la place."), ("Plus de lits ; l'hôtel de la place est plein.", "Rien n'est dit de l'hôtel, sinon qu'il existe : hay un hostal.")]},
     {"obj": "P5", "type": "rep", "qui": "fermin", "es": "Sigue todo recto hasta el puente.", "choix": [("Continuez tout droit jusqu'au pont.", None), ("Tournez à droite au pont.", "Derecha n'a pas été dit : todo recto, tout droit."), ("Continuez tout droit jusqu'à l'église.", "La iglesia, ce serait l'église. El puente : le pont.")]},
     {"obj": "P5", "type": "rep", "qui": "rocio", "es": "Sí, sí, queda una cama.", "choix": [("Oui, il reste un lit.", None), ("Non, il ne reste plus de lit.", "Sí, sí, et queda : il en reste un."), ("Oui, il reste une douche.", "Ducha, ce serait une douche. Cama : un lit.")]},
@@ -310,14 +302,10 @@ TEST = [
     {"obj": "P3", "type": "oral", "fr": "Demandez s'il y a une pharmacie près d'ici.", "cles": ["hay|ay", "farmacia"], "modele": "¿Hay una farmacia cerca?"},
     {"obj": "P3", "type": "oral", "fr": "Au bar, demandez un jus d'orange.", "cles": ["quisiera|tiene|tienen|me gustaria|quiero|por favor|me pone|ponme", "zumo"], "modele": "Quisiera un zumo de naranja."},
     {"obj": "P3", "type": "oral", "fr": "Il vous faut un taxi : dites-le à l'hospitalière.", "cles": ["necesito|quisiera|quiero|me gustaria|llame|llamar", "taxi"], "modele": "Necesito un taxi."},
-    {"obj": "P4", "type": "oral", "fr": "Un pèlerin vous demande qui vous êtes. Répondez en trois phrases : d'où vous venez, pourquoi vous marchez, et votre allergie.",
-     "cles": [ORIGINE, "camino", RAISON, ALLERGIQUE, "{alg:sans}"],
-     "parties": ["d'où vous venez (soy de…)", "le Chemin (hago el Camino…)", "la raison (por…, para…, porque…)", "allergique (au bon genre) ou « tengo alergia »", "l'aliment de votre allergie"],
-     "sans": {"modele": "Soy de Quebec, en Canadá. Hago el Camino por el deporte. No tengo alergias.",
-              "fr": "Présentez-vous en trois phrases : d'où vous venez, pourquoi vous marchez, et que vous n'avez pas d'allergie.",
-              "cles": [ORIGINE, "camino", RAISON, SANS_ALLERGIE],
-              "parties": ["d'où vous venez (soy de…)", "le Chemin (hago el Camino…)", "la raison (por…, para…, porque…)", "que vous n'avez pas d'allergie (no tengo alergias)"]},
-     "modele": "Soy de Quebec, en Canadá. Hago el Camino por el deporte. Soy alérgic{o|a} {alg:a}."},
+    {"obj": "P4", "type": "oral", "fr": "Un pèlerin vous demande qui vous êtes. Répondez en trois phrases : d'où vous venez, pourquoi vous marchez, et d'où vous êtes parti{|e}.",
+     "cles": [ORIGINE, "camino", RAISON, DEPART],
+     "parties": ["d'où vous venez (soy de…)", "le Chemin (hago el Camino…)", "la raison (por…, para…, porque…)", "d'où vous êtes parti (empecé en…)"],
+     "modele": "Soy de Montreal. Hago el Camino para pensar. Salí de Pamplona."},
     {"obj": "P5", "type": "rep", "qui": "alex", "es": "No, el postre no lleva leche.", "choix": [("Non, pas de lait dans le dessert.", None), ("Oui, le dessert contient du lait.", "No lleva : il n'en contient pas."), ("Il n'y a pas de dessert ce soir.", "Le dessert existe ; c'est le lait qui n'y est pas.")]},
     {"obj": "P5", "type": "rep", "qui": "fermin", "es": "La calle de la iglesia, a la izquierda.", "choix": [("La rue de l'église, à gauche.", None), ("La rue de l'église, à droite.", "Derecha, ce serait à droite. Izquierda : à gauche."), ("La rue du pont, à gauche.", "El puente, ce serait le pont. La iglesia : l'église.")]},
     {"obj": "P5", "type": "rep", "qui": "manolo", "es": "Lo siento, hoy está cerrado.", "choix": [("Désolé, c'est fermé aujourd'hui.", None), ("Désolé, c'est complet aujourd'hui.", "Completo, ce serait complet. Cerrado : fermé."), ("Désolé, c'est ouvert demain seulement.", "Rien n'est dit de demain : hoy, aujourd'hui, está cerrado.")]},

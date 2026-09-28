@@ -154,7 +154,7 @@ Rien n'est vendu : la vente reste fermée tant que les clés Stripe ne sont pas 
 <section>
   <h2>Ce que vos amis ont à faire</h2>
   <ol class="etapes">
-    <li><b>Les pèlerins</b> : un entraînement (le 1, avec sa leçon), puis l'étape 1 (Roncesvalles) et une étape plus loin (León, l'allergie). Les situations sont-elles celles du vrai chemin ?</li>
+    <li><b>Les pèlerins</b> : un entraînement (le 1, avec sa leçon), puis l'étape 1 (Roncesvalles) et une étape plus loin (León, le menu du pèlerin). Les situations sont-elles celles du vrai chemin ?</li>
     <li><b>Les hispanophones</b> : les leçons, la trousse, et deux ou trois étapes. L'espagnol est-il juste, naturel, bien prononcé ? Ils notent la phrase et l'écran.</li>
     <li><b>Tous</b> : « Donner mon avis », au bas de chaque écran. Le courriel s'ouvre avec cinq questions déjà écrites, et l'écran où ils étaient.</li>
   </ol>

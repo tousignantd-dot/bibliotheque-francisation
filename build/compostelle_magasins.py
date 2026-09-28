@@ -115,7 +115,7 @@ sans réseau. La vraie question est donc : <strong>que gagnerait-on à passer pa
 <section>
   <h2>Le cas de l'iPhone</h2>
   <p>Safari efface ce qu'un site a gardé dans le téléphone s'il n'a pas été visité depuis <b>sept jours d'utilisation de Safari</b>.
-  Pour Compostelle, ce sont les tampons, les réglages et l'allergie choisie. Un pèlerin qui prépare son chemin en janvier et le
+  Pour Compostelle, ce sont les tampons, et les réglages. Un pèlerin qui prépare son chemin en janvier et le
   reprend en mars peut retrouver une credencial vide.</p>
   <p><b>Une page ajoutée à l'écran d'accueil n'est pas touchée par cette règle</b>, ni une app des magasins. D'où l'importance,
   dès le pilote, de montrer le geste d'installation, et de le rappeler dans le mode d'emploi (c'est fait : « Comment ça marche ? »).</p>

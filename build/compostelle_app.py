@@ -43,7 +43,7 @@ MEDIA = RACINE / "assets" / "interactive" / "compostelle"
 # le jeu de rôle »). L'accès : un code d'élève du groupe « Pilote Compostelle ».
 # Remettre False retire le temps sans toucher au serveur.
 JEU_LIBRE = True
-MEDIA_V = "6"  # 6 : révision 4 ; 5 : 5 : révision 3 (allergie à Pamplona, variantes de León, test) ; 4 : 4 : allergie choisie dans la scène de León et le test ; 2 : sons à 48 kbit/s (27 → 9 Mo) ; 3 : 25 répliques corrigées après relecture, 25 sept. 2026
+MEDIA_V = "7"  # 7 : allergie retirée, León réécrit (28 sept. 2026) ; 6 : révision 4 ; 5 : 5 : révision 3 (allergie à Pamplona, variantes de León, test) ; 4 : 4 : allergie choisie dans la scène de León et le test ; 2 : sons à 48 kbit/s (27 → 9 Mo) ; 3 : 25 répliques corrigées après relecture, 25 sept. 2026
 
 
 def verifier(ET):
@@ -63,7 +63,7 @@ def verifier(ET):
         for es, choix in et["ecoute"]:
             assert choix[0][1] is None and all(c[1] for c in choix[1:]), f"{et['id']} écoute : {es}"
         for m in et["mots"]:
-            assert m == "@alergia" or m in MOTS_IDS, f"{et['id']} : mot inconnu {m}"
+            assert m in MOTS_IDS, f"{et['id']} : mot inconnu {m}"
     return ecarts
 
 
@@ -117,7 +117,7 @@ def donnees():
             items = [{"es": es, "fr": fr, "son": f"poche/{i}"} for i, es, fr in PO.URGENCES]
         elif source.startswith("etape:"):
             et = par_etape[source[6:]]
-            items = [{"es": d[1], "fr": d[0].split(" (")[0] if "{alg" in d[0] else d[0], "son": f"{et['id']}/dire-{n}"}
+            items = [{"es": d[1], "fr": d[0], "son": f"{et['id']}/dire-{n}"}
                      for n, d in enumerate(et["dire"]) if not (len(d) > 3 and d[3].get("perso"))]
             # Audit tour 1 (F2) : la poche ne donnait que ce qu'on DIT. Ce qu'on
             # risque d'ENTENDRE en retour est l'autre moitié de l'écart.
@@ -135,9 +135,7 @@ def donnees():
         etapes.append(e)
     poids = sum((C.SONS / f).stat().st_size for f in sons) + sum(
         f.stat().st_size for d in ("croquis", "portraits", "etapes") for f in (MEDIA / d).glob("*.jpg") if ".orig" not in f.name)
-    alergenos = [{"code": c, "fr": fr, "sans": sans, "phrase": PO.phrase_alergia(c), "formes": PO.formes(c)}
-                 for c, _a, sans, fr in PO.ALERGENOS]
-    return {"v": MEDIA_V, "jeuLibre": JEU_LIBRE, "alergenos": alergenos,
+    return {"v": MEDIA_V, "jeuLibre": JEU_LIBRE,
             "test": {"formes": TS.FORMES, "objectifs": TS.OBJECTIFS, "seuil": TS.SEUIL},
             "prep": {"seances": PR.SEANCES, "test": PR.TEST, "objectifs": PR.OBJECTIFS, "seuil": PR.SEUIL, "conseils": PR.CONSEILS,
                      "fin": PR.FIN, "halte": PR.HALTE, "lecons": lecons},
@@ -587,16 +585,14 @@ function imageMot(m, id){
 
 /* ---------- l'état, dans ce téléphone seulement ---------- */
 const CLE = 'compostelle:v1';
-let S = {genre:null, nom:'', aide:false, lent:false, alergia:'', essais:{}, jours:{}, vars:{}};
+let S = {genre:null, nom:'', aide:false, lent:false, essais:{}, jours:{}, vars:{}};
 try { Object.assign(S, JSON.parse(localStorage.getItem(CLE) || '{}')); } catch(e) {}
+delete S.alergia;   // l'allergie est retirée (28 sept. 2026) : on n'en garde plus trace
 function sauver(){ try { localStorage.setItem(CLE, JSON.stringify(S)); } catch(e) {} }
 function jour(id){ return S.jours[id] || (S.jours[id] = {faits:{}, tampon:null}); }
-// L'allergie choisie (défaut : les noix) remplit les {alg:…} ; audit tour 2.
-const algCode = () => (S.alergia && D.alergenos.some(a => a.code === S.alergia)) ? S.alergia : 'frutos_secos';
-const algDe = t => String(t).replace(/\{alg:(\w+)\}/g, (_, k) => D.alergenos.find(a => a.code === algCode()).formes[k]);
-const g = t => algDe(t).replace(/\{([^{}|]*)\|([^{}|]*)\}/g, (_, m, f) => S.genre === 'f' ? f : m);
-const aGenre = t => /\{[^{}|]*\|[^{}|]*\}/.test(algDe(t));
-const suf = t => (/\{alg:/.test(t) ? '-a' + algCode() : '') + (aGenre(t) ? (S.genre === 'f' ? '-f' : '-m') : '');
+const g = t => String(t).replace(/\{([^{}|]*)\|([^{}|]*)\}/g, (_, m, f) => S.genre === 'f' ? f : m);
+const aGenre = t => /\{[^{}|]*\|[^{}|]*\}/.test(String(t));
+const suf = t => aGenre(t) ? (S.genre === 'f' ? '-f' : '-m') : '';
 
 /* ---------- le son ---------- */
 const lecteur = $('#lecteur');
@@ -704,7 +700,7 @@ const enLettres = t => String(t)
 const plat = t => enLettres(t).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9ñ ]+/g, ' ').replace(/\s+/g, ' ').trim();
 
 // Une clé qui commence par « ~ » est une expression régulière sur le texte aplati
-// (audit tour 3 : « no lo entiendo », « porque », « no tengo alergias »…).
+// (audit tour 3 : « no lo entiendo », « porque »…).
 const trouve = (t, cle) => cle.startsWith('~') ? new RegExp(cle.slice(1)).test(' ' + plat(t) + ' ') : cle.split('|').some(a => new RegExp('(^| )' + plat(a).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(s|es)?( |$)').test(plat(t)));
 /* ---------- ordre des choix : jamais la bonne toujours au même rang ---------- */
 function ordre(n, graine){ const o = [...Array(n).keys()]; const d = graine % n; return o.slice(d).concat(o.slice(0, d)); }
@@ -883,13 +879,12 @@ function vueGuide(){
   <p>Votre credencial se tamponne quand les quatre temps marqués <span class="g-tamp">✓ tampon</span> sont faits : comprendre,
   jouer la scène, dire, parler le soir. Lire et écouter ne suffisent pas : sur le chemin, il faudra parler.</p>
   <h2>Les dix étapes</h2>
-  <p>Faites-les dans l'ordre : ce qui a été appris revient plus loin, sans prévenir (« Rappel · étape 2 »).
-  À <b>León</b>, votre allergie est éliminatoire : la rater fait rejouer la scène. Après León, elle revient chaque jour.</p>
+  <p>Faites-les dans l'ordre : ce qui a été appris revient plus loin, sans prévenir (« Rappel · étape 2 »).</p>
   <ol class="g-jours">${jours}</ol>
   <h2>Et aussi</h2>
   <ul class="g-liste">
    <li><b>Parler librement</b> — au bas de chaque étape${D.jeuLibre ? '' : ' (bientôt)'} : la même personne vous répond vraiment, à votre vitesse, puis un bilan en français. Il faut un code : il s'obtient là, en quelques secondes, ou vient de votre groupe. Les étapes, elles, restent gratuites.</li>
-   <li><b>Ma trousse</b> — la trousse de secours pour se débrouiller : les phrases du chemin, les urgences (112) et votre carte d'allergie en grand, à montrer. « Préparer pour le chemin » les garde dans le téléphone : elles marchent sans réseau.</li>
+   <li><b>Ma trousse</b> — la trousse de secours pour se débrouiller : les phrases du chemin et les urgences (112), à montrer en grand. « Préparer pour le chemin » les garde dans le téléphone : elles marchent sans réseau.</li>
    <li><b>Tous les mots</b> et <b>les faux amis</b> — pour revoir, quand vous voulez.</li>
    <li><b>Suis-je prêt ?</b> — un quart d'heure de situations nouvelles avant le départ. Il vous situe (Solide · En route · À reprendre), il ne vous note pas.</li>
    <li><b>La Compostela</b> — au dixième tampon, un souvenir à imprimer.</li>
@@ -913,13 +908,10 @@ function vueBienvenue(){
    <p>L'espagnol qu'il faut pour le chemin : trouver un lit, manger, se soigner, demander sa route, et parler avec les gens — étape après étape, de Roncesvalles à Santiago.</p></div></div>
   <div class="carte" style="margin-top:14px">
    <h2 style="margin-top:0">Avant de partir</h2>
-   <p>Deux questions. L'allergie d'abord : c'est la phrase que vous apprendrez à dire, et celle qui ne pardonne pas.</p>
-   <label for="alg0" style="display:block;font-weight:800;margin:6px 0">Avez-vous une allergie alimentaire ?</label>
-   <select id="alg0" onchange="S.alergia=this.value;sauver()" style="font:inherit;padding:8px;border-radius:10px;border:1px solid var(--line-300);min-height:44px;width:100%;margin-bottom:12px">
-    <option value="">Non, aucune</option>${D.alergenos.map(a => `<option value="${a.code}" ${S.alergia === a.code ? 'selected' : ''}>Oui, ${E(a.fr)}</option>`).join('')}</select>
+   <p>Une question : en espagnol, on ne dit pas la même chose à un pèlerin et à une pèlerine (<i>cansado</i>, <i>cansada</i>).</p>
    <div class="rangee"><button class="btn btn--pri" onclick="choisirGenre('m')">Un pèlerin</button>
    <button class="btn btn--pri" onclick="choisirGenre('f')">Une pèlerine</button></div>
-   <p class="avis-local" style="margin-top:12px">Puis : en espagnol, on ne dit pas la même chose à un pèlerin et à une pèlerine (<i>cansado</i>, <i>cansada</i>). Tout ce que vous faites ici reste dans ce téléphone : rien n'est envoyé.</p>
+   <p class="avis-local" style="margin-top:12px">Tout ce que vous faites ici reste dans ce téléphone : rien n'est envoyé.</p>
   </div>
   <button class="btn btn--large lien-guide" onclick="aller('guide')">${ICO.guide} Comment ça marche ?</button>`;
 }
@@ -986,10 +978,9 @@ function vueAccueil(refuse){
     </div>
     <details class="rub" style="margin-top:12px"><summary>Au bout du chemin, vous saurez… <span>la règle</span></summary>
      <div style="padding:0 14px 12px;font-size:15.5px"><ul style="margin:0 0 8px;padding-left:20px">
-      <li>obtenir un lit, et comprendre le prix et les heures ;</li><li>commander, et <b>dire votre allergie</b> puis comprendre la réponse ;</li>
+      <li>obtenir un lit, et comprendre le prix et les heures ;</li><li>commander, et comprendre ce que contient un plat ;</li>
       <li>dire où vous avez mal et comprendre la posologie ;</li><li>demander votre chemin et le suivre ;</li><li>parler avec un autre pèlerin.</li></ul>
-      <p style="margin:0">Une erreur ne pardonne pas : <b>l'allergie</b>. À León comme au test « Suis-je prêt ? », la rater fait recommencer.
-      ${S.alergia ? 'La vôtre : ' + E(allergie().fr) + '.' : 'Choisissez la vôtre dans les réglages.'}</p></div></details>
+      </div></details>
   </section>`;
   const essai = S.essai ? `<div class="bandeau-essai"><b>Mode essai</b> — tout est ouvert, dans n'importe quel ordre, pour la relecture.
     <span><a href="#avis">Donner mon avis</a> · <a href="#essai/fin">Quitter le mode essai</a></span></div>` : '';
@@ -1134,7 +1125,7 @@ function vueEntends(et){
 
 /* 4. ce qu'on me répond */
 // Audit tour 1 (F3/D3) : chaque journée rouvre deux réponses des journées
-// d'avant — la veille, et une plus ancienne ; l'allergie revient après León.
+// d'avant — la veille, et une plus ancienne.
 function rappels(et){
   const i = D.etapes.indexOf(et), out = [];
   const prendre = (src, k) => { if (src && src.ecoute[k]) out.push({src, k}); };
@@ -1194,13 +1185,11 @@ function choixVar(nom){
   }
   return null;
 }
-// « @alergia » dans une liste de mots = le mot de l'allergie choisie (audit tour 3).
-const motId = id => id === '@alergia' ? (algCode() === 'gluten' ? 'sin_gluten' : algCode()) : id;
-function allergie(){ return D.alergenos.find(a => a.code === S.alergia) || null; }
+const motId = id => id;
 function vueDire(et){
   let n = 0, dites = 0;
   const items = et.dire.map((d, i) => {
-    const f = d[3] || {}, it = {fr:d[0], es:d[1], cles:d[2], fichier:sonDe(`${et.id}/dire-${i}`, d[1]), oblig:!!f.oblig, dit:false};
+    const f = d[3] || {}, it = {fr:d[0], es:d[1], cles:d[2], fichier:sonDe(`${et.id}/dire-${i}`, d[1]), dit:false};
     // Audit tour 2 (C2) : le modèle d'une phrase sur soi reprend la réponse
     // choisie plus tôt (le métier, la raison du chemin), avec son son.
     if (f.var && S.vars[f.var]) { const c = choixVar(f.var); if (c) { it.es = c.es; it.fichier = c.fichier; it.exemple = false; } }
@@ -1209,18 +1198,17 @@ function vueDire(et){
   });
   function tour(){
     if (n >= items.length) {
-      const obligManque = items.filter(x => x.oblig && !x.dit);
-      const assez = dites >= Math.ceil(items.length / 2) && !obligManque.length;
+      const assez = dites >= Math.ceil(items.length / 2);
       if (assez) jour(et.id).faits.dire = true, sauver();
       app.innerHTML = `${tete(et, 'dire')}<div class="retro ${assez ? 'ok' : 'info'}">${assez ? '✓' : '→'} ${dites} phrase${dites > 1 ? 's' : ''} dite${dites > 1 ? 's' : ''} sur ${items.length}.
-        ${assez ? 'Le plus dur est fait : oser.' : obligManque.length ? 'Les phrases de l\u2019allergie ne se passent pas : dites-les à voix haute.' : 'Pour ce temps (et pour le tampon), dites-en au moins la moitié à voix haute.'}</div>
+        ${assez ? 'Le plus dur est fait : oser.' : 'Pour ce temps (et pour le tampon), dites-en au moins la moitié à voix haute.'}</div>
         <div style="margin-top:12px">${assez ? fini(et, 'dire') : `<button class="btn btn--pri btn--large" onclick="rendre()">Recommencer</button>`}</div>`; return;
     }
     const it = items[n];
     let tente = false;
     app.innerHTML = `${tete(et, 'dire')}
       <div class="progres"><i style="width:${100 * n / items.length}%"></i></div>
-      <div class="carte"><p class="surtitre">La situation${it.oblig ? ' · obligatoire' : ''}</p><p style="font-size:19px;font-weight:800;color:var(--text-strong);margin:4px 0 0">${E(g(it.fr))}</p></div>
+      <div class="carte"><p class="surtitre">La situation</p><p style="font-size:19px;font-weight:800;color:var(--text-strong);margin:4px 0 0">${E(g(it.fr))}</p></div>
       ${Reco ? `<div class="micro"><button class="btn-micro" id="mic" aria-label="Parler">${ICO.micro}</button>
         <div class="muted" id="micEtat" style="font-size:14px">Touchez le micro, dites-le en espagnol.</div>
         <div class="entendu" id="entendu"></div></div>` : ''}
@@ -1239,19 +1227,10 @@ function vueDire(et){
         $('#modele').innerHTML = `${ICO.son} Réécouter`; }
       $('#modele').disabled = false; jouer(it.fichier); };
     const essaye = () => { if (!tente) { tente = true; dites++; it.dit = true; } $('#modele').disabled = false; $('#suite').disabled = false; };
-    // Audit tour 3 (M2) : une phrase d'allergie ne compte que DITE JUSTE —
-    // reconnue au micro, ou, sans micro, redite après avoir écouté le modèle.
-    let redire = false;
     $('#modele').onclick = montrerModele;
     $('#suite').onclick = () => { n++; tour(); };
     $('#passer').onclick = e => { e.preventDefault(); n++; tour(); };
-    if (it.oblig) $('#passer').parentNode.innerHTML = S.alergia ? 'Cette phrase-ci ne se passe pas : c\u2019est celle de votre allergie.'
-      : 'Cette phrase-ci ne se passe pas. Exercice : les noix — choisissez votre allergie dans les réglages.';
-    $('#dit').onclick = () => {
-      if (!it.oblig) { essaye(); $('#dit').disabled = true; montrerModele(); return; }
-      if (!redire) { redire = true; montrerModele(); $('#dit').textContent = 'C\u2019est redit, comme le modèle !'; return; }
-      essaye(); $('#dit').disabled = true;
-    };
+    $('#dit').onclick = () => { essaye(); $('#dit').disabled = true; montrerModele(); };
     if (Reco) {
       const mic = $('#mic');
       mic.onclick = () => {
@@ -1268,8 +1247,7 @@ function vueDire(et){
           poserR(manque.length ? `<div class="retro no">Presque. Il manque : <b>${manque.map(c => E(c.split('|')[0])).join(', ')}</b>. Comparez avec le modèle, puis réessayez.</div>`
             : nonEnTrop ? `<div class="retro no">Attention : j'ai entendu « no ». Votre phrase dit peut-être le contraire. Comparez avec le modèle.</div>`
             : `<div class="retro ok">✓ ¡Muy bien! On vous a compris.</div>`);
-          if (!it.oblig || (!manque.length && !nonEnTrop)) essaye();
-          else if (it.oblig) zoneR.firstElementChild.insertAdjacentHTML('afterend', `<div class="retro info">Cette phrase-là doit être dite juste pour compter. Réessayez.</div>`);
+          essaye();
           setTimeout(montrerModele, manque.length ? 0 : 600);
         });
       };
@@ -1291,17 +1269,17 @@ function vueScene(et, bloc){
   let k = 0, aide = S.aide;
   const cleS = et.id + '/' + bloc;
   S.erreurs = S.erreurs || {}; let erreurs = S.erreurs[cleS] || 0;
-  // Audit tour 3 (M4) : quel plat contient l'allergène se tire au hasard à la
-  // première partie, puis change à chaque reprise.
+  // Une scène peut avoir deux variantes (`groupe` A/B), tirées au hasard à la
+  // première partie, puis alternées à chaque reprise.
   const tirage = (jour(et.id).tirage != null) ? jour(et.id).tirage : (jour(et.id).tirage = Math.floor(Math.random() * 2));
   const groupe = ['A', 'B'][(tirage + ((S.essais || {})[cleS] || 0)) % 2];
-  const visible = t => t && !(t.siAlergia && !S.alergia) && !(t.sansAlergia && S.alergia) && !(t.groupe && t.groupe !== groupe);
+  const visible = t => t && !(t.groupe && t.groupe !== groupe);
   app.innerHTML = `${tete(et, bloc)}
     <div class="bandeau" style="max-height:170px">${et.vignette ? `<img src="${BASE}etapes/${et.img}.jpg?v=${D.v}" alt="" style="aspect-ratio:auto;height:170px">` : ''}</div>
     <div class="scene-tete" style="margin-top:10px">${p.portrait ? `<img src="${BASE}portraits/${qui}.jpg?v=${D.v}" alt="">` : ''}
       <div><b>${E(sc.titre)}</b><div class="muted" style="font-size:14px">${E(p.nom)} — ${E(p.qui)}</div></div></div>
     ${et.eliminatoire && bloc === 'scene' ? `<div class="regle"><b>Règle de cette scène.</b> ${E(et.eliminatoire)}</div>` : ''}
-    <p class="consigne">Écoutez d'abord : le texte de ${E(p.nom)} s'affiche après votre réponse — ou tout de suite avec « Lire », sauf avant une réponse éliminatoire.</p>
+    <p class="consigne">Écoutez d'abord : le texte de ${E(p.nom)} s'affiche après votre réponse — ou tout de suite avec « Lire ».</p>
     <label class="aide-bascule"><input type="checkbox" id="aide" ${aide ? 'checked' : ''}> Montrer le français sous chaque réplique</label>
     <label class="aide-bascule"><input type="checkbox" id="lent" ${S.lent ? 'checked' : ''}> Voix plus lentes</label>
     <div class="fil" id="fil"></div><div id="zone"></div>`;
@@ -1352,8 +1330,7 @@ function vueScene(et, bloc){
       return;
     }
     const cleEssai = et.id + '/' + bloc, essais = (S.essais || {})[cleEssai] || 0;
-    const n = tour.choix.length, o = (tour.libre ? [...Array(n).keys()] : ordre(n, k + et.n * 3 + (bloc === 'soir' ? 1 : 0) + essais))
-      .filter(i => !(tour.choix[i][3] && (tour.choix[i][3].sauf || []).includes(algCode()) && S.alergia));
+    const n = tour.choix.length, o = (tour.libre ? [...Array(n).keys()] : ordre(n, k + et.n * 3 + (bloc === 'soir' ? 1 : 0) + essais));
     zone.innerHTML = `<p class="consigne" style="margin-top:12px">${tour.libre ? 'Toutes les réponses sont justes : choisissez <b>la vôtre</b>.' : 'Que répondez-vous ?'}</p>
       <div class="choix">${o.map(i => `<button data-i="${i}">${E(g(tour.choix[i][0]))}<small ${aide && !tour.critique ? '' : 'hidden'}>${E(g(tour.choix[i][1]))}</small></button>`).join('')}</div>
       ${Reco ? `<div class="micro" style="margin:4px 0"><button class="btn" id="dire">${ICO.micro} Le dire au lieu de toucher</button><div class="entendu" id="entendu"></div></div>` : ''}
@@ -1863,9 +1840,7 @@ function seanceDire(x){
       app.innerHTML = `${teteSeance(x, 'dire')}<div class="retro ${assez ? 'ok' : 'info'}">${assez ? '✓' : '→'} ${dites} phrase${dites > 1 ? 's' : ''} dite${dites > 1 ? 's' : ''} sur ${x.dire.length}${Reco ? `, dont ${comprises} comprise${comprises > 1 ? 's' : ''} au micro du premier ou du deuxième coup` : ''}. ${assez ? 'Le plus dur est fait : oser.' : 'Dites-en au moins la moitié à voix haute pour terminer la séance.'}</div>
         <div style="margin-top:12px">${assez ? finTemps(x, 'dire') : `<button class="btn btn--pri btn--large" onclick="rendre()">Recommencer</button>`}</div>`; return;
     }
-    let [fr, es, cles] = x.dire[n], fichier = sonDe(`prep/${x.id}/d${n}`, es);
-    // Tour 2 (A3) : sans allergie déclarée, on ne fait pas dire une allergie inventée.
-    if (x.dire[n][3] && !S.alergia) { [fr, es, cles] = x.dire[n][3].sans; fichier = sonDe(`prep/${x.id}/d${n}-sans`, es); }
+    const [fr, es, cles] = x.dire[n], fichier = sonDe(`prep/${x.id}/d${n}`, es);
     let tente = false, essais = 0, modeleVu = false;
     app.innerHTML = `${teteSeance(x, 'dire')}<div class="progres"><i style="width:${100 * n / x.dire.length}%"></i></div>
       <div class="carte"><p class="surtitre">À vous</p><p style="font-size:19px;font-weight:800;color:var(--text-strong);margin:4px 0 0">${E(g(fr))}</p></div>
@@ -1895,14 +1870,11 @@ function seanceDire(x){
         mic.classList.remove('ecoute'); mic.innerHTML = ICO.micro; $('#micEtat').textContent = 'Touchez le micro pour réessayer.';
         if (!final) { poserR(`<div class="retro info">${rienEntendu('Je n\u2019ai rien entendu. Vérifiez que le micro est permis, ou dites-le et touchez « C\u2019est dit ! ».')}</div>`); return; }
         essais++;
-        const manque = cles.map(c => g(algDe(c))).filter(c => !trouve(final, c));
-        const algCle = cles.find(c => /\{alg:/.test(c));
-        const alg = algCle && manque.length === 1 && manque[0] === g(algDe(algCle));
+        const manque = cles.map(c => g(c)).filter(c => !trouve(final, c));
         if (!manque.length) { if (essais <= 2 && !modeleVu) comprises++;
           poserR(`<div class="retro ok">✓ ¡Muy bien! On vous a compris.</div>`); essaye(); setTimeout(montrer, 600); return; }
         const presque = manque.length <= cles.length / 2;
-        poserR(`<div class="retro no">${alg ? 'On sait que vous êtes allergique, mais pas à quoi : dites l’aliment. '
-          : presque ? `Presque. Il manque : <b>${manque.map(c => E(motDuModele(es, c))).join(', ')}</b>. ` : 'Je n’ai pas reconnu la phrase. '}${essais < 2 && !modeleVu ? 'Réessayez, sans regarder le modèle.' : 'Comparez avec le modèle.'}</div>`);
+        poserR(`<div class="retro no">${presque ? `Presque. Il manque : <b>${manque.map(c => E(motDuModele(es, c))).join(', ')}</b>. ` : 'Je n’ai pas reconnu la phrase. '}${essais < 2 && !modeleVu ? 'Réessayez, sans regarder le modèle.' : 'Comparez avec le modèle.'}</div>`);
         essaye();
         // Audit tour 1 (D1) : un deuxième essai à l'aveugle avant le modèle.
         if (essais >= 2) montrer(); else $('#modele').disabled = false;
@@ -1927,10 +1899,9 @@ function vuePrepTest(){
   }
   function tour(){
     if (k >= items.length) return bilan();
-    let it = items[k]; let compte = false;
-    const sansAlg = it.sans && !S.alergia; if (sansAlg) it = {...it, ...it.sans};
+    const it = items[k]; let compte = false;
     const noter = ok => { if (compte) return; compte = true; const r = res[it.obj] || (res[it.obj] = [0, 0]); r[1]++; if (ok) r[0]++;
-      else (manquees[it.obj] || (manquees[it.obj] = [])).push(g(algDe(it.es || it.modele || it.choix[0][0]))); };
+      else (manquees[it.obj] || (manquees[it.obj] = [])).push(g(it.es || it.modele || it.choix[0][0])); };
     const suite = () => { const b = document.createElement('button'); b.className = 'btn btn--pri btn--large'; b.textContent = 'Suivant'; b.onclick = () => { k++; tour(); }; $('#r').appendChild(b); };
     const tete2 = `${retour('prep', 'Avant de partir')}<p class="surtitre">Question ${k + 1} sur ${items.length}</p><div class="progres"><i style="width:${100 * k / items.length}%"></i></div>`;
     if (it.type === 'oral') {
@@ -1942,19 +1913,19 @@ function vuePrepTest(){
         if ($('#sansmic')) $('#sansmic').remove(); if ($('#mic')) $('#mic').disabled = true;
         $('#r').insertAdjacentHTML('beforeend', `<div class="retro ${!verifie ? 'info' : ok ? 'ok' : 'no'}">${!verifie ? 'Non vérifié : cette question ne compte pas.' : ok ? '✓ On vous a compris.' : 'Deux essais sans qu’on vous comprenne tout à fait.'}</div>
           <div class="retro info"><span class="surtitre">Le modèle</span><div class="phrase-es">${E(g(it.modele))}</div></div>`);
-        jouer(sonDe(`prep/test/${f}-${k}-m${sansAlg ? '-sans' : ''}`, it.modele)); suite(); };
+        jouer(sonDe(`prep/test/${f}-${k}-m`, it.modele)); suite(); };
       $('#sansmic').onclick = () => fin(false, false);
       if (Reco) $('#mic').onclick = () => { const mic = $('#mic'); if (recoActive) { arreterMicro(); return; }
         mic.classList.add('ecoute'); mic.innerHTML = ICO.stop;
         ecouterMicro(t => { $('#entendu').textContent = '« ' + t + ' »'; }, final => {
           mic.classList.remove('ecoute'); mic.innerHTML = ICO.micro;
-          if (!final) { $('#r').innerHTML = `<div class="retro info">${rienEntendu('Je n\u2019ai rien entendu. Vérifiez que le micro est permis et réessayez — ou touchez « je l\u2019ai dit ».')}</div>`; return; }
-          const manque = it.cles.map((c, i) => [g(algDe(c)), i]).filter(([c]) => !trouve(final, c));
+          if (!final) { $('#r').innerHTML = `<div class="retro info">${rienEntendu('Je n\u2019ai rien entendu. Vérifiez que le micro est permis et réessayez — ou touchez « C\u2019est dit ! ».')}</div>`; return; }
+          const manque = it.cles.map((c, i) => [g(c), i]).filter(([c]) => !trouve(final, c));
           prises++;
           // Tour 2 (F1) : une fois le micro entendu, « le micro ne marche pas » n'est plus une issue.
           if ($('#sansmic')) $('#sansmic').remove();
           if (!manque.length) { $('#r').innerHTML = ''; return fin(true, true); }
-          const quoi = it.parties ? 'Il manque : ' + manque.map(([, i]) => E(g(algDe(it.parties[i])))).join(', ') + '.' : `J'ai entendu « ${E(final)} ».`;
+          const quoi = it.parties ? 'Il manque : ' + manque.map(([, i]) => E(g(it.parties[i]))).join(', ') + '.' : `J'ai entendu « ${E(final)} ».`;
           if (prises >= 2) { $('#r').innerHTML = `<div class="retro no">${quoi}</div>`; return fin(false, true); }
           $('#r').innerHTML = `<div class="retro no">${quoi} Réessayez (dernier essai).</div>`;
         }); };
@@ -2013,14 +1984,6 @@ function vuePoche(){
   <div class="carte" style="margin:12px 0"><b>Sans réseau sur la Meseta ?</b>
    <p class="muted" style="font-size:15px;margin:4px 0 10px">Une fois, avec du wifi : mettez tous les sons et les images dans ce téléphone (environ ${D.poids} Mo).</p>
    <button class="btn btn--pri" id="prep">Préparer pour le chemin</button><div id="prepEtat" class="muted" style="font-size:14px;margin-top:8px"></div></div>
-  <details class="rub" open><summary>Ma carte d'allergie <span>${allergie() ? E(allergie().fr) : 'à choisir'}</span></summary>
-   <div class="ph" style="flex-wrap:wrap"><label for="alg" style="font-weight:800">Mon allergie :</label>
-    <select id="alg" style="font:inherit;padding:8px;border-radius:10px;border:1px solid var(--line-300);min-height:44px;flex:1">
-     <option value="">— aucune —</option>${D.alergenos.map(a => `<option value="${a.code}" ${S.alergia === a.code ? 'selected' : ''}>${E(a.fr)}</option>`).join('')}</select></div>
-   ${allergie() ? `<div class="ph"><button class="btn btn--son" aria-label="Écouter" onclick="jouer('poche/alergia-${allergie().code}.mp3')">${ICO.son}</button>
-     <div class="t"><b lang="es">${E(allergie().phrase)}</b><span>J'ai une allergie grave ${E(allergie().fr)}. Ce plat en contient-il ?</span></div>
-     <button class="btn btn--petit" onclick="montrerAllergie()">Montrer</button></div>
-     <p class="avis-local" style="padding:0 14px 10px;margin:0">Plusieurs allergies ? Changez le choix ci-dessus pour montrer chacune ; au restaurant, dites-les toutes.</p>` : ''}</details>
   ${D.poche.map((r, ri) => `<details class="rub"${ri === 0 ? ' open' : ''}><summary>${E(r.titre)} <span>${r.items.length}</span></summary>
     ${r.items.map(itemPoche).map((x, xi) => `<div class="ph"><button class="btn btn--son" aria-label="Écouter" onclick="jouer('${x.fichier}')">${ICO.son}</button>
      <div class="t"><b>${E(g(x.es))}</b><span>${E(g(x.fr))}</span></div>
@@ -2029,16 +1992,10 @@ function vuePoche(){
      ${r.reponses.map(x => `<div class="ph"><button class="btn btn--son" aria-label="Écouter" onclick="jouer('${sonDe(x.son, x.es)}')">${ICO.son}</button>
       <div class="t"><b>${E(g(x.es))}</b><span>${E(g(x.fr))}</span></div></div>`).join('')}` : ''}</details>`).join('')}`;
   $('#prep').onclick = preparer;
-  $('#alg').onchange = e => { S.alergia = e.target.value; sauver(); vuePoche(); };
 }
 function itemPoche(x){
   if (x.var && S.vars[x.var]) { const c = choixVar(x.var); if (c) return {es:c.es, fr:c.fr, fichier:c.fichier}; }
   return {es:x.es, fr:x.trad || x.fr, fichier:sonDe(x.son, x.es)};
-}
-function montrerAllergie(){
-  const a = allergie(); if (!a) return;
-  D.poche.__a = {es:a.phrase, fr:`J'ai une allergie grave ${a.fr}. Ce plat en contient-il ?`, son:`poche/alergia-${a.code}`};
-  montrerX(D.poche.__a);
 }
 function montrer(ri, xi){ const x = itemPoche(D.poche[ri].items[xi]); montrerX({es:x.es, fr:x.fr, fichier:x.fichier}); }
 function montrerX(x){
@@ -2120,7 +2077,7 @@ function vuePieges(){
 /* ---------- le test « Suis-je prêt ? » ----------
    Audit tour 1 (F1, bloquant) : deux formes parallèles d'items INÉDITS
    (build/contenu/compostelle/test.py), les cinq objectifs dans chacune,
-   l'allergie éliminatoire — règle affichée avant. Plus quelques mots et faux
+   plus aucune question éliminatoire (l'allergie est retirée le 28 sept. 2026). Plus quelques mots et faux
    amis de la pratique, pour le vocabulaire. La première forme est tirée au
    hasard, la reprise prend l'autre. */
 function vueTest(){
@@ -2130,13 +2087,12 @@ function vueTest(){
   const pool = D.etapes.flatMap(e => e.mots).filter((x, i, a) => a.indexOf(x) === i && D.mots[x] && D.mots[x].img === 'croquis');
   pool.filter((_, i) => i % 2 === f).slice(0, 3).forEach(id => items.push({type:'mot', obj:'mots', id}));
   D.pieges.filter((_, i) => i % 2 === f).slice(0, 2).forEach(x => items.push({type:'piege', obj:'mots', x}));
-  let k = 0; const res = {}; let elimRate = false, nonVerifie = false;
+  let k = 0; const res = {};
   const prete = S.genre === 'f' ? 'prête' : 'prêt';
   function intro(){
     app.innerHTML = `${retour('accueil', 'La credencial')}<p class="surtitre">Le test du chemin</p><h1>Suis-je ${prete} ?</h1>
       <p>${items.length} questions, un quart d'heure, avec le son. Des phrases <b>nouvelles pour la plupart</b> : comprendre et dire, pour un lit, un repas, la pharmacie, un chemin, un autre pèlerin — puis quelques mots.</p>
-      <div class="regle"><b>La règle.</b> Les questions marquées « allergie » ne pardonnent pas : en rater une donne « Pas encore ${prete} », quel que soit le reste.
-      Pour chaque objectif, plusieurs questions : ${E(D.test.seuil)} L'allergie dite au micro compte comme les autres questions d'allergie. ${allergie() ? 'Les questions d\u2019allergie portent sur la vôtre (' + E(allergie().fr) + ').' : 'Choisissez votre allergie dans les réglages : sans elle, les questions portent sur les noix.'}</div>
+      <div class="regle"><b>La règle.</b> Pour chaque objectif, plusieurs questions : ${E(D.test.seuil)} Le test vous situe, il ne vous note pas.</div>
       ${S.test.passages >= 2 ? `<div class="retro info">Vous avez vu les deux formes. Refaites quelques étapes avant de repasser : les réponses sont encore fraîches.</div>` : ''}
       ${S.test.dernier ? `<div class="retro info">Dernier passage : ${E(S.test.dernier)}</div>` : ''}
       <button class="btn btn--pri btn--large" id="go">Commencer</button>`;
@@ -2145,9 +2101,8 @@ function vueTest(){
   function tour(){
     if (k >= items.length) return bilan();
     const it = items[k]; let tentee = false;
-    const tete2 = `${retour('accueil', 'La credencial')}<p class="surtitre">Question ${k + 1} sur ${items.length}</p><div class="progres"><i style="width:${100 * k / items.length}%"></i></div>
-      ${(it.elim || (it.type === 'oral' && it.obj === 'O2')) ? '<span class="rappel" style="background:var(--no-bg);border-color:var(--no-line);color:var(--no-ink)">Allergie — ne pardonne pas</span>' : ''}`;
-    const noter = ok => { if (tentee) return; tentee = true; const r = res[it.obj] || (res[it.obj] = [0, 0]); r[1]++; if (ok) r[0]++; if (!ok && it.elim) elimRate = true; };
+    const tete2 = `${retour('accueil', 'La credencial')}<p class="surtitre">Question ${k + 1} sur ${items.length}</p><div class="progres"><i style="width:${100 * k / items.length}%"></i></div>`;
+    const noter = ok => { if (tentee) return; tentee = true; const r = res[it.obj] || (res[it.obj] = [0, 0]); r[1]++; if (ok) r[0]++; };
     const suite = () => { const b = document.createElement('button'); b.className = 'btn btn--pri btn--large'; b.textContent = 'Suivant'; b.onclick = () => { k++; tour(); }; $('#r').appendChild(b); };
     const qcm = (textes, retros, bonneTxt) => {
       // Audit tour 2 (D4) : la place de la bonne suivait un cycle fixe.
@@ -2170,7 +2125,6 @@ function vueTest(){
     } else if (it.type === 'oral') {
       // Audit tour 4 (F1/G2, majeur) : trois prises, la meilleure compte ; rien
       // entendu ou micro refusé → un message et le repli « non vérifié ».
-      // Seul l'oral d'ALLERGIE (O2) est éliminatoire, et seulement vérifié.
       let prises = 0;
       app.innerHTML = `${tete2}<h1>Dites-le</h1><div class="carte"><p style="font-size:18px;font-weight:800;margin:0">${E(g(it.fr))}</p></div>
         ${Reco ? `<div class="micro"><button class="btn-micro" id="mic" aria-label="Parler">${ICO.micro}</button><div class="muted" id="micEtat" style="font-size:14px">Trois essais ; le meilleur compte.</div><div class="entendu" id="entendu"></div></div>` : ''}
@@ -2178,23 +2132,22 @@ function vueTest(){
         ${Reco ? '' : '<p class="avis-local">Ce navigateur ne reconnaît pas la voix : cette question ne sera pas vérifiée.</p>'}`;
       const modele = () => `<div class="retro info"><span class="surtitre">Le modèle</span><div class="phrase-es">${E(g(it.modele || ''))}</div></div>`;
       const fin = (ok, verifie) => {
-        if (verifie) { if (it.obj === 'O2') it.elim = true; noter(ok); } else { tentee = true; if (it.obj === 'O2') nonVerifie = true; }
+        if (verifie) noter(ok); else tentee = true;
         if ($('#sansmic')) $('#sansmic').remove(); if ($('#mic')) $('#mic').disabled = true;
         $('#r').innerHTML = `<div class="retro ${!verifie ? 'info' : ok ? 'ok' : 'no'}">${!verifie ? 'Non vérifié : cette question ne compte pas.' : ok ? '✓ On vous a compris.' : 'Trois essais sans qu’on vous comprenne.'}</div>${modele()}`;
-        if (it.obj === 'O2') jouer(sonDe('leon/dire-0', 'Soy alérgic{o|a} {alg:a}.'));
         suite(); };
       $('#sansmic').onclick = () => fin(false, false);
       if (Reco) $('#mic').onclick = () => { const mic = $('#mic'); if (recoActive) { arreterMicro(); return; }
         mic.classList.add('ecoute'); mic.innerHTML = ICO.stop;
         ecouterMicro(t => { $('#entendu').textContent = '« ' + t + ' »'; }, final => {
           mic.classList.remove('ecoute'); mic.innerHTML = ICO.micro;
-          if (!final) { $('#r').innerHTML = `<div class="retro info">${rienEntendu('Je n\u2019ai rien entendu. Vérifiez que le micro est permis et réessayez — ou touchez « je l\u2019ai dit ».')}</div>`; return; }
-          const t = ' ' + plat(final).replace(/ o no$/, '') + ' ', non = it.obj === 'O2' && / no /.test(t);
-          const ok = !non && it.cles.every(c => g(c).split('|').some(x => t.includes(plat(x))));
+          if (!final) { $('#r').innerHTML = `<div class="retro info">${rienEntendu('Je n\u2019ai rien entendu. Vérifiez que le micro est permis et réessayez — ou touchez « C\u2019est dit ! ».')}</div>`; return; }
+          const t = ' ' + plat(final).replace(/ o no$/, '') + ' ';
+          const ok = it.cles.every(c => g(c).split('|').some(x => t.includes(plat(x))));
           prises++;
           if (ok) return fin(true, true);
           if (prises >= 3) return fin(false, true);
-          $('#r').innerHTML = `<div class="retro no">J'ai entendu « ${E(final)} ». ${non ? 'Attention au « no ». ' : ''}Réessayez (${prises} sur 3).</div>`;
+          $('#r').innerHTML = `<div class="retro no">J'ai entendu « ${E(final)} ». Réessayez (${prises} sur 3).</div>`;
         }); };
     } else if (it.type === 'dire') {
       const [html, brancher] = qcm(it.choix.map(c => c[0]), it.choix.map(c => c[1]), 'C’est bien ce qu’il faut dire.');
@@ -2222,19 +2175,16 @@ function vueTest(){
   }
   function bilan(){
     const noms = {...D.test.objectifs, mots: 'Reconnaître les mots et les faux amis'};
-    const conseils = {O1: 'Refaites l’étape 1 (Roncesvalles) et le « Ce qu’on me répond » de Burgos.', O2: 'Refaites León en entier' + (S.alergia ? '.' : ', et choisissez votre allergie dans les réglages.'),
+    const conseils = {O1: 'Refaites l’étape 1 (Roncesvalles) et le « Ce qu’on me répond » de Burgos.', O2: 'Refaites León en entier.',
       O3: 'Refaites la pharmacie de Logroño.', O4: 'Refaites Puente la Reina, voix plus lentes d’abord.', O5: 'Refaites les soirs avec Marta, en répondant au micro.', mots: 'Reprenez « Tous les mots » et « Les faux amis ».'};
     const lignes = Object.keys(noms).filter(o => res[o]).map(o => {
       const [ok, tot] = res[o], r = ok / tot;
       const etat = (r >= .99 && tot >= 2) ? ['ok', '✓ Solide'] : r > 0 ? ['info', '→ En route'] : ['no', '— À reprendre'];
       return `<div class="carte" style="margin:8px 0"><b>${E(noms[o])}</b><div class="retro ${etat[0]}" style="margin:6px 0">${etat[1]} — ${ok} sur ${tot}</div>${r < .99 ? `<p class="muted" style="margin:0;font-size:15px">${E(conseils[o])}</p>` : ''}</div>`;
     }).join('');
-    S.test.prochaine = 1 - f; S.test.passages = (S.test.passages || 0) + 1; S.test.dernier = aujourdhui() + (elimRate ? ' — allergie ratée' : nonVerifie ? ' — allergie non vérifiée' : ' — allergie réussie'); sauver();
+    S.test.prochaine = 1 - f; S.test.passages = (S.test.passages || 0) + 1; S.test.dernier = aujourdhui(); sauver();
     app.innerHTML = `${retour('accueil', 'La credencial')}<h1>Où vous en êtes</h1>
-      ${elimRate ? `<div class="eliminatoire"><b>Pas encore ${prete} : l'allergie.</b><p style="margin:6px 0 0">Une question sur l'allergie a été ratée. C'est la seule erreur qui ne pardonne pas sur le chemin. Refaites León, puis repassez le test : ce seront d'autres phrases.</p></div>`
-        : nonVerifie ? `<div class="retro info"><b>L'allergie : dite sans micro, donc non vérifiée.</b> C'est la phrase qui compte le plus sur le chemin :
-          faites-la vérifier une fois au micro (à León, « Je le dis »), ou dites-la à quelqu'un qui parle espagnol. Le reste est un repère, pas une note.</div>`
-        : `<div class="retro ok">✓ L'allergie : réussie. Le reste est un repère, pas une note.</div>`}
+      <div class="retro info">Un repère, pas une note : ce qui est « À reprendre » dit quelle étape refaire.</div>
       ${lignes}
       <p class="muted">La vraie épreuve, ce sera le premier « ¿Qué te pongo? » à Pamplona.</p>
       <button class="btn btn--pri btn--large" onclick="aller('accueil')">Retour à la credencial</button>`;
@@ -2248,10 +2198,6 @@ function vueReglages(){
   <div class="carte"><h3 style="margin-top:0">Vous êtes</h3>
    <div class="rangee"><button class="btn ${S.genre === 'm' ? 'btn--pri' : ''}" onclick="S.genre='m';sauver();vueReglages()">Un pèlerin</button>
    <button class="btn ${S.genre === 'f' ? 'btn--pri' : ''}" onclick="S.genre='f';sauver();vueReglages()">Une pèlerine</button></div>
-   <h3>Mon allergie</h3>
-   <select onchange="S.alergia=this.value;sauver()" style="font:inherit;padding:8px;border-radius:10px;border:1px solid var(--line-300);min-height:44px;width:100%">
-    <option value="">— aucune —</option>${D.alergenos.map(a => `<option value="${a.code}" ${S.alergia === a.code ? 'selected' : ''}>${E(a.fr)}</option>`).join('')}</select>
-   <p class="avis-local">Elle sert à votre carte « Montrer » de la trousse, et à la phrase que vous direz à León.</p>
    <h3>Les voix</h3>
    <label class="aide-bascule"><input type="checkbox" ${S.lent ? 'checked' : ''} onchange="S.lent=this.checked;sauver()"> Voix plus lentes (partout)</label>
    <h3>Les traductions</h3>

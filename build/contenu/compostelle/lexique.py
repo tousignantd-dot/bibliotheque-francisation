@@ -110,7 +110,6 @@ LEXIQUE = [
     ("cuenta", "comer", "la cuenta", "l'addition", "croquis", ""),
     ("propina", "comer", "la propina", "le pourboire",
      "croquis", "PIÈGE : la propina n'a rien de propre : c'est le pourboire."),
-    ("alergico", "comer", "soy alérgico, soy alérgica", "je suis allergique", "croquis", ""),
     ("sin_gluten", "comer", "sin gluten", "sans gluten", "croquis", ""),
     ("vegetariano", "comer", "vegetariano, vegetariana", "végétarien, végétarienne", "croquis", ""),
     ("frutos_secos", "comer", "los frutos secos", "les noix (les fruits à coque)", "croquis", ""),

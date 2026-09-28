@@ -117,7 +117,6 @@ SUJETS = {
     "carta": ("objet", "an open restaurant menu folder on a table, its pages covered only with small drawings of dishes (a fish, a chicken leg, a bowl, a glass) and blank lines — no letters, no prices."),
     "cuenta": ("objet", "a small saucer on a café table holding a folded blank paper bill, a few euro coins and a pen; nothing legible on the paper."),
     "propina": ("objet", "a few small coins left on a saucer beside an empty coffee cup on a café table."),
-    "alergico": ("geste", "a pilgrim sitting at a restaurant table, one hand raised in a cautious 'stop' gesture over a plate, speaking to a waiter who listens attentively and leans in."),
     "sin_gluten": ("objet", "a loaf of bread and a wheat ear, both inside a red circle crossed by a red diagonal bar, like a prohibition sign; no letters."),
     "vegetariano": ("objet", "a colourful plate of grilled vegetables — peppers, courgette, aubergine, tomatoes — with a sprig of parsley, no meat, no fish."),
     "marisco": ("objet", "a plate of seafood: prawns, mussels in their shells and a few clams, with a lemon wedge."),

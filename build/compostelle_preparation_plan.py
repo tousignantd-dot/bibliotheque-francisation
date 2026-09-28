@@ -64,9 +64,9 @@ SEANCES = [
      ["albergue", "farmacia", "supermercado", "panaderia", "parada", "quedan", "fuente", "iglesia", "ducha", "enchufe"],
      "Quelle question pour obtenir quoi ; dire la question ; entendre qu'on vous la pose.", 20),
     (7, "Parler de soi", "P4",
-     "Se présenter en trois phrases : d'où l'on vient, pourquoi l'on marche, son allergie. Pèlerin ou pèlerine : l'accord se fait tout seul.",
+     "Se présenter en trois phrases : d'où l'on vient, pourquoi l'on marche, d'où l'on est parti. Pèlerin ou pèlerine : l'accord se fait tout seul.",
      ["Soy de Quebec, en Canadá.", "Hago el Camino por…", "Soy alérgico / alérgica a…"],
-     ["soy_de", "de_donde", "por_que", "desde_donde", "encantado", "alergico", "cansado", "peregrino"],
+     ["soy_de", "de_donde", "por_que", "desde_donde", "encantado", "cansado", "peregrino"],
      "Composer sa présentation (elle rejoint la trousse, « Me présenter ») ; la dire ; répondre à « ¿De dónde eres? ».", 18),
     (8, "Comprendre la réponse", "P5",
      "Le plus dur n'est pas de demander, c'est d'entendre la réponse : <i>sí / no, hay / no hay, está completo, a la derecha, todo recto, "
@@ -83,7 +83,7 @@ OBJECTIFS = [
      "8 sur 10, sans confondre les paires d'oreille"),
     ("P3", "Formuler une demande ou une question", "dans une situation nouvelle, avec quisiera, ¿tiene…?, necesito, me duele, ¿dónde está…?, ¿hay…?",
      "4 sur 5 dites et comprises"),
-    ("P4", "Se présenter", "en trois phrases, au bon genre, allergie comprise",
+    ("P4", "Se présenter", "en trois phrases, au bon genre",
      "les trois dites sans aide"),
     ("P5", "Comprendre une réponse courte", "oui / non, il y en a / il n'y en a pas, complet, gauche / droite / tout droit, ça en contient",
      "8 sur 10"),
@@ -225,7 +225,7 @@ Plus bas, le texte suit ce vocabulaire ; la décision sur le nom est gardée tel
       comprendre la réponse. Un test « Prêt à partir ? » pour finir.</p>
       <p style="font-size:14px;color:var(--muted);margin:0">On y apprend <b>les outils</b> ; on ne s'en sert pas encore en situation.</p></div>
     <div class="temps chemin"><h3>Sur le chemin</h3><p class="q">Les dix étapes · les scènes · Marta · « Parler librement »</p>
-      <p>Ce qui existe aujourd'hui : chaque étape met les outils en situation (un lit, un comptoir, la pharmacie, l'allergie…), puis la
+      <p>Ce qui existe aujourd'hui : chaque étape met les outils en situation (un lit, un comptoir, la pharmacie, le menu…), puis la
       conversation libre les exerce avec quelqu'un qui répond vraiment.</p>
       <p style="font-size:14px;color:var(--muted);margin:0">On y <b>réemploie</b> ; la trousse reste l'outil de secours.</p></div>
   </div>

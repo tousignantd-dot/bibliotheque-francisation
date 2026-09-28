@@ -2,11 +2,11 @@
 
 Audit tour 1 (bloquant F1) : le premier test reprenait les items mêmes de la
 pratique, et chaque forme ne couvrait que la moitié des objectifs — une
-pèlerine pouvait lire « Solide » sans avoir été interrogée sur l'allergie.
+pèlerine pouvait lire « Solide » sans avoir été interrogée sur tout.
 Ici, chaque forme porte les cinq objectifs, avec des phrases qu'on n'a jamais
-entendues dans les journées (mêmes structures, autres valeurs), et l'allergie
-y est ÉLIMINATOIRE : un item `elim` raté donne « Pas encore prête : l'allergie »,
-quel que soit le reste. La règle est affichée avant de commencer.
+entendues dans les journées (mêmes structures, autres valeurs). L'allergie, qui
+était éliminatoire, est retirée le 28 sept. 2026 (Daniel : « c'est la
+responsabilité de chacun ») : plus aucun item `elim`.
 
 Types :
 - `rep`    : la personne dit une phrase ; on choisit ce qu'elle veut dire (fr).
@@ -17,7 +17,7 @@ Le premier choix est le bon ; l'ordre affiché tourne.
 
 OBJECTIFS = {
     "O1": "Obtenir un lit et comprendre prix, heures, règles",
-    "O2": "Dire son allergie et comprendre la réponse",
+    "O2": "Commander, et comprendre ce que contient un plat",
     "O3": "Comprendre comment prendre un médicament",
     "O4": "Comprendre un chemin indiqué",
     "O5": "Répondre à un autre pèlerin",
@@ -30,19 +30,19 @@ FORMES = [
      "choix": [("Il reste deux lits, en haut ; 12 € ; on ferme à 22 h 30.", None),
                ("Il reste deux lits, en bas ; 12 € ; on ferme à 22 h 30.", "Arriba = en haut. En bas : abajo."),
                ("Il reste deux lits, en haut ; 2 € ; on ferme à 22 h 30.", "Doce = 12. Dos = 2.")]},
-    {"obj": "O2", "type": "rep", "qui": "alex", "elim": True,
-     "es": "El pollo no lleva {alg:sans}, pero la salsa sí.",
-     "choix": [("Le poulet ne contient pas {alg:frneg} ; la sauce, oui.", None),
-               ("Ni le poulet ni la sauce ne contiennent {alg:frneg}.", "« La salsa sí » : la sauce, elle, en contient."),
-               ("Le poulet contient {alg:frde} ; la sauce, non.", "« No lleva » : c'est le poulet qui n'en contient pas.")]},
-    {"obj": "O2", "type": "dire", "elim": True,
-     "fr": "Au restaurant. Vous êtes allergique {alg:fr}. Que dites-vous au serveur ?",
-     "choix": [("Soy alérgic{o|a} {alg:a}. ¿Este plato lleva {alg:sans}?", None),
-               ("Me encanta la comida de aquí. ¿Este plato está bueno?", "Vous n'avez rien dit de votre allergie : soy alérgico, alérgica…"),
-               ("Soy alérgic{o|a} {alg:a}. ¿Este plato es muy grande?", "Vous avez dit votre allergie, sans demander si le plat en contient : ¿lleva…?")]},
+    {"obj": "O2", "type": "rep", "qui": "alex",
+     "es": "El pollo no lleva cebolla, pero la salsa sí.",
+     "choix": [("Le poulet ne contient pas d'oignon ; la sauce, oui.", None),
+               ("Ni le poulet ni la sauce ne contiennent d'oignon.", "« La salsa sí » : la sauce, elle, en contient."),
+               ("Le poulet contient de l'oignon ; la sauce, non.", "« No lleva » : c'est le poulet qui n'en contient pas.")]},
+    {"obj": "O2", "type": "dire",
+     "fr": "Au restaurant. Vous voulez savoir ce que contient le plat du jour. Que dites-vous au serveur ?",
+     "choix": [("Perdone, ¿qué lleva el plato del día?", None),
+               ("Perdone, ¿cuánto cuesta el plato del día?", "Vous demandez le prix, pas ce qu'il contient : ¿qué lleva…?"),
+               ("Perdone, ¿el plato del día es grande?", "Vous demandez la taille, pas ce qu'il contient : ¿qué lleva…?")]},
     {"obj": "O2", "type": "oral",
-     "fr": "Au micro : dites au serveur votre allergie, et demandez si le plat en contient.",
-     "cles": ["alergia|alérgico|alérgica|alergico|alergica", "{alg:sans}", "lleva"], "modele": "Soy alérgic{o|a} {alg:a}. ¿Este plato lleva {alg:sans}?"},
+     "fr": "Au micro : commandez le menu du pèlerin, et demandez ce que contient l'entrée.",
+     "cles": ["menu|menú", "lleva"], "modele": "El menú del peregrino, por favor. ¿Qué lleva el primero?"},
     {"obj": "O3", "type": "rep", "qui": "pilar",
      "es": "Tómese dos pastillas al día: una por la mañana y otra por la noche.",
      "choix": [("Deux comprimés par jour : un le matin, un le soir.", None),
@@ -100,19 +100,19 @@ FORMES = [
      "choix": [("Il reste un lit, en bas ; 15 € ; souper à 20 h.", None),
                ("Il reste un lit, en haut ; 15 € ; souper à 20 h.", "Abajo = en bas. En haut : arriba."),
                ("Il reste un lit, en bas ; 50 € ; souper à 20 h.", "Quince = 15. Cincuenta = 50.")]},
-    {"obj": "O2", "type": "rep", "qui": "ainhoa", "elim": True,
-     "es": "El bocadillo vegetal no lleva {alg:sans}, pero el pincho de la casa sí.",
-     "choix": [("Le sandwich végétarien ne contient pas {alg:frneg} ; le pincho de la maison, oui.", None),
-               ("Ni le sandwich ni le pincho ne contiennent {alg:frneg}.", "« El pincho sí » : le pincho, lui, en contient."),
-               ("Le sandwich végétarien contient {alg:frde} ; le pincho, non.", "« No lleva » : c'est le sandwich qui est sûr.")]},
-    {"obj": "O2", "type": "dire", "elim": True,
-     "fr": "Au bar, vous voulez un bocadillo. Vous êtes allergique {alg:fr}. Que dites-vous ?",
-     "choix": [("Perdone, soy alérgic{o|a} {alg:a}. ¿El bocadillo lleva {alg:sans}?", None),
-               ("Perdone, ¿el bocadillo es grande o pequeño?", "La taille ne vous protège pas : dites votre allergie, et demandez s'il en contient."),
-               ("Perdone, soy alérgic{o|a} {alg:a}. ¿Cuánto cuesta el bocadillo?", "Le prix ne vous protège pas : demandez s'il en contient — ¿lleva…?")]},
+    {"obj": "O2", "type": "rep", "qui": "ainhoa",
+     "es": "El bocadillo vegetal no lleva huevo, pero el pincho de la casa sí.",
+     "choix": [("Le sandwich végétarien ne contient pas d'œuf ; le pincho de la maison, oui.", None),
+               ("Ni le sandwich ni le pincho ne contiennent d'œuf.", "« El pincho sí » : le pincho, lui, en contient."),
+               ("Le sandwich végétarien contient de l'œuf ; le pincho, non.", "« No lleva » : c'est le sandwich qui n'en contient pas.")]},
+    {"obj": "O2", "type": "dire",
+     "fr": "Au bar, vous voulez un bocadillo. Demandez ce qu'il contient.",
+     "choix": [("Perdone, ¿qué lleva el bocadillo?", None),
+               ("Perdone, ¿el bocadillo es grande o pequeño?", "Vous demandez la taille, pas ce qu'il contient : ¿qué lleva…?"),
+               ("Perdone, ¿cuánto cuesta el bocadillo?", "Vous demandez le prix, pas ce qu'il contient : ¿qué lleva…?")]},
     {"obj": "O2", "type": "oral",
-     "fr": "Au micro : dites à la serveuse votre allergie, et demandez si le sandwich en contient.",
-     "cles": ["alergia|alérgico|alérgica|alergico|alergica", "{alg:sans}", "lleva"], "modele": "Soy alérgic{o|a} {alg:a}. ¿El bocadillo lleva {alg:sans}?"},
+     "fr": "Au micro : commandez un bocadillo, et demandez ce qu'il contient.",
+     "cles": ["bocadillo", "lleva"], "modele": "Un bocadillo, por favor. ¿Qué lleva?"},
     {"obj": "O3", "type": "rep", "qui": "pilar",
      "es": "Tómese una pastilla cada doce horas, siempre con comida.",
      "choix": [("Un comprimé toutes les douze heures, toujours en mangeant.", None),
@@ -175,7 +175,6 @@ def verifier():
         from collections import Counter
         assert all(n >= 2 for n in Counter(i["obj"] for i in f).values()), "deux items au moins par objectif"
         assert {i["obj"] for i in f} == set(OBJECTIFS), "chaque forme porte les cinq objectifs"
-        assert any(i.get("elim") for i in f), "chaque forme a un item éliminatoire"
         for i in f:
             if i["type"] == "oral":
                 continue
