@@ -3412,3 +3412,16 @@ rôle (le magasin, le comptoir), ouvert par un code « PC » acheté chez Stripe
   plafonds et même fin que ceux de Compostelle.
 
     python3 build/controles/pelerins.py   # l'achat d'une trousse y est joué
+
+### Les lots d'un employeur et leur suivi (28 sept. 2026)
+
+Un employeur achète de 2 à 50 codes en un seul paiement (`quantite` sur
+`/api/pelerins/achat`, `line_items[0][quantity]` chez Stripe). Le lot reçoit un
+**code de suivi** `SV…` (`est_suivi()`), qui n'ouvre aucun jeu : il lit, par
+`GET /api/pelerins/suivi?code=`, l'usage de chaque code — état, conversations,
+date de la dernière (`dernier`, posée par `consommer()`). Jamais le contenu,
+jamais une personne : qui a reçu quel code, l'employeur l'écrit dans
+`suivi-codes.html` (produite par `build/suivi_codes.py`), gardé dans son
+navigateur. Les codes et le suivi sont sur le reçu ; un remboursement complet
+éteint tout le lot. Les conditions de vente ont leur section « Achat pour une
+équipe ».

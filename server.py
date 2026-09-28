@@ -20629,6 +20629,14 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                 json_response(self, {"error": err[0]}, err[1])
             else:
                 json_response(self, etat)
+        elif path == "/api/pelerins/suivi":
+            # Le suivi d'un lot (28 sept. 2026) : un employeur voit si chaque code
+            # a servi, et combien — jamais le contenu, jamais une personne.
+            lot = reg.suivi(params.get("code", [""])[0].strip().upper())
+            if lot:
+                json_response(self, lot)
+            else:
+                json_response(self, {"error": "Code de suivi inconnu"}, 404)
         elif path == "/api/pelerins/etat":
             p = reg.trouver(params.get("code", [""])[0].strip().upper())
             if p:
@@ -20661,7 +20669,8 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         # Le produit (28 sept. 2026) : Compostelle, ou le jeu de rôle d'une trousse
         # de métier, vendu de la même façon (pelerins.PRODUITS en est la liste blanche).
         produit = str(body.get("produit") or "compostelle").strip().lower()
-        res, err = reg.commencer_achat(self._adresse_du_site(), recharge=recharge, produit=produit)
+        res, err = reg.commencer_achat(self._adresse_du_site(), recharge=recharge, produit=produit,
+                                       quantite=body.get("quantite") or 1)
         if err:
             json_response(self, {"error": err[0]}, err[1])
         else:

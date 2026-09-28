@@ -125,12 +125,29 @@ def offre():
         # Loi 25 : un code est effacé ce nombre de jours après son expiration
         # (menage()) ; la page de confidentialité le relit ici.
         "conservation": _entier("COMPOSTELLE_CONSERVATION_JOURS", 365),
+        "lotMin": LOT_MIN, "lotMax": LOT_MAX,
     }
 
 
 def disponible():
     """La vente est-elle branchée ? Sans clé Stripe, on ne propose pas d'acheter."""
     return bool(os.environ.get("STRIPE_SECRET_KEY"))
+
+
+# Les lots (28 sept. 2026, Daniel : un employeur qui achète des codes pour ses
+# employés veut savoir si chacun a servi). Un lot = N codes ordinaires + un code
+# de SUIVI, qui n'ouvre aucun jeu : il ne fait que lire l'usage de ses codes.
+SUIVI, LOT_MIN, LOT_MAX = "SV", 2, 50
+
+
+def est_suivi(code):
+    return (isinstance(code, str) and len(code) == LONGUEUR and code.startswith(SUIVI)
+            and all(c in ALPHABET for c in code[len(SUIVI):]))
+
+
+def _codes_dans(texte):
+    import re as _re
+    return _re.findall(r"PC[A-Z0-9]{6}", texte or "")
 
 
 def est_code(code):
@@ -266,11 +283,19 @@ class Registre:
         return n
 
     # -- l'achat --------------------------------------------------------------
-    def commencer_achat(self, adresse, recharge=None, produit="compostelle"):
-        """Crée la session Stripe Checkout. Rend ({url, session}, None) ou (None, (message, statut))."""
+    def commencer_achat(self, adresse, recharge=None, produit="compostelle", quantite=1):
+        """Crée la session Stripe Checkout. Rend ({url, session}, None) ou (None, (message, statut)).
+        `quantite` > 1 : un lot, N codes et un code de suivi."""
         if not disponible():
             return None, ("La vente n'est pas encore ouverte.", 503)
         o = offre()
+        try:
+            quantite = int(quantite or 1)
+        except (TypeError, ValueError):
+            return None, ("Quantité invalide.", 400)
+        if quantite != 1 and not (LOT_MIN <= quantite <= LOT_MAX) or recharge and quantite != 1:
+            return None, (f"Un lot compte de {LOT_MIN} à {LOT_MAX} codes.", 400)
+        codes, suivi = [], None
         if recharge:
             p = self.trouver(recharge)
             # La recharge suit le produit du code, jamais celui de la page.
@@ -280,6 +305,7 @@ class Registre:
             if p.get("expire", "") < _aujourdhui():
                 return None, ("Ce code a expiré : prenez un nouvel accès.", 409)
             code, montant, nb, quoi = recharge, o["recharge"], o["rechargeConversations"], "recharge"
+            codes = [code]
             nom = f"{PRODUITS[produit]['nom']} — {nb} conversations de plus"
         else:
             if produit not in PRODUITS:
@@ -287,16 +313,29 @@ class Registre:
             with self.verrou:
                 tous = self.charger()
                 self.menage(tous)
-                code = self._nouveau_code({p.get("code") for p in tous})
-                # Réservé, pas actif : il le devient au paiement. Un code réservé
-                # jamais payé n'ouvre rien, et le ménage peut le retirer.
-                res = {"code": code, "etat": "reserve", "cree": _maintenant(), "sessions": []}
-                if PRODUITS[produit]["trousse"]:
-                    res["trousse"] = PRODUITS[produit]["trousse"]
-                tous.append(res)
+                pris = {p.get("code") for p in tous} | {p.get("lot") for p in tous}
+                if quantite > 1:
+                    while True:
+                        suivi = SUIVI + "".join(secrets.choice(ALPHABET) for _ in range(LONGUEUR - len(SUIVI)))
+                        if suivi not in pris:
+                            break
+                for _ in range(quantite):
+                    code = self._nouveau_code(pris | set(codes))
+                    codes.append(code)
+                    # Réservé, pas actif : il le devient au paiement. Un code réservé
+                    # jamais payé n'ouvre rien, et le ménage peut le retirer.
+                    res = {"code": code, "etat": "reserve", "cree": _maintenant(), "sessions": []}
+                    if PRODUITS[produit]["trousse"]:
+                        res["trousse"] = PRODUITS[produit]["trousse"]
+                    if suivi:
+                        res["lot"] = suivi
+                    tous.append(res)
                 self.sauver(tous)
+            code = codes[0]
             montant, nb, quoi = o["prix"], o["conversations"], "achat"
             nom = f"{PRODUITS[produit]['nom']} ({nb} conversations, {o['jours'] // 30} mois)"
+            if suivi:
+                nom = f"{PRODUITS[produit]['nom']} — un code par personne ({nb} conversations, {o['jours'] // 30} mois)"
         retour = adresse.rstrip("/") + PRODUITS[produit]["chemin"]
         session, err = _stripe("POST", "/checkout/sessions", {
             "mode": "payment",
@@ -315,13 +354,16 @@ class Registre:
             "custom_text": {"terms_of_service_acceptance": {"message":
                 f"J'ai lu les [conditions de vente]({adresse.rstrip('/')}/conditions-de-vente.html) : remboursement "
                 "dans les 14 jours si 3 conversations au plus ont servi. Réservé aux personnes majeures."}} if CONSENTEMENT else None,
-            "line_items": [{"quantity": 1, "price_data": {
+            "line_items": [{"quantity": quantite, "price_data": {
                 "currency": o["devise"], "unit_amount": montant, "product_data": {"name": nom}}}],
-            "metadata": {"produit": produit, "quoi": quoi, "code": code},
-            # La description du paiement paraît sur le reçu de Stripe : le code y
-            # voyage, et c'est la façon de le retrouver sans rien garder de nous.
-            "payment_intent_data": {"description": f"Votre code d'accès : {code}",
-                                    "metadata": {"produit": produit, "code": code}},
+            "metadata": {"produit": produit, "quoi": quoi, "code": code,
+                         "codes": ",".join(codes) if suivi else None, "suivi": suivi},
+            # La description du paiement paraît sur le reçu de Stripe : les codes y
+            # voyagent, et c'est la façon de les retrouver sans rien garder de nous.
+            "payment_intent_data": {"description": (f"Vos codes d'accès : {', '.join(codes)}. Code de suivi : {suivi} "
+                                                    f"({adresse.rstrip('/')}/suivi-codes.html)") if suivi
+                                    else f"Votre code d'accès : {code}",
+                                    "metadata": {"produit": produit, "code": code, "suivi": suivi}},
         })
         if err:
             return None, (err, 502)
@@ -335,6 +377,8 @@ class Registre:
         if meta.get("produit") not in PRODUITS or session.get("payment_status") != "paid":
             return None
         code, sid, o = meta.get("code", ""), session.get("id", ""), offre()
+        if meta.get("codes"):
+            return self._crediter_lot(session, meta, o)
         with self.verrou:
             tous = self.charger()
             p = next((x for x in tous if x.get("code") == code), None)
@@ -358,6 +402,44 @@ class Registre:
             self.sauver(tous)
             return p
 
+    def _crediter_lot(self, session, meta, o):
+        """Active tous les codes d'un lot payé (idempotent). Rend le premier code."""
+        sid, suivi, codes = session.get("id", ""), meta.get("suivi"), meta["codes"].split(",")
+        tr = PRODUITS[meta["produit"]]["trousse"]
+        expire = (_dt.datetime.now(_dt.timezone.utc).date() + _dt.timedelta(days=o["jours"])).isoformat()
+        with self.verrou:
+            tous = self.charger()
+            premier = None
+            for code in codes:
+                p = next((x for x in tous if x.get("code") == code), None)
+                if p is None:
+                    p = {"code": code, "etat": "reserve", "cree": _maintenant(), "sessions": []}
+                    tous.append(p)
+                if tr:
+                    p["trousse"] = tr
+                p["lot"] = suivi
+                if sid not in p.get("sessions", []):
+                    p.update(etat="actif", active=_maintenant(), conversations=o["conversations"], utilisees=0, parJour={}, expire=expire)
+                    p.setdefault("sessions", []).append(sid)
+                premier = premier or p
+            self.sauver(tous)
+            return premier
+
+    def suivi(self, code_suivi):
+        """Ce que voit l'employeur : l'usage de chaque code du lot, rien d'autre —
+        ni contenu de conversation (jamais gardé), ni personne (il sait seul qui
+        a reçu quel code). None si le code de suivi n'existe pas."""
+        if not est_suivi(code_suivi):
+            return None
+        lot = [p for p in self.charger() if p.get("lot") == code_suivi]
+        if not lot:
+            return None
+        return {"suivi": code_suivi,
+                "produit": next((k for k, v in PRODUITS.items() if v["trousse"] == lot[0].get("trousse")), "compostelle"),
+                "codes": [{"code": p["code"], "etat": p.get("etat", ""), "utilisees": p.get("utilisees", 0),
+                           "conversations": p.get("conversations", 0), "dernier": p.get("dernier", ""),
+                           "expire": p.get("expire", "")} for p in lot]}
+
     def depuis_retour(self, session_id):
         """Le pèlerin revient de Stripe avec `session_id` : on demande à Stripe
         si c'est payé (sans attendre le webhook), on crédite, on rend le code."""
@@ -371,7 +453,13 @@ class Registre:
         if session.get("payment_status") != "paid":
             return None, ("Le paiement n'est pas encore confirmé.", 409)
         p = self.crediter(session)
-        return (self.etat(p) if p else None), (None if p else ("Paiement introuvable.", 404))
+        if not p:
+            return None, ("Paiement introuvable.", 404)
+        e = self.etat(p)
+        meta = session.get("metadata") or {}
+        if meta.get("suivi"):
+            e.update(suivi=meta["suivi"], codes=meta["codes"].split(","))
+        return e, None
 
     def webhook(self, corps, entete):
         """L'avis de Stripe. Rend (statut HTTP, message)."""
@@ -394,11 +482,17 @@ class Registre:
         Une recharge remboursée retire seulement ses conversations."""
         if not charge or charge.get("amount_refunded", 0) < charge.get("amount", 1):
             return None
-        code = (charge.get("metadata") or {}).get("code") or ""
-        if not code:
-            import re as _re
-            m = _re.search(r"PC[A-Z0-9]{6}", charge.get("description") or "")
-            code = m.group(0) if m else ""
+        codes = _codes_dans(charge.get("description")) or [(charge.get("metadata") or {}).get("code") or ""]
+        if len(codes) > 1:   # un lot : remboursé en entier, tous ses codes s'éteignent
+            with self.verrou:
+                tous = self.charger()
+                lot = [x for x in tous if x.get("code") in codes]
+                for p in lot:
+                    if charge.get("id") not in p.get("rembourses", []):
+                        p.setdefault("rembourses", []).append(charge.get("id")); p["etat"] = "rembourse"
+                self.sauver(tous)
+                return lot[0] if lot else None
+        code = codes[0]
         with self.verrou:
             tous = self.charger()
             p = next((x for x in tous if x.get("code") == code), None)
@@ -457,6 +551,7 @@ class Registre:
                 return None
             p["utilisees"] = p.get("utilisees", 0) + 1
             j = _aujourdhui()
+            p["dernier"] = j   # le suivi d'un lot : la date, jamais l'heure ni le contenu
             pj = {k: v for k, v in (p.get("parJour") or {}).items() if k >= j}   # on ne garde que le jour
             pj[j] = pj.get(j, 0) + 1
             p["parJour"] = pj

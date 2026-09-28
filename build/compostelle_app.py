@@ -1309,6 +1309,8 @@ function vueScene(et, bloc){
     return b;
   }
   function suivant(){
+    // Un son qui finit après qu'on a quitté la scène ne doit rien rouvrir.
+    if (!document.body.contains(zone)) return;
     zone.innerHTML = '';
     while (k < sc.tours.length && !visible(sc.tours[k])) k++;
     if (k >= sc.tours.length) return terminer();

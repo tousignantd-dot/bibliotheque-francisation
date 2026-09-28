@@ -30,6 +30,17 @@ TXT = {
         "legal": "Vendu par Trame. Carte de crédit seulement. Remboursable dans les 14 jours si 3 conversations au plus ont servi. "
                  "Réservé aux personnes majeures (ou avec l'accord d'un parent). Aucune taxe.",
         "conditions": "Conditions de vente",
+        "equipe_tit": "Pour une équipe ?",
+        "equipe_txt": "Un code par employé, et un code de suivi pour vous : il montre si chaque code a servi et combien de fois — jamais ce qui a été dit.",
+        "combien": "Nombre de codes",
+        "obtenir_n": "Obtenir {n} codes — {prix}",
+        "lot_restant": "{n} conversations par code, jusqu'au {date}.",
+        "lot_tit": "Vos codes",
+        "lot_suivi": "Votre code de suivi",
+        "lot_garder": "Donnez un code par personne. Le code de suivi est pour vous seul. Dites à vos employés que vous verrez si leur code a servi, et combien de fois — jamais ce qu'ils ont dit.",
+        "lot_copier": "Copier la liste",
+        "lot_copie": "Copié ✓",
+        "lot_ouvrir": "Ouvrir le suivi",
         "obtenir": "Obtenir mon code — {prix}",
         "vers": "Vers le paiement…",
         "reessayer": "Réessayer",
@@ -57,6 +68,17 @@ TXT = {
         "legal": "Sold by Trame. Credit card only. Refundable within 14 days if 3 conversations or fewer were used. "
                  "Adults only (or with a parent's consent). No tax.",
         "conditions": "Terms of sale (in French)",
+        "equipe_tit": "For a team?",
+        "equipe_txt": "One code per employee, and a tracking code for you: it shows whether each code was used and how often — never what was said.",
+        "combien": "Number of codes",
+        "obtenir_n": "Get {n} codes — {prix}",
+        "lot_restant": "{n} conversations per code, until {date}.",
+        "lot_tit": "Your codes",
+        "lot_suivi": "Your tracking code",
+        "lot_garder": "Give one code per person. The tracking code is for you only. Tell your employees you will see whether their code was used, and how often — never what they said.",
+        "lot_copier": "Copy the list",
+        "lot_copie": "Copied ✓",
+        "lot_ouvrir": "Open tracking",
         "obtenir": "Get my code — {prix}",
         "vers": "Opening payment…",
         "reessayer": "Try again",
@@ -84,6 +106,17 @@ TXT = {
         "legal": "Vendido por Trame. Solo tarjeta de crédito. Reembolsable en 14 días si se usaron 3 conversaciones o menos. "
                  "Solo para mayores de edad (o con el permiso de un padre o madre). Sin impuestos.",
         "conditions": "Condiciones de venta (en francés)",
+        "equipe_tit": "¿Para un equipo?",
+        "equipe_txt": "Un código por empleado, y un código de seguimiento para usted: muestra si cada código se usó y cuántas veces — nunca lo que se dijo.",
+        "combien": "Número de códigos",
+        "obtenir_n": "Obtener {n} códigos — {prix}",
+        "lot_restant": "{n} conversaciones por código, hasta el {date}.",
+        "lot_tit": "Sus códigos",
+        "lot_suivi": "Su código de seguimiento",
+        "lot_garder": "Dé un código por persona. El código de seguimiento es solo para usted. Diga a sus empleados que verá si su código se usó, y cuántas veces — nunca lo que dijeron.",
+        "lot_copier": "Copiar la lista",
+        "lot_copie": "Copiado ✓",
+        "lot_ouvrir": "Abrir el seguimiento",
         "obtenir": "Obtener mi código — {prix}",
         "vers": "Abriendo el pago…",
         "reessayer": "Reintentar",
@@ -111,6 +144,10 @@ CSS = """
 .vente .petit{font-size:14px;opacity:.8}
 .vente .lancement{display:inline-block;background:#FBEFC4;color:#5C4400;border:1px solid #E7C75A;border-radius:10px;padding:4px 10px;font-size:14px;font-weight:700}
 .vente button{width:100%}
+.vente-equipe{margin-top:14px;padding-top:12px;border-top:1px dashed var(--vente-filet,#d8dde5)}
+.vente-equipe label{display:flex;align-items:center;gap:8px;margin:6px 0 10px;font-weight:700}
+.vente-equipe input{font:inherit;width:90px;padding:6px 8px;border:1px solid var(--vente-filet,#c9d0da);border-radius:8px}
+.vente-liste{font:700 17px/1.6 ui-monospace,Menlo,monospace;letter-spacing:.08em;background:#f6f7f9;border-radius:10px;padding:10px 14px;white-space:pre-wrap}
 .vente-code{font:800 30px/1.2 ui-monospace,Menlo,monospace;letter-spacing:.12em;padding:14px;border:2px dashed currentColor;border-radius:12px;text-align:center;margin:10px 0}
 """
 
@@ -138,13 +175,21 @@ async function venteOffre(el){
     <p>${vt('quoi', {n: o.conversations, mois: Math.round(o.jours / 30.4)})}</p>
     <p class="petit">${venteEsc(vt('gratuit'))}</p>
     <p class="petit">${venteEsc(vt('legal'))} <a href="/conditions-de-vente.html" target="_blank" rel="noopener">${venteEsc(vt('conditions'))}</a></p>
-    <button type="button" class="${VENTE.btn} vente-go">${venteEsc(vt('obtenir', {prix: venteDollars(o.prix)}))}</button></div></details>`;
+    <button type="button" class="${VENTE.btn} vente-go">${venteEsc(vt('obtenir', {prix: venteDollars(o.prix)}))}</button>
+    <div class="vente-equipe"><p><b>${venteEsc(vt('equipe_tit'))}</b> ${venteEsc(vt('equipe_txt'))}</p>
+     <label>${venteEsc(vt('combien'))} <input type="number" class="vente-n" min="${o.lotMin || 2}" max="${o.lotMax || 50}" value="${o.lotMin || 2}" inputmode="numeric"></label>
+     <button type="button" class="${VENTE.btn} vente-lot"></button></div></div></details>`;
   el.querySelector('.vente-go').onclick = venteAcheter;
+  const n = el.querySelector('.vente-n'), lot = el.querySelector('.vente-lot');
+  const borne = () => Math.max(o.lotMin || 2, Math.min(o.lotMax || 50, parseInt(n.value, 10) || 0));
+  const libelle = () => { lot.textContent = vt('obtenir_n', {n: borne(), prix: venteDollars(o.prix * borne())}); };
+  n.oninput = libelle; n.onchange = () => { n.value = borne(); libelle(); }; libelle();
+  lot.onclick = ev => { n.value = borne(); venteAcheter(ev, borne()); };
 }
-async function venteAcheter(ev){
+async function venteAcheter(ev, quantite){
   const b = ev && ev.currentTarget; if (b) { b.disabled = true; b.textContent = vt('vers'); }
   try {
-    const r = await fetch('/api/pelerins/achat', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({produit: VENTE.produit})});
+    const r = await fetch('/api/pelerins/achat', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({produit: VENTE.produit, quantite: quantite || 1})});
     const d = await r.json().catch(() => ({}));
     if (r.ok && d.url) { location.href = d.url; return; }
     alert(d.error || vt('erreur'));
@@ -169,6 +214,19 @@ function venteRetour(){
     const z = document.getElementById('venteZ');
     const fin = () => { history.replaceState(null, '', location.pathname + location.search); venteSuite(d && d.code); };
     if (!d || !d.code) { z.innerHTML = `<p>${venteEsc(vt('pas_confirme'))}</p><button type="button" class="${VENTE.btn}" id="venteOk">${venteEsc(vt('retour'))}</button>`; }
+    else if (d.suivi) {
+      // Un lot : l'acheteur n'est pas celui qui joue — aucun code n'est gardé ici.
+      const liste = d.codes.join('\\n');
+      z.innerHTML = `<p><b>${venteEsc(vt('lot_tit'))}</b> (${d.codes.length})</p><pre class="vente-liste">${venteEsc(liste)}</pre>
+        <button type="button" class="${VENTE.btn}" id="venteCopier">${venteEsc(vt('lot_copier'))}</button>
+        <p style="margin-top:16px"><b>${venteEsc(vt('lot_suivi'))}</b></p><div class="vente-code">${venteEsc(d.suivi)}</div>
+        <p>${venteEsc(vt('lot_restant', {n: d.restant, date: venteDate(d.expire)}))}</p><p>${venteEsc(vt('lot_garder'))}</p>
+        <a class="${VENTE.btn}" href="/suivi-codes.html?c=${encodeURIComponent(d.suivi)}">${venteEsc(vt('lot_ouvrir'))}</a>`;
+      document.getElementById('venteCopier').onclick = e => navigator.clipboard.writeText(liste + '\\n\\n' + vt('lot_suivi') + ' : ' + d.suivi)
+        .then(() => { e.target.textContent = vt('lot_copie'); });
+      history.replaceState(null, '', location.pathname + location.search);
+      return;
+    }
     else {
       try { localStorage.setItem(VENTE.cle, d.code); } catch(e) {}
       z.innerHTML = `<p><b>${venteEsc(vt('code'))}</b></p><div class="vente-code">${venteEsc(d.code)}</div>

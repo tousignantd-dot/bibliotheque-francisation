@@ -155,6 +155,9 @@ A_FAIRE = [
 ]
 
 QUESTIONS_AVOCAT = [
+    "L'achat en lot par un employeur n'est pas une vente à un consommateur : faut-il des conditions distinctes pour les "
+    "entreprises (facture, taxes, responsabilité), et l'employeur qui voit l'usage des codes a-t-il des obligations "
+    "précises envers ses employés (Loi 25) ?",
     "Pour une entreprise individuelle, le nom immatriculé (« Trame ») suffit-il comme nom du commerçant dans les "
     "conditions et sur le reçu, ou faut-il aussi le nom de la personne ?",
     "Le reçu de Stripe, avec le lien vers les conditions et le nom et l'adresse que Stripe demande, suffit-il comme "
@@ -188,6 +191,7 @@ def main():
         "parjour": str(o["parJour"]), "prix_ligne": "Le prix d'un code est de " + E(promo),
         "recharge_conv": str(o["rechargeConversations"]), "recharge": prix(o["recharge"]),
         "conservation": str(o["conservation"]),
+        "lot_max": str(o.get("lotMax", 50)),
         "taxes": E(CV.VARIANTES["taxes"][recommande["taxes"]]),
         "remboursement": E(CV.VARIANTES["remboursement"][recommande["remboursement"]]),
         "age": E(CV.VARIANTES["age"][recommande["age"]]),

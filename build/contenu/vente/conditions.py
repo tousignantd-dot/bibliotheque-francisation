@@ -64,6 +64,15 @@ SECTIONS = [
         "Ces conditions n'enlèvent aucun des droits que vous accorde la Loi sur la protection du consommateur, "
         "notamment celui d'annuler si nous ne respectons pas nos obligations.",
     ]),
+    ("Achat pour une équipe", [
+        "Un employeur peut acheter de 2 à {lot_max} codes en un seul paiement, au prix d'un code multiplié par le nombre. "
+        "Chaque code se donne à une personne. Un code de suivi est remis avec le lot, sur l'écran et sur le reçu.",
+        "Le code de suivi montre à l'acheteur, pour chaque code : s'il a servi, le nombre de conversations et la date de la "
+        "dernière. Jamais leur contenu, qui n'est pas gardé, ni le nom de personne. L'acheteur informe les personnes à qui "
+        "il remet un code de ce qu'il pourra voir.",
+        "Un lot se rembourse en entier dans les 14 jours suivant l'achat, si aucun de ses codes n'a servi à plus de 3 "
+        "conversations.",
+    ]),
     ("Si le service s'arrête", [
         "Si nous cessons d'offrir un produit avant la fin de la durée d'un code, nous remboursons la part non utilisée, "
         "au prorata des conversations restantes. Une panne passagère n'est pas un arrêt : une conversation qui échoue "
@@ -123,7 +132,7 @@ def verifier():
             trous |= set(re.findall(r"\{(\w+)\}", p))
     connus = {"vendeur_nom", "vendeur_neq", "vendeur_adresse", "vendeur_telephone", "vendeur_courriel", "conversations",
               "mois", "tours", "parjour", "prix_ligne", "recharge_conv", "recharge", "taxes", "remboursement", "age",
-              "conservation"}
+              "conservation", "lot_max"}
     assert trous <= connus, trous - connus
     return True
 

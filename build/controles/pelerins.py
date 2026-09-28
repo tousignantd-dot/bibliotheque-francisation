@@ -172,6 +172,32 @@ ok(p4["etat"] == "rembourse" and R.refus(p4, "comptoir-fr-en", 0, True)[1] == 40
 R.rembourser({"id": "ch_2", "amount": 999, "amount_refunded": 999, "description": f"Votre code d'accès : {c4}"})
 ok(R.trouver(c4)["rembourses"].count("ch_2") == 1, "un avis répété ne compte qu'une fois")
 
+print("Le lot d'un employeur")
+ok(R.commencer_achat("https://x", produit="hotel", quantite=1)[1] is None, "un seul code : l'achat ordinaire")
+ok(R.commencer_achat("https://x", produit="hotel", quantite=51)[1][1] == 400 and R.commencer_achat("https://x", produit="hotel", quantite="deux")[1][1] == 400,
+   "un lot de 51, ou une quantité illisible, est refusé")
+r5, e5 = R.commencer_achat("https://portail.edufrancis.ca", produit="hotel", quantite=5)
+env5 = APPELS[-1][2]; codes5 = env5["metadata"]["codes"].split(","); sv5 = env5["metadata"]["suivi"]
+ok(e5 is None and len(codes5) == 5 and len(set(codes5)) == 5 and P.est_suivi(sv5) and not P.est_code(sv5), "5 codes distincts et un code de suivi, qui n'est pas un code de jeu")
+ok(env5["line_items"][0]["quantity"] == 5 and all(c in env5["payment_intent_data"]["description"] for c in codes5 + [sv5]),
+   "Stripe facture 5 fois le prix ; les codes et le suivi sont sur le reçu")
+ok(len(P._aplatir(env5)) and len(env5["metadata"]["codes"]) <= 500, "les métadonnées tiennent sous la limite de Stripe")
+ok(all(R.trouver(c)["etat"] == "reserve" for c in codes5) and R.trouver(sv5) is None, "avant paiement : réservés ; le suivi n'est pas un code")
+SESSIONS[r5["session"]]["payment_status"] = "paid"
+e5b, _ = R.depuis_retour(r5["session"])
+ok(e5b and e5b["suivi"] == sv5 and e5b["codes"] == codes5, "au retour : la liste des codes et le code de suivi")
+ok(all(R.trouver(c)["etat"] == "actif" and R.trouver(c)["trousse"] == "hotel" for c in codes5), "payé : les cinq codes sont actifs, liés à l'hôtel")
+R.depuis_retour(r5["session"])
+ok(all(len(R.trouver(c)["sessions"]) == 1 for c in codes5), "revenir deux fois n'active pas deux fois")
+R.consommer(codes5[0]); R.consommer(codes5[0])
+s5 = R.suivi(sv5)
+ok(s5 and len(s5["codes"]) == 5 and s5["codes"][0]["utilisees"] == 2 and s5["codes"][0]["dernier"] and s5["codes"][1]["utilisees"] == 0,
+   "le suivi : 2 conversations sur le premier, rien sur les autres, et la date")
+ok(not any(k in json.dumps(s5) for k in ("sessions", "paye", "nom", "email", "courriel")), "le suivi ne rend ni paiement ni personne")
+ok(R.suivi("SVZZZZZZ") is None and R.suivi(codes5[0]) is None, "un code de suivi inventé, ou un code de jeu, ne montre rien")
+R.rembourser({"id": "ch_lot", "amount": 4995, "amount_refunded": 4995, "description": env5["payment_intent_data"]["description"]})
+ok(all(R.trouver(c)["etat"] == "rembourse" for c in codes5), "un lot remboursé éteint ses cinq codes")
+
 print("Les codes d'essai du pilote")
 ok(all(P.est_code(c) for c in P.CODES_ESSAI) and len(set(P.CODES_ESSAI)) == len(P.CODES_ESSAI), "les codes d'essai sont des codes de pèlerin valides et distincts")
 ce = next(iter(P.CODES_ESSAI)); avant = len(MEMOIRE)
