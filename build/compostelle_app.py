@@ -622,11 +622,19 @@ function arreterMicro(){ if (recoActive) { const r = recoActive; try { r.stop();
 /* Loi 25 (27 sept. 2026) : avant le premier usage, dire où va la voix — chez
    le fournisseur du navigateur, pas chez nous. Accepté une fois, gardé dans
    le téléphone ; refusé, rien ne s'ouvre et l'exercice se fait en touchant. */
-let micRefuse = false;
-// Le message quand le micro ne rend rien : refusé à l'avis, ou rien entendu.
-const rienEntendu = sinon => micRefuse
-  ? 'Micro fermé, comme vous l’avez choisi. ' + (sinon.includes('touchez votre réponse') ? 'Touchez votre réponse.' : 'Dites la phrase à voix haute, puis touchez le bouton « je l’ai dit ».')
-  : sinon;
+let micRefuse = false, micErreur = '';
+// Le message quand le micro ne rend rien : refusé à l'avis, bloqué par le
+// navigateur, absent, sans réseau — ou simplement rien entendu.
+const rienEntendu = sinon => {
+  const repli = sinon.includes('touchez votre réponse') ? 'Touchez votre réponse.' : sinon.includes('écrivez') ? 'Écrivez votre réponse.'
+    : 'Dites la phrase à voix haute, puis touchez le bouton « je l’ai dit ».';
+  if (micRefuse) return 'Micro fermé, comme vous l’avez choisi. ' + repli;
+  if (micErreur === 'not-allowed' || micErreur === 'service-not-allowed')
+    return 'Le navigateur bloque le micro. Touchez l’icône à gauche de l’adresse du site, choisissez « Autoriser » pour le micro, puis réessayez. Sinon : ' + repli.charAt(0).toLowerCase() + repli.slice(1);
+  if (micErreur === 'audio-capture') return 'Aucun micro trouvé sur cet appareil. ' + repli;
+  if (micErreur === 'network') return 'La reconnaissance de la voix demande une connexion Internet. ' + repli;
+  return sinon;
+};
 function fournisseurVoix(){
   const u = navigator.userAgent;
   if (/Edg\//.test(u)) return 'Microsoft (Edge)';
@@ -670,7 +678,8 @@ function ouvrirMicro(surTexte, surFin){
     }
     surTexte((final + prov).trim()); relancer(4000);
   };
-  r.onerror = () => { setTimeout(terminer, 300); };
+  micErreur = '';
+  r.onerror = e => { if (e && e.error && e.error !== 'aborted' && e.error !== 'no-speech') micErreur = e.error; setTimeout(terminer, 300); };
   r.onend = terminer;
   recoActive = r; lecteur.pause();
   try { r.start(); relancer(9000); } catch(e) { terminer(); }
@@ -1479,7 +1488,8 @@ function vueLibre(et){
       mic.classList.add('ecoute'); mic.innerHTML = ICO.stop;
       ecouterMicro(t => { $('#entendu').textContent = '« ' + t + ' »'; }, final => {
         mic.classList.remove('ecoute'); mic.innerHTML = ICO.micro; $('#entendu').textContent = '';
-        if (final && !fini) tour(final);
+        if (!final) { $('#entendu').textContent = rienEntendu('Je n\u2019ai rien entendu. Réessayez, ou écrivez votre réponse.'); return; }
+        if (!fini) tour(final);
       });
     };
     async function bilan(){
@@ -1785,12 +1795,12 @@ function questionPrep(it, fichier, graine, surFin, rappel, une){
   const haut = it.type === 'dire' ? `<div class="carte"><p style="font-size:18px;font-weight:800;margin:0">${E(g(it.fr))}</p></div>`
     : `${p ? `<div class="scene-tete">${p.portrait ? `<img src="${BASE}portraits/${it.qui}.jpg?v=${D.v}" alt="">` : ''}<div><b>${E(p.nom)}</b><div class="muted" style="font-size:14px">${E(p.qui)}</div></div></div>` : ''}
        <div class="gros-son"><button class="btn btn--son" aria-label="Réécouter" id="rejouer">${ICO.son}</button></div>`;
-  const html = `${rappel ? `<span class="rappel">${E(rappel)}</span>` : ''}${une ? '<span class="rappel">Une seule écoute, comme au comptoir</span>' : ''}<h2 style="margin-top:6px">${titre}</h2>${haut}
+  const html = `${rappel ? `<span class="rappel">${E(rappel)}</span>` : ''}${une ? '<span class="rappel">Une seule écoute, comme au comptoir : touchez le haut-parleur quand vous êtes prêt' + (S.genre === 'f' ? 'e' : '') + '</span>' : ''}<h2 style="margin-top:6px">${titre}</h2>${haut}
     <div class="choix">${o.map(i => `<button data-i="${i}" ${estEs ? 'lang="es"' : ''}>${E(g(it.choix[i][0]))}</button>`).join('')}</div><div id="r"></div>`;
   function brancher(){
     if ($('#rejouer')) {
       const jouerUne = () => { if (une) $('#rejouer').disabled = true; jouer(fichier, une).then(ok => { if (!ok && une) $('#rejouer').disabled = false; }); };
-      $('#rejouer').onclick = jouerUne; setTimeout(jouerUne, 250); }
+      $('#rejouer').onclick = jouerUne; if (!une) setTimeout(jouerUne, 250); }
     app.querySelectorAll('.choix button').forEach(b => b.onclick = () => {
       if (fini || b.disabled) return; const i = +b.dataset.i;
       if (i === 0) {
@@ -1946,14 +1956,16 @@ function vuePrepTest(){
     const titre = it.type === 'rep' ? 'Que veut dire la phrase ?' : it.type === 'mot' ? 'Quel mot entendez-vous ?' : 'Que dites-vous ?';
     app.innerHTML = `${tete2}<h1>${titre}</h1>
       ${it.type === 'dire' ? `<div class="carte"><p style="font-size:18px;font-weight:800;margin:0">${E(g(it.fr))}</p></div>` :
-        `${p ? `<div class="scene-tete">${p.portrait ? `<img src="${BASE}portraits/${it.qui}.jpg?v=${D.v}" alt="">` : ''}<div><b>${E(p.nom)}</b><div class="muted" style="font-size:14px">${unefois ? 'Une seule écoute, comme au comptoir.' : 'Vous pouvez réécouter.'}</div></div></div>` : ''}
+        `${p ? `<div class="scene-tete">${p.portrait ? `<img src="${BASE}portraits/${it.qui}.jpg?v=${D.v}" alt="">` : ''}<div><b>${E(p.nom)}</b><div class="muted" style="font-size:14px">${unefois ? 'Une seule écoute, comme au comptoir : touchez le haut-parleur quand vous êtes prêt' + (S.genre === 'f' ? 'e' : '') + '.' : 'Vous pouvez réécouter.'}</div></div></div>` : ''}
          <div class="gros-son"><button class="btn btn--son" aria-label="Écouter" id="ecoute1">${ICO.son}</button></div>`}
       <div class="choix">${o.map(i => `<button data-i="${i}" ${estEs ? 'lang="es"' : ''}>${E(g(it.choix[i][0]))}</button>`).join('')}</div><div id="r"></div>`;
     if (it.type !== 'dire') {
       let joue = false;
       const une = () => { if (unefois && joue) return; if (unefois) { joue = true; $('#ecoute1').disabled = true; }
         jouer(fichier, unefois).then(ok => { if (!ok && unefois) { joue = false; $('#ecoute1').disabled = false; } }); };
-      $('#ecoute1').onclick = une; setTimeout(une, 250);
+      // Une seule écoute : elle part au toucher, jamais toute seule — sinon on la
+      // manque en arrivant sur l'écran (Daniel, 27 sept. 2026, au test).
+      $('#ecoute1').onclick = une; if (!unefois) setTimeout(une, 250);
     }
     app.querySelectorAll('.choix button').forEach(b => b.onclick = () => {
       if (compte) return; const i = +b.dataset.i; noter(i === 0);
@@ -1965,7 +1977,7 @@ function vuePrepTest(){
   function bilan(){
     const HALTE_N = id => D.etapes.find(e => e.id === id);
     const lignes = Object.keys(D.prep.objectifs).map(o => {
-      const [ok, tot] = res[o] || [0, 0], nv = nonVerif[o] || 0, h = HALTE_N(D.prep.étape[o]);
+      const [ok, tot] = res[o] || [0, 0], nv = nonVerif[o] || 0, h = HALTE_N(D.prep.halte[o]);
       if (!tot) return `<div class="carte" style="margin:8px 0"><b>${E(D.prep.objectifs[o])}</b><div class="retro info" style="margin:6px 0">Non vérifié au micro : refaites ces questions avec le micro.</div><p class="muted" style="margin:0;font-size:15px">${E(D.prep.conseils[o])}</p></div>`;
       const r = ok / tot;
       const etat = r >= .8 ? ['ok', '✓ Solide'] : r >= .5 ? ['info', '→ En route'] : ['no', '— À reprendre'];
