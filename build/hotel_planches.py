@@ -22,6 +22,9 @@ son nom ; son descripteur suit la langue apprise.
 Paramètres d'adresse, pour les captures : ?parle=fr&apprend=en#comptoir
 """
 import html, importlib.util, json, pathlib
+import sys
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import vente_trousse  # noqa: E402
 
 RACINE = pathlib.Path(__file__).resolve().parent.parent
 CONTENU = RACINE / "build" / "contenu" / "entreprise-hotel"
@@ -123,7 +126,10 @@ def donnees():
 
 def main():
     d = donnees()
-    page = GABARIT.replace("%%DONNEES%%", json.dumps(d, ensure_ascii=False).replace("</", "<\\/"))
+    # La vente du comptoir joué (28 sept. 2026) : même geste que Compostelle.
+    css_v, js_v = vente_trousse.bloc("hotel", "hotel-code", "btn btn--pri")
+    page = (GABARIT.replace("%%DONNEES%%", json.dumps(d, ensure_ascii=False).replace("</", "<\\/"))
+            .replace("%%VENTE_CSS%%", css_v).replace("%%VENTE_JS%%", js_v))
     SORTIE.parent.mkdir(parents=True, exist_ok=True)
     SORTIE.write_text(page, encoding="utf-8")
     print(f"{SORTIE.relative_to(RACINE)} — {len(d['mots'])} mots, {len(d['zones'])} zones au comptoir")
@@ -353,6 +359,7 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .carte-jeu b{font-size:20px;color:var(--text-strong);display:block}
 .carte-jeu span{color:var(--text-muted)}
 @media (max-width:640px){.carte-jeu{grid-template-columns:1fr}}
+%%VENTE_CSS%%
 </style>
 </head>
 <body>
@@ -1074,7 +1081,8 @@ function ecranJeu(){
     <p class="enseigne">${E(D.hotel)}</p><h1>${E(TJ('jeu_tit'))}</h1>`;
   if (!codeJeu) return tete + `<p class="chapeau">${E(TJ('code_aide'))}</p>
     <form class="saisie" id="formCodeJeu"><input id="codeJ" maxlength="17" autocomplete="off" aria-label="${E(TJ('code'))}" placeholder="${E(TJ('code'))}">
-    <button type="submit" class="btn btn--pri">${E(TJ('entrer'))}</button></form>${J && J.err ? `<p class="ko-txt">${E(J.err)}</p>` : ''}`;
+    <button type="submit" class="btn btn--pri">${E(TJ('entrer'))}</button></form>${J && J.err ? `<p class="ko-txt">${E(J.err)}</p>` : ''}
+    <div id="venteOffre"></div>`;
   const duTest = niveauDuTest();
   // Sans test, « Débutant » est présélectionné ET marqué (audit t1, G2).
   niveauJeu = niveauJeu || duTest || 'debutant';
@@ -1393,6 +1401,7 @@ function rendre(){
   else if (h === 'jeu') html = ecranJeu();
   else html = ecranAccueil();
   document.getElementById('app').innerHTML = html;
+  const vo = document.getElementById('venteOffre'); if (vo) venteOffre(vo);
 }
 
 document.addEventListener('click', e => {
@@ -1440,7 +1449,10 @@ window.addEventListener('hashchange', () => {
 // Pour les contrôles joués par programme (build/controles) : l'état de la série.
 window.HR = {familles: FAMILLES, etat: () => X, test: () => TX, jeu: () => J, ctx: () => CTX,
   donnees: /[?&]controle=1/.test(location.search) ? D : undefined};
-rendre();
+%%VENTE_JS%%
+function venteLangue(){ return L.parle || 'fr'; }
+function venteSuite(code){ if (code) { codeJeu = code; J = null; } location.hash = 'jeu'; rendre(); }
+if (!venteRetour()) rendre();
 // État par adresse (étape 6 : captures, liens d'essai du guide et de la démo) :
 // ?client=<id>#jeu ouvre la scène de ce client. Aucun appel : l'employé parle le premier.
 if (q.get('client') && location.hash === '#jeu' && D.jeu.clients.some(c => c.id === q.get('client'))) {

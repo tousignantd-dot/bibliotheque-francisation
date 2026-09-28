@@ -20658,7 +20658,10 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         if not isinstance(body, dict):
             body = {}
         recharge = str(body.get("recharge") or "").strip().upper() or None
-        res, err = reg.commencer_achat(self._adresse_du_site(), recharge=recharge)
+        # Le produit (28 sept. 2026) : Compostelle, ou le jeu de rôle d'une trousse
+        # de métier, vendu de la même façon (pelerins.PRODUITS en est la liste blanche).
+        produit = str(body.get("produit") or "compostelle").strip().lower()
+        res, err = reg.commencer_achat(self._adresse_du_site(), recharge=recharge, produit=produit)
         if err:
             json_response(self, {"error": err[0]}, err[1])
         else:

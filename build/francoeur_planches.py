@@ -34,6 +34,7 @@ from lexique import LEXIQUE, PLANCHES, verifier  # noqa: E402
 from francoeur_etape0 import TEINTES, MOTIFS  # noqa: E402
 from demandes import DEMANDES, COULEURS_DISTRACTRICES, TAILLES, DECISIF, CONFONDUES  # noqa: E402
 import random  # noqa: E402
+import vente_trousse  # noqa: E402
 import test as TEST  # noqa: E402
 import clients as CLI  # noqa: E402
 import gerante as GER  # noqa: E402
@@ -341,6 +342,9 @@ def main():
     d = donnees()
     SORTIE.parent.mkdir(parents=True, exist_ok=True)
     page = GABARIT.replace("%%DONNEES%%", json.dumps(d, ensure_ascii=False, separators=(",", ":")))
+    # La vente du magasin joué (28 sept. 2026) : même geste que Compostelle.
+    css_v, js_v = vente_trousse.bloc("francoeur", "francoeur-code", "mf-btn mf-btn--pri")
+    page = page.replace("%%VENTE_CSS%%", css_v).replace("%%VENTE_JS%%", js_v)
     page = (page.replace("%%SURTITRE%%", html.escape(IDE.SURTITRE)).replace("%%SECTEUR%%", html.escape(IDE.SECTEUR))
                 .replace("%%SECTEUR_COURT%%", html.escape(IDE.SECTEUR_COURT)))
     SORTIE.write_text(page, encoding="utf-8")
@@ -615,6 +619,7 @@ details.bloc>summary{cursor:pointer;min-height:44px;padding:10px 0;box-sizing:bo
 .secteur .court{display:none}
 @media (max-width:480px){.secteur small{display:none}.secteur b{font-size:16px}.secteur .long{display:none}.secteur .court{display:inline}}
 @media (prefers-reduced-motion:no-preference){.art,.rayon{transition:border-color .15s,box-shadow .15s}}
+%%VENTE_CSS%%
 </style>
 </head>
 <body>
@@ -679,7 +684,7 @@ const FR = {choisir:"Choisissez votre langue", choisir_sous:"Les mots restent en
   pour_formateur:"Pour le formateur", pas_ce_rayon:"ne se range pas dans le rayon", code_formateur:"Code du formateur", ouvrir:"Ouvrir", code_faux:"Ce n'est pas le bon code.", confirmer_palier:"Confirmer le niveau du jeu de rôle",
   refaire_test:"Refaire le test",
   magasin:"Le magasin", magasin_sous:"Des clients vous parlent. Vous répondez.",
-  code_acces:"Votre code d'accès", code_aide:"Le code vous est donné par votre formateur.",
+  code_acces:"Votre code d'accès", code_aide:"Entrez votre code d'accès : celui de votre formateur, ou celui que vous avez obtenu ci-dessous.",
   entrer:"Entrer", niveau_jeu:"Niveau des clients", faire_test:"Faites d'abord le test « Mon niveau », ou choisissez :",
   choisir_client:"Choisissez un client.", ecouter_sans_lire:"Écouter sans lire",
   lire:"Lire", parler:"Parler", envoyer:"Envoyer", ecrire:"Ou écrivez votre réponse…",
@@ -1417,7 +1422,9 @@ function ecranMagasin() {
   if (!codeAcces) {
     app.innerHTML = tete(T('magasin'), T('code_aide'), true, 'accueil')
       + '<div class="code"><label for="codeIn"><b>' + T('code_acces') + '</b></label><input id="codeIn" maxlength="8" autocomplete="off">'
-      + '<button type="button" class="mf-btn mf-btn--pri" id="codeOk"><span>' + T('entrer') + '</span></button></div>';
+      + '<button type="button" class="mf-btn mf-btn--pri" id="codeOk"><span>' + T('entrer') + '</span></button></div>'
+      + '<div id="venteOffre"></div>';
+    venteOffre(document.getElementById('venteOffre'));
     document.getElementById('codeOk').onclick = () => {
       codeAcces = document.getElementById('codeIn').value.trim().toUpperCase();
       if (!codeAcces) return;
@@ -1752,7 +1759,12 @@ function ouvrirParAdresse() {
   else ecranAccueil();
   return true;
 }
-if (!ouvrirParAdresse()) { if (langue) ecranAccueil(); else ecranLangue(); }
+%%VENTE_JS%%
+// Le magasin joué se vend comme Compostelle (28 sept. 2026) ; l'offre parle la
+// langue d'appui quand c'est l'anglais ou l'espagnol, le français sinon.
+function venteLangue(){ return ['en', 'es'].includes(langue) ? langue : 'fr'; }
+function venteSuite(code){ if (code) codeAcces = code; ecranMagasin(); }
+if (!venteRetour() && !ouvrirParAdresse()) { if (langue) ecranAccueil(); else ecranLangue(); }
 </script>
 </body>
 </html>

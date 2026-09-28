@@ -3390,3 +3390,25 @@ est toujours le montant facturé ; `prixRegulier` sert à l'affichage barré.
   `STRIPE_API` n'existe que pour les essais contre un faux Stripe local.
 
     python3 build/controles/pelerins.py   # 34 vérifications, sans réseau
+
+### Les trousses de métier se vendent de la même façon (28 sept. 2026)
+
+Décision de Daniel : la Maison Francœur (vêtements) et l'Hôtel Rive-Claire
+(réception) se vendent comme Compostelle. Tout reste gratuit sauf le jeu de
+rôle (le magasin, le comptoir), ouvert par un code « PC » acheté chez Stripe,
+**au même prix** (`offre()`, une seule grille pour les trois produits).
+
+- **`pelerins.PRODUITS` est la liste blanche** : nom sur le reçu, page de
+  retour, et `trousse`, qui borne les scénarios (`TROUSSES`). Un code de trousse
+  n'ouvre pas Compostelle, et inversement. La recharge suit le produit du
+  **code**, jamais celui de la page.
+- **`/api/voix` accepte un code de trousse** actif (`voix_permise()`) : sans les
+  voix, les clients parleraient avec la voix du navigateur. Les codes de
+  Compostelle n'y ont pas accès — ils n'en ont pas besoin.
+- **Le geste d'achat vit dans `build/vente_trousse.py`**, greffé par
+  `hotel_planches.py` et `francoeur_planches.py` : offre sous l'écran du code,
+  retour `#achat/<session>`, en français, anglais et espagnol.
+- **Codes d'essai du pilote** : `CODES_ESSAI_TROUSSES`, 8 par trousse, mêmes
+  plafonds et même fin que ceux de Compostelle.
+
+    python3 build/controles/pelerins.py   # l'achat d'une trousse y est joué

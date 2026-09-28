@@ -74,6 +74,18 @@ CODES_ESSAI_TROUSSES = {
     "PCUSZW3Q": ("hotel 07", "hotel"),
     "PCHK596K": ("hotel 08", "hotel"),
 }
+# Ce qui se vend (28 sept. 2026, décision de Daniel : « vendre les produits de
+# la même façon que Compostelle »). Chaque produit est un jeu de rôle vendu par
+# code, au même prix (offre()) ; tout le reste de l'application est gratuit.
+# `trousse` borne les scénarios (TROUSSES) ; None = Compostelle (SCENARIO).
+PRODUITS = {
+    "compostelle": {"nom": "En route vers Compostelle — Parler librement", "chemin": "/modules-autonomes/compostelle/",
+                    "trousse": None, "locale": "fr-CA"},
+    "francoeur": {"nom": "Maison Francœur — Le magasin joué", "chemin": "/modules-autonomes/francoeur-planches/",
+                  "trousse": "francoeur", "locale": "fr-CA"},
+    "hotel": {"nom": "Hôtel Rive-Claire — Le comptoir joué", "chemin": "/modules-autonomes/hotel-reception/",
+              "trousse": "hotel", "locale": "auto"},
+}
 # Réglable pour les essais seulement (un faux Stripe local) ; jamais en production.
 API = os.environ.get("STRIPE_API", "https://api.stripe.com/v1")
 TOLERANCE_S = 300                              # âge maximal d'une signature de webhook
@@ -253,43 +265,50 @@ class Registre:
         return n
 
     # -- l'achat --------------------------------------------------------------
-    def commencer_achat(self, adresse, recharge=None):
+    def commencer_achat(self, adresse, recharge=None, produit="compostelle"):
         """Crée la session Stripe Checkout. Rend ({url, session}, None) ou (None, (message, statut))."""
         if not disponible():
             return None, ("La vente n'est pas encore ouverte.", 503)
         o = offre()
         if recharge:
             p = self.trouver(recharge)
+            # La recharge suit le produit du code, jamais celui de la page.
+            produit = next((k for k, v in PRODUITS.items() if v["trousse"] == (p or {}).get("trousse")), "compostelle")
             if not p or p.get("etat") != "actif":
                 return None, ("Ce code n'existe pas.", 404)
             if p.get("expire", "") < _aujourdhui():
                 return None, ("Ce code a expiré : prenez un nouvel accès.", 409)
             code, montant, nb, quoi = recharge, o["recharge"], o["rechargeConversations"], "recharge"
-            nom = f"Parler librement — {nb} conversations de plus"
+            nom = f"{PRODUITS[produit]['nom']} — {nb} conversations de plus"
         else:
+            if produit not in PRODUITS:
+                return None, ("Produit inconnu.", 400)
             with self.verrou:
                 tous = self.charger()
                 self.menage(tous)
                 code = self._nouveau_code({p.get("code") for p in tous})
                 # Réservé, pas actif : il le devient au paiement. Un code réservé
                 # jamais payé n'ouvre rien, et le ménage peut le retirer.
-                tous.append({"code": code, "etat": "reserve", "cree": _maintenant(), "sessions": []})
+                res = {"code": code, "etat": "reserve", "cree": _maintenant(), "sessions": []}
+                if PRODUITS[produit]["trousse"]:
+                    res["trousse"] = PRODUITS[produit]["trousse"]
+                tous.append(res)
                 self.sauver(tous)
             montant, nb, quoi = o["prix"], o["conversations"], "achat"
-            nom = f"En route vers Compostelle — Parler librement ({nb} conversations, {o['jours'] // 30} mois)"
-        retour = adresse.rstrip("/") + "/modules-autonomes/compostelle/"
+            nom = f"{PRODUITS[produit]['nom']} ({nb} conversations, {o['jours'] // 30} mois)"
+        retour = adresse.rstrip("/") + PRODUITS[produit]["chemin"]
         session, err = _stripe("POST", "/checkout/sessions", {
             "mode": "payment",
-            "locale": "fr-CA",
+            "locale": PRODUITS[produit]["locale"],
             "success_url": retour + "#achat/{CHECKOUT_SESSION_ID}",
             "cancel_url": retour + "#achat-annule",
             "line_items": [{"quantity": 1, "price_data": {
                 "currency": o["devise"], "unit_amount": montant, "product_data": {"name": nom}}}],
-            "metadata": {"produit": "compostelle", "quoi": quoi, "code": code},
+            "metadata": {"produit": produit, "quoi": quoi, "code": code},
             # La description du paiement paraît sur le reçu de Stripe : le code y
             # voyage, et c'est la façon de le retrouver sans rien garder de nous.
             "payment_intent_data": {"description": f"Votre code d'accès : {code}",
-                                    "metadata": {"produit": "compostelle", "code": code}},
+                                    "metadata": {"produit": produit, "code": code}},
         })
         if err:
             return None, (err, 502)
@@ -300,7 +319,7 @@ class Registre:
         """Applique une session Checkout PAYÉE. Idempotent : une session déjà
         créditée ne l'est pas deux fois. Rend l'enregistrement du code, ou None."""
         meta = session.get("metadata") or {}
-        if meta.get("produit") != "compostelle" or session.get("payment_status") != "paid":
+        if meta.get("produit") not in PRODUITS or session.get("payment_status") != "paid":
             return None
         code, sid, o = meta.get("code", ""), session.get("id", ""), offre()
         with self.verrou:
@@ -311,6 +330,8 @@ class Registre:
                 # réel, on recrée plutôt que de refuser un pèlerin qui a payé.
                 p = {"code": code, "etat": "reserve", "cree": _maintenant(), "sessions": []}
                 tous.append(p)
+            if PRODUITS[meta["produit"]]["trousse"]:
+                p["trousse"] = PRODUITS[meta["produit"]]["trousse"]
             if sid in p.get("sessions", []):
                 return p
             if meta.get("quoi") == "recharge":
@@ -332,8 +353,8 @@ class Registre:
         session, err = _stripe("GET", "/checkout/sessions/" + urllib.parse.quote(session_id))
         if err:
             return None, (err, 502)
-        if (session.get("metadata") or {}).get("produit") != "compostelle":
-            return None, ("Ce paiement ne concerne pas Compostelle.", 404)
+        if (session.get("metadata") or {}).get("produit") not in PRODUITS:
+            return None, ("Ce paiement ne concerne pas nos jeux de rôle.", 404)
         if session.get("payment_status") != "paid":
             return None, ("Le paiement n'est pas encore confirmé.", 409)
         p = self.crediter(session)
@@ -356,7 +377,8 @@ class Registre:
         o = offre()
         return {"code": p["code"], "actif": p.get("etat") == "actif",
                 "restant": max(0, p.get("conversations", 0) - p.get("utilisees", 0)),
-                "expire": p.get("expire", ""), "toursMax": o["toursMax"]}
+                "expire": p.get("expire", ""), "toursMax": o["toursMax"],
+                "produit": next((k for k, v in PRODUITS.items() if v["trousse"] == p.get("trousse")), "compostelle")}
 
     def voix_permise(self, p):
         """Un code d'essai d'une trousse lit les voix de ses personnages

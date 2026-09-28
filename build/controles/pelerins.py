@@ -138,6 +138,23 @@ os.environ["COMPOSTELLE_PROMO_CENTS"] = "0"
 ok(P.offre()["prix"] == 1999, "COMPOSTELLE_PROMO_CENTS=0 coupe la promotion")
 del os.environ["COMPOSTELLE_PROMO_FIN"], os.environ["COMPOSTELLE_PROMO_CENTS"]
 
+print("L'achat d'une trousse de métier")
+for prod, tr in (("francoeur", "francoeur"), ("hotel", "hotel")):
+    r3, e3 = R.commencer_achat("https://portail.edufrancis.ca", produit=prod)
+    env3 = APPELS[-1][2]; c3 = env3["metadata"]["code"]
+    ok(e3 is None and env3["success_url"].startswith("https://portail.edufrancis.ca" + P.PRODUITS[prod]["chemin"] + "#achat/"), f"{prod} : le retour mène à sa trousse")
+    ok(env3["line_items"][0]["price_data"]["unit_amount"] == P.offre()["prix"], f"{prod} : même prix que Compostelle")
+    ok(R.trouver(c3).get("trousse") == tr and R.refus(R.trouver(c3), P.TROUSSES[tr][0], 0, True)[1] == 402, f"{prod} : réservé, lié à sa trousse, ne joue pas avant paiement")
+    SESSIONS[r3["session"]]["payment_status"] = "paid"
+    et3, _ = R.depuis_retour(r3["session"])
+    p3 = R.trouver(c3)
+    ok(et3 and et3["actif"] and et3["produit"] == prod, f"{prod} : payé, actif, le produit est rendu à la page")
+    ok(R.refus(p3, P.TROUSSES[tr][-1], 0, True) is None and R.refus(p3, P.SCENARIO, 0, True)[1] == 403 and R.voix_permise(p3),
+       f"{prod} : ouvre son jeu de rôle et ses voix, pas Compostelle")
+    R.commencer_achat("https://x", recharge=c3)
+    ok(APPELS[-1][2]["metadata"]["produit"] == prod, f"{prod} : la recharge suit le produit du code")
+ok(R.commencer_achat("https://x", produit="autre")[1][1] == 400, "un produit inconnu est refusé")
+
 print("Les codes d'essai du pilote")
 ok(all(P.est_code(c) for c in P.CODES_ESSAI) and len(set(P.CODES_ESSAI)) == len(P.CODES_ESSAI), "les codes d'essai sont des codes de pèlerin valides et distincts")
 ce = next(iter(P.CODES_ESSAI)); avant = len(MEMOIRE)
