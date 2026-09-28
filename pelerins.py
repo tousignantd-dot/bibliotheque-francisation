@@ -46,6 +46,34 @@ ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"   # sans 0/O, 1/I/L : il se recopie
 ESSAI_FIN = "2026-10-18"
 ESSAI_CONVERSATIONS = 25
 CODES_ESSAI = {"PCF8D9GQ": "essai 01", "PCM6WNSV": "essai 02", "PCEAN6WQ": "essai 03", "PC72J5U8": "essai 04", "PC8JSFQV": "essai 05", "PCZ4VRGX": "essai 06", "PCBPQ8RW": "essai 07", "PCRWZECQ": "essai 08", "PCF8XAJQ": "essai 09", "PCZ4YFPX": "essai 10", "PCDUKPKG": "essai 11", "PCK3WC4E": "essai 12"}
+# Les codes d'essai des trousses de métier (28 sept. 2026) : même formule que
+# Compostelle, pour faire essayer la Maison Francœur (vêtements) et l'Hôtel
+# Rive-Claire (réception) à des proches avant de les montrer à un employeur.
+# Chacun n'ouvre que le jeu de rôle de SA trousse (TROUSSES) et les voix de ses
+# personnages ; mêmes plafonds et même fin que les codes de Compostelle.
+# Coût plafonné : 16 × 25 conversations × ~8 ¢ ≈ 32 $ US au pire, voix comprises.
+TROUSSES = {
+    "francoeur": ("magasin",),
+    "hotel": ("comptoir-fr-en", "comptoir-fr-es", "comptoir-en-fr", "comptoir-en-es", "comptoir-es-fr", "comptoir-es-en"),
+}
+CODES_ESSAI_TROUSSES = {
+    "PC4QSY45": ("francoeur 01", "francoeur"),
+    "PCRDWBVU": ("francoeur 02", "francoeur"),
+    "PCBUSXR6": ("francoeur 03", "francoeur"),
+    "PCC65FF3": ("francoeur 04", "francoeur"),
+    "PCWQHVXP": ("francoeur 05", "francoeur"),
+    "PCAAEJUJ": ("francoeur 06", "francoeur"),
+    "PCYV7JEM": ("francoeur 07", "francoeur"),
+    "PCKN7EJ5": ("francoeur 08", "francoeur"),
+    "PCSTQDXN": ("hotel 01", "hotel"),
+    "PC2RGS5J": ("hotel 02", "hotel"),
+    "PC4JHWWN": ("hotel 03", "hotel"),
+    "PCG8DX7M": ("hotel 04", "hotel"),
+    "PCFAEMBM": ("hotel 05", "hotel"),
+    "PCKYJMPC": ("hotel 06", "hotel"),
+    "PCUSZW3Q": ("hotel 07", "hotel"),
+    "PCHK596K": ("hotel 08", "hotel"),
+}
 # Réglable pour les essais seulement (un faux Stripe local) ; jamais en production.
 API = os.environ.get("STRIPE_API", "https://api.stripe.com/v1")
 TOLERANCE_S = 300                              # âge maximal d'une signature de webhook
@@ -177,7 +205,7 @@ class Registre:
         if not est_code(code):
             return None
         p = next((p for p in self.charger() if p.get("code") == code), None)
-        if p is None and code in CODES_ESSAI:
+        if p is None and (code in CODES_ESSAI or code in CODES_ESSAI_TROUSSES):
             p = self._ouvrir_essai(code)
         return p
 
@@ -187,8 +215,11 @@ class Registre:
             tous = self.charger()
             p = next((x for x in tous if x.get("code") == code), None)
             if p is None:
-                p = {"code": code, "etat": "actif", "essai": CODES_ESSAI[code], "cree": _maintenant(), "active": _maintenant(),
+                etiq, trousse = CODES_ESSAI_TROUSSES.get(code) or (CODES_ESSAI.get(code), None)
+                p = {"code": code, "etat": "actif", "essai": etiq, "cree": _maintenant(), "active": _maintenant(),
                      "conversations": ESSAI_CONVERSATIONS, "utilisees": 0, "parJour": {}, "expire": ESSAI_FIN, "sessions": []}
+                if trousse:
+                    p["trousse"] = trousse
                 tous.append(p)
                 self.sauver(tous)
             return p
@@ -327,11 +358,18 @@ class Registre:
                 "restant": max(0, p.get("conversations", 0) - p.get("utilisees", 0)),
                 "expire": p.get("expire", ""), "toursMax": o["toursMax"]}
 
+    def voix_permise(self, p):
+        """Un code d'essai d'une trousse lit les voix de ses personnages
+        (/api/voix) tant qu'il est actif et non expiré ; Compostelle n'en a pas besoin."""
+        return bool(p.get("trousse")) and p.get("etat") == "actif" and p.get("expire", "") >= _aujourdhui()
+
     def refus(self, p, scenario, nb_tours, premier_tour):
         """Pourquoi ce code ne peut pas jouer ce tour — ou None. (message, statut)."""
         o = offre()
-        if scenario != SCENARIO:
-            return ("Ce code n'ouvre que « Parler librement » d'En route vers Compostelle.", 403)
+        permis = TROUSSES.get(p.get("trousse"), (SCENARIO,))
+        if scenario not in permis:
+            return ("Ce code n'ouvre pas ce jeu de rôle." if p.get("trousse")
+                    else "Ce code n'ouvre que « Parler librement » d'En route vers Compostelle.", 403)
         if p.get("etat") != "actif":
             return ("Ce code n'est pas encore actif : le paiement n'est pas confirmé.", 402)
         if p.get("expire", "") < _aujourdhui():

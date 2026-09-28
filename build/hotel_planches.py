@@ -134,6 +134,7 @@ GABARIT = r"""<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
 <title>Hôtel Rive-Claire — la réception</title>
 <link rel="stylesheet" href="/assets/design-system/styles.css">
 <link rel="stylesheet" href="/assets/design-system/marque-francis.css">
@@ -360,6 +361,8 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
   <span class="secteur"><small id="surtitre"></small><b><span class="long" id="secteur"></span><span class="court" id="secteurCourt"></span></b></span>
 </div></div>
 <main class="hr" id="app"></main>
+<!-- Pilote auprès de proches (28 sept. 2026) : l'adresse est écrite en clair, car un lien mailto seul ne fait rien quand aucun logiciel de courriel n'est configuré. -->
+<style>.avis-pied{max-width:720px;margin:8px auto 28px;padding:0 16px;font-size:13px;color:#5b6573;text-align:center}.avis-pied a{color:inherit;font-weight:700}</style><p class="avis-pied">Votre avis · Your feedback · Su opinión : <a href="mailto:support@edufrancis.ca?subject=Avis%20%E2%80%94%20H%C3%B4tel%20Rive-Claire">support@edufrancis.ca</a></p>
 <script>
 const D = %%DONNEES%%;
 const E = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));

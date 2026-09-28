@@ -355,6 +355,7 @@ GABARIT = r"""<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
 <title>Maison Francœur — les vêtements</title>
 <link rel="stylesheet" href="/assets/design-system/styles.css">
 <link rel="stylesheet" href="/assets/design-system/marque-francis.css">
@@ -624,6 +625,8 @@ details.bloc>summary{cursor:pointer;min-height:44px;padding:10px 0;box-sizing:bo
   <span class="secteur"><small>%%SURTITRE%%</small><b><span class="long">%%SECTEUR%%</span><span class="court">%%SECTEUR_COURT%%</span></b></span>
 </div></div>
 <main class="mf" id="app"></main>
+<!-- Pilote auprès de proches (28 sept. 2026) : l'adresse est écrite en clair, car un lien mailto seul ne fait rien quand aucun logiciel de courriel n'est configuré. -->
+<style>.avis-pied{max-width:720px;margin:8px auto 28px;padding:0 16px;font-size:13px;color:#5b6573;text-align:center}.avis-pied a{color:inherit;font-weight:700}</style><p class="avis-pied">Un commentaire sur cet essai ? Écrivez-nous : <a href="mailto:support@edufrancis.ca?subject=Avis%20%E2%80%94%20Maison%20Franc%C5%93ur">support@edufrancis.ca</a></p>
 <div class="fiche" id="fiche" hidden><div class="carte" role="dialog" aria-modal="true" aria-labelledby="ficheMot" id="carte"></div></div>
 <script>
 const D = %%DONNEES%%;

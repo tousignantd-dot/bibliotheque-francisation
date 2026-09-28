@@ -21222,11 +21222,18 @@ class Handler(http.server.SimpleHTTPRequestHandler):
             json_response(self, {"error": "Requête invalide"}, 400)
             return
 
-        eleve = validate_student_code(body.get("code", "").strip().upper())
+        code_voix = body.get("code", "").strip().upper()
+        eleve = validate_student_code(code_voix)
         if not eleve:
-            json_response(self, {"error": "Non autorisé"}, 401)
-            return
-        if self._ia_refusee(eleve):
+            # Un code d'essai d'une trousse de métier (pelerins.CODES_ESSAI_TROUSSES,
+            # 28 sept. 2026) lit les voix des clients de SA trousse : sans elles, le
+            # comptoir et le magasin parleraient avec la voix du navigateur.
+            essai = _registre_pelerins().trouver(code_voix) if _pelerins else None
+            if not (essai and _registre_pelerins().voix_permise(essai)):
+                json_response(self, {"error": "Non autorisé"}, 401)
+                return
+            eleve = {}
+        elif self._ia_refusee(eleve):
             return
         eleve_id, groupe_id = eleve.get("id"), eleve.get("groupId")
 
