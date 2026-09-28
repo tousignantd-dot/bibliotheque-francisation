@@ -1541,6 +1541,8 @@ async function afficherOffre(ouvrir){
      la même personne qu'à l'étape, qui vous répond vraiment, puis un bilan en français.</p>
      <p class="muted" style="font-size:14px;margin:0 0 10px">Les dix étapes, la trousse et le test restent gratuits. Paiement par carte chez Stripe ;
      nous ne recevons ni votre nom ni votre carte. Le code s'affiche ici tout de suite, et il est aussi écrit sur votre reçu.</p>
+     <p class="muted" style="font-size:14px;margin:0 0 10px">Vendu par Trame. Carte de crédit seulement. Remboursable dans les 14 jours si 3 conversations au plus ont servi.
+     Réservé aux personnes majeures (ou avec l'accord d'un parent). Aucune taxe. <a href="/conditions-de-vente.html" target="_blank" rel="noopener">Conditions de vente</a></p>
      <button class="btn btn--pri btn--large" id="acheter">Obtenir mon code — ${dollars(o.prix)}</button></div></details>`;
   $('#acheter').onclick = () => acheter(null);
 }

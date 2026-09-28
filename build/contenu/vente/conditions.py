@@ -19,13 +19,13 @@ jamais ce que la caisse facture. Les cases que seul Daniel peut remplir
 
 # À remplir par Daniel une fois l'entreprise immatriculée. Vide → « à remplir », en ambre.
 VENDEUR = {
-    "nom": "",          # le nom immatriculé (ex. « Trame »), exploité par Daniel Tousignant ?
+    "nom": "Trame",     # décidé le 28 sept. 2026 ; entreprise individuelle, immatriculation à faire
     "neq": "",          # numéro d'entreprise du Québec
     "adresse": "",      # une adresse postale au Québec (la loi l'exige avant le contrat)
     "telephone": "",    # la loi l'exige aussi
     "courriel": "support@edufrancis.ca",
 }
-MISE_A_JOUR = "brouillon du 28 septembre 2026"
+MISE_A_JOUR = "brouillon du 28 septembre 2026 (décisions prises ; relecture par un avocat à décider)"
 
 # (titre, [paragraphes]) — {placeholders} remplis au build.
 SECTIONS = [
@@ -48,8 +48,9 @@ SECTIONS = [
         "{prix_ligne} Des conversations supplémentaires peuvent être ajoutées au même code : {recharge_conv} "
         "conversations pour {recharge}, sans prolonger la durée.",
         "{taxes}",
-        "Le paiement se fait par carte de crédit, chez Stripe. Nous ne recevons ni votre numéro de carte ni votre "
-        "adresse ; Stripe les garde selon ses propres conditions.",
+        "Le paiement se fait par carte de crédit seulement, chez Stripe ; les cartes de débit et prépayées ne sont pas "
+        "acceptées. Stripe vous demande votre nom, votre adresse et votre courriel : le contrat doit les porter, et ils "
+        "figurent sur votre reçu. Nous ne recevons ni votre carte, ni votre nom, ni votre adresse.",
     ]),
     ("Quand vous recevez votre code", [
         "Tout de suite : il s'affiche à l'écran au retour du paiement et s'enregistre dans votre navigateur. "

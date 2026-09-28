@@ -23,6 +23,7 @@ import pelerins  # noqa: E402
 
 SOURCE = RACINE / "assets" / "presentations" / "hotellerie-prix.html"
 SORTIE = RACINE / "assets" / "presentations" / "vente-protection.html"
+PUBLIC = RACINE / "conditions-de-vente.html"   # public, à la racine comme confidentialite.html
 E = html.escape
 TROU = re.compile(r"\{(\w+)\}")
 MOIS = "janvier février mars avril mai juin juillet août septembre octobre novembre décembre".split()
@@ -129,7 +130,33 @@ ASSUREURS = [
      "l'IA et aux données."),
 ]
 
+# L'export de Daniel, 28 sept. 2026 : toutes les recommandations ; l'avocat reste à décider.
+DECIDE_LE = "28 septembre 2026"
+DECIDE = {"forme": "ei", "nom": "trame", "assurance": "trois", "remboursement": "14j-peu-utilise", "paiement": "credit",
+          "acheteur": "stripe", "accepter": "case", "age": "18-ou-parent", "taxes": "petit-fournisseur", "avocat": None}
+
+# Ce qui reste à faire de SON côté : rien de tout ça ne se fait à sa place.
+A_FAIRE = [
+    ("Vérifier que « Trame » est libre", "au Registraire des entreprises (un nom trop proche d'un nom inscrit peut être refusé) et dans "
+     "la base des marques de commerce du Canada."),
+    ("Immatriculer l'entreprise individuelle « Trame »", "au Registraire des entreprises du Québec (environ 41 $). Noter le NEQ "
+     "et l'adresse postale à publier : je les pose dans les conditions."),
+    ("Demander une soumission à un courtier", "générale, professionnelle et cyber, la professionnelle et la cyber chez le même "
+     "assureur, avec une date de rétroactivité qui couvre le début de la plateforme. Avant la première vente."),
+    ("Ouvrir le compte Stripe au nom de Trame", "entreprise individuelle. Dans le tableau de bord : l'adresse des conditions "
+     "(Paramètres → Détails publics → Conditions d'utilisation : portail.edufrancis.ca/conditions-de-vente.html), les reçus par "
+     "courriel activés (Paramètres → Courriels clients → Paiements réussis), et une règle Radar qui bloque les cartes de débit "
+     "et prépayées (« Bloquer si :card_funding: != 'credit' »)."),
+    ("Poser les deux clés dans Railway", "STRIPE_SECRET_KEY et STRIPE_WEBHOOK_SECRET. Le webhook vise "
+     "portail.edufrancis.ca/api/pelerins/stripe, avec deux événements : checkout.session.completed et charge.refunded. "
+     "Jamais les clés dans la conversation."),
+    ("Faire un achat d'essai, puis le rembourser", "dans le tableau de bord : le code doit s'éteindre tout seul. C'est le test "
+     "de bout en bout de la caisse, du reçu et du remboursement."),
+]
+
 QUESTIONS_AVOCAT = [
+    "Pour une entreprise individuelle, le nom immatriculé (« Trame ») suffit-il comme nom du commerçant dans les "
+    "conditions et sur le reçu, ou faut-il aussi le nom de la personne ?",
     "Le reçu de Stripe, avec le lien vers les conditions et le nom et l'adresse que Stripe demande, suffit-il comme "
     "« exemplaire du contrat » transmis dans les 15 jours, sans que nous recevions nous-mêmes le nom et l'adresse ?",
     "Un code fourni à l'instant du paiement est-il un service « fourni » avant le paiement, ce qui permettrait le "
@@ -200,6 +227,19 @@ juridique.</b> Les règles de la vente à distance viennent des pages de l'Offic
 28 septembre 2026 ; le reste est à faire confirmer.</p>
 
 <section>
+  <h2>Décidé le {DECIDE_LE}</h2>
+  <ul class="simple">{"".join(f"<li><b>{E(q)}</b> — {E(next(l for v2, l, _ in opts if v2 == DECIDE[k]))}</li>" if DECIDE.get(k) else f'<li><b>{E(q)}</b> — <mark class="trou">à décider</mark></li>' for k, q, opts, _ in DECISIONS)}</ul>
+  <p style="margin-top:10px">Déjà appliqué : la caisse n'accepte que la carte, Stripe demande le nom et l'adresse, une case oblige à
+  accepter les conditions (avec leur lien), et un remboursement complet fait dans Stripe éteint le code. Les conditions sont publiées à
+  <a href="/conditions-de-vente.html">portail.edufrancis.ca/conditions-de-vente.html</a> — il y manque ce que l'immatriculation donnera.</p>
+</section>
+
+<section>
+  <h2>Ce qui reste à faire, de votre côté</h2>
+  <ol class="risques">{"".join(f"<li><b>{E(t)}</b> — {E(d)}</li>" for t, d in A_FAIRE)}</ol>
+</section>
+
+<section>
   <h2>D'où viendrait une poursuite</h2>
   <ol class="risques">
     <li class="fait"><b>Un tort causé par le contenu</b> — le plus sérieux, et surtout la carte d'allergie de Compostelle : une phrase fausse, et
@@ -262,10 +302,11 @@ juridique.</b> Les règles de la vente à distance viennent des pages de l'Offic
 </div>
 <script>
 (function(){{
-  var D={json.dumps([{"k": k, "q": q, "o": [[v2, l, r] for v2, l, r in opts], "w": w} for k, q, opts, w in DECISIONS], ensure_ascii=False)};
+  var D={json.dumps([{"k": k, "q": q, "o": [[v2, l, r] for v2, l, r in opts], "w": w, "d": DECIDE.get(k)} for k, q, opts, w in DECISIONS], ensure_ascii=False)};
   var CLE='vente-protection', s={{choix:{{}},montant:{{}},note:''}};
   try{{ var l=JSON.parse(localStorage.getItem(CLE)||'null'); if(l&&l.choix) s=l; }}catch(e){{}}
   function sv(){{ try{{ localStorage.setItem(CLE,JSON.stringify(s)); }}catch(e){{}} }}
+  D.forEach(function(d){{ if(d.d && !(d.k in s.choix)) s.choix[d.k]=d.d; }});   // ce qui a été décidé le {DECIDE_LE}
   var zone=document.getElementById('decisions');
   D.forEach(function(d,i){{
     var div=document.createElement('div'); div.className='dec2';
@@ -305,6 +346,28 @@ juridique.</b> Les règles de la vente à distance viennent des pages de l'Offic
 </body></html>
 """
     SORTIE.write_text(tete + corps, encoding="utf-8")
+
+    # La page publique des conditions — celle que la case de Stripe et chaque offre citent.
+    manquant = lambda nom: f'<span class="avenir">({E(nom)} : à venir)</span>'
+    pub_remplir = dict(remplir, vendeur_nom=E(v["nom"]) or manquant("nom"), vendeur_neq=("NEQ " + E(v["neq"])) if v["neq"] else manquant("NEQ"),
+                       vendeur_adresse=E(v["adresse"]) or manquant("adresse"), vendeur_telephone=E(v["telephone"]) or manquant("téléphone"))
+    pub_sections = ""
+    for i, (titre, ps) in enumerate(CV.SECTIONS, 1):
+        poser = lambda t: TROU.sub(lambda m: pub_remplir[m.group(1)], t)
+        pub_sections += f"<h2>{i}. {E(titre)}</h2>" + "".join("<p>" + poser(E(p)) + "</p>" for p in ps if poser(p).strip())
+    PUBLIC.write_text(f"""<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><title>Conditions de vente — francis</title>
+<link rel="stylesheet" href="/assets/design-system/styles.css"><link rel="stylesheet" href="/assets/design-system/marque-francis.css">
+<link rel="icon" href="/assets/design-system/marque-francis-favicon.svg">
+<style>body{{margin:0;background:#FBFAF7;color:#1d1d1b;font:17px/1.55 Nunito,system-ui,sans-serif}}
+.page{{max-width:760px;margin:0 auto;padding:22px 18px 60px}} h1{{font-size:32px;margin:18px 0 4px}} h2{{font-size:19px;margin:26px 0 6px}}
+p{{margin:0 0 10px}} .maj{{color:#5f5f5a;font-size:14.5px}} .avenir{{color:#8a5a00;font-style:italic}}</style></head>
+<body><div class="fr-barre"><div class="fr-barre__in"><span class="fr-lockup"><span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span></span></div></div>
+<div class="page"><h1>Conditions de vente</h1><p class="maj">Les jeux de rôle de francis : Compostelle, Maison Francœur, Hôtel Rive-Claire — version du 28 septembre 2026.</p>
+{pub_sections}
+<p class="maj" style="margin-top:24px">Questions : <a href="mailto:{E(v['courriel'])}">{E(v['courriel'])}</a></p></div></body></html>
+""", encoding="utf-8")
     print(SORTIE.relative_to(RACINE), f"— {len(DECISIONS)} décisions, {len(CV.SECTIONS)} sections de conditions, {len(manque)} trous")
 
 

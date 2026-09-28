@@ -25,7 +25,7 @@ EN_BREF = [
     "Votre progression, le nom de votre Compostela et votre genre restent <b>dans votre téléphone</b>. Nous ne les recevons pas.",
     "Le micro passe par la reconnaissance vocale de <b>votre navigateur</b> : votre voix va chez Google, Apple ou Microsoft, selon le navigateur — pas chez nous.",
     "« Parler librement » (payant) envoie vos phrases à notre serveur puis à Anthropic, aux États-Unis, pour que le personnage vous réponde. Nous ne gardons pas la conversation.",
-    "Le paiement se fait chez Stripe. Nous ne voyons ni votre nom, ni votre courriel, ni votre carte.",
+    "Le paiement se fait chez Stripe, qui vous demande votre nom, votre adresse et votre courriel pour le reçu. Nous ne voyons rien de tout cela, ni votre carte.",
     "Vous pouvez tout effacer vous-même, à tout moment, dans les réglages.",
 ]
 
@@ -42,8 +42,8 @@ DONNEES = [
      "le modèle qui fait parler le personnage ; aucun humain de notre côté", "rien n'est gardé chez nous ; Anthropic, selon ses conditions commerciales"),
     ("Votre code d'accès, ses dates, son compteur de conversations, l'identifiant Stripe du paiement", "notre serveur (hébergeur Railway)",
      "nous, pour faire marcher le code", "{conservation}"),
-    ("Votre nom, votre courriel, votre carte", "chez Stripe",
-     "Stripe, pour le paiement et votre reçu", "selon Stripe (obligations fiscales)"),
+    ("Votre nom, votre adresse, votre courriel, votre carte", "chez Stripe",
+     "Stripe, pour le paiement et votre reçu (qui vaut exemplaire du contrat)", "selon Stripe (obligations fiscales)"),
 ]
 
 HORS_QUEBEC = [
@@ -51,7 +51,7 @@ HORS_QUEBEC = [
     ("Apple (Safari, iPhone)", "la voix, quand vous utilisez le micro dans Safari", "États-Unis"),
     ("Microsoft (Edge)", "la voix, quand vous utilisez le micro dans Edge", "États-Unis"),
     ("Anthropic", "vos phrases de « Parler librement », pour que le personnage réponde", "États-Unis"),
-    ("Stripe", "votre nom, votre courriel et votre carte, au paiement", "États-Unis"),
+    ("Stripe", "votre nom, votre adresse, votre courriel et votre carte, au paiement", "États-Unis"),
 ]
 
 NE_FAIT_PAS = [

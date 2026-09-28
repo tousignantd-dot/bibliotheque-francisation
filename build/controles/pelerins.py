@@ -155,6 +155,23 @@ for prod, tr in (("francoeur", "francoeur"), ("hotel", "hotel")):
     ok(APPELS[-1][2]["metadata"]["produit"] == prod, f"{prod} : la recharge suit le produit du code")
 ok(R.commencer_achat("https://x", produit="autre")[1][1] == 400, "un produit inconnu est refusé")
 
+print("Les décisions du 28 septembre (vente au public)")
+R.commencer_achat("https://portail.edufrancis.ca", produit="hotel")
+env4 = APPELS[-1][2]; plat4 = dict(P._aplatir(env4))
+ok(plat4.get("payment_method_types[0]") == "card" and "payment_method_types[1]" not in plat4, "carte seulement")
+ok(plat4.get("billing_address_collection") == "required", "Stripe demande le nom et l'adresse")
+ok(plat4.get("consent_collection[terms_of_service]") == "required" and "conditions-de-vente.html" in plat4.get("custom_text[terms_of_service_acceptance][message]", ""),
+   "case obligatoire, avec le lien vers les conditions")
+c4 = env4["metadata"]["code"]; SESSIONS[APPELS[-1][2] and list(SESSIONS)[-1]]["payment_status"] = "paid"; R.depuis_retour(list(SESSIONS)[-1])
+ok(R.trouver(c4)["etat"] == "actif", "le code acheté est actif")
+R.rembourser({"id": "ch_1", "amount": 999, "amount_refunded": 500, "description": f"Votre code d'accès : {c4}"})
+ok(R.trouver(c4)["etat"] == "actif", "un remboursement partiel n'éteint pas le code")
+R.rembourser({"id": "ch_2", "amount": 999, "amount_refunded": 999, "description": f"Votre code d'accès : {c4}"})
+p4 = R.trouver(c4)
+ok(p4["etat"] == "rembourse" and R.refus(p4, "comptoir-fr-en", 0, True)[1] == 402 and not R.voix_permise(p4), "un remboursement complet éteint le code, voix comprises")
+R.rembourser({"id": "ch_2", "amount": 999, "amount_refunded": 999, "description": f"Votre code d'accès : {c4}"})
+ok(R.trouver(c4)["rembourses"].count("ch_2") == 1, "un avis répété ne compte qu'une fois")
+
 print("Les codes d'essai du pilote")
 ok(all(P.est_code(c) for c in P.CODES_ESSAI) and len(set(P.CODES_ESSAI)) == len(P.CODES_ESSAI), "les codes d'essai sont des codes de pèlerin valides et distincts")
 ce = next(iter(P.CODES_ESSAI)); avant = len(MEMOIRE)

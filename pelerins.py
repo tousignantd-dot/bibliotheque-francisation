@@ -88,6 +88,7 @@ PRODUITS = {
 }
 # Réglable pour les essais seulement (un faux Stripe local) ; jamais en production.
 API = os.environ.get("STRIPE_API", "https://api.stripe.com/v1")
+CONSENTEMENT = os.environ.get("STRIPE_CONSENTEMENT", "1") != "0"
 TOLERANCE_S = 300                              # âge maximal d'une signature de webhook
 
 
@@ -302,6 +303,18 @@ class Registre:
             "locale": PRODUITS[produit]["locale"],
             "success_url": retour + "#achat/{CHECKOUT_SESSION_ID}",
             "cancel_url": retour + "#achat-annule",
+            # Décisions du 28 sept. 2026 (page vente-protection) : carte seulement
+            # (paiement d'avance à distance), nom et adresse demandés par Stripe
+            # (le contrat doit les porter ; nous ne les recevons pas), et les
+            # conditions de vente acceptées par une case obligatoire. La case exige
+            # l'adresse des conditions posée dans le tableau de bord de Stripe ;
+            # STRIPE_CONSENTEMENT=0 la retire le temps de la poser.
+            "payment_method_types": ["card"],
+            "billing_address_collection": "required",
+            "consent_collection": {"terms_of_service": "required"} if CONSENTEMENT else None,
+            "custom_text": {"terms_of_service_acceptance": {"message":
+                f"J'ai lu les [conditions de vente]({adresse.rstrip('/')}/conditions-de-vente.html) : remboursement "
+                "dans les 14 jours si 3 conversations au plus ont servi. Réservé aux personnes majeures."}} if CONSENTEMENT else None,
             "line_items": [{"quantity": 1, "price_data": {
                 "currency": o["devise"], "unit_amount": montant, "product_data": {"name": nom}}}],
             "metadata": {"produit": produit, "quoi": quoi, "code": code},
@@ -370,7 +383,34 @@ class Registre:
             return 400, "json"
         if ev.get("type") in ("checkout.session.completed", "checkout.session.async_payment_succeeded"):
             self.crediter(ev.get("data", {}).get("object", {}))
+        elif ev.get("type") == "charge.refunded":
+            self.rembourser(ev.get("data", {}).get("object", {}))
         return 200, "ok"
+
+    def rembourser(self, charge):
+        """Un remboursement COMPLET (fait dans le tableau de bord de Stripe) éteint le
+        code. Le code se lit dans les métadonnées, sinon dans la description du
+        paiement (« Votre code d'accès : PC… »), que Stripe recopie sur la charge.
+        Une recharge remboursée retire seulement ses conversations."""
+        if not charge or charge.get("amount_refunded", 0) < charge.get("amount", 1):
+            return None
+        code = (charge.get("metadata") or {}).get("code") or ""
+        if not code:
+            import re as _re
+            m = _re.search(r"PC[A-Z0-9]{6}", charge.get("description") or "")
+            code = m.group(0) if m else ""
+        with self.verrou:
+            tous = self.charger()
+            p = next((x for x in tous if x.get("code") == code), None)
+            if not p or charge.get("id") in p.get("rembourses", []):
+                return p
+            p.setdefault("rembourses", []).append(charge.get("id"))
+            if charge.get("amount", 0) >= offre()["prix"] or p.get("paye", 0) <= charge.get("amount", 0):
+                p["etat"] = "rembourse"
+            else:
+                p["conversations"] = max(0, p.get("conversations", 0) - offre()["rechargeConversations"])
+            self.sauver(tous)
+            return p
 
     # -- l'usage --------------------------------------------------------------
     def etat(self, p):
@@ -392,6 +432,8 @@ class Registre:
         if scenario not in permis:
             return ("Ce code n'ouvre pas ce jeu de rôle." if p.get("trousse")
                     else "Ce code n'ouvre que « Parler librement » d'En route vers Compostelle.", 403)
+        if p.get("etat") == "rembourse":
+            return ("Ce code a été remboursé : il n'ouvre plus rien.", 402)
         if p.get("etat") != "actif":
             return ("Ce code n'est pas encore actif : le paiement n'est pas confirmé.", 402)
         if p.get("expire", "") < _aujourdhui():
