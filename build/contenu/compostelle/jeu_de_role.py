@@ -111,6 +111,9 @@ def systeme(cas_id, role_eleve, palier=None):
            "- Donne les informations quand on te les demande ; ne récite pas tout d'un coup.\n")
         + "\nQuand la conversation arrive naturellement à sa fin, salue (¡Buen Camino!) et termine ta dernière "
           "réplique par le mot FIN."
+        # 28 sept. 2026 : Álex a écrit « la truita » (catalan) pour la truite.
+        + "\nParle uniquement en espagnol castillan, avec l'orthographe standard (la trucha, jamais « truita ») : "
+          "pas de catalan, de basque ni de galicien dans tes répliques."
         + ("\n\n" + PALIERS[palier] if palier in PALIERS else "")
     )
 
@@ -141,12 +144,18 @@ BILAN = (
 
 def bilan(cas_id, genre=None):
     """La consigne du bilan, accordée au genre choisi par le pèlerin quand la page
-    l'envoie (« m » ou « f ») ; sinon, la règle neutre de BILAN s'applique."""
+    l'envoie (« m » ou « f ») ; sinon, la règle neutre de BILAN s'applique. Elle dit
+    aussi qui était la PERSONNE : un bilan a parlé de « la serveuse » pour Álex."""
+    qui, _ = _perso_de(cas_id)
+    nom, role, _ou, g_perso, *_ = PS[qui]
+    txt = BILAN + (f"\nLa PERSONNE jouée s'appelle {nom} ({role}) ; c'est "
+                   f"{'une femme' if g_perso in ('f', 'F') else 'un homme'} : parles-en ainsi, sans te tromper de genre.")
+    txt += "\nN'écris dans « compris » que ce que le pèlerin a réellement dit ou obtenu dans la conversation ; n'invente rien."
     if genre == "f":
-        return BILAN + "\nLa personne est une PÈLERINE : en français, accorde au féminin (« végétarienne », « prête », « débrouillée »)."
+        return txt + "\nLe pèlerin est une PÈLERINE : en français, accorde au féminin (« végétarienne », « prête », « débrouillée »)."
     if genre == "m":
-        return BILAN + "\nLa personne est un PÈLERIN : en français, accorde au masculin."
-    return BILAN
+        return txt + "\nLe pèlerin est un PÈLERIN : en français, accorde au masculin."
+    return txt
 
 
 def scenario_serveur():
