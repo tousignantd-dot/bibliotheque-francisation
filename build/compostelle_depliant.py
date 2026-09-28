@@ -163,6 +163,29 @@ h2{{font-size:clamp(26px,3.6vw,36px);line-height:1.1;margin:0 0 8px;color:var(--
 .chemin small{{padding:0 10px;font-size:12.5px;color:var(--doux);font-weight:700}}
 .chemin em{{padding:2px 10px 10px;font-size:13.5px;font-style:normal;color:#4A463D;line-height:1.3}}
 
+/* pourquoi payer : la scène contre Parler librement (Daniel, 28 sept. 2026) */
+.versus{{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:6px}}
+.versus article{{border-radius:18px;padding:18px 20px;border:1px solid var(--filet);background:var(--papier)}}
+.versus article.libre{{background:var(--bleu-f);color:#EDE6D6;border-color:var(--bleu-f)}}
+.versus h3{{margin:0 0 2px;font-size:21px;color:var(--bleu-f)}} .versus .libre h3{{color:#fff}}
+.versus .etiq{{font-size:12.5px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--doux);margin:0 0 10px}}
+.versus .libre .etiq{{color:var(--jaune)}}
+.versus ul{{margin:0;padding:0;list-style:none}}
+.versus li{{padding:7px 0 7px 28px;position:relative;font-size:15.5px;border-top:1px solid rgba(0,0,0,.06)}}
+.versus .libre li{{border-top-color:rgba(255,255,255,.12)}}
+.versus li::before{{content:"•";position:absolute;left:8px;top:6px;font-weight:900;color:var(--doux)}}
+.versus .libre li::before{{content:"✓";left:4px;color:var(--jaune)}}
+.vraie{{display:grid;grid-template-columns:auto 1fr auto;gap:22px;align-items:start;margin-top:26px}}
+.vraie .tel{{max-width:230px}}
+.notes{{display:flex;flex-direction:column;gap:12px;padding-top:26px}}
+.note{{background:#fff;border:1px solid var(--filet);border-left:5px solid var(--jaune);border-radius:12px;padding:12px 14px;font-size:15.5px}}
+.note b{{color:var(--bleu-f)}} .note i{{color:var(--doux)}}
+.pourqui{{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}}
+.pourqui div{{background:var(--papier);border:1px solid var(--filet);border-radius:14px;padding:14px 16px;font-size:15.5px}}
+.pourqui b{{display:block;color:var(--bleu-f);font-size:17px;margin-bottom:2px}}
+.cout{{margin-top:18px;background:#FBEFC4;border:1px solid #E7C75A;border-radius:14px;padding:14px 18px;font-size:16.5px}}
+@media (max-width:860px){{ .versus,.pourqui{{grid-template-columns:1fr}} .vraie{{grid-template-columns:1fr}} .vraie .tel{{margin:0 auto}} .notes{{padding-top:0}} }}
+
 /* prix */
 .prix{{display:grid;grid-template-columns:1fr 1fr;gap:18px}}
 .offre{{border-radius:20px;padding:24px;border:2px solid var(--filet);background:var(--papier)}}
@@ -333,7 +356,49 @@ footer{{text-align:center;font-size:13px;color:var(--doux);padding:26px 0 40px}}
 </section>
 
 <section>
-  <h2><span class="num">5</span>Ce que ça coûte</h2>
+  <h2><span class="num">5</span>Gratuit, vous répétez le chemin. Avec «&nbsp;Parler librement&nbsp;», vous le vivez.</h2>
+  <p class="intro">Tout le chemin est gratuit, et il suffit pour apprendre les phrases. Mais sur le vrai chemin, personne ne suit le
+  scénario : on vous pose une question imprévue, on vous répond autre chose que ce que vous attendiez. «&nbsp;Parler librement&nbsp;» vous y prépare.</p>
+  <div class="versus">
+    <article>
+      <p class="etiq">Compris · gratuit</p><h3>La scène</h3>
+      <ul><li>Les répliques sont écrites d'avance, et toujours les mêmes.</li>
+      <li>Vous choisissez parmi trois réponses, ou vous dites la bonne phrase au micro.</li>
+      <li>On vous dit si c'était juste, et pourquoi.</li>
+      <li>Idéal pour <b>apprendre</b> les phrases du chemin.</li></ul>
+    </article>
+    <article class="libre">
+      <p class="etiq">En option · {prix(o["prix"])}</p><h3>Parler librement</h3>
+      <ul><li>Vous dites <b>ce que vous voulez</b>, comme vous pouvez — au micro ou par écrit.</li>
+      <li>La personne du lieu vous répond <b>à vous</b>, vous relance, vous surprend. Aucune conversation n'est pareille.</li>
+      <li>Trois vitesses : lentement, normalement, «&nbsp;comme en Espagne&nbsp;».</li>
+      <li>Un <b>bilan en français</b> à la fin : ce que vous avez obtenu, et vos phrases à dire autrement.</li>
+      <li>Idéal pour <b>oser</b>, avant le vrai comptoir.</li></ul>
+    </article>
+  </div>
+  <div class="vraie">
+    <div class="tel"><img src="{CAP}libre_conv.jpg" alt="Une vraie conversation avec Álex, le serveur de León"></div>
+    <div class="notes">
+      <div class="note"><b>Une vraie conversation, telle quelle.</b> À León, une pèlerine dit qu'elle est végétarienne, demande si le vin
+        est de la région, puis si Astorga est loin. <i>Rien de tout ça n'est dans la scène.</i></div>
+      <div class="note"><b>Álex s'adapte.</b> Ni la truite ni le poulet ne conviennent : il propose de demander en cuisine et lui
+        rappelle l'entrée. Pour Astorga : «&nbsp;unos cincuenta kilómetros… mejor salir temprano&nbsp;». Exactement ce que dirait un serveur.</div>
+      <div class="note"><b>Et à la fin, le bilan.</b> En français : ce qu'elle a obtenu, et la seule phrase à reprendre —
+        <i>«&nbsp;¿Es mucho lejos?&nbsp;»</i> devient <b>«&nbsp;¿Es muy lejos?&nbsp;»</b>, avec la règle.</div>
+    </div>
+    <div class="tel"><img src="{CAP}libre_bilan.jpg" alt="Le bilan en français, à la fin de la conversation"></div>
+  </div>
+  <div class="pourqui">
+    <div><b>Vous figez quand on vous répond autre chose</b>C'est ce qui arrive le plus souvent sur le chemin. On s'y habitue en le vivant.</div>
+    <div><b>Vous partez bientôt</b>Quelques conversations par semaine, et le premier «&nbsp;¿Qué te pongo?&nbsp;» ne vous prend plus de court.</div>
+    <div><b>Vous voulez parler, pas seulement comprendre</b>Marta, le soir, vous demande pourquoi vous marchez — à vous de lui raconter.</div>
+  </div>
+  <p class="cout"><b>Moins de {round(o["prix"] / o["conversations"])} ¢ la conversation</b>{" au prix de lancement" if o["promo"] else ""} : {o["conversations"]} conversations
+  pour {prix(o["prix"])}, pendant {o["jours"] // 30} mois. Essayez d'abord tout le chemin gratuitement ; le code s'achète en une minute, quand vous voulez.</p>
+</section>
+
+<section>
+  <h2><span class="num">6</span>Ce que ça coûte</h2>
   <div class="prix">
     <div class="offre">
       <p class="etiq">Le chemin</p>
