@@ -21866,9 +21866,15 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         body = json.loads(self.rfile.read(length))
         code = body.get("code", "").strip().upper()
         if not validate_student_code(code):
-            json_response(self, {"error": "Non autorisé"}, 401)
-            return
-        if self._ia_refusee(code):
+            # Le bilan du magasin joué (Maison Francœur) corrige les phrases du
+            # vendeur par cette route : un code acheté ou d'essai de CETTE trousse
+            # y a droit, sans quoi « Vos phrases, corrigées » restait vide (vu le
+            # 28 sept. 2026 en jouant le magasin en ligne).
+            essai = _registre_pelerins().trouver(code) if _pelerins else None
+            if not (essai and essai.get("trousse") == "francoeur" and _registre_pelerins().voix_permise(essai)):
+                json_response(self, {"error": "Non autorisé"}, 401)
+                return
+        elif self._ia_refusee(code):
             return
 
         text = body.get("text", "").strip()
