@@ -127,6 +127,13 @@ BILAN = (
     "« conseil » : une phrase en français, et une formule utile en espagnol entre guillemets.\n"
     "« resume » : une phrase simple, en français, adressée au pèlerin en le vouvoyant (« Vous avez… »), "
     "sur ce qui a marché. Les « compris » aussi s'écrivent à la deuxième personne (« Vous avez signalé… »).\n"
+    # 28 sept. 2026 : un bilan a écrit « vous vous êtes très bien débrouillé » à une pèlerine, et proposé
+    # « ¿Hay algún refugio que me recomienda? » (indicatif fautif). Le bilan ne connaît pas le genre.
+    "Tu ne connais PAS le genre du pèlerin : en français, n'écris aucun participe ni adjectif qui s'accorde "
+    "à lui (pas « débrouillé », « prêt », « allé ») ; tourne la phrase autrement (« Bravo ! », « Vous avez réussi à… »).\n"
+    "Toute formule en espagnol que tu proposes (« mieux », « conseil ») doit être irréprochable : relis-la, en "
+    "particulier le subjonctif après « que » quand on demande une recommandation (« ¿Hay algún albergue que me "
+    "recomiende? ») et l'accord des articles. Préfère une formule courte et sûre à une formule riche et douteuse.\n"
     "Réponds UNIQUEMENT en JSON : {\"compris\": [\"…\"], \"phrases\": [{\"dit\": \"…\", \"mieux\": \"…\"}], "
     "\"conseil\": \"…\", \"resume\": \"…\"}."
 )
