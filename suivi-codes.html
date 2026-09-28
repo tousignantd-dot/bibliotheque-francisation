@@ -72,7 +72,7 @@ function rendre(){
       <td><span class="etat ${cl}">${esc(tx)}</span></td><td>${esc(date(c.expire))}</td></tr>`; }).join('')}</tbody></table>
     <p style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" id="maj">${esc(t('maj'))}</button><button type="button" class="btn" id="copier">${esc(t('copier'))}</button></p>`;
   z.querySelectorAll('[data-qui]').forEach(i => i.oninput = () => ecrire('suivi-codes:' + i.dataset.qui, i.value));
-  document.getElementById('maj').onclick = () => charger(donnees.suivi);
+  document.getElementById('maj').onclick = () => q.get('demo') ? rendre() : charger(donnees.suivi);
   document.getElementById('copier').onclick = e => navigator.clipboard.writeText(donnees.codes.map(c =>
     [c.code, lire('suivi-codes:' + c.code), etat(c)[1], c.expire].join('\t')).join('\n')).then(() => { e.target.textContent = t('copie'); });
 }
@@ -89,8 +89,22 @@ async function charger(code){
 }
 document.getElementById('langues').onclick = e => { const b = e.target.closest('button'); if (!b) return; L = b.dataset.l; rendre(); };
 document.getElementById('f').onsubmit = e => { e.preventDefault(); charger(document.getElementById('c').value); };
+// ?demo=1 : un lot fictif, pour montrer la page (dépliant, rencontre) sans code réel ; rien n'est demandé au serveur.
+if (q.get('demo')) {
+  const j = n => new Date(Date.now() - n * 864e5).toISOString().slice(0, 10), fin = new Date(Date.now() + 340 * 864e5).toISOString().slice(0, 10);
+  donnees = {suivi: 'SVDEMO22', produit: 'hotel', codes: [
+    {code: 'PCK7M2QA', etat: 'actif', utilisees: 12, conversations: 100, dernier: j(1), expire: fin},
+    {code: 'PCR4T8WX', etat: 'actif', utilisees: 3, conversations: 100, dernier: j(9), expire: fin},
+    {code: 'PCH9N3ZE', etat: 'actif', utilisees: 0, conversations: 100, dernier: '', expire: fin},
+    {code: 'PCB6V5YU', etat: 'actif', utilisees: 7, conversations: 100, dernier: j(3), expire: fin},
+    {code: 'PCW2D8PJ', etat: 'actif', utilisees: 0, conversations: 100, dernier: '', expire: fin}]};
+  document.getElementById('c').value = 'SVDEMO22'; rendre();
+  document.getElementById('err').textContent = ({fr: 'Démonstration : un lot fictif de cinq codes.', en: 'Demo: a sample batch of five codes.', es: 'Demostración: un lote ficticio de cinco códigos.'})[L];
+  document.getElementById('err').style.color = '#6b6860';
+} else {
 const depart = q.get('c') || lire('suivi-codes:dernier');
 document.getElementById('c').value = depart;
 rendre(); if (depart) charger(depart);
+}
 </script>
 </body></html>
