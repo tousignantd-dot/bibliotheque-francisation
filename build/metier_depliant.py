@@ -232,7 +232,8 @@ a{color:var(--action)}
 .une{display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:center;padding:34px 0 10px}
 .sur{font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:900;color:var(--accent);margin:0 0 8px}
 h1{font-size:clamp(34px,5.4vw,54px);line-height:1.04;margin:0 0 14px;color:var(--fonce);letter-spacing:-.01em}
-h1 span{background:linear-gradient(transparent 60%%,var(--halo) 60%%)}
+h1{position:relative;padding-top:18px} h1::before{content:'';position:absolute;left:0;top:0;width:64px;height:6px;border-radius:3px;background:var(--accent)}
+h1 span{color:var(--action)}   /* choix de Daniel, 29 sept. 2026 : un filet au-dessus */
 .chapeau{font-size:19px;line-height:1.5;margin:0 0 18px}
 .cta{display:inline-block;background:var(--action);color:#fff;font-weight:900;text-decoration:none;padding:13px 22px;border-radius:12px;font-size:17px}
 .cta:hover{filter:brightness(1.08)}
