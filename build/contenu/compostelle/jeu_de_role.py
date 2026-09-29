@@ -50,10 +50,13 @@ FAITS = {
                "La cathédrale ouvre à 9 h 30 ; tarif réduit pour les pèlerins avec credencial."],
     "carrion": ["Marta marche pour son mari, mort il y a deux ans ; elle porte sa photo dans son sac.",
                 "Elle fait environ 25 km par jour.", "Ce soir, les religieuses de l'albergue chantent avec les pèlerins."],
-    "leon": ["Menu du pèlerin : 12 € tout compris (pain, boisson, dessert).",
-             "Entrées : soupe castillane, ou salade de la maison — la salade CONTIENT DES NOIX.",
-             "Plats : truite à la navarraise ou poulet rôti. Desserts : flan, fruits, crème glacée.",
-             "Le flan ne contient pas de noix ; la crème glacée du jour est à la noix."],
+    # 28 sept. 2026 : l'allergie retirée, les faits parlent du menu. Sans eux, Álex a dit la soupe
+    # castillane végétarienne et Astorga à « quatre jours ».
+    "leon": ["Menu du pèlerin : 12 € tout compris (pain, boisson — vin rouge de León ou eau —, dessert).",
+             "Entrées : soupe castillane (ail, pain, œuf ET jambon : elle n'est pas végétarienne), ou salade de la maison (laitue, tomate, thon, œuf dur).",
+             "Plats : truite à la navarraise (avec du jambon) ou poulet rôti. Pour une personne végétarienne, la cuisine peut faire une omelette ou des légumes sautés, si on le demande.",
+             "Desserts : flan, fruits de saison ou yogourt.",
+             "Astorga est à environ 50 km de León : une très longue étape, ou deux jours en s'arrêtant à Hospital de Órbigo."],
     "o-cebreiro": ["Demain : pluie toute la matinée, brouillard l'après-midi.", "La descente vers Triacastela est boueuse et glissante.",
                    "Transport des sacs : 5 € par étape, sac déposé ici avant 8 h avec l'étiquette.",
                    "En galicien : grazas (merci), rúa (rue), igrexa (église)."],
