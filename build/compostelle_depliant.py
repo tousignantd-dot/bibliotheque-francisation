@@ -381,8 +381,8 @@ footer{{text-align:center;font-size:13px;color:var(--doux);padding:26px 0 40px}}
     <div class="notes">
       <div class="note"><b>Une vraie conversation, telle quelle.</b> À León, une pèlerine dit qu'elle est végétarienne, demande si le vin
         est de la région, puis si Astorga est loin. <i>Rien de tout ça n'est dans la scène.</i></div>
-      <div class="note"><b>Álex s'adapte.</b> Ni la truite ni le poulet ne conviennent : il propose de demander en cuisine et lui
-        rappelle l'entrée. Pour Astorga : «&nbsp;unos cincuenta kilómetros… mejor salir temprano&nbsp;». Exactement ce que dirait un serveur.</div>
+      <div class="note"><b>Álex s'adapte.</b> La truite contient du jambon : il propose une omelette ou des légumes sautés.
+        Pour Astorga : «&nbsp;unos 50 kilómetros&nbsp;» et le conseil de s'arrêter à Hospital de Órbigo. Exactement ce que dirait un serveur.</div>
       <div class="note"><b>Et à la fin, le bilan.</b> En français : ce qu'elle a obtenu, et la seule phrase à reprendre —
         <i>«&nbsp;¿Es mucho lejos?&nbsp;»</i> devient <b>«&nbsp;¿Es muy lejos?&nbsp;»</b>, avec la règle.</div>
     </div>
