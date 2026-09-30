@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chaussures Rivard — le plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   UN MODULE POUR LA VENTE DE CHAUSSURES — LE CADRAGE
+   Chantier « formation en entreprise », second secteur :
+   le commerce de détail. Écrite à la main, comme
+   analyse-marche.html — ses chiffres viennent d'ailleurs et
+   doivent vieillir visiblement.
+
+   Vert : ce que le tour de main actuel produit déjà.
+   Ambre : ce qui attend votre décision.
+   Rouge : l'argument de vente qui tient à une obligation légale.
+   L'acier ne fait que la structure.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+
+  --fait:#0A8F5B;    --fait-bg:#E6F5EE;
+  --decid:#C07A08;   --decid-bg:#FBF2E2;
+  --loi:#C7302B;     --loi-bg:#FBEDEC;
+  --acier:#1D6B8F;   --acier-bg:#E7F0F6;
+
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --fait:#4BC48D; --fait-bg:#12291F;
+    --decid:#E0A63F; --decid-bg:#2C2213;
+    --loi:#EE7A73; --loi-bg:#2E1917;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --loi:#EE7A73; --loi-bg:#2E1917;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+em.art{font-style:normal;font-family:var(--mono);font-size:.82em;color:var(--muted);
+  white-space:nowrap}
+
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+
+/* ── Les décisions ─────────────────────────────────────── */
+.decisions{display:flex;flex-direction:column;gap:2px;counter-reset:d}
+.dec{counter-increment:d;background:var(--card);border:1px solid var(--line);
+  border-left:5px solid var(--decid);border-radius:3px;padding:19px 22px 19px 60px;
+  position:relative;display:flex;flex-direction:column;gap:8px}
+.dec.ok{border-left-color:var(--fait)}
+.dec::before{content:counter(d);position:absolute;left:24px;top:18px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+.dec .ligne{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  justify-content:space-between}
+.dec p{font-size:15.5px}
+.dec .defaut{font-size:13.5px;color:var(--muted);font-style:italic}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-fait{background:var(--fait-bg);color:var(--fait)}
+.b-dec{background:var(--decid-bg);color:var(--decid)}
+.b-loi{background:var(--loi-bg);color:var(--loi)}
+.b-n{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+
+/* ── Tableaux ──────────────────────────────────────────── */
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:640px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:3px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tr.l td:first-child{border-left-color:var(--loi)}
+tr.d td:first-child{border-left-color:var(--decid)}
+tr.f td:first-child{border-left-color:var(--fait)}
+
+/* ── Chiffres ──────────────────────────────────────────── */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--acier);padding:15px 16px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;margin-top:7px}
+
+/* ── Marche à suivre ───────────────────────────────────── */
+ol.actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;
+  counter-reset:a}
+ol.actions li{counter-increment:a;background:var(--card);border:1px solid var(--line);
+  border-radius:3px;padding:18px 22px 18px 62px;position:relative;display:flex;
+  flex-direction:column;gap:6px}
+ol.actions li::before{content:counter(a);position:absolute;left:22px;top:17px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+ol.actions li p{font-size:15.5px}
+.qui{font-size:13px;color:var(--muted);font-style:italic}
+
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.avert{background:var(--loi-bg);border:1px solid var(--loi);border-radius:3px;
+  padding:20px 24px;display:flex;flex-direction:column;gap:9px}
+.avert strong{color:var(--ink)}
+.avert p{font-size:15.5px;color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} }
+
+/* ── décisions à boutons (plan magasin de vêtements) ── */
+.dec2{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0}
+.dq{margin:0 0 10px;font-weight:700;color:var(--ink)}
+.dn{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--decid-bg);color:var(--decid);font-size:13px;margin-right:8px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{font:inherit;font-size:15px;text-align:left;cursor:pointer;background:var(--sunken);color:var(--body);border:1px solid var(--line-fort);border-radius:10px;padding:8px 12px}
+.opt:hover{border-color:var(--acier)}
+.opt[aria-pressed="true"]{background:var(--fait-bg);border-color:var(--fait);color:var(--ink);font-weight:700}
+.opt .tag{font-size:12px;color:var(--decid);font-weight:700;margin-left:4px}
+.dw{margin:10px 0 0;font-size:15px;color:var(--muted)}
+.btn-export{font:inherit;font-weight:700;cursor:pointer;background:var(--acier);color:#fff;border:0;border-radius:10px;padding:10px 16px}
+.etat{margin-left:12px;color:var(--muted);font-size:15px}
+table{display:block;overflow-x:auto}
+</style>
+<style>
+  .doc{padding-top:26px}
+  .retour{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+    color:var(--muted);text-decoration:none;margin-bottom:34px}
+  .retour:hover{color:var(--acier)}
+  table.cmp{width:100%;border-collapse:collapse;font-size:15px;background:var(--card);
+    border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  table.cmp th,table.cmp td{padding:13px 15px;text-align:left;vertical-align:top;
+    border-bottom:1px solid var(--line)}
+  table.cmp thead th{background:var(--sunken);font-size:12px;font-weight:800;
+    letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  table.cmp tbody tr:last-child td{border-bottom:0}
+  table.cmp td:first-child{font-weight:700;color:var(--ink)}
+  .roule{overflow-x:auto}
+  .voie{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:24px 26px;display:flex;flex-direction:column;gap:11px}
+  .voie.oui{border-color:var(--fait);border-width:2px;padding:23px 25px}
+  .voie.non{border-left:5px solid var(--loi)}
+  .voie h3{font-size:19px;font-family:Newsreader,Georgia,serif;font-weight:600;margin:0}
+  .voie .cout{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .verdict{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 10px;border-radius:99px;align-self:flex-start}
+  .v-oui{background:var(--fait-bg);color:var(--fait)}
+  .v-peut{background:var(--decid-bg);color:var(--decid)}
+  .v-non{background:var(--loi-bg);color:var(--loi)}
+  .mes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;
+    background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .mes div{background:var(--card);padding:16px 18px}
+  .mes b{display:block;font-family:Newsreader,Georgia,serif;font-size:27px;font-weight:500;
+    color:var(--ink);line-height:1.1}
+  .mes span{font-size:13px;color:var(--muted)}
+  .planche{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .planche figure{margin:0;background:var(--card);border:1px solid var(--line);
+    border-radius:3px;overflow:hidden;display:flex;flex-direction:column}
+  .planche figure.large{grid-column:1 / -1}
+  .planche img{display:block;width:100%;height:auto;background:var(--sunken)}
+  .planche figcaption{padding:13px 16px 15px;font-size:14px;line-height:1.5;color:var(--muted);
+    border-top:1px solid var(--line)}
+  .planche figcaption b{display:block;color:var(--ink);font-size:14.5px;margin-bottom:2px}
+  @media (max-width:620px){ .planche{grid-template-columns:1fr} }
+  .doc p a,.doc li a,.doc td a{color:var(--acier);text-decoration:underline;
+    text-underline-offset:2px;text-decoration-thickness:1px}
+  ul.src{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px;font-size:14.5px}
+  ul.src li{color:var(--muted)} ul.src .d{font-family:var(--mono);font-size:12.5px}
+  h3.sous{font-family:Newsreader,Georgia,serif;font-size:21px;font-weight:600;
+    letter-spacing:-.01em;color:var(--ink);margin:14px 0 0}
+  @media (max-width:640px){ .doc{padding-left:18px;padding-right:18px} }
+</style>
+<style>table.cmp{display:block;max-width:100%;min-width:0;overflow-x:auto}@media (max-width:640px){table.cmp{font-size:14px}table.cmp th,table.cmp td{padding:10px}table.cmp td{min-width:9em}}</style>
+</head>
+<body>
+<div class="doc">
+
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
+
+<p class="eyebrow">Formation en milieu de travail &middot; vente au détail &middot; chaussures</p>
+<h1>Chaussures Rivard &mdash; le plan</h1>
+<p class="chapeau">La deuxième enseigne du châssis « vendre au détail ». On reprend <strong>la formule
+de la Maison Francœur telle quelle</strong> : des employés qui apprennent le français du plancher, une
+langue d'appui dessous, des planches de croquis, des exercices, un test, puis un magasin où des clients
+joués par l'IA arrivent. Ce qui change, c'est le lexique et les situations, <b>pas la mécanique</b> :
+presque tout le code de Francœur se réemploie.</p>
+
+<section class="premier">
+  <h2>Ce qui existe déjà, et ce que ça devient</h2>
+  <table class="cmp"><thead><tr><th>Pièce</th><th>Ce qu'elle est</th><th>Dans la trousse</th></tr></thead><tbody>
+    <tr><td><b>Le cadrage</b> (19 sept.)</td><td>Le constat qui commande : le programme enseigne à <b>acheter</b>, jamais à
+      vendre — la trousse est hors programme, et c'est le produit.</td><td>Repris tel quel à l'étape 0.</td></tr>
+    <tr><td><b>Le bloc A</b></td><td>Un point express de huit écrans, jouable : les cinq gestes (arrêter, faire préciser,
+      redire, tenir la porte ouverte, passer le relais), 15 voix, une fiche de poche.</td><td>Les cinq gestes deviennent
+      <b>les gestes du magasin</b>, notés au bilan. Le bloc reste en <b>porte d'entrée</b> (décision 4).</td></tr>
+    <tr><td><b>Le nom</b></td><td>« Chaussures Rivard », fictif.</td><td>À revérifier contre les commerces réels à
+      l'étape 0, comme les autres noms.</td></tr>
+    <tr><td><b>Cinq photos</b></td><td>Magasin, comptoir, essayage, réserve, fiche : le registre photo choisi pour le bloc A.</td>
+      <td>Gardées pour le bloc A. Les planches demandent autre chose (décision 1).</td></tr>
+  </tbody></table>
+</section>
+
+<section>
+  <h2>Ce qui change par rapport à la Maison Francœur</h2>
+  <table class="cmp"><thead><tr><th></th><th>Maison Francœur</th><th>Chaussures Rivard</th></tr></thead><tbody>
+    <tr><td>Les tailles</td><td>P · M · G · TG, et quelques numéros</td><td><b>Les pointures</b> : des nombres dits vite
+      (« un huit et demi »), homme et femme, européennes (« un quarante-deux »), et <b>la largeur</b> (étroit, large) — le trait
+      qui fait rater une vente</td></tr>
+    <tr><td>Le geste physique</td><td>La cabine</td><td><b>Mesurer le pied</b>, chausser, aller en réserve : trois gestes où il
+      faut redire avant de partir (le geste du bloc A)</td></tr>
+    <tr><td>La saison</td><td>Les couleurs de la saison</td><td><b>L'hiver</b> : doublure, crampons, imperméable, « à
+      moins trente » — la question qu'on pose au Québec et nulle part ailleurs</td></tr>
+    <tr><td>L'erreur qui coûte</td><td>Promettre un remboursement</td><td>La même, plus une : <b>garantir qu'une botte de travail
+      est homologuée</b> sans lire l'étiquette. Une erreur de santé et sécurité, <b>éliminatoire</b></td></tr>
+    <tr><td>La paire</td><td>—</td><td>On vend par paire, on essaie un pied : « la paire », « l'autre soulier », « le gauche »</td></tr>
+  </tbody></table>
+</section>
+
+<section>
+  <h2>Volet 1 &mdash; les mots (≈ 130, en neuf planches)</h2>
+  <table class="cmp"><thead><tr><th>Planche</th><th>Ce qu'on y trouve</th></tr></thead><tbody>
+    <tr><td>Les modèles</td><td>soulier, botte, bottillon, espadrille, sandale, pantoufle, escarpin, mocassin, soulier de course, botte de pluie</td></tr>
+    <tr><td>Les parties</td><td>semelle, talon, bout, empeigne, languette, lacet, œillet, doublure, semelle intérieure, fermeture éclair</td></tr>
+    <tr><td>Pointures et largeurs</td><td>la pointure (« la grandeur »), la demi-pointure, homme, femme, enfant, étroit, large, européen</td></tr>
+    <tr><td>Matières et couleurs</td><td>cuir, suède, toile, caoutchouc, synthétique, verni — les couleurs en pastilles, comme à Francœur</td></tr>
+    <tr><td>L'hiver</td><td>botte d'hiver, doublure chaude, crampons, imperméable, couvre-chaussures (« des claques »), la température</td></tr>
+    <tr><td>Au travail</td><td>bout d'acier, semelle anti-perforation, antidérapant, le triangle vert, l'étiquette</td></tr>
+    <tr><td>L'entretien</td><td>protecteur imperméabilisant, cirage, embauchoir, semelle orthopédique, lacets de rechange, bas</td></tr>
+    <tr><td>L'essayage</td><td>banc, mesureur, chausse-pied, miroir, la boîte, la réserve (« en arrière »)</td></tr>
+    <tr><td>La caisse</td><td>reçu, échange, remboursement, garantie, carte-cadeau, solde, commande</td></tr>
+  </tbody></table>
+  <p><b>Les pièges d'ici</b>, marqués comme à Francœur : <i>espadrilles</i> (des chaussures de sport ici, des souliers
+  de toile en France), <i>souliers</i>, <i>bas</i>, <i>pantoufles</i>, <i>claques</i>, <i>suède</i> (le daim),
+  <i>bottine</i>, et <i>la grandeur</i> qu'on entendra plus souvent que <i>la pointure</i>.</p>
+</section>
+
+<section>
+  <h2>Volets 2 à 4 &mdash; les exercices, le test, le magasin</h2>
+  <p><b>Les exercices</b> de Francœur, réglés sur la chaussure : j'entends et je trouve · le mot et son image ·
+  je me souviens · la série des pièges · <b>ce que le client veut</b> (modèle, couleur, pointure <b>et largeur</b>),
+  plus une famille neuve : <b>les pointures dites</b> (« un sept et demi en large »), là où l'oreille rate.</p>
+  <p><b>Le test</b> garde ses quatre parties (les mots, le client, la gérante, parler), deux formes parallèles,
+  et il règle le palier des clients.</p>
+  <p><b>Le magasin</b> : 8 clients, trois paliers, un visage à quatre expressions, un bilan par geste.</p>
+  <table class="cmp"><thead><tr><th>Le client</th><th>Le geste qui compte</th></tr></thead><tbody>
+    <tr><td>Il a vu un modèle en vitrine, le veut en huit et demi large</td><td>faire préciser la largeur, redire avant d'aller en réserve</td></tr>
+    <tr><td>Une mère pressée, un enfant qui grandit</td><td>mesurer, conseiller une demi-pointure de plus</td></tr>
+    <tr><td>Il cherche des bottes pour moins trente</td><td>poser la question de l'usage, proposer doublure et crampons</td></tr>
+    <tr><td>Il lui faut des bottes de travail homologuées</td><td><b>lire l'étiquette ou passer le relais</b> — jamais affirmer (éliminatoire)</td></tr>
+    <tr><td>La semelle a décollé après deux mois</td><td>écouter, ne rien promettre, passer le relais à la gérante</td></tr>
+    <tr><td>« Je regarde »</td><td>tenir la porte ouverte sans insister</td></tr>
+    <tr><td>Un cadeau, sans connaître la pointure</td><td>proposer la carte-cadeau et expliquer l'échange</td></tr>
+    <tr><td>La pointure n'est pas en stock</td><td>proposer une autre largeur ou une commande, sans promettre de date</td></tr>
+  </tbody></table>
+</section>
+
+<section>
+  <h2>Le planning</h2>
+  <p>Moins de séances que Francœur : l'écran, les exercices, le test, le magasin, le pilote et l'emballage
+  existent. On écrit le contenu, on dessine, on règle.</p>
+  <table class="cmp">
+    <thead><tr><th>Étape</th><th>Ce qui sort</th><th>Séances</th></tr></thead>
+    <tbody>
+      <tr class="d"><td><b>0. Cadrage</b></td><td>Vos décisions (plus bas), les objectifs mesurables, le nom revérifié, le lexique arrêté, trois croquis témoins et une palette.</td><td class="num">1</td></tr>
+      <tr><td><b>1. Les planches</b></td><td>≈ 100 croquis, les voix des mots, les traductions figées, l'écran.</td><td class="num">2</td></tr>
+      <tr><td><b>2. Les exercices</b></td><td>Six familles, puis l'audit de la boucle (au moins trois tours). <b>Point d'arrêt : jouable par un vendeur.</b></td><td class="num">2</td></tr>
+      <tr><td><b>3. Le test</b></td><td>Deux formes, quatre parties, puis l'audit.</td><td class="num">1</td></tr>
+      <tr><td><b>4. Le magasin</b></td><td>8 clients, leurs portraits, le bilan par geste, puis l'audit.</td><td class="num">2</td></tr>
+      <tr class="f"><td><b>5. Le pilote</b></td><td>Répété sur un serveur jetable, puis mené dans un vrai magasin.</td><td class="num">1</td></tr>
+      <tr><td><b>6. L'emballage</b></td><td>Fiche de poche, guide du formateur, page acheteur, vente du jeu de rôle comme Francœur.</td><td class="num">1</td></tr>
+    </tbody>
+  </table>
+  <div class="chiffres">
+    <div class="ch"><span class="n">10</span><span class="q">séances de travail (Francœur en a pris 14)</span></div>
+    <div class="ch"><span class="n">≈&nbsp;135</span><span class="q">images : ≈ 100 croquis et 8 clients × 4 expressions, à 0,067 $ : ≈ 9 $</span></div>
+    <div class="ch"><span class="n">≈&nbsp;500</span><span class="q">extraits de voix chez Azure : quelques dollars, avec votre feu vert</span></div>
+    <div class="ch"><span class="n">≈&nbsp;8&nbsp;¢</span><span class="q">par partie jouée au magasin, mesuré à Francœur</span></div>
+  </div>
+  <p>Repère : Francœur compte 149 mots, dont 105 dessinés, et 8 clients. La formule
+  « pilote » y est affichée à 3 000 à 6 000 $.</p>
+  <div class="reserve"><p><strong>Ce que je ne peux pas produire :</strong> une demi-journée d'écoute sur un vrai
+  plancher de chaussures. Sans elle, j'invente les mots du métier — et les questions des clients sont ce qui
+  s'invente le plus mal. Je la demande <b>avant l'étape 1</b> (décision 6).</p></div>
+</section>
+<section>
+  <h2>Les décisions</h2>
+  <p>Chacune a une recommandation ; un clic la retient. Le bouton du bas rend un texte à recoller dans
+  la conversation : c'est lui qui pilote la suite.</p>
+  <div id="decisions"></div>
+  <p style="margin-top:1rem"><b>Ce qui manque au plan</b> (facultatif) :</p>
+  <textarea id="note" rows="3" style="width:100%;font:inherit;font-size:15px;padding:10px;border-radius:10px;border:1px solid var(--line-fort);background:var(--card);color:var(--ink);box-sizing:border-box"></textarea>
+  <p style="margin-top:1.2rem"><button type="button" class="btn-export" id="exporter">Exporter mes décisions</button>
+  <span id="etat" class="etat"></span></p>
+</section>
+<div class="pied"><p>Plan du 30 septembre 2026 · chantier « formation en milieu de travail », vente au détail.</p><p>Produit par <code>build/chaussure_plan.py</code> — ne pas l'éditer.</p></div>
+</div>
+<script>
+(function(){
+  var D = [{"k": "registre", "q": "Le dessin des planches", "o": [["croquis", "Des croquis « à plat » de catalogue, comme Francœur (trait noir, aplat de couleur)", true], ["photo", "Des photos, comme le bloc A", false]], "w": "Une planche montre un objet par image, toujours de face, à la même échelle : c'est ce que le croquis de catalogue garantit, et ce qu'une photo générée ne tient pas d'un tirage à l'autre. Les photos du bloc A restent au bloc A, où elles montrent des scènes."}, {"k": "langues", "q": "Les langues d'appui", "o": [["onze", "Les onze langues de l'outil, figées et marquées « non relues », comme Francœur", true], ["trois", "Espagnol et anglais seulement, relus avant la vente", false]], "w": "C'est la formule de Francœur. Le prix d'une langue de plus est un fichier ; celui de la relecture vient quand un magasin la demande."}, {"k": "palette", "q": "Les couleurs de la trousse", "o": [["propre", "Une palette propre, choisie parmi quatre propositions à l'étape 0", true], ["denim", "La palette Denim de Francœur", false], ["francis", "Le thème francis", false]], "w": "Deux enseignes différentes vendues au même réseau doivent se distinguer d'un coup d'œil. La page de propositions existe déjà pour Francœur ; on la refait."}, {"k": "blocA", "q": "Le bloc A déjà fait", "o": [["entree", "La porte d'entrée : on le joue avant les planches, ses gestes deviennent ceux du magasin", true], ["fondre", "Le fondre dans les exercices", false], ["retirer", "Le retirer", false]], "w": "Il est jouable et vérifié. Il installe les cinq gestes en dix minutes, avant le vocabulaire : c'est exactement l'ordre « la compréhension d'abord » qu'il défendait."}, {"k": "travail", "q": "Les chaussures de travail", "o": [["oui", "Oui : une planche et un client, avec l'erreur éliminatoire", true], ["non", "Non : un magasin grand public seulement", false]], "w": "C'est là qu'une phrase de trop coûte le plus cher : un employé qui affirme une homologation qu'il n'a pas lue. Et c'est un rayon qu'une chaîne a presque toujours."}, {"k": "plancher", "q": "La visite de plancher", "o": [["avant", "Avant l'étape 1 : une demi-journée dans un vrai magasin, notes à me transmettre", true], ["apres", "Après le pilote, pour corriger", false], ["sans", "On s'en passe", false]], "w": "Le compte exact du lexique sort du magasin, pas du fichier. Une page de notes suffit : les questions entendues, les mots des vendeurs, ce qui revient."}, {"k": "vente", "q": "La vente", "o": [["pareil", "Comme Francœur : tout gratuit sauf le magasin, ouvert par un code acheté, même prix", true], ["autre", "Une autre formule", false]], "w": "Une seule grille de prix pour toutes les trousses ; il suffit d'ajouter la trousse à la liste blanche des produits vendus."}];
+  var CLE='plan-chaussures', choix={};
+  try{ choix=JSON.parse(localStorage.getItem(CLE)||'{}'); }catch(e){}
+  var zone=document.getElementById('decisions');
+  D.forEach(function(d,i){
+    var div=document.createElement('div'); div.className='dec2';
+    var h='<p class="dq"><span class="dn">'+(i+1)+'</span>'+d.q+'</p><div class="opts">';
+    d.o.forEach(function(o){
+      h+='<button type="button" class="opt'+(o[2]?' reco':'')+'" data-k="'+d.k+'" data-v="'+o[0]+'" aria-pressed="false">'
+        +o[1]+(o[2]?' <span class="tag">recommandé</span>':'')+'</button>';
+    });
+    div.innerHTML=h+'</div><p class="dw">'+d.w+'</p>';
+    zone.appendChild(div);
+  });
+  function peindre(){
+    zone.querySelectorAll('.opt').forEach(function(b){
+      b.setAttribute('aria-pressed', choix[b.dataset.k]===b.dataset.v ? 'true':'false');
+    });
+    var n=Object.keys(choix).length;
+    document.getElementById('etat').textContent = n+' décision'+(n>1?'s':'')+' sur '+D.length;
+  }
+  zone.addEventListener('click',function(e){
+    var b=e.target.closest('.opt'); if(!b) return;
+    if(choix[b.dataset.k]===b.dataset.v) delete choix[b.dataset.k]; else choix[b.dataset.k]=b.dataset.v;
+    try{ localStorage.setItem(CLE,JSON.stringify(choix)); }catch(e){}
+    peindre();
+  });
+  var note=document.getElementById('note');
+  if(note){ try{ note.value=localStorage.getItem(CLE+'-note')||''; }catch(e){}
+    note.addEventListener('input',function(){ try{ localStorage.setItem(CLE+'-note',note.value); }catch(e){} }); }
+  document.getElementById('exporter').addEventListener('click',function(){
+    var out={plan:'chaussures', date:new Date().toISOString().slice(0,10), decisions:{}, note:note?note.value:''};
+    D.forEach(function(d){
+      var v=choix[d.k]; var o=d.o.filter(function(x){return x[0]===v;})[0];
+      out.decisions[d.k]= o ? o[1] : null;
+    });
+    var t=JSON.stringify(out,null,2);
+    var fin=function(){ document.getElementById('etat').textContent='Copié — à recoller dans la conversation.'; };
+    if(navigator.clipboard) navigator.clipboard.writeText(t).then(fin,function(){prompt('Copiez :',t);});
+    else prompt('Copiez :',t);
+  });
+  peindre();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>La restauration — le plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   UN MODULE POUR LA VENTE DE CHAUSSURES — LE CADRAGE
+   Chantier « formation en entreprise », second secteur :
+   le commerce de détail. Écrite à la main, comme
+   analyse-marche.html — ses chiffres viennent d'ailleurs et
+   doivent vieillir visiblement.
+
+   Vert : ce que le tour de main actuel produit déjà.
+   Ambre : ce qui attend votre décision.
+   Rouge : l'argument de vente qui tient à une obligation légale.
+   L'acier ne fait que la structure.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+
+  --fait:#0A8F5B;    --fait-bg:#E6F5EE;
+  --decid:#C07A08;   --decid-bg:#FBF2E2;
+  --loi:#C7302B;     --loi-bg:#FBEDEC;
+  --acier:#1D6B8F;   --acier-bg:#E7F0F6;
+
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --fait:#4BC48D; --fait-bg:#12291F;
+    --decid:#E0A63F; --decid-bg:#2C2213;
+    --loi:#EE7A73; --loi-bg:#2E1917;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --loi:#EE7A73; --loi-bg:#2E1917;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+em.art{font-style:normal;font-family:var(--mono);font-size:.82em;color:var(--muted);
+  white-space:nowrap}
+
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+
+/* ── Les décisions ─────────────────────────────────────── */
+.decisions{display:flex;flex-direction:column;gap:2px;counter-reset:d}
+.dec{counter-increment:d;background:var(--card);border:1px solid var(--line);
+  border-left:5px solid var(--decid);border-radius:3px;padding:19px 22px 19px 60px;
+  position:relative;display:flex;flex-direction:column;gap:8px}
+.dec.ok{border-left-color:var(--fait)}
+.dec::before{content:counter(d);position:absolute;left:24px;top:18px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+.dec .ligne{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  justify-content:space-between}
+.dec p{font-size:15.5px}
+.dec .defaut{font-size:13.5px;color:var(--muted);font-style:italic}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-fait{background:var(--fait-bg);color:var(--fait)}
+.b-dec{background:var(--decid-bg);color:var(--decid)}
+.b-loi{background:var(--loi-bg);color:var(--loi)}
+.b-n{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+
+/* ── Tableaux ──────────────────────────────────────────── */
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:640px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:3px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tr.l td:first-child{border-left-color:var(--loi)}
+tr.d td:first-child{border-left-color:var(--decid)}
+tr.f td:first-child{border-left-color:var(--fait)}
+
+/* ── Chiffres ──────────────────────────────────────────── */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--acier);padding:15px 16px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;margin-top:7px}
+
+/* ── Marche à suivre ───────────────────────────────────── */
+ol.actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;
+  counter-reset:a}
+ol.actions li{counter-increment:a;background:var(--card);border:1px solid var(--line);
+  border-radius:3px;padding:18px 22px 18px 62px;position:relative;display:flex;
+  flex-direction:column;gap:6px}
+ol.actions li::before{content:counter(a);position:absolute;left:22px;top:17px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+ol.actions li p{font-size:15.5px}
+.qui{font-size:13px;color:var(--muted);font-style:italic}
+
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.avert{background:var(--loi-bg);border:1px solid var(--loi);border-radius:3px;
+  padding:20px 24px;display:flex;flex-direction:column;gap:9px}
+.avert strong{color:var(--ink)}
+.avert p{font-size:15.5px;color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} }
+
+/* ── décisions à boutons (plan magasin de vêtements) ── */
+.dec2{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0}
+.dq{margin:0 0 10px;font-weight:700;color:var(--ink)}
+.dn{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--decid-bg);color:var(--decid);font-size:13px;margin-right:8px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{font:inherit;font-size:15px;text-align:left;cursor:pointer;background:var(--sunken);color:var(--body);border:1px solid var(--line-fort);border-radius:10px;padding:8px 12px}
+.opt:hover{border-color:var(--acier)}
+.opt[aria-pressed="true"]{background:var(--fait-bg);border-color:var(--fait);color:var(--ink);font-weight:700}
+.opt .tag{font-size:12px;color:var(--decid);font-weight:700;margin-left:4px}
+.dw{margin:10px 0 0;font-size:15px;color:var(--muted)}
+.btn-export{font:inherit;font-weight:700;cursor:pointer;background:var(--acier);color:#fff;border:0;border-radius:10px;padding:10px 16px}
+.etat{margin-left:12px;color:var(--muted);font-size:15px}
+table{display:block;overflow-x:auto}
+</style>
+<style>
+  .doc{padding-top:26px}
+  .retour{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+    color:var(--muted);text-decoration:none;margin-bottom:34px}
+  .retour:hover{color:var(--acier)}
+  table.cmp{width:100%;border-collapse:collapse;font-size:15px;background:var(--card);
+    border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  table.cmp th,table.cmp td{padding:13px 15px;text-align:left;vertical-align:top;
+    border-bottom:1px solid var(--line)}
+  table.cmp thead th{background:var(--sunken);font-size:12px;font-weight:800;
+    letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  table.cmp tbody tr:last-child td{border-bottom:0}
+  table.cmp td:first-child{font-weight:700;color:var(--ink)}
+  .roule{overflow-x:auto}
+  .voie{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:24px 26px;display:flex;flex-direction:column;gap:11px}
+  .voie.oui{border-color:var(--fait);border-width:2px;padding:23px 25px}
+  .voie.non{border-left:5px solid var(--loi)}
+  .voie h3{font-size:19px;font-family:Newsreader,Georgia,serif;font-weight:600;margin:0}
+  .voie .cout{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .verdict{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 10px;border-radius:99px;align-self:flex-start}
+  .v-oui{background:var(--fait-bg);color:var(--fait)}
+  .v-peut{background:var(--decid-bg);color:var(--decid)}
+  .v-non{background:var(--loi-bg);color:var(--loi)}
+  .mes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;
+    background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .mes div{background:var(--card);padding:16px 18px}
+  .mes b{display:block;font-family:Newsreader,Georgia,serif;font-size:27px;font-weight:500;
+    color:var(--ink);line-height:1.1}
+  .mes span{font-size:13px;color:var(--muted)}
+  .planche{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .planche figure{margin:0;background:var(--card);border:1px solid var(--line);
+    border-radius:3px;overflow:hidden;display:flex;flex-direction:column}
+  .planche figure.large{grid-column:1 / -1}
+  .planche img{display:block;width:100%;height:auto;background:var(--sunken)}
+  .planche figcaption{padding:13px 16px 15px;font-size:14px;line-height:1.5;color:var(--muted);
+    border-top:1px solid var(--line)}
+  .planche figcaption b{display:block;color:var(--ink);font-size:14.5px;margin-bottom:2px}
+  @media (max-width:620px){ .planche{grid-template-columns:1fr} }
+  .doc p a,.doc li a,.doc td a{color:var(--acier);text-decoration:underline;
+    text-underline-offset:2px;text-decoration-thickness:1px}
+  ul.src{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px;font-size:14.5px}
+  ul.src li{color:var(--muted)} ul.src .d{font-family:var(--mono);font-size:12.5px}
+  h3.sous{font-family:Newsreader,Georgia,serif;font-size:21px;font-weight:600;
+    letter-spacing:-.01em;color:var(--ink);margin:14px 0 0}
+  @media (max-width:640px){ .doc{padding-left:18px;padding-right:18px} }
+</style>
+<style>table.cmp{display:block;max-width:100%;min-width:0;overflow-x:auto}@media (max-width:640px){table.cmp{font-size:14px}table.cmp th,table.cmp td{padding:10px}table.cmp td{min-width:9em}}</style>
+</head>
+<body>
+<div class="doc">
+
+<a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
+
+<p class="eyebrow">Formation en milieu de travail &middot; restauration</p>
+<h1>La restauration &mdash; le plan</h1>
+<p class="chapeau">Pour les gens qui commencent à travailler dans un restaurant sans parler encore
+français — souvent à la <b>plonge</b> ou à la <b>préparation</b>, parfois en salle. Même formule que la
+Maison Francœur : le français du poste, une langue d'appui dessous, des planches, des exercices, un test,
+puis une situation jouée. <strong>Mais un restaurant, c'est deux métiers</strong> que tout sépare : la
+cuisine, où l'on reçoit des consignes criées dans le bruit, et la salle, où l'on sert un client. La
+première décision est là.</p>
+
+<section class="premier">
+  <h2>Ce qui fait rater, au restaurant</h2>
+  <table class="cmp"><thead><tr><th>En cuisine</th><th>En salle</th></tr></thead><tbody>
+    <tr><td>La <b>consigne du chef</b>, dite vite, de dos, dans le bruit : « deux burgers, un sans fromage, ça presse »</td>
+      <td>La <b>commande modifiée</b> : « sans oignons, la sauce à part, bien cuit »</td></tr>
+    <tr><td><b>« Chaud derrière ! »</b>, « attention, ça glisse » : les mots qui évitent un accident</td>
+      <td>Les nombres : la table douze, deux couverts, l'addition séparée</td></tr>
+    <tr><td>Dire <b>qu'il manque</b> quelque chose, avant le rush et pas pendant</td>
+      <td>Le client pressé, le client mécontent, et savoir quand appeler le gérant</td></tr>
+    <tr><td colspan="2"><b>Les allergies</b>, des deux côtés — l'erreur qui peut tuer. Répondre « il n'y en a pas »
+      sans vérifier, ou ne pas transmettre une allergie à la cuisine, est <b>éliminatoire</b>, et la trousse le dit
+      avant la première question.</td></tr>
+  </tbody></table>
+  <p>Même ressort qu'au magasin : ce n'est pas le mot <i>louche</i> qui manque, c'est la phrase dite vite. On
+  livre le vocabulaire, et on fait <b>comprendre</b>.</p>
+</section>
+
+<section>
+  <h2>Volet 1 &mdash; les mots (≈ 170, en onze planches)</h2>
+  <table class="cmp"><thead><tr><th>Planche</th><th>Ce qu'on y trouve</th><th>Poste</th></tr></thead><tbody>
+    <tr><td>La cuisine</td><td>la ligne, le passe, la plonge, la chambre froide, le congélateur, la réserve, le lave-vaisselle</td><td>cuisine</td></tr>
+    <tr><td>Les ustensiles</td><td>couteau du chef, planche à découper, bol à mélanger, fouet, louche, pince, spatule, poêle, chaudron, plaque, bac</td><td>cuisine</td></tr>
+    <tr><td>Couper, préparer</td><td>éplucher, trancher, émincer, hacher, en dés, en julienne, mariner, portionner</td><td>cuisine</td></tr>
+    <tr><td>Cuire</td><td>bouillir, frire, griller, rôtir, réchauffer ; saignant, à point, bien cuit</td><td>les deux</td></tr>
+    <tr><td>Les aliments</td><td>viandes, poissons, légumes, fruits, produits laitiers, pain et pâtes, épices — et les plats d'ici</td><td>les deux</td></tr>
+    <tr><td>Les allergènes</td><td>arachides, noix, lait, œufs, blé, poisson, fruits de mer, soya, sésame, moutarde, sulfites</td><td>les deux</td></tr>
+    <tr><td>L'hygiène et la sécurité</td><td>se laver les mains, les gants, le filet, le thermomètre, l'étiquette, la date, le désinfectant, « chaud derrière », « ça glisse »</td><td>les deux</td></tr>
+    <tr><td>La vaisselle et le couvert</td><td>assiette, bol, verre, tasse, ustensiles, plateau, bac à vaisselle</td><td>les deux</td></tr>
+    <tr><td>La salle</td><td>la table, le couvert, le menu, le spécial du jour, l'entrée, le plat, le dessert, pour emporter, l'addition, le pourboire</td><td>salle</td></tr>
+    <tr><td>Les nombres et le temps</td><td>les tables, les couverts, les minutes (« dans cinq minutes »), les températures</td><td>les deux</td></tr>
+    <tr><td>Le quart de travail</td><td>l'horaire, le quart, la pause, la fermeture, le rush, remplacer quelqu'un</td><td>les deux</td></tr>
+  </tbody></table>
+  <p><b>Les pièges d'ici</b> sont nombreux au restaurant, et ils trompent aussi les francophones d'ailleurs :
+  <i>le déjeuner, le dîner, le souper</i> (le matin, le midi, le soir), <i>l'addition</i> et <i>la facture</i>,
+  <i>un breuvage</i>, <i>la liqueur</i> (une boisson gazeuse), <i>les patates</i>, <i>le blé d'Inde</i>, <i>les
+  bleuets</i>, <i>la crème glacée</i>, <i>un extra</i> (un supplément).</p>
+</section>
+
+<section>
+  <h2>Volet 2 &mdash; le décor</h2>
+  <p>Comme le comptoir de l'hôtel : <b>un grand dessin fixe, vu de la place de l'employé</b>, dont chaque objet
+  se touche, se nomme et s'entend. En cuisine, <b>le poste de travail sur la ligne</b> (la planche, les bacs, la
+  plaque, le passe, le chef de dos) ; en salle, <b>la salle vue du comptoir</b>. Le même dessin sert ensuite de
+  décor à la situation jouée : le décor ne bouge pas, les personnes changent devant.</p>
+</section>
+
+<section>
+  <h2>Volets 3 et 4 &mdash; les exercices, le test</h2>
+  <p>Les familles de Francœur (j'entends et je trouve · le mot et son image · je me souviens · la série des
+  pièges), plus trois qui n'existent qu'ici :</p>
+  <ul class="simple">
+    <li><b>La consigne du chef</b> — l'exercice-pont : une consigne entière, dite vite, avec le bruit de la
+    cuisine dessous ; on choisit ce qu'on fait. Le « ce que le client veut » de Francœur, retourné vers la cuisine.</li>
+    <li><b>La commande modifiée</b> — « sans », « avec », « à part », « bien cuit » : ce qui change l'assiette.</li>
+    <li><b>L'allergie</b> — une série où la bonne réponse est parfois « je vérifie », jamais « il n'y en a pas » ;
+    et un contre-exemple par série, où vérifier n'est pas nécessaire, pour que la règle soit discriminée.</li>
+  </ul>
+  <p><b>Le test</b> garde le châssis de Francœur : les mots, la consigne entendue, qui décide, parler — deux
+  formes parallèles.</p>
+</section>
+
+<section>
+  <h2>Volet 5 &mdash; les situations jouées</h2>
+  <p>En cuisine, <b>l'IA joue le chef</b> ou un collègue ; en salle, <b>le client</b>. Même moteur que le magasin
+  (humeur visible, trois paliers, un bilan par geste), un personnage qui parle au lieu d'un client qui achète.</p>
+  <table class="cmp"><thead><tr><th>Situation</th><th>Poste</th><th>Le geste qui compte</th></tr></thead><tbody>
+    <tr><td>Le premier quart : le chef montre le poste</td><td>cuisine</td><td>faire répéter, redire la consigne</td></tr>
+    <tr><td>Le rush : trois consignes d'affilée</td><td>cuisine</td><td>confirmer (« oui, chef : deux burgers, un sans fromage »)</td></tr>
+    <tr><td>Il n'y a plus de frites</td><td>cuisine</td><td>le dire au chef, tout de suite, avec la bonne quantité</td></tr>
+    <tr><td>Une allergie arrive de la salle</td><td>cuisine</td><td><b>la faire répéter et la confirmer</b> (éliminatoire)</td></tr>
+    <tr><td>La chambre froide : dates et rotation</td><td>cuisine</td><td>lire une étiquette, dire ce qui est périmé</td></tr>
+    <tr><td>Une commande avec des changements</td><td>salle</td><td>redire la commande avant de l'envoyer</td></tr>
+    <tr><td>« Est-ce qu'il y a des noix là-dedans ? »</td><td>salle</td><td><b>« je vérifie en cuisine »</b> — jamais affirmer (éliminatoire)</td></tr>
+    <tr><td>Le plat est froid, l'attente est longue</td><td>salle</td><td>s'excuser, agir ou passer le relais au gérant</td></tr>
+  </tbody></table>
+</section>
+
+<section>
+  <h2>Le planning</h2>
+  <table class="cmp">
+    <thead><tr><th>Étape</th><th>Ce qui sort</th><th>Séances</th></tr></thead>
+    <tbody>
+      <tr class="d"><td><b>0. Cadrage</b></td><td>Vos décisions, les objectifs mesurables, le nom du restaurant fictif (trois candidats vérifiés), le lexique arrêté, trois croquis témoins et le décor.</td><td class="num">1</td></tr>
+      <tr><td><b>1. Les planches et le décor</b></td><td>≈ 130 croquis, le décor de la cuisine (et de la salle), les voix, les traductions figées.</td><td class="num">3</td></tr>
+      <tr><td><b>2. Les exercices</b></td><td>Sept familles, puis l'audit de la boucle (au moins trois tours). <b>Point d'arrêt : jouable par un vrai commis.</b></td><td class="num">2</td></tr>
+      <tr><td><b>3. Le test</b></td><td>Deux formes, puis l'audit.</td><td class="num">1</td></tr>
+      <tr><td><b>4. Les situations</b></td><td>Huit situations, le chef et les clients dessinés, le bilan, puis l'audit.</td><td class="num">3</td></tr>
+      <tr class="f"><td><b>5. Le pilote</b></td><td>Répété sur un serveur jetable, puis mené dans une vraie cuisine.</td><td class="num">1</td></tr>
+      <tr><td><b>6. L'emballage</b></td><td>Fiche de poche (à plastifier : elle vivra près de la plonge), guide du formateur, page acheteur, vente.</td><td class="num">1</td></tr>
+    </tbody>
+  </table>
+  <div class="chiffres">
+    <div class="ch"><span class="n">12</span><span class="q">séances de travail</span></div>
+    <div class="ch"><span class="n">≈&nbsp;170</span><span class="q">images : ≈ 130 croquis, deux décors, 8 personnages × 4 expressions, à 0,067 $ : ≈ 12 $</span></div>
+    <div class="ch"><span class="n">≈&nbsp;650</span><span class="q">extraits de voix chez Azure, dont les consignes « dans le bruit » : quelques dollars, avec votre feu vert</span></div>
+    <div class="ch"><span class="n">≈&nbsp;8&nbsp;¢</span><span class="q">par partie jouée, mesuré à Francœur</span></div>
+  </div>
+  <div class="reserve"><p><strong>Trois limites à dire tout de suite :</strong> la trousse enseigne les
+  <b>mots et les gestes</b> de l'hygiène, elle <b>ne remplace pas</b> la formation en hygiène et salubrité que le
+  MAPAQ exige de certains employés (exigences exactes à vérifier au cadrage, sans les affirmer d'ici là). La
+  liste des allergènes prioritaires est celle de Santé Canada, à revérifier au même moment. Et, comme pour la
+  chaussure, <b>une visite en cuisine</b> vaut plus que tout ce que je peux écrire : les consignes réelles d'un
+  chef ne s'inventent pas.</p></div>
+</section>
+<section>
+  <h2>Les décisions</h2>
+  <p>Chacune a une recommandation ; un clic la retient. Le bouton du bas rend un texte à recoller dans
+  la conversation : c'est lui qui pilote la suite.</p>
+  <div id="decisions"></div>
+  <p style="margin-top:1rem"><b>Ce qui manque au plan</b> (facultatif) :</p>
+  <textarea id="note" rows="3" style="width:100%;font:inherit;font-size:15px;padding:10px;border-radius:10px;border:1px solid var(--line-fort);background:var(--card);color:var(--ink);box-sizing:border-box"></textarea>
+  <p style="margin-top:1.2rem"><button type="button" class="btn-export" id="exporter">Exporter mes décisions</button>
+  <span id="etat" class="etat"></span></p>
+</section>
+<div class="pied"><p>Plan du 30 septembre 2026 · chantier « formation en milieu de travail », restauration.</p><p>Produit par <code>build/restauration_plan.py</code> — ne pas l'éditer.</p></div>
+</div>
+<script>
+(function(){
+  var D = [{"k": "poste", "q": "Le poste", "o": [["deux-cuisine", "Les deux, une trousse à deux portes ; la cuisine d'abord", true], ["cuisine", "La cuisine seulement (plonge, préparation, commis)", false], ["salle", "La salle seulement (service, comptoir)", false]], "w": "C'est en cuisine qu'on embauche le plus de gens qui ne parlent pas encore français, et c'est là que rien n'existe. La salle demande plus de français et ressemble au magasin : elle vient ensuite, sur le même lexique d'aliments, d'allergènes et de nombres."}, {"k": "type", "q": "Le restaurant fictif", "o": [["familial", "Un restaurant familial québécois : déjeuners, poutine, pâté chinois, commandes pour emporter", true], ["rapide", "Une restauration rapide, au comptoir", false], ["gastronomique", "Une table plus haut de gamme, en brigade", false]], "w": "C'est le lieu d'embauche le plus courant, et le seul où les trois repas et les pièges d'ici (déjeuner, dîner, souper) se rencontrent tous les jours."}, {"k": "langues", "q": "Les langues", "o": [["francoeur", "La formule Francœur : on apprend le français, onze langues d'appui dessous", true], ["trois", "Trois langues à égalité, comme l'hôtel", false]], "w": "Une cuisine du Québec travaille en français ; c'est lui qu'on apprend. La formule à trois langues de l'hôtel répond à des clients étrangers, pas à une brigade."}, {"k": "nom", "q": "Le nom du restaurant", "o": [["proposer", "Je vous en propose trois, vérifiés contre les restaurants réels", true], ["moi", "Je le donne moi-même", false]], "w": "Fictif et nommé, comme la Maison Francœur et l'Hôtel Rive-Claire."}, {"k": "decor", "q": "Le décor", "o": [["dessin", "Un grand dessin fixe du poste de travail, objets à toucher, même trait que les planches", true], ["photo", "Une photo de cuisine", false]], "w": "Le dessin tient d'une situation à l'autre et se lit sur un téléphone ; une photo générée porterait des étiquettes et des marques illisibles partout (les cuisines en sont couvertes)."}, {"k": "allergies", "q": "Les allergies", "o": [["eliminatoire", "Éliminatoires, dites avant, dans les exercices, le test et les situations", true], ["mention", "Un volet parmi d'autres, sans règle éliminatoire", false]], "w": "Une erreur qui peut tuer ne se compte pas en points. C'est la règle du relais de l'hôtel, appliquée à « je vérifie »."}, {"k": "bruit", "q": "Le bruit de la cuisine", "o": [["oui", "Oui : un fond sonore réglable sous les consignes, qu'on peut couper", true], ["non", "Non : des voix nettes seulement", false]], "w": "On entend le chef dans le bruit, jamais au calme : c'est la difficulté réelle. Un bouton le coupe pour les premiers essais."}, {"k": "visite", "q": "La visite en cuisine", "o": [["avant", "Avant l'étape 1 : un service observé, notes à me transmettre", true], ["apres", "Après le pilote", false], ["sans", "On s'en passe", false]], "w": "Les consignes d'un chef, ses abréviations et ses mots d'ordre ne s'inventent pas."}, {"k": "vente", "q": "La vente", "o": [["pareil", "Comme Francœur et l'hôtel : tout gratuit sauf les situations jouées, même prix", true], ["autre", "Une autre formule", false]], "w": "Une seule grille de prix pour toutes les trousses."}];
+  var CLE='plan-restauration', choix={};
+  try{ choix=JSON.parse(localStorage.getItem(CLE)||'{}'); }catch(e){}
+  var zone=document.getElementById('decisions');
+  D.forEach(function(d,i){
+    var div=document.createElement('div'); div.className='dec2';
+    var h='<p class="dq"><span class="dn">'+(i+1)+'</span>'+d.q+'</p><div class="opts">';
+    d.o.forEach(function(o){
+      h+='<button type="button" class="opt'+(o[2]?' reco':'')+'" data-k="'+d.k+'" data-v="'+o[0]+'" aria-pressed="false">'
+        +o[1]+(o[2]?' <span class="tag">recommandé</span>':'')+'</button>';
+    });
+    div.innerHTML=h+'</div><p class="dw">'+d.w+'</p>';
+    zone.appendChild(div);
+  });
+  function peindre(){
+    zone.querySelectorAll('.opt').forEach(function(b){
+      b.setAttribute('aria-pressed', choix[b.dataset.k]===b.dataset.v ? 'true':'false');
+    });
+    var n=Object.keys(choix).length;
+    document.getElementById('etat').textContent = n+' décision'+(n>1?'s':'')+' sur '+D.length;
+  }
+  zone.addEventListener('click',function(e){
+    var b=e.target.closest('.opt'); if(!b) return;
+    if(choix[b.dataset.k]===b.dataset.v) delete choix[b.dataset.k]; else choix[b.dataset.k]=b.dataset.v;
+    try{ localStorage.setItem(CLE,JSON.stringify(choix)); }catch(e){}
+    peindre();
+  });
+  var note=document.getElementById('note');
+  if(note){ try{ note.value=localStorage.getItem(CLE+'-note')||''; }catch(e){}
+    note.addEventListener('input',function(){ try{ localStorage.setItem(CLE+'-note',note.value); }catch(e){} }); }
+  document.getElementById('exporter').addEventListener('click',function(){
+    var out={plan:'restauration', date:new Date().toISOString().slice(0,10), decisions:{}, note:note?note.value:''};
+    D.forEach(function(d){
+      var v=choix[d.k]; var o=d.o.filter(function(x){return x[0]===v;})[0];
+      out.decisions[d.k]= o ? o[1] : null;
+    });
+    var t=JSON.stringify(out,null,2);
+    var fin=function(){ document.getElementById('etat').textContent='Copié — à recoller dans la conversation.'; };
+    if(navigator.clipboard) navigator.clipboard.writeText(t).then(fin,function(){prompt('Copiez :',t);});
+    else prompt('Copiez :',t);
+  });
+  peindre();
+})();
+</script>
+</body>
+</html>
