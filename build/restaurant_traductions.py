@@ -125,14 +125,30 @@ for k, t, _p in PLANCHES:
 # Les textes des exercices qui se lisent (la question, la règle, les actes) :
 # l'appui va dessous. Les phrases ENTENDUES, elles, ne se traduisent pas.
 import exercices as EX  # noqa: E402
-INTERFACE["regle"] = EX.REGLE
+for n, ligne in enumerate(EX.REGLE, 1):
+    INTERFACE[f"regle_{n}"] = ligne
+INTERFACE["regle_pref"] = EX.REGLE_PREFERENCE
+for k, texte, _ex in EX.FORMULES:
+    INTERFACE["formule_" + k] = texte
+for k, texte in EX.SEUILS.items():
+    INTERFACE["seuil_" + k] = texte
+INTERFACE.update({
+    "formules_titre": "Deux phrases à dire",
+    "une_ecoute": "Une seule écoute, comme en cuisine.",
+    "on_repond": "On répond au chef :",
+    "bien_dit": "Je l'ai bien dit",
+    "a_refaire": "À refaire",
+    "ecouter_acte": "Écouter",
+})
 for k, t in EX.QUI.items():
     INTERFACE["qui_" + k] = t
 for i, _ph, q, *_r in EX.CONSIGNES:
     INTERFACE["q_" + i] = q
 for i, _qui, _v, _ph, _c, actes in EX.ALLERGIES:
-    for n, (acte, _s) in enumerate(actes):
+    for n, (acte, _s, pourquoi) in enumerate(actes):
         INTERFACE[f"acte_{i}_{n}"] = acte
+        if pourquoi:
+            INTERFACE[f"pourquoi_{i}_{n}"] = pourquoi
 
 
 def cle():
@@ -196,16 +212,24 @@ def traduire_mots(code, entrees):
 
 
 def traduire_interface(code):
+    # Par tranches de 60 : à 205 textes d'un bloc, la connexion se fermait
+    # avant la fin (30 sept. 2026), comme les longues langues de Francœur.
     nom = NOMS[code][0]
-    lignes = "\n".join(f"- k={k} | {t}" for k, t in INTERFACE.items())
-    d = appel(f"Traduis vers l'{nom} les textes de l'écran d'une application où des employés de "
-              "restaurant apprennent le vocabulaire français de leur travail. Textes courts, clairs, "
-              "vouvoiement ou forme polie neutre, ton simple. Les `acte_…` sont des gestes de l'employé, à la première personne : garde-les à la première personne. Garde EN FRANÇAIS les mots cités entre « » : c'est ce que l'employé doit dire ou reconnaître. Rends chaque `k` exact.\n\n" + lignes,
-              SCHEMA_UI)
-    ui = {x["k"]: x["t"] for x in d["textes"]}
+    cles = list(INTERFACE)
+    ui = {}
+    for i in range(0, len(cles), 60):
+        lignes = "\n".join(f"- k={k} | {INTERFACE[k]}" for k in cles[i:i + 60])
+        d = appel(f"Traduis vers l'{nom} les textes de l'écran d'une application où des employés de "
+                  "restaurant apprennent le vocabulaire français de leur travail. Textes courts, clairs, "
+                  "vouvoiement ou forme polie neutre, ton simple. Les `acte_…` sont des gestes de l'employé, "
+                  "à la première personne : garde-les à la première personne. Garde EN FRANÇAIS les mots cités "
+                  "entre « » : c'est ce que l'employé doit dire ou reconnaître. « La salle » est la salle à manger "
+                  "du restaurant (où sont les clients), « le serveur » la personne qui sert. Rends chaque `k` exact.\n\n"
+                  + lignes, SCHEMA_UI)
+        ui.update({x["k"]: x["t"] for x in d["textes"]})
     manque = [k for k in INTERFACE if k not in ui]
     if manque:
-        raise RuntimeError(f"{code} interface : manquent {manque}")
+        raise RuntimeError(f"{code} interface : manquent {manque[:8]}")
     return ui
 
 

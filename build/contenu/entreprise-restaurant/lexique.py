@@ -231,6 +231,7 @@ LEXIQUE = [
     # ── Le quart de travail ────────────────────────────────────────────────
     ("horaire", "quart", "l'horaire", "", "", ""),
     ("quart", "quart", "le quart de travail", "le shift", "", ""),
+    ("pis", "quart", "pis", "et puis", "", "Dans la cuisine, « pis » veut dire « et », « et puis » : « Coupe les tomates, pis lave la planche. » Dans vos phrases, dites plutôt « et »."),
     ("pause", "quart", "la pause", "", "", ""),
     ("ouverture", "quart", "l'ouverture", "", "", ""),
     ("fermeture", "quart", "la fermeture", "", "", ""),

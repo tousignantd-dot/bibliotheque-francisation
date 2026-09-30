@@ -58,8 +58,13 @@ def travaux():
     for i, v, phrase, _b, _a, redit in EX.COMMANDES:
         t.append((f"commandes/{i}.mp3", phrase, phrase, V[v], None))
         t.append((f"redit/{i}.mp3", redit, redit, "hd_feminin", None))
-    for i, _qui, v, phrase, _c, _actes in EX.ALLERGIES:
+    for i, _qui, v, phrase, _c, actes in EX.ALLERGIES:
         t.append((f"allergies/{i}.mp3", phrase, phrase, V[v], None))
+        # Les actes s'entendent aussi (audit, tour 1, C6) : l'employé les dit.
+        for n, (acte, _s, _p) in enumerate(actes):
+            t.append((f"actes/{i}-{n}.mp3", acte, acte, "hd_feminin", None))
+    for n, ligne in enumerate(EX.REGLE + [EX.REGLE_PREFERENCE], 1):
+        t.append((f"regle/{n}.mp3", ligne, ligne, "hd_feminin", azure_voix.TAUX_SONS))
     return t
 
 

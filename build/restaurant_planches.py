@@ -43,7 +43,7 @@ URL = "/assets/interactive/restaurant"
 
 # Incrémenter après toute image ou tout son refait : même nom, même adresse,
 # le navigateur servirait l'ancien sans rien dire.
-MEDIA_V = "1"
+MEDIA_V = "2"   # 2 : modèles à redire refaits (audit, tour 1), 30 sept. 2026
 
 
 def donnees():
@@ -90,18 +90,30 @@ def exercices(mots):
     cons = [{"id": i, "son": s_(f"chef/{i}.mp3"), "phrase": ph, "q": "q_" + i, "o": [b] + d,
              "redit": r, "redit_son": s_(f"redit/{i}.mp3")} for i, ph, _q, b, d, r in EX.CONSIGNES]
     com = []
-    for i, _v, ph, (a, m, g), (a2, m2, g2), r in EX.COMMANDES:
-        cartes = [[a, m, g], [a, m2, g2], [a2, m, g2], [a2, m2, g]]   # carré latin : la première est la bonne
-        for trait in range(3):   # aucun trait ne désigne la bonne par vote majoritaire
-            valeurs = [c[trait] for c in cartes]
-            assert valeurs.count(cartes[0][trait]) == 2, f"{i} : trait {trait} devinable"
+    for i, _v, ph, (a, m, g), autre, r in EX.COMMANDES:
+        if g is None:
+            # La cuisson : trois cartes du même plat, la cuisson écrite et dessinée.
+            cartes = [[a, m, m]] + [[a, c, c] for c in EX.CUISSONS if c != m]
+        else:
+            a2, m2, g2 = autre
+            # (audit, tour 1, D4) Une carte ne diffère de la bonne QUE par le
+            # changement : reconnaître le plat et l'ingrédient ne suffit plus.
+            # Et chaque valeur revient deux fois : le vote majoritaire reste nul.
+            cartes = [[a, m, g], [a, m2, g], [a2, m, g2], [a2, m2, g2]]
+            assert any(c[0] == a and c[2] == g and c[1] != m for c in cartes[1:]), i
+            for trait in range(3):
+                valeurs = [c[trait] for c in cartes]
+                assert valeurs.count(cartes[0][trait]) == 2, f"{i} : trait {trait} devinable"
         com.append({"id": i, "son": s_(f"commandes/{i}.mp3"), "phrase": ph, "cartes": cartes,
                     "redit": r, "redit_son": s_(f"redit/{i}.mp3")})
     alg = [{"id": i, "son": s_(f"allergies/{i}.mp3"), "phrase": ph, "qui": "qui_" + qui, "contre": c,
-            "actes": [{"k": f"acte_{i}_{n}", "s": st} for n, (_a, st) in enumerate(actes)]}
+            "actes": [{"k": f"acte_{i}_{n}", "s": st, "p": f"pourquoi_{i}_{n}" if pq else "",
+                       "son": s_(f"actes/{i}-{n}.mp3")} for n, (_a, st, pq) in enumerate(actes)]}
            for i, qui, _v, ph, c, actes in EX.ALLERGIES]
     return {"consignes": cons, "commandes": com, "allergies": alg,
             "pieges": [{"id": i, "o": [i] + c} for i, c in EX.PIEGES], "ordinaires": EX.ORDINAIRES,
+            "regle": [s_(f"regle/{n}.mp3") for n in range(1, len(EX.REGLE) + 2)],
+            "formules": [{"k": k, "son": s_(f"redit/{x}.mp3")} for k, _t, x in EX.FORMULES],
             "changements": EX.CHANGEMENTS}
 
 
@@ -312,6 +324,21 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .regle h2{margin:0 0 8px;font-size:22px}
 .regle p{font-size:17px}
 @media (max-width:640px){.choix{grid-template-columns:repeat(2,minmax(0,1fr))}.choix.tickets{grid-template-columns:1fr}.choix.mots{grid-template-columns:1fr}}
+
+.seuil{font-weight:700;color:var(--rj-teinte);margin:0 0 6px}
+.non-relu{font-size:13px;color:var(--text-muted);margin:6px 0}
+.unique{text-align:center;font-weight:800;color:var(--rj-teinte);margin:6px 0 14px}
+.regle-liste{padding-left:0;margin:0 0 10px;list-style:none;counter-reset:geste}
+.regle-liste li{counter-increment:geste}
+.regle-liste li>span:first-child::before{content:counter(geste) ". ";color:var(--rj-teinte);font-weight:900}
+.regle-liste li{margin:8px 0;font-size:17px;font-weight:700}
+.regle-liste li,.regle .pref{display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
+.regle .pref{font-size:16px}
+.acte-ligne{display:flex;gap:8px;align-items:stretch}
+.acte-ligne .opt{flex:1}
+.ecoute-acte{align-self:center}
+.pourquoi{display:block;font-weight:700;color:var(--text-strong);margin-top:6px}
+@media (max-width:640px){.ticket{grid-template-columns:1fr auto 1fr}.ticket img{max-height:90px}.choix.tickets{grid-template-columns:repeat(2,minmax(0,1fr))}.ticket{grid-template-columns:1fr 1fr;grid-template-areas:"p p" "c i"}.ticket img:first-child{grid-area:p}.ticket .chg{grid-area:c;justify-self:center;font-size:15px}.ticket img:last-child{grid-area:i}}
 </style>
 </head>
 <body>
@@ -594,31 +621,37 @@ function construire(k, filtre){
   }
   if (k === 'chef') {
     const pool = melange(E.consignes).slice(0, N), pl = places(pool.length, 4);
-    return pool.map((c, i) => ({son: c.son, q: c.q, choix: poser(imgChoix(parId[c.o[0]]), c.o.slice(1).map(id => imgChoix(parId[id])), pl[i]), bonne: pl[i], apres: c.phrase, type: 'img'}));
+    // (audit, tour 1, A3/D2) Les trois derniers : une seule écoute, sans « Plus
+    // lentement » — la condition de l'objectif. Après la réponse, on entend ce
+    // qu'on répond au chef.
+    return pool.map((c, i) => ({son: c.son, q: c.q, choix: poser(imgChoix(parId[c.o[0]]), c.o.slice(1).map(id => imgChoix(parId[id])), pl[i]), bonne: pl[i], apres: c.phrase, type: 'img',
+      unique: i >= pool.length - 3, modele: c.redit_son, redit: c.redit}));
   }
   if (k === 'commande') {
-    const pool = melange(E.commandes).slice(0, N), pl = places(pool.length, 4);
+    const pool = melange(E.commandes).slice(0, N);
+    const pl = places(pool.length, 4), pl3 = places(pool.length, 3);
     const carteHTML = ([p, ch, g]) => '<span class="ticket"><img src="' + parId[p].img + '" alt="' + esc(parId[p].mot) + '"><span class="chg">' + esc(E.changements[ch]) + '</span><img src="' + parId[g].img + '" alt="' + esc(parId[g].mot) + '"></span>';
     return pool.map((c, i) => {
       const autres = melange(c.cartes.slice(1));
-      return {son: c.son, choix: poser({html: carteHTML(c.cartes[0])}, autres.map(x => ({html: carteHTML(x)})), pl[i]), bonne: pl[i], apres: c.phrase, type: 'ticket'};
+      const place = c.cartes.length === 4 ? pl[i] : pl3[i];
+      return {son: c.son, choix: poser({html: carteHTML(c.cartes[0])}, autres.map(x => ({html: carteHTML(x)})), place), bonne: place, apres: c.phrase, type: 'ticket'};
     });
   }
   if (k === 'allergie') {
     // Au moins un contre-exemple par série (un « je n'aime pas »), pas plus de deux.
     const contre = melange(E.allergies.filter(a => a.contre)), vrai = melange(E.allergies.filter(a => !a.contre));
     const pool = melange([...contre.slice(0, 1 + (Math.random() < .5 ? 1 : 0)), ...vrai]).slice(0, N);
-    if (!pool.some(a => a.contre)) pool[0] = contre[0];
+    if (!pool.some(a => a.contre)) pool[Math.floor(Math.random() * pool.length)] = contre[0];
     const pl = places(pool.length, 3);
     return pool.map((a, i) => {
       const bonne = a.actes.find(x => x.s === 'juste'), autres = melange(a.actes.filter(x => x.s !== 'juste'));
       const ch = poser(bonne, autres, pl[i]);
-      return {son: a.son, qui: a.qui, choix: ch.map(x => ({html: t(x.k), s: x.s})), bonne: pl[i], apres: a.phrase, type: 'acte', contre: a.contre};
+      return {son: a.son, qui: a.qui, choix: ch.map(x => ({html: t(x.k), s: x.s, p: x.p, son: x.son})), bonne: pl[i], apres: a.phrase, type: 'acte', contre: a.contre};
     });
   }
   if (k === 'redis') {
     const pool = melange([...melange(E.consignes).slice(0, 5), ...melange(E.commandes).slice(0, 3)]);
-    return pool.map(c => ({son: c.son, modele: c.redit_son, redit: c.redit, phrase: c.phrase, type: 'redis'}));
+    return pool.map(c => ({son: c.son, modele: c.redit_son, redit: c.redit, phrase: c.phrase, type: 'redis', qui: c.q ? 'qui_chef' : 'qui_client'}));
   }
   return [];
 }
@@ -629,14 +662,28 @@ function lancer(k, filtre){
   arreter();
   adresse({ecran: 'exercices', ex: k});
   if (k === 'allergie' && !filtre) return regle();
-  const items = construire(k, filtre || (x.filtre ? 'tous' : null));
-  S = {k, x, filtre: filtre || 'tous', items, n: 0, premier: 0, graves: 0};
+  if (k === 'redis' && !filtre) return formules();
+  const f = x.filtre ? (filtre && filtre !== 'x' ? filtre : 'tous') : null;
+  const items = construire(k, f);
+  S = {k, x, filtre: f, items, n: 0, premier: 0, graves: 0};
   if (x.bruit) Bruit.demarrer();
   item();
 }
+function regleHTML(){
+  return '<ol class="regle-liste">' + [1, 2, 3].map(n => '<li><span>' + t('regle_' + n) + '</span><button class="btn-rj petit" data-regle="' + (n - 1) + '" aria-label="' + esc(FR.ecouter) + '">' + ICO.son + '</button></li>').join('') + '</ol>'
+    + '<p class="pref"><span>' + t('regle_pref') + '</span><button class="btn-rj petit" data-regle="3" aria-label="' + esc(FR.ecouter) + '">' + ICO.son + '</button></p>';
+}
+function nonRelu(){ const l = L(); return l && !l.relu ? '<p class="non-relu">' + t('non_relu') + '</p>' : ''; }
 function regle(){
   app.innerHTML = tete('ex_allergie', null, 'exercices')
-    + '<div class="regle"><h2>' + t('regle_titre') + '</h2><p>' + t('regle') + '</p><p class="grave-sous">' + t('grave_sous') + '</p>'
+    + '<div class="regle"><h2>' + t('regle_titre') + '</h2>' + regleHTML() + '<p class="grave-sous">' + t('grave_sous') + '</p>'
+    + '<button class="btn-rj btn-rj--pri btn-rj--pile" data-act="commencer">' + tb('compris') + '</button>' + nonRelu() + '</div>';
+}
+function formules(){
+  // (audit, tour 1, C4) Les deux phrases à dire, avec un exemple entendu, AVANT la série.
+  app.innerHTML = tete('ex_redis', null, 'exercices')
+    + '<div class="regle"><h2>' + t('formules_titre') + '</h2><ol class="regle-liste">' + D.ex.formules.map((f, n) =>
+      '<li><span>' + t('formule_' + f.k) + '</span><button class="btn-rj petit" data-formule="' + n + '" aria-label="' + esc(FR.ecouter) + '">' + ICO.son + '</button></li>').join('') + '</ol>'
     + '<button class="btn-rj btn-rj--pri btn-rj--pile" data-act="commencer">' + tb('compris') + '</button></div>';
 }
 function barreBruit(){
@@ -650,7 +697,8 @@ function filtreHTML(){
   return '<div class="filtre"><label for="filtre">' + esc(FR.filtre) + '</label><select id="filtre">'
     + '<option value="tous">' + esc(FR.tous) + '</option>'
     + (r ? '<option value="revoir">' + esc(FR.a_revoir_filtre) + ' (' + r + ')</option>' : '')
-    + D.planches.filter(p => D.mots.some(m => m.p === p.k && m.img)).map(p => '<option value="' + p.k + '">' + esc(p.t) + '</option>').join('')
+    + D.planches.filter(p => D.mots.some(m => m.p === p.k && m.img)).map(p => { const l = L(), a = l && l.ui['p_' + p.k];
+        return '<option value="' + p.k + '">' + esc(p.t) + (a ? ' — ' + esc(a) : '') + '</option>'; }).join('')
     + '</select></div>';
 }
 function item(){
@@ -658,22 +706,26 @@ function item(){
   if (!it) return bilan();
   S.essais = 0; S.fini = false;
   const k = S.k;
-  let h = tete('ex_' + k, 'ex_' + k + '_c', 'exercices') + filtreHTML() + barreBruit()
+  let h = tete('ex_' + k, 'ex_' + k + '_c', 'exercices') + (FR['seuil_' + k] ? '<p class="seuil">' + t('seuil_' + k) + '</p>' : '') + nonRelu() + filtreHTML() + barreBruit()
     + '<div class="jeu"><div class="barre"><i style="width:' + (100 * S.n / S.items.length) + '%"></i></div>';
   if (it.qui) h += '<p class="qui">' + t(it.qui) + '</p>';
   if (it.sujet) h += '<div class="sujet"><img src="' + it.sujet + '" alt=""></div>';
-  if (it.son) h += '<div class="ecoute"><button class="btn-rj btn-rj--pri btn-rj--pile" data-act="reecouter">' + tb('reecouter') + '</button>'
+  if (it.son && it.unique) h += '<p class="unique">' + t('une_ecoute') + '</p>';
+  else if (it.son) h += '<div class="ecoute"><button class="btn-rj btn-rj--pri btn-rj--pile" data-act="reecouter">' + tb('reecouter') + '</button>'
     + '<button class="btn-rj btn-rj--pile" data-act="lent">' + tb('lentement') + '</button></div>';
   if (it.q) h += '<p class="question">' + t(it.q) + '</p>';
   if (it.type === 'rappel') h += '<div class="revele" id="revele"><button class="btn-rj btn-rj--pri btn-rj--pile" data-act="voirmot">' + tb('voir_mot') + '</button></div>';
   else if (it.type === 'redis') h += '<p class="question">' + t('a_vous') + '</p><div class="revele" id="revele"><button class="btn-rj btn-rj--pile" data-act="modele">' + tb('modele') + '</button></div>';
-  else h += '<div class="choix ' + {img: 'imgs', mot: 'mots', ticket: 'tickets', acte: 'mots actes'}[it.type] + '">' + it.choix.map((c, i) =>
+  else if (it.type === 'acte') h += '<div class="choix mots actes">' + it.choix.map((c, i) =>
+      '<div class="acte-ligne"><button class="opt" data-o="' + i + '">' + c.html + '</button><button class="btn-rj petit ecoute-acte" data-acte="' + i + '" aria-label="' + esc(FR.ecouter_acte) + '">' + ICO.son + '</button></div>').join('') + '</div>';
+  else h += '<div class="choix ' + {img: 'imgs', mot: 'mots', ticket: 'tickets'}[it.type] + '">' + it.choix.map((c, i) =>
       '<button class="opt" data-o="' + i + '">' + c.html + '</button>').join('') + '</div>';
   h += '<p class="retro" id="retro" aria-live="polite"></p><div class="apres" id="apres"></div><div class="suite" id="suite"></div></div>';
   app.innerHTML = h;
   const f = document.getElementById('filtre'); if (f) f.value = S.filtre;
   if (it.son) jouerNormal(it.son);
   const premier = app.querySelector('.opt, [data-act=voirmot], [data-act=reecouter]'); if (premier) premier.focus({preventScroll: true});
+  if (it.unique) app.querySelectorAll('.opt').forEach(o => o.disabled = true), audio.onended = () => { audio.onended = null; app.querySelectorAll('.opt').forEach(o => o.disabled = false); };
 }
 function montrerApres(it){
   // La phrase entendue s'écrit APRÈS la réponse : on apprend à écouter, pas à lire.
@@ -682,6 +734,7 @@ function montrerApres(it){
   if (it.apres) h += '<p class="dit"><span>' + (it.type === 'img' || it.type === 'mot' ? '' : esc(FR.phrase) + ' : ') + '</span><b>« ' + esc(it.apres) + ' »</b>'
     + (it.apresSon ? ' <button class="btn-rj petit" data-act="apresson" aria-label="' + esc(FR.ecouter) + '">' + ICO.son + '</button>' : '') + '</p>';
   if (it.note) h += '<div class="piege">' + esc(FR.piege) + ' : ' + esc(it.note) + '</div>';
+  if (it.type === 'img' && it.redit) h += '<p class="dit">' + esc(FR.on_repond) + ' <b>« ' + esc(it.redit) + ' »</b> <button class="btn-rj petit" data-act="remodele" aria-label="' + esc(FR.ecouter) + '">' + ICO.son + '</button></p>';
   a.innerHTML = h;
   document.getElementById('suite').innerHTML = '<button class="btn-rj btn-rj--pri" data-act="suivant">' + esc(FR.suivant) + ICO.d + '</button>';
   document.querySelector('[data-act=suivant]').focus({preventScroll: true});
@@ -694,12 +747,18 @@ function repondre(i){
     S.fini = true;
     opts.forEach(o => o.disabled = true);
     opts[it.bonne].classList.add('juste');
-    const s = it.choix[i].s;
-    if (s === 'juste') { S.premier++; retro.className = 'retro ok'; retro.innerHTML = t('juste_acte'); }
-    else {
+    const c = it.choix[i], s = c.s;
+    // (audit, tour 1, E1) POURQUOI ce choix, puis la règle — et pour une simple
+    // préférence, seulement la phrase sur la préférence.
+    const pourquoi = c.p ? '<span class="pourquoi">' + t(c.p) + '</span>' : '';
+    const rappel = '<span class="rappel-regle">' + (it.contre ? t('regle_pref') : [1, 2, 3].map(n => t('regle_' + n)).join('<br>')) + '</span>';
+    if (s === 'juste') {
+      S.premier++; retro.className = 'retro ok';
+      const pj = it.choix[it.bonne].p; retro.innerHTML = t('juste_acte') + (pj ? '<span class="pourquoi">' + t(pj) + '</span>' : '');
+    } else {
       b.classList.add('faux');
-      if (s === 'grave') { S.graves++; retro.className = 'retro non'; retro.innerHTML = t('grave') + '<span class="rappel-regle">' + t('regle') + '</span>'; }
-      else { retro.className = 'retro non'; retro.innerHTML = t('faux_acte') + '<span class="rappel-regle">' + t('regle') + '</span>'; }
+      if (s === 'grave') S.graves++;
+      retro.className = 'retro non'; retro.innerHTML = t(s === 'grave' ? 'grave' : 'faux_acte') + pourquoi + rappel;
     }
     return montrerApres(it);
   }
@@ -710,6 +769,7 @@ function repondre(i){
     return montrerApres(it);
   }
   S.essais++; b.classList.add('faux'); b.disabled = true;
+  const reste = opts.find(o => !o.disabled); if (reste && S.essais < 2) reste.focus({preventScroll: true});
   if (S.essais >= 2) {
     S.fini = true; opts.forEach(o => o.disabled = true); opts[it.bonne].classList.add('juste');
     if (it.revoir) aRevoir(it.revoir, true);
@@ -728,7 +788,8 @@ function bilan(){
   const k = S.k, tot = S.items.length;
   app.innerHTML = tete('ex_' + k, null, 'exercices') + '<div class="bilan"><p class="fin">' + t('fin') + '</p>'
     + '<p class="score">' + S.premier + ' / ' + tot + '</p><p>' + t('premier_coup') + '</p>'
-    + (k === 'allergie' ? '<p class="graves' + (S.graves ? ' non' : '') + '">' + S.graves + ' ' + esc(FR.graves) + '</p><p class="grave-sous">' + t('grave_sous') + '</p>' : '')
+    + (k === 'allergie' ? '<p class="graves' + (S.graves ? ' non' : '') + '">' + S.graves + ' ' + esc(FR.graves) + '</p><p class="grave-sous">' + t('grave_sous') + '</p>'
+       : FR['seuil_' + k] ? '<p class="seuil">' + t('seuil_' + k) + '</p>' : '')
     + '<div class="gestes-bilan"><button class="btn-rj btn-rj--pri btn-rj--pile" data-act="encore">' + tb('recommencer') + '</button>'
     + '<button class="btn-rj btn-rj--pile" data-act="exercices">' + tb('retour_ex') + '</button></div></div>';
   Bruit.arreter();
@@ -747,8 +808,10 @@ app.addEventListener('click', e => {
   if (b.dataset.ex) { lancer(b.dataset.ex); window.scrollTo(0, 0); return; }
   if (b.dataset.planche) { planche(b.dataset.planche); window.scrollTo(0, 0); return; }
   if (b.dataset.bruit != null) { Bruit.regler(+b.dataset.bruit); app.querySelectorAll('[data-bruit]').forEach(x => x.setAttribute('aria-pressed', x === b)); return; }
-  if (a === 'commencer') { const k = 'allergie'; S = null; const items = construire(k); S = {k, x: EXOS.find(e => e.k === k), filtre: null, items, n: 0, premier: 0, graves: 0}; Bruit.demarrer(); return item(); }
-  if (a === 'encore') return lancer(S.k, S.k === 'allergie' ? 'x' : S.filtre);
+  if (a === 'commencer') { const k = new URLSearchParams(location.search).get('ex'); return lancer(k, 'x'); }
+  if (b.dataset.regle != null) return jouerNormal(D.ex.regle[+b.dataset.regle]);
+  if (b.dataset.formule != null) return jouerNormal(D.ex.formules[+b.dataset.formule].son);
+  if (a === 'encore') return lancer(S.k, S.x.filtre ? S.filtre : 'x');
   if (S) {
     const it = S.items[S.n];
     if (a === 'reecouter') return jouerNormal(it.son);
@@ -756,6 +819,7 @@ app.addEventListener('click', e => {
     if (a === 'apresson') return jouerNormal(it.apresSon);
     if (a === 'suivant') { S.n++; item(); window.scrollTo(0, 0); return; }
     if (b.dataset.o != null) return repondre(+b.dataset.o);
+    if (b.dataset.acte != null) return jouerNormal(it.choix[+b.dataset.acte].son);
     if (a === 'voirmot') {
       const m = it.rappel;
       document.getElementById('revele').innerHTML = '<p class="gros">' + esc(m.mot) + '</p>'
@@ -765,7 +829,7 @@ app.addEventListener('click', e => {
     if (a === 'modele') {
       document.getElementById('revele').innerHTML = '<p class="gros-phrase">« ' + esc(it.redit) + ' »</p><p class="dit">' + esc(FR.phrase) + ' : « ' + esc(it.phrase) + ' »</p>'
         + '<div class="gestes-bilan"><button class="btn-rj petit" data-act="remodele">' + ICO.son + esc(FR.modele) + '</button></div>'
-        + '<div class="gestes-bilan"><button class="btn-rj btn-rj--pile" data-act="bien">' + tb('savais') + '</button><button class="btn-rj btn-rj--pile" data-act="mal">' + tb('a_revoir') + '</button></div>';
+        + '<div class="gestes-bilan"><button class="btn-rj btn-rj--pile" data-act="bien">' + tb('bien_dit') + '</button><button class="btn-rj btn-rj--pile" data-act="mal">' + tb('a_refaire') + '</button></div>';
       jouerNormal(it.modele); return;
     }
     if (a === 'remodele') return jouerNormal(it.modele);
