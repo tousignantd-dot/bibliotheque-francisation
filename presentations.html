@@ -411,6 +411,38 @@
   .eti-travail{background:var(--paper-200); color:var(--ink-500)}
 
 
+
+  /* ── L'onglet Applications (build/applications.py) ── */
+  body.vue-applis .famille, body.vue-applis #vueTableau, body.vue-applis .vide,
+  body.vue-applis .sous-barre, body.vue-applis .recherche, body.vue-applis #bascule{display:none !important}
+  .applis{padding:var(--sp-8) 0 0}
+  .ap-groupe{margin-top:var(--sp-6)}
+  .ap-groupe .ch-titre{padding-top:var(--sp-4); border-top:2px solid var(--ink-900); margin-bottom:var(--sp-4)}
+  .ap-liste{display:grid; gap:var(--sp-3)}
+  .ap{background:var(--surface-card); border:1px solid var(--border); border-radius:var(--r-md);
+    padding:var(--sp-4) var(--sp-5); box-shadow:var(--sh-card); display:grid; gap:var(--sp-2); min-width:0}
+  .ap-tete{display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:var(--sp-1) var(--sp-4)}
+  .ap-nom{margin:0; font-size:20px; font-weight:900; letter-spacing:var(--ls-title)}
+  .ap-nom a{color:var(--ink-900); text-decoration:none}
+  .ap-nom a:hover{color:var(--accent-ink)}
+  .ap-date{font-size:var(--fs-ui-sm); font-weight:700; color:var(--ink-400); font-variant-numeric:tabular-nums; white-space:nowrap}
+  .ap-quoi{margin:0; font-size:var(--fs-ui); font-weight:600; color:var(--ink-500); max-width:70ch}
+  .ap-actions{display:flex; flex-wrap:wrap; align-items:center; gap:var(--sp-2) var(--sp-3)}
+  .ap-url{font-size:var(--fs-meta); color:var(--ink-400); overflow-wrap:anywhere; min-width:0}
+  .ap-copier{font:inherit; font-size:var(--fs-ui-sm); font-weight:800; padding:5px 12px; cursor:pointer;
+    border-radius:var(--r-pill); border:1px solid var(--border-firm); background:var(--surface-card); color:var(--ink-700)}
+  .ap-copier:hover{background:var(--paper-200)}
+  .ap-copier.fait{border-color:var(--accent); color:var(--accent-ink)}
+  .ap-codes{border-top:1px solid var(--border); padding-top:var(--sp-2)}
+  .ap-codes summary{cursor:pointer; font-size:var(--fs-ui-sm); font-weight:800; color:var(--accent-ink)}
+  .ap-note{font-size:var(--fs-ui-sm); color:var(--ink-400); font-weight:600; margin:var(--sp-2) 0}
+  .ap-codes ul{list-style:none; margin:0 0 var(--sp-3); padding:0;
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:var(--sp-2) var(--sp-5)}
+  .ap-codes li{display:flex; align-items:center; gap:var(--sp-3)}
+  .ap-codes li code{font-size:16px; font-weight:700; letter-spacing:.06em; font-variant-numeric:tabular-nums}
+  .ap-codes li span{font-size:var(--fs-meta); color:var(--ink-400); flex:1}
+  .ap-codes li span, .ap-copier{white-space:nowrap}
+
 /*<<DERNIERE-CSS>>*/
   .derniere{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem;
     margin:.9rem 0 0;padding:.55rem .8rem;border:1px solid var(--line);
@@ -465,6 +497,7 @@
          tous les nombres sont posés au chargement, lus dans la page : un
          compteur écrit à la main est faux à la fiche suivante, et il l'était. -->
     <div class="onglets" role="group" aria-label="Choisir une étagère">
+      <button type="button" class="onglet" data-f="applications" aria-pressed="false">Applications <span class="n"></span></button>
       <button type="button" class="onglet" data-f="tout" aria-pressed="true">Tout <span class="n"></span></button>
       <button type="button" class="onglet" data-f="francis" aria-pressed="false">francis <span class="n"></span></button>
       <button type="button" class="onglet" data-f="formations" aria-pressed="false">Formations en entreprise <span class="n"></span></button>
@@ -507,6 +540,275 @@
       <p class="index-pied" id="indexPied"></p>
       </div>
     </section>
+
+    <!-- La dernière version de chaque application, et ses codes d'essai.
+         ENGENDRÉ par build/applications.py, qui lit les codes dans
+         pelerins.py et la date dans git : ne rien écrire à la main ici. -->
+    <!--<<APPLICATIONS>>-->
+    <section class="applis" id="vueApplis" hidden aria-label="Les applications, dernière version">
+      <div class="tete">
+        <span class="eyebrow e-teal">Un lien par application</span>
+        <h2>Applications</h2>
+        <p>La dernière version de chaque application, prête à envoyer. La date est celle du dernier changement de la page. Quand une application s'ouvre par un code, les codes d'essai sont dessous : chacun donne 25 conversations jusqu'au 18 octobre 2026.</p>
+      </div>
+      <div class="ap-groupe">
+        <h3 class="ch-titre">Voyage</h3>
+        <div class="ap-liste">
+          <article class="ap" data-chemin="/modules-autonomes/compostelle/">
+            <div class="ap-tete">
+              <h4 class="ap-nom"><a href="modules-autonomes/compostelle/" target="_blank" rel="noopener">En route vers Compostelle</a></h4>
+              <span class="ap-date">30 septembre 2026</span>
+            </div>
+            <p class="ap-quoi">L&#x27;espagnol du pèlerin, du départ à Santiago. Tout est gratuit sauf « Parler librement », qui s&#x27;ouvre avec un code.</p>
+            <div class="ap-actions">
+              <a class="btn" href="modules-autonomes/compostelle/" target="_blank" rel="noopener">Ouvrir</a>
+              <button type="button" class="ap-copier" data-copier="lien">Copier le lien</button>
+              <code class="ap-url"></code>
+            </div>
+            <details class="ap-codes">
+              <summary>12 codes d'essai</summary>
+              <p class="ap-note">Un code par personne : il se consomme. « Copier pour envoyer » met le lien et le code ensemble, prêts à coller dans un courriel ou un texto.</p>
+              <ul>
+                <li><code>PCF8D9GQ</code><span>essai 01</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PCF8D9GQ">Copier pour envoyer</button></li>
+                <li><code>PCM6WNSV</code><span>essai 02</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PCM6WNSV">Copier pour envoyer</button></li>
+                <li><code>PCEAN6WQ</code><span>essai 03</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PCEAN6WQ">Copier pour envoyer</button></li>
+                <li><code>PC72J5U8</code><span>essai 04</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PC72J5U8">Copier pour envoyer</button></li>
+                <li><code>PC8JSFQV</code><span>essai 05</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PC8JSFQV">Copier pour envoyer</button></li>
+                <li><code>PCZ4VRGX</code><span>essai 06</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PCZ4VRGX">Copier pour envoyer</button></li>
+                <li><code>PCBPQ8RW</code><span>essai 07</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PCBPQ8RW">Copier pour envoyer</button></li>
+                <li><code>PCRWZECQ</code><span>essai 08</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PCRWZECQ">Copier pour envoyer</button></li>
+                <li><code>PCF8XAJQ</code><span>essai 09</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PCF8XAJQ">Copier pour envoyer</button></li>
+                <li><code>PCZ4YFPX</code><span>essai 10</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PCZ4YFPX">Copier pour envoyer</button></li>
+                <li><code>PCDUKPKG</code><span>essai 11</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PCDUKPKG">Copier pour envoyer</button></li>
+                <li><code>PCK3WC4E</code><span>essai 12</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PCK3WC4E">Copier pour envoyer</button></li>
+              </ul>
+              <button type="button" class="ap-copier" data-copier="tous">Copier les 12 codes</button>
+            </details>
+          </article>
+          <article class="ap" data-chemin="/modules-autonomes/montreal/">
+            <div class="ap-tete">
+              <h4 class="ap-nom"><a href="modules-autonomes/montreal/" target="_blank" rel="noopener">Montréal en poche</a></h4>
+              <span class="ap-date">30 septembre 2026</span>
+            </div>
+            <p class="ap-quoi">Le guide touristique de Montréal pour le téléphone, en trois langues. Tout est ouvert, aucun code.</p>
+            <div class="ap-actions">
+              <a class="btn" href="modules-autonomes/montreal/" target="_blank" rel="noopener">Ouvrir</a>
+              <button type="button" class="ap-copier" data-copier="lien">Copier le lien</button>
+              <code class="ap-url"></code>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="ap-groupe">
+        <h3 class="ch-titre">Formations en entreprise</h3>
+        <div class="ap-liste">
+          <article class="ap" data-chemin="/modules-autonomes/hotel-reception/">
+            <div class="ap-tete">
+              <h4 class="ap-nom"><a href="modules-autonomes/hotel-reception/" target="_blank" rel="noopener">Hôtel Rive-Claire — la réception</a></h4>
+              <span class="ap-date">30 septembre 2026</span>
+            </div>
+            <p class="ap-quoi">L&#x27;écran de l&#x27;employé : les mots, les exercices, le test, puis le comptoir joué, qui s&#x27;ouvre avec un code.</p>
+            <div class="ap-actions">
+              <a class="btn" href="modules-autonomes/hotel-reception/" target="_blank" rel="noopener">Ouvrir</a>
+              <button type="button" class="ap-copier" data-copier="lien">Copier le lien</button>
+              <code class="ap-url"></code>
+            </div>
+            <details class="ap-codes">
+              <summary>8 codes d'essai</summary>
+              <p class="ap-note">Un code par personne : il se consomme. « Copier pour envoyer » met le lien et le code ensemble, prêts à coller dans un courriel ou un texto.</p>
+              <ul>
+                <li><code>PCSTQDXN</code><span>hotel 01</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PCSTQDXN">Copier pour envoyer</button></li>
+                <li><code>PC2RGS5J</code><span>hotel 02</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PC2RGS5J">Copier pour envoyer</button></li>
+                <li><code>PC4JHWWN</code><span>hotel 03</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PC4JHWWN">Copier pour envoyer</button></li>
+                <li><code>PCG8DX7M</code><span>hotel 04</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PCG8DX7M">Copier pour envoyer</button></li>
+                <li><code>PCFAEMBM</code><span>hotel 05</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PCFAEMBM">Copier pour envoyer</button></li>
+                <li><code>PCKYJMPC</code><span>hotel 06</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PCKYJMPC">Copier pour envoyer</button></li>
+                <li><code>PCUSZW3Q</code><span>hotel 07</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PCUSZW3Q">Copier pour envoyer</button></li>
+                <li><code>PCHK596K</code><span>hotel 08</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PCHK596K">Copier pour envoyer</button></li>
+              </ul>
+              <button type="button" class="ap-copier" data-copier="tous">Copier les 8 codes</button>
+            </details>
+          </article>
+          <article class="ap" data-chemin="/modules-autonomes/francoeur-planches/">
+            <div class="ap-tete">
+              <h4 class="ap-nom"><a href="modules-autonomes/francoeur-planches/" target="_blank" rel="noopener">Maison Francœur — la vente de vêtements</a></h4>
+              <span class="ap-date">30 septembre 2026</span>
+            </div>
+            <p class="ap-quoi">Les planches, les exercices, le test de niveau, puis le magasin joué, qui s&#x27;ouvre avec un code.</p>
+            <div class="ap-actions">
+              <a class="btn" href="modules-autonomes/francoeur-planches/" target="_blank" rel="noopener">Ouvrir</a>
+              <button type="button" class="ap-copier" data-copier="lien">Copier le lien</button>
+              <code class="ap-url"></code>
+            </div>
+            <details class="ap-codes">
+              <summary>8 codes d'essai</summary>
+              <p class="ap-note">Un code par personne : il se consomme. « Copier pour envoyer » met le lien et le code ensemble, prêts à coller dans un courriel ou un texto.</p>
+              <ul>
+                <li><code>PC4QSY45</code><span>francoeur 01</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PC4QSY45">Copier pour envoyer</button></li>
+                <li><code>PCRDWBVU</code><span>francoeur 02</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PCRDWBVU">Copier pour envoyer</button></li>
+                <li><code>PCBUSXR6</code><span>francoeur 03</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PCBUSXR6">Copier pour envoyer</button></li>
+                <li><code>PCC65FF3</code><span>francoeur 04</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PCC65FF3">Copier pour envoyer</button></li>
+                <li><code>PCWQHVXP</code><span>francoeur 05</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PCWQHVXP">Copier pour envoyer</button></li>
+                <li><code>PCAAEJUJ</code><span>francoeur 06</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PCAAEJUJ">Copier pour envoyer</button></li>
+                <li><code>PCYV7JEM</code><span>francoeur 07</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PCYV7JEM">Copier pour envoyer</button></li>
+                <li><code>PCKN7EJ5</code><span>francoeur 08</span><button type="button" class="ap-copier" data-copier="envoi" data-code="PCKN7EJ5">Copier pour envoyer</button></li>
+              </ul>
+              <button type="button" class="ap-copier" data-copier="tous">Copier les 8 codes</button>
+            </details>
+          </article>
+          <article class="ap" data-chemin="/modules-autonomes/belrive-bloc3/">
+            <div class="ap-tete">
+              <h4 class="ap-nom"><a href="modules-autonomes/belrive-bloc3/" target="_blank" rel="noopener">Belrive — le bloc 3</a></h4>
+              <span class="ap-date">31 août 2026</span>
+            </div>
+            <p class="ap-quoi">Le bloc jouable de la trousse d&#x27;usine. Aucun code.</p>
+            <div class="ap-actions">
+              <a class="btn" href="modules-autonomes/belrive-bloc3/" target="_blank" rel="noopener">Ouvrir</a>
+              <button type="button" class="ap-copier" data-copier="lien">Copier le lien</button>
+              <code class="ap-url"></code>
+            </div>
+          </article>
+          <article class="ap" data-chemin="/modules-autonomes/chaussure-blocA/">
+            <div class="ap-tete">
+              <h4 class="ap-nom"><a href="modules-autonomes/chaussure-blocA/" target="_blank" rel="noopener">Chaussures — le bloc A</a></h4>
+              <span class="ap-date">19 septembre 2026</span>
+            </div>
+            <p class="ap-quoi">« Un instant, s&#x27;il vous plaît » : le premier bloc de la vente de chaussures. Aucun code.</p>
+            <div class="ap-actions">
+              <a class="btn" href="modules-autonomes/chaussure-blocA/" target="_blank" rel="noopener">Ouvrir</a>
+              <button type="button" class="ap-copier" data-copier="lien">Copier le lien</button>
+              <code class="ap-url"></code>
+            </div>
+          </article>
+        </div>
+      </div>
+      <div class="ap-groupe">
+        <h3 class="ch-titre">Portfolio</h3>
+        <div class="ap-liste">
+          <article class="ap" data-chemin="/assets/presentations/formation-dea-v5.html">
+            <div class="ap-tete">
+              <h4 class="ap-nom"><a href="assets/presentations/formation-dea-v5.html" target="_blank" rel="noopener">SimDEA — la formation au défibrillateur</a></h4>
+              <span class="ap-date">28 septembre 2026</span>
+            </div>
+            <p class="ap-quoi">La version 5 : quarante diapositives, la simulation « Vous. » en encart, et le simulateur au bout.</p>
+            <div class="ap-actions">
+              <a class="btn" href="assets/presentations/formation-dea-v5.html" target="_blank" rel="noopener">Ouvrir</a>
+              <button type="button" class="ap-copier" data-copier="lien">Copier le lien</button>
+              <code class="ap-url"></code>
+            </div>
+          </article>
+          <article class="ap" data-chemin="/assets/presentations/simdea-vous-anime-v5.html">
+            <div class="ap-tete">
+              <h4 class="ap-nom"><a href="assets/presentations/simdea-vous-anime-v5.html" target="_blank" rel="noopener">« Vous. » — la simulation seule</a></h4>
+              <span class="ap-date">23 septembre 2026</span>
+            </div>
+            <p class="ap-quoi">La pièce jouée, telle qu&#x27;elle est dans la formation v5.</p>
+            <div class="ap-actions">
+              <a class="btn" href="assets/presentations/simdea-vous-anime-v5.html" target="_blank" rel="noopener">Ouvrir</a>
+              <button type="button" class="ap-copier" data-copier="lien">Copier le lien</button>
+              <code class="ap-url"></code>
+            </div>
+          </article>
+          <article class="ap" data-chemin="/assets/presentations/simulateur-dea.html">
+            <div class="ap-tete">
+              <h4 class="ap-nom"><a href="assets/presentations/simulateur-dea.html" target="_blank" rel="noopener">SimDEA — le simulateur seul</a></h4>
+              <span class="ap-date">23 septembre 2026</span>
+            </div>
+            <p class="ap-quoi">Le dispositif jouable, hors de la formation.</p>
+            <div class="ap-actions">
+              <a class="btn" href="assets/presentations/simulateur-dea.html" target="_blank" rel="noopener">Ouvrir</a>
+              <button type="button" class="ap-copier" data-copier="lien">Copier le lien</button>
+              <code class="ap-url"></code>
+            </div>
+          </article>
+          <article class="ap" data-chemin="/assets/presentations/atelier-prototypes/banc-de-panne/tournee.html">
+            <div class="ap-tete">
+              <h4 class="ap-nom"><a href="assets/presentations/atelier-prototypes/banc-de-panne/tournee.html" target="_blank" rel="noopener">Avant l&#x27;ouverture — la formation pour barista</a></h4>
+              <span class="ap-date">24 septembre 2026</span>
+            </div>
+            <p class="ap-quoi">La bonne version : elle commence par la tournée de la machine, puis mène au jeu « Trouver la panne ».</p>
+            <div class="ap-actions">
+              <a class="btn" href="assets/presentations/atelier-prototypes/banc-de-panne/tournee.html" target="_blank" rel="noopener">Ouvrir</a>
+              <button type="button" class="ap-copier" data-copier="lien">Copier le lien</button>
+              <code class="ap-url"></code>
+            </div>
+          </article>
+          <article class="ap" data-chemin="/assets/presentations/courriel-de-trop/le-courriel-de-trop.html">
+            <div class="ap-tete">
+              <h4 class="ap-nom"><a href="assets/presentations/courriel-de-trop/le-courriel-de-trop.html" target="_blank" rel="noopener">Le courriel de trop</a></h4>
+              <span class="ap-date">23 septembre 2026</span>
+            </div>
+            <p class="ap-quoi">Reconnaître un courriel d&#x27;hameçonnage.</p>
+            <div class="ap-actions">
+              <a class="btn" href="assets/presentations/courriel-de-trop/le-courriel-de-trop.html" target="_blank" rel="noopener">Ouvrir</a>
+              <button type="button" class="ap-copier" data-copier="lien">Copier le lien</button>
+              <code class="ap-url"></code>
+            </div>
+          </article>
+          <article class="ap" data-chemin="/assets/presentations/a-la-main-dabord/a-la-main-dabord.html">
+            <div class="ap-tete">
+              <h4 class="ap-nom"><a href="assets/presentations/a-la-main-dabord/a-la-main-dabord.html" target="_blank" rel="noopener">À la main d&#x27;abord</a></h4>
+              <span class="ap-date">23 septembre 2026</span>
+            </div>
+            <p class="ap-quoi">Remplacer les bougies d&#x27;allumage.</p>
+            <div class="ap-actions">
+              <a class="btn" href="assets/presentations/a-la-main-dabord/a-la-main-dabord.html" target="_blank" rel="noopener">Ouvrir</a>
+              <button type="button" class="ap-copier" data-copier="lien">Copier le lien</button>
+              <code class="ap-url"></code>
+            </div>
+          </article>
+          <article class="ap" data-chemin="/assets/presentations/le-dernier-millimetre/le-dernier-millimetre.html">
+            <div class="ap-tete">
+              <h4 class="ap-nom"><a href="assets/presentations/le-dernier-millimetre/le-dernier-millimetre.html" target="_blank" rel="noopener">Le dernier millimètre</a></h4>
+              <span class="ap-date">23 septembre 2026</span>
+            </div>
+            <p class="ap-quoi">Remplacer les plaquettes de frein avant.</p>
+            <div class="ap-actions">
+              <a class="btn" href="assets/presentations/le-dernier-millimetre/le-dernier-millimetre.html" target="_blank" rel="noopener">Ouvrir</a>
+              <button type="button" class="ap-copier" data-copier="lien">Copier le lien</button>
+              <code class="ap-url"></code>
+            </div>
+          </article>
+          <article class="ap" data-chemin="/assets/presentations/boucle-animee.html">
+            <div class="ap-tete">
+              <h4 class="ap-nom"><a href="assets/presentations/boucle-animee.html" target="_blank" rel="noopener">La boucle diagnostic — la version qui se joue</a></h4>
+              <span class="ap-date">18 septembre 2026</span>
+            </div>
+            <p class="ap-quoi">La pièce maîtresse du portfolio, en mouvement.</p>
+            <div class="ap-actions">
+              <a class="btn" href="assets/presentations/boucle-animee.html" target="_blank" rel="noopener">Ouvrir</a>
+              <button type="button" class="ap-copier" data-copier="lien">Copier le lien</button>
+              <code class="ap-url"></code>
+            </div>
+          </article>
+          <article class="ap" data-chemin="/assets/presentations/atelier-prototypes/index.html">
+            <div class="ap-tete">
+              <h4 class="ap-nom"><a href="assets/presentations/atelier-prototypes/index.html" target="_blank" rel="noopener">L&#x27;atelier des prototypes</a></h4>
+              <span class="ap-date">19 septembre 2026</span>
+            </div>
+            <p class="ap-quoi">Les prototypes 01 à 05, chacun jouable depuis le dossier.</p>
+            <div class="ap-actions">
+              <a class="btn" href="assets/presentations/atelier-prototypes/index.html" target="_blank" rel="noopener">Ouvrir</a>
+              <button type="button" class="ap-copier" data-copier="lien">Copier le lien</button>
+              <code class="ap-url"></code>
+            </div>
+          </article>
+          <article class="ap" data-chemin="/assets/presentations/cv/daniel-tousignant-cv.html">
+            <div class="ap-tete">
+              <h4 class="ap-nom"><a href="assets/presentations/cv/daniel-tousignant-cv.html" target="_blank" rel="noopener">Le CV animé</a></h4>
+              <span class="ap-date">28 septembre 2026</span>
+            </div>
+            <p class="ap-quoi">Daniel Tousignant, concepteur pédagogique.</p>
+            <div class="ap-actions">
+              <a class="btn" href="assets/presentations/cv/daniel-tousignant-cv.html" target="_blank" rel="noopener">Ouvrir</a>
+              <button type="button" class="ap-copier" data-copier="lien">Copier le lien</button>
+              <code class="ap-url"></code>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+    <!--<</APPLICATIONS>>-->
 
     <!-- Cinq étagères, une par chantier (réorganisation du 30 septembre
          2026). Une fiche vit dans le bloc .chantier de son projet et porte
@@ -4618,7 +4920,7 @@
           <p>Avant l'ouverture : la tournée de la machine en 3D, puis le jeu où l'on trouve la panne.</p></div>
         <div class="liste">
         <!--<<FAMILLE-BARISTA>>-->
-        <article class="fiche" data-etat="service" data-cle="barista simulateur v10 avant l ouverture spade suspects verifications constats derniere version date mise a jour ou est la derniere version">
+        <article class="fiche" data-etat="travail" data-cle="barista simulateur v10 avant l ouverture spade suspects verifications constats derniere version date mise a jour ou est la derniere version">
           <div>
             <h3 class="titre">Avant l'ouverture — formation pour barista</h3>
             <p class="quoi">Le dispositif jouable, précédé de son récit et des cinq mécanismes narrés.</p>
@@ -4667,7 +4969,7 @@
         </article>
         <!--<</FAMILLE-AVANT-LOUVERTURE>>-->
         <!--<<FAMILLE-BARISTA-GRAPHIQUE>>-->
-        <article class="fiche" data-etat="service" data-cle="barista-graphique simulateur 3d graphique tournee coupe lame machine espresso mouture joint douchette chaudiere pompe derniere version date mise a jour ou est la derniere version">
+        <article class="fiche" data-etat="travail" data-cle="barista-graphique simulateur 3d graphique tournee coupe lame machine espresso mouture joint douchette chaudiere pompe derniere version date mise a jour ou est la derniere version">
           <div>
             <h3 class="titre">La grande tournée — les cinq pannes</h3>
             <p class="quoi">Vingt-quatre écrans : la mouture, le joint, la douchette, la chaudière et la pompe, chacune nommée, tranchée, puis jouée dans ses deux états. Le manomètre ne dénonce que le joint et la pompe ; les trois autres se lisent ailleurs.</p>
@@ -4687,7 +4989,7 @@
             <a class="btn" href="assets/presentations/atelier-prototypes/banc-de-panne/tournee.html" target="_blank" rel="noopener">Ouvrir</a>
           </div>
         </article>
-        <article class="fiche" data-etat="service" data-cle="barista-graphique jeu diagnostic trouver panne suspects verifications constats minutes">
+        <article class="fiche" data-etat="travail" data-cle="barista-graphique jeu diagnostic trouver panne suspects verifications constats minutes">
           <div>
             <h3 class="titre">Trouver la panne — le jeu</h3>
             <p class="quoi">Au bout de la tournée, le bouton « Trouver la panne » mène ici. Une situation de départ donne le symptôme et le défi ; trois colonnes côte à côte : les cinq suspects, qu'on peut revoir en coupe quand ça lâche, les vérifications et les minutes qu'elles coûtent, et les constats qu'elles rapportent. On choisit la panne quand on est sûr.</p>
@@ -5908,7 +6210,12 @@
   function compte(liste) {
     return liste.filter(function (f) { return !travail(f); }).length;
   }
+  var vueApplis = document.getElementById('vueApplis');
   onglets.forEach(function (b) {
+    if (b.dataset.f === 'applications') {
+      b.querySelector('.n').textContent = document.querySelectorAll('#vueApplis .ap').length;
+      return;
+    }
     var lot = b.dataset.f === 'tout' ? fiches : fiches.filter(function (f) {
       return etagereDe(f) === b.dataset.f;
     });
@@ -6022,8 +6329,17 @@
     onglets.forEach(function (o) {
       o.setAttribute('aria-pressed', o.dataset.f === filtre ? 'true' : 'false');
     });
-    batirSous();
-    appliquer();
+    // L'onglet Applications n'est pas une étagère : il remplace les fiches
+    // par la liste des applications, et le reste de la barre se retire.
+    var applis = (filtre === 'applications');
+    document.body.classList.toggle('vue-applis', applis);
+    if (vueApplis) vueApplis.hidden = !applis;
+    if (applis) {
+      sous.hidden = true;
+    } else {
+      batirSous();
+      appliquer();
+    }
     var h = filtre === 'tout' ? location.pathname : '#' + (chantier || filtre);
     try { history.replaceState(null, '', h); } catch (e) {}
   }
@@ -6046,6 +6362,7 @@
     function suivre() {
       var nom = (location.hash || '').replace(/^#/, '');
       if (!nom) return;
+      if (nom === 'applications') return choisir('applications', '');
       var fam = familles.filter(function (f) { return f.dataset.fam === nom; })[0];
       if (fam) return choisir(nom, '');
       var c = chantiers.filter(function (x) {
@@ -6059,6 +6376,45 @@
     suivre();
   }());
 /*<</LIEN-ONGLET>>*/
+
+  // ── Applications : l'adresse complète et les boutons « Copier » ──────
+  // L'adresse se fabrique à partir de celle du classeur : aucun nom de
+  // domaine n'est écrit dans la page.
+  (function () {
+    if (!vueApplis) return;
+    function adresse(ap) { return location.origin + ap.dataset.chemin; }
+    Array.prototype.slice.call(vueApplis.querySelectorAll('.ap')).forEach(function (ap) {
+      var u = ap.querySelector('.ap-url');
+      if (u) u.textContent = adresse(ap);
+    });
+    function copier(bouton, texte) {
+      var dit = bouton.textContent;
+      function fait(msg) {
+        bouton.textContent = msg; bouton.classList.add('fait');
+        setTimeout(function () { bouton.textContent = dit; bouton.classList.remove('fait'); }, 1600);
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(texte).then(function () { fait('Copié'); },
+          function () { window.prompt('Copier :', texte); });
+      } else { window.prompt('Copier :', texte); }
+    }
+    vueApplis.addEventListener('click', function (ev) {
+      var b = ev.target.closest('.ap-copier');
+      if (!b) return;
+      var ap = b.closest('.ap');
+      var nom = ap.querySelector('.ap-nom').textContent.trim();
+      if (b.dataset.copier === 'lien') return copier(b, adresse(ap));
+      if (b.dataset.copier === 'envoi') {
+        return copier(b, nom + '\nLien : ' + adresse(ap) + '\nCode d\u2019essai : ' + b.dataset.code);
+      }
+      if (b.dataset.copier === 'tous') {
+        var cs = Array.prototype.slice.call(ap.querySelectorAll('.ap-codes li')).map(function (li) {
+          return li.querySelector('code').textContent + '  (' + li.querySelector('span').textContent + ')';
+        });
+        return copier(b, nom + '\n' + adresse(ap) + '\n\n' + cs.join('\n'));
+      }
+    });
+  }());
 
   // ── La bascule fiches / tableau ────────────────────────────────────
   // `cleDate` est déclarée plus bas : une déclaration de fonction est

@@ -20,7 +20,10 @@ Ce qu'il attrape, et qui ne lève aucune erreur à l'écran :
     correspond à aucune étagère — le chemin par lequel on est arrivé à 24 ;
   - un chantier vide, ou deux chantiers de même clé ;
   - un lien relatif qui pointe dans le vide, sur une fiche en service ou à
-    trancher (le travail replié n'est pas vérifié : il documente le passé).
+    trancher (le travail replié n'est pas vérifié : il documente le passé) ;
+  - dans l'onglet Applications (build/applications.py) : un lien mort, ou des
+    codes d'essai qui ne sont plus ceux de pelerins.py — un code retiré là
+    mais encore affiché ici serait donné à quelqu'un et refusé.
 """
 import pathlib
 import re
@@ -43,7 +46,9 @@ def main(argv):
     if noms != ETAGERES:
         ecarts.append("étagères %s — attendu %s" % (noms, ETAGERES))
     onglets = re.findall(r'<button type="button" class="onglet" data-f="([^"]+)"', s)
-    if onglets != ["tout"] + ETAGERES:
+    # « Applications » n'est pas une étagère : c'est la vue des dernières
+    # versions, demandée par Daniel le 30 septembre 2026.
+    if onglets != ["applications", "tout"] + ETAGERES:
         ecarts.append("onglets de premier niveau %s — un chantier neuf va DANS une "
                       "étagère, il n'ajoute pas d'onglet" % onglets)
 
@@ -84,6 +89,24 @@ def main(argv):
                         ecarts.append("%s › %s : « %s » pointe dans le vide (%s)"
                                       % (fam, ch, titre, href))
             inventaire.append((fam, ch, compte))
+    # L'onglet Applications.
+    sys.path.insert(0, str(RACINE))
+    import pelerins
+    applis = re.search(r"<!--<<APPLICATIONS>>-->(.*?)<!--<</APPLICATIONS>>-->", s, re.S)
+    if not applis or 'class="ap"' not in applis.group(1):
+        ecarts.append("onglet Applications vide — python3 build/applications.py")
+    else:
+        a = applis.group(1)
+        for href in set(re.findall(r'<a class="btn" href="([^"]+)"', a)):
+            if not (RACINE / href).exists():
+                ecarts.append("Applications : « %s » pointe dans le vide" % href)
+        affiches = set(re.findall(r'data-code="([A-Z0-9]+)"', a))
+        attendus = set(pelerins.CODES_ESSAI) | set(pelerins.CODES_ESSAI_TROUSSES)
+        if affiches != attendus:
+            ecarts.append("Applications : codes d'essai périmés (%d affichés, %d dans "
+                          "pelerins.py) — python3 build/applications.py"
+                          % (len(affiches), len(attendus)))
+
     if vues != total:
         ecarts.append("%d fiches dans la page, %d rangées dans un chantier" % (total, vues))
 

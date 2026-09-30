@@ -45,6 +45,15 @@ planches, versions antérieures — replié, mais la recherche le trouve).
   marqueurs `FAMILLE-*`, désormais comme fiches dans leur chantier.
 - Rien n'a été déplacé sur le disque. Une page neuve va dans
   `assets/presentations/<chantier>/`.
+- **L'onglet « Applications »** (demandé par Daniel le 30 septembre 2026) donne
+  la dernière version de chaque application et, sous celles qui s'ouvrent par
+  un code (Compostelle, Francœur, Rive-Claire), les codes d'essai à donner.
+  **Engendré** par `python3 build/applications.py` : la liste des applications
+  et la bonne page de chacune s'écrivent dans `APPLICATIONS` ; la date vient de
+  git et les codes de `pelerins.py`. Une application neuve, ou un code ajouté
+  ou retiré dans `pelerins.py`, demande de relancer le script — le contrôle du
+  classeur sort en écart sur des codes périmés. Pour le barista, la bonne
+  version est celle qui commence par la tournée (`tournee.html`), pas la v10.
 
 ## Déploiement (Railway)
 
