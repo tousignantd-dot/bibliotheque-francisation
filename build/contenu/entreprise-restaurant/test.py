@@ -44,18 +44,26 @@ passation suivante (sinon la différence de formes se lit comme un apprentissage
 A = {
     1: {1: ["friteuse", "louche", "tomate", "assiette"],
         2: ["passoire", "champignon", "gants", "plateau"],
-        3: [("poele", ["poele-appareil", "bac", "fouet"]),
-            ("patates", ["pomme", "carotte", "citron"]),
+        3: [("poele", ["poele-appareil", "chaudron", "fouet"]),
+            ("patates", ["pomme", "frites", "citron"]),
             ("liqueur", ["cafe", "tasse", "creme"]),
             ("alg-arachides", ["alg-noix", "alg-moutarde", "alg-ble"])]},
     2: {1: ["four", "fouet", "oignon", "verre"],
         2: ["rape", "poivron", "tablier", "napperon"],
-        3: [("poele-appareil", ["poele", "hotte", "four"]),
-            ("ble-inde", ["feves", "pates", "farine"]),
+        3: [("poele-appareil", ["poele", "four", "hotte"]),
             ("roties", ["pain", "pain-dore", "tarte-sucre"]),
-            ("bleuets", ["citron", "sirop-erable", "pomme"])]},
+            ("feves", ["ble-inde", "pates", "farine"]),
+            ("chaudron", ["poele", "bol", "sel-poivre"])]},
 }
-A_VALIDE, A_ARRET = 3, 2   # trois bonnes montent d'un cran ; deux erreurs arrêtent
+A_VALIDE, A_ARRET = 3, 2
+# (audit du test, tour 1, F1) Les formes PARALLÈLES au cran 3, celui qui décide
+# « à l'aise » : les contrastes FORTS (le faux ami lui-même, ou ce qu'on confond
+# vraiment) de chaque piège. Chaque forme : deux items à deux contrastes forts,
+# deux items à un seul. verifier() compte.
+FORTS = {"poele": ["poele-appareil", "chaudron"], "patates": ["pomme", "frites"],
+         "liqueur": ["cafe"], "alg-arachides": ["alg-noix"],
+         "poele-appareil": ["poele", "four"], "roties": ["pain", "pain-dore"],
+         "feves": ["ble-inde"], "chaudron": ["poele"]}   # trois bonnes montent d'un cran ; deux erreurs arrêtent
 
 # ── B · entendu une fois ─────────────────────────────────────────────────
 # Le chef : (id, phrase, question, bonne, [distracteurs]) — même règle que les
@@ -89,7 +97,7 @@ B_COMMANDE = {
     2: [("q5", "m", "Un hamburger sans tomates, s'il vous plaît.", ("hamburger", "sans", "tomate"), ("club", "a-part", "bacon")),
         ("q6", "f", "Des frites, avec un extra fromage.", ("frites", "extra", "fromage"), ("poutine", "sans", "champignon")),
         ("q7", "m", "Du pain doré, avec le beurre à part.", ("pain-dore", "a-part", "beurre"), ("crepes", "extra", "sirop-erable")),
-        ("q8", "f", "Le steak, saignant, s'il vous plaît.", ("steak", "saignant", None), None)],
+        ("q8", "f", "Le steak… à point, non : saignant, s'il vous plaît.", ("steak", "saignant", None), None)],
 }
 VOIX_CHEF = "m"
 
@@ -109,7 +117,7 @@ C = {
             ("Pardon, vous êtes allergique à quoi ?", "juste"),
             ("Oui, le club, vous pouvez le manger.", "grave"),
             ("J'écris « allergie » sur la commande.", "grave")]),
-        ("u4", "client", "f", "Pas de fromage dans mon hamburger. Je n'en mange pas, c'est tout.", True, [
+        ("u4", "client", "f", "Pas de fromage dans mon hamburger : je n'aime pas le fromage.", True, [
             ("J'écris « sans fromage », c'est tout.", "juste"),
             ("J'annonce une allergie au fromage à la cuisine.", "faux"),
             ("Je refuse : il vient toujours avec du fromage.", "faux")]),
@@ -128,7 +136,7 @@ C = {
         ("u8", "client", "f", "Je ne tolère pas le blé. Le hot chicken, je peux le manger ?", False, [
             ("C'est une allergie ? Je vérifie avec la cuisine pour le blé.", "juste"),
             ("Oui, le hot chicken, vous pouvez le manger, madame.", "grave"),
-            ("C'est une allergie ? Je vérifie avec la cuisine pour le lait.", "grave")]),
+            ("Je lui dis que le hot chicken, c'est juste du poulet.", "grave")]),
         ("u9", "client", "m", "Pas de champignons dans ma poutine : je n'aime pas le goût.", True, [
             ("J'écris « sans champignons », c'est tout.", "juste"),
             ("J'annonce une allergie aux champignons à la cuisine.", "faux"),
@@ -143,7 +151,7 @@ C = {
 # (id, qui, voix, phrase entendue, ce qu'on attend — le modèle, joué au formateur)
 D = {
     1: [("d1", "chef", "m", "Va chercher deux bacs de laitue, pis mets-les sur la ligne.", "Oui, chef : deux bacs de laitue sur la ligne."),
-        ("d2", "chef", "m", "Monte la friteuse, pis sors les frites dans cinq minutes.", "Oui, chef : les frites dans cinq minutes."),
+        ("d2", "chef", "m", "Allume la friteuse, pis sors les frites dans cinq minutes.", "Oui, chef : j'allume la friteuse, et les frites dans cinq minutes."),
         ("d3", "client", "f", "Deux hamburgers, dont un sans oignons, s'il vous plaît.", "Deux hamburgers, un sans oignons, c'est bien ça ?")],
     2: [("d4", "chef", "m", "Sors trois steaks du frigo, pis mets-les sur la plaque.", "Oui, chef : trois steaks sur la plaque."),
         ("d5", "chef", "m", "Lave le chaudron, pis rapporte-moi la passoire.", "Oui, chef : je lave le chaudron et je rapporte la passoire."),
@@ -161,6 +169,12 @@ CODE_FORMATEUR = "2413"
 # C ratée ne change pas seulement le palier : l'écran dit « L'allergie est à
 # reprendre avant de travailler seul », au formateur comme à l'apprenant.
 DEBUTANT_A, DEBUTANT_B, AISE_B, ORAL_AISE = 1, 3, 7, 2
+# (audit du test, tour 1, A3/F1) L'oral ne peut plus être contourné :
+#   - un item passé ou sans enregistrement compte « Rien ou faux » ;
+#   - tant que l'oral n'est pas noté en entier, le palier est PROVISOIRE et
+#     plafonné à « fonctionnel » (les situations jouées se jouent à l'oral) ;
+#   - ORAL_DEBUTANT items « Rien ou faux » ou plus → débutant.
+ORAL_DEBUTANT = 2
 PALIERS = ["debutant", "fonctionnel", "aise"]
 
 
@@ -231,7 +245,11 @@ def verifier():
                 voisins += 1
                 assert noms_c(juste) & noms_c(ph), f"{i} : la juste ne nomme pas le bon allergène ou la bonne table"
         assert contre == 1, f"forme {f} : un contre-exemple"
-        assert voisins >= 2, f"forme {f} : {voisins} cas « voisins »"
+        assert voisins == 3, f"forme {f} : {voisins} cas « voisins » (3 attendus dans chaque forme)"
+        forts = sorted(len(FORTS[x]) for x, c in A[f][3])
+        assert forts == [1, 1, 2, 2], f"forme {f} : contrastes forts au cran 3 {forts}"
+        assert all(set(FORTS[x]) <= set(c) for x, c in A[f][3]), f"forme {f} : un contraste fort absent des choix"
+        assert sum("…" in x[2] for x in B_COMMANDE[f]) == 1, f"forme {f} : une reprise par forme"
         plus_longue = sum(max(a, key=lambda x: len(x[0]))[1] == "juste" for *_x, a in C[f])
         assert plus_longue <= 2, f"forme {f} : la bonne est la plus longue {plus_longue} fois"
         for i, qui, _v, ph, _m in D[f]:

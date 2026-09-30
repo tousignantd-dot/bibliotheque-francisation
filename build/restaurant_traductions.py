@@ -197,7 +197,58 @@ INTERFACE.update({
     "forme": "Forme",
     "oral_redit": "Ce qui est redit",
     "oral_langue": "La langue",
+    "provisoire": "Provisoire : le formateur doit encore écouter vos réponses à voix haute.",
+    "res_B_chef": "Une seule écoute · le chef",
+    "res_B_commande": "Une seule écoute · les commandes",
+    "rien_enregistre": "rien d'enregistré",
+    "avant_maintenant": "Avant → maintenant",
+    "aucun_nom": "aucun nom",
 })
+# Étape 4 : le service joué (situations.py)
+import situations as SI  # noqa: E402
+INTERFACE.update({
+    "service": "Le service",
+    "service_accueil": "En cuisine avec le chef, en salle avec les clients.",
+    "service_sous": "Choisissez une situation. Vous parlez, on vous répond.",
+    "code_aide": "Il faut le code donné par votre formateur.",
+    "code_acces": "Votre code",
+    "entrer": "Entrer",
+    "code_refuse": "Ce code n'est pas reconnu. Demandez-le à votre formateur.",
+    "niveau_jeu": "Niveau",
+    "faire_test": "faites d'abord le test « Mon niveau »",
+    "porte_cuisine": "En cuisine",
+    "porte_cuisine_sous": "Le chef vous parle. Vous êtes commis.",
+    "porte_salle": "En salle",
+    "porte_salle_sous": "Un client vous parle. Vous servez.",
+    "mes_gestes": "Les phrases à dire",
+    "ecouter_sans_lire": "Écouter sans lire",
+    "parler": "Parler",
+    "ecrire": "Ou écrivez ici…",
+    "envoyer": "Envoyer",
+    "fini": "J'ai fini",
+    "voir_bilan": "Voir le bilan",
+    "vous": "Vous",
+    "erreur_reseau": "Problème de connexion. Réessayez.",
+    "voix_indispo": "La voix n'est pas disponible pour le moment.",
+    "humeur_neutre": "écoute.",
+    "humeur_content": "est content.",
+    "humeur_content_f": "est contente.",
+    "humeur_hesitant": "hésite.",
+    "humeur_impatient": "s'impatiente.",
+    "bilan_titre": "Le bilan",
+    "gestes_titre": "Les gestes",
+    "geste_fait": "fait",
+    "geste_manque": "à faire la prochaine fois",
+    "geste_inutile": "pas nécessaire ici",
+    "bilan_attente": "Relecture du service…",
+    "vos_phrases": "Vos phrases, corrigées",
+    "autre_situation": "Une autre situation",
+    "grave_service": "Erreur grave à l'allergie",
+})
+for i, _p, _n, _v, _pa, carte, *_r in SI.SITUATIONS:
+    INTERFACE["carte_" + i] = carte
+for g in SI.GESTES:
+    INTERFACE["g_" + g["id"]] = g["nom"]
 for n, x in enumerate(TE.ORAL_REDIT):
     INTERFACE[f"or_{n}"] = x
 for n, x in enumerate(TE.ORAL_LANGUE):
