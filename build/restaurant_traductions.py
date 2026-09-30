@@ -147,6 +147,67 @@ for k, t in EX.QUI.items():
     INTERFACE["qui_" + k] = t
 for i, _ph, q, *_r in EX.CONSIGNES:
     INTERFACE["q_" + i] = q
+# Étape 3 : le test (test.py) — les questions et les actes se traduisent en appui.
+import test as TE  # noqa: E402
+INTERFACE.update({
+    "test": "Mon niveau",
+    "test_sous": "Un test de dix minutes, sans note.",
+    "t_intro1": "Ce test dure environ dix minutes. Il règle le niveau des situations jouées.",
+    "t_intro2": "Ce n'est pas un examen. L'écran ne dit pas si la réponse est bonne : répondez comme vous pouvez.",
+    "t_cadrage": "Le test situe votre niveau. Il ne vérifie pas les seuils de la formation (18 mots sur 20, 7 consignes sur 8, 5 commandes sur 6) : ils se vérifient pendant la formation. Seule l'allergie est éliminatoire.",
+    "commencer": "Commencer",
+    "continuer": "Continuer",
+    "partA": "Partie A · Les mots",
+    "partA_c": "Écoutez. Touchez l'image du mot entendu.",
+    "partB": "Partie B · Une seule écoute",
+    "partB_c": "Chaque phrase ne joue qu'une fois. Écoutez bien, puis répondez.",
+    "partC": "Partie C · L'allergie",
+    "partC_c": "Une seule erreur grave fait échouer cette partie. Lisez et écoutez la règle avant de commencer.",
+    "partD": "Partie D · Je le redis",
+    "partD_c": "Écoutez, puis redites à voix haute. Votre voix reste sur cet appareil.",
+    "jouer_une": "Écouter (une seule fois)",
+    "deja_joue": "La phrase a joué. Répondez.",
+    "enregistrer": "Enregistrer ma réponse",
+    "arreter": "Arrêter",
+    "passer": "Passer",
+    "micro_refuse": "Le micro n'est pas disponible. Vous pouvez passer.",
+    "enregistre": "Réponse enregistrée.",
+    "resultat": "Votre résultat",
+    "palier_propose": "Niveau proposé pour les situations jouées",
+    "p_debutant": "Débutant",
+    "p_fonctionnel": "Fonctionnel",
+    "p_aise": "À l'aise",
+    "pas_examen": "Ce n'est pas une note : le formateur confirme le niveau.",
+    "c_reussie": "Allergie : aucune erreur grave.",
+    "c_ratee": "Allergie : à reprendre avant de travailler seul.",
+    "res_A": "Les mots",
+    "res_B": "Une seule écoute",
+    "res_D": "Je le redis",
+    "cran": "cran",
+    "non_note": "à écouter par le formateur",
+    "formateur": "Pour le formateur",
+    "code": "Code du formateur",
+    "ouvrir": "Ouvrir",
+    "ecouter_reponse": "Écouter la réponse",
+    "pas_de_reponse": "Pas de réponse enregistrée.",
+    "confirmer": "Confirmer ce niveau",
+    "confirme": "Niveau confirmé par le formateur.",
+    "notes": "Notes du formateur",
+    "refaire_test": "Refaire le test (l'autre forme)",
+    "forme": "Forme",
+    "oral_redit": "Ce qui est redit",
+    "oral_langue": "La langue",
+})
+for n, x in enumerate(TE.ORAL_REDIT):
+    INTERFACE[f"or_{n}"] = x
+for n, x in enumerate(TE.ORAL_LANGUE):
+    INTERFACE[f"ol_{n}"] = x
+for f in (1, 2):
+    for i, _ph, q, *_r in TE.B_CHEF[f]:
+        INTERFACE["q_" + i] = q
+    for i, _qui, _v, _ph, _c, actes in TE.C[f]:
+        for n, (acte, _s) in enumerate(actes):
+            INTERFACE[f"acte_{i}_{n}"] = acte
 for i, _qui, _v, _ph, _c, actes in EX.ALLERGIES:
     for n, (acte, _s, pourquoi) in enumerate(actes):
         INTERFACE[f"acte_{i}_{n}"] = acte

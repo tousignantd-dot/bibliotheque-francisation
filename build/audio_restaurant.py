@@ -63,8 +63,24 @@ def travaux():
         # Les actes s'entendent aussi (audit, tour 1, C6) : l'employé les dit.
         for n, (acte, _s, _p) in enumerate(actes):
             t.append((f"actes/{i}-{n}.mp3", acte, acte, "hd_feminin", None))
-    for n, ligne in enumerate(EX.REGLE + [EX.REGLE_PREFERENCE], 1):
+    for n, ligne in enumerate(EX.REGLE + [EX.REGLE_PREFERENCE, EX.REGLE_CUISINE, EX.CRITERE_GRAVE], 1):
         t.append((f"regle/{n}.mp3", ligne, ligne, "hd_feminin", azure_voix.TAUX_SONS))
+    # Étape 3 (test.py). La partie A est dite par une voix de CLIENT (Thierry),
+    # jamais celle des planches : sinon le test rejouerait les MP3 appris.
+    import test as TE
+    lex = {e[0]: e[2] for e in LEXIQUE}
+    for f in (1, 2):
+        for i in TE.A[f][1] + TE.A[f][2] + [x for x, _ in TE.A[f][3]]:
+            t.append((f"test/a-{i}.mp3", dit(lex[i]), lex[i], "hd_masculin", azure_voix.TAUX_SONS))
+        for i, ph, *_r in TE.B_CHEF[f]:
+            t.append((f"test/{i}.mp3", ph, ph, V[TE.VOIX_CHEF], None))
+        for i, v, ph, *_r in TE.B_COMMANDE[f]:
+            t.append((f"test/{i}.mp3", ph, ph, V[v], None))
+        for i, _qui, v, ph, *_r in TE.C[f]:
+            t.append((f"test/{i}.mp3", ph, ph, V[v], None))
+        for i, _qui, v, ph, modele in TE.D[f]:
+            t.append((f"test/{i}.mp3", ph, ph, V[v], None))
+            t.append((f"test/{i}-modele.mp3", modele, modele, "hd_feminin", None))
     return t
 
 

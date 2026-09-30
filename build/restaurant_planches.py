@@ -33,6 +33,7 @@ from lexique import LEXIQUE, PLANCHES, verifier  # noqa: E402
 from decor import ZONES  # noqa: E402
 import identite as IDE  # noqa: E402
 import exercices as EX  # noqa: E402
+import test as TE  # noqa: E402
 sys.path.insert(0, str(RACINE / "build"))
 from restaurant_traductions import INTERFACE  # noqa: E402  (le français de l'écran : une seule source)
 
@@ -75,7 +76,7 @@ def donnees():
     return {"planches": [{"k": k, "t": t, "poste": p} for k, t, p in PLANCHES],
             "mots": mots, "langues": langues,
             "poste": f"{URL}/croquis/poste.jpg?v={MEDIA_V}",
-            "zones": [z[0] for z in ZONES], "ex": exercices(mots)}
+            "zones": [z[0] for z in ZONES], "ex": exercices(mots), "test": le_test(mots)}
 
 
 def s_(chemin):
@@ -90,21 +91,8 @@ def exercices(mots):
     cons = [{"id": i, "son": s_(f"chef/{i}.mp3"), "phrase": ph, "q": "q_" + i, "o": [b] + d,
              "redit": r, "redit_son": s_(f"redit/{i}.mp3")} for i, ph, _q, b, d, r in EX.CONSIGNES]
     com = []
-    for i, _v, ph, (a, m, g), autre, r in EX.COMMANDES:
-        if g is None:
-            # La cuisson : trois cartes du même plat, la cuisson écrite et dessinée.
-            cartes = [[a, m, m]] + [[a, c, c] for c in EX.CUISSONS if c != m]
-        else:
-            a2, m2, g2 = autre
-            # (audit, tour 1, D4) Une carte ne diffère de la bonne QUE par le
-            # changement : reconnaître le plat et l'ingrédient ne suffit plus.
-            # Et chaque valeur revient deux fois : le vote majoritaire reste nul.
-            cartes = [[a, m, g], [a, m2, g], [a2, m, g2], [a2, m2, g2]]
-            assert any(c[0] == a and c[2] == g and c[1] != m for c in cartes[1:]), i
-            for trait in range(3):
-                valeurs = [c[trait] for c in cartes]
-                assert valeurs.count(cartes[0][trait]) == 2, f"{i} : trait {trait} devinable"
-        com.append({"id": i, "son": s_(f"commandes/{i}.mp3"), "phrase": ph, "cartes": cartes,
+    for i, _v, ph, bon, autre, r in EX.COMMANDES:
+        com.append({"id": i, "son": s_(f"commandes/{i}.mp3"), "phrase": ph, "cartes": cartes_commande(i, bon, autre),
                     "redit": r, "redit_son": s_(f"redit/{i}.mp3")})
     alg = [{"id": i, "son": s_(f"allergies/{i}.mp3"), "phrase": ph, "qui": "qui_" + qui, "contre": c,
             "actes": [{"k": f"acte_{i}_{n}", "s": st, "p": f"pourquoi_{i}_{n}" if pq else "",
@@ -112,9 +100,84 @@ def exercices(mots):
            for i, qui, _v, ph, c, actes in EX.ALLERGIES]
     return {"consignes": cons, "commandes": com, "allergies": alg,
             "pieges": [{"id": i, "o": [i] + c} for i, c in EX.PIEGES], "ordinaires": EX.ORDINAIRES,
-            "regle": [s_(f"regle/{n}.mp3") for n in range(1, len(EX.REGLE) + 2)],
+            "regle": [s_(f"regle/{n}.mp3") for n in range(1, len(EX.REGLE) + 4)],   # 3 gestes, préférence, cuisine, critère
             "formules": [{"k": k, "son": s_(f"redit/{x}.mp3")} for k, _t, x in EX.FORMULES],
             "changements": EX.CHANGEMENTS}
+
+
+def cartes_commande(i, bon, autre):
+    """Les cartes d'une commande, la bonne en premier. Exercices ET test."""
+    a, m, g = bon
+    if g is None:
+        # La cuisson : trois cartes du même plat, la cuisson écrite et dessinée.
+        cartes = [[a, m, m]] + [[a, c, c] for c in EX.CUISSONS if c != m]
+    else:
+        a2, m2, g2 = autre
+        # (audit, tour 1, D4) Une carte ne diffère de la bonne QUE par le
+        # changement : reconnaître le plat et l'ingrédient ne suffit plus.
+        # Et chaque valeur revient deux fois : le vote majoritaire reste nul.
+        cartes = [[a, m, g], [a, m2, g], [a2, m, g2], [a2, m2, g2]]
+        assert any(c[0] == a and c[2] == g and c[1] != m for c in cartes[1:]), i
+        for trait in range(3):
+            valeurs = [c[trait] for c in cartes]
+            assert valeurs.count(cartes[0][trait]) == 2, f"{i} : trait {trait} devinable"
+    return cartes
+
+
+def le_test(mots):
+    """L'étape 3 (test.py). Tout se fige ici — choix et places —, pour que les
+    deux formes restent parallèles et qu'une passation ressemble à l'autre."""
+    import random
+    TE.verifier()
+    par_id = {m["id"]: m for m in mots}
+    avec = [m for m in mots if "img" in m]
+    formes = {}
+    for f in (1, 2):
+        alea = random.Random(f"resto-test-{f}")
+        rot = {n: [] for n in (3, 4)}
+        def place(n):
+            # rotation par blocs mélangés, jamais deux fois la même de suite
+            if not rot[n]:
+                b = list(range(n)); alea.shuffle(b)
+                rot[n] = b
+            return rot[n].pop()
+        def poser(bonne, autres, n):
+            k = place(n); o = list(autres); o.insert(k, bonne); return o, k
+        A = {}
+        for cran in (1, 2, 3):
+            items = []
+            for x in TE.A[f][cran]:
+                ident, contrastes = x if isinstance(x, tuple) else (x, None)
+                m = par_id[ident]
+                if contrastes is None:
+                    meme = [y["id"] for y in avec if y["p"] == m["p"] and y["id"] != ident and y["mot"] != m["mot"]]
+                    autre = [y["id"] for y in avec if y["p"] != m["p"]]
+                    pool = meme if cran == 2 else autre
+                    contrastes = alea.sample(pool, 3)
+                o, k = poser(ident, contrastes, 4)
+                items.append({"id": ident, "son": s_(f"test/a-{ident}.mp3"), "o": o, "bonne": k})
+            A[cran] = items
+        B = []
+        for i, ph, _q, b, d in TE.B_CHEF[f]:
+            o, k = poser(b, d, 4)
+            B.append({"id": i, "type": "chef", "son": s_(f"test/{i}.mp3"), "q": "q_" + i, "o": o, "bonne": k})
+        for i, _v, ph, bon, autre in TE.B_COMMANDE[f]:
+            c = cartes_commande(i, bon, autre)
+            o, k = poser(c[0], c[1:], len(c))
+            B.append({"id": i, "type": "commande", "son": s_(f"test/{i}.mp3"), "cartes": o, "bonne": k})
+        C = []
+        for i, qui, _v, ph, contre, actes in TE.C[f]:
+            juste = next(n for n, (_a, st) in enumerate(actes) if st == "juste")
+            autres = [n for n in range(3) if n != juste]
+            o, k = poser(juste, autres, 3)
+            C.append({"id": i, "son": s_(f"test/{i}.mp3"), "qui": "qui_" + qui,
+                      "actes": [{"k": f"acte_{i}_{n}", "s": actes[n][1]} for n in o], "bonne": k})
+        D = [{"id": i, "qui": "qui_" + qui, "son": s_(f"test/{i}.mp3"), "modele": s_(f"test/{i}-modele.mp3"), "attendu": modele}
+             for i, qui, _v, _ph, modele in TE.D[f]]
+        formes[f] = {"A": A, "B": B, "C": C, "D": D}
+    return {"formes": formes, "code": TE.CODE_FORMATEUR, "oral_redit": TE.ORAL_REDIT, "oral_langue": TE.ORAL_LANGUE,
+            "regles": {"debutant_a": TE.DEBUTANT_A, "debutant_b": TE.DEBUTANT_B, "aise_b": TE.AISE_B,
+                       "oral_aise": TE.ORAL_AISE, "valide": TE.A_VALIDE, "arret": TE.A_ARRET}}
 
 
 def main():
@@ -344,6 +407,26 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .critere{font-weight:800;color:var(--warn-ink);display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
 .pourquoi{display:block;font-weight:700;color:var(--text-strong);margin-top:6px}
 @media (max-width:640px){.ticket{grid-template-columns:1fr auto 1fr}.ticket img{max-height:90px}.choix.tickets{grid-template-columns:repeat(2,minmax(0,1fr))}.ticket{grid-template-columns:1fr 1fr;grid-template-areas:"p p" "c i"}.ticket img:first-child{grid-area:p}.ticket .chg{grid-area:c;justify-self:center;font-size:15px}.ticket img:last-child{grid-area:i}}
+
+/* Le test (étape 3) */
+.resultat{display:grid;gap:14px;margin-top:10px}
+.bloc{background:var(--surface-card);border:1px solid var(--line-200);border-radius:14px;padding:16px}
+.bloc.formateur{border-style:dashed}
+.bloc h2{margin:0 0 8px;font-size:20px}
+.gros-palier{font-size:34px;font-weight:900;color:var(--text-strong);margin:4px 0}
+.parts div{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line-200)}
+.ok-txt{font-weight:800;color:var(--ok-ink,#1B5E20)}
+.n{font-size:14px;color:var(--text-muted)}
+.oral{display:flex;flex-direction:column;align-items:center;gap:10px;margin:14px 0}
+.oral .etat{font-weight:700;min-height:1.4em}
+.rec{background:#8A2E1C;border-color:#8A2E1C;color:#fff}.rec .appui{color:#fff}
+.rec.en-cours{background:#B3261E;border-color:#B3261E}
+.code-f{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.code-f input{font:inherit;font-size:20px;width:8ch;padding:8px 10px;border-radius:10px;border:1px solid var(--line-300)}
+.oral-f{border-top:1px solid var(--line-200);padding-top:10px;margin-top:10px}
+.choisir3{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 8px}
+.choisir3 [aria-pressed=true]{background:var(--ok-bg,#E8F5E9);border-color:var(--ok-line,#2E7D32)}
+#notesF{font:inherit;width:100%;box-sizing:border-box;border-radius:10px;border:1px solid var(--line-300);padding:8px}
 </style>
 </head>
 <body>
@@ -364,6 +447,7 @@ const ICO = {
   x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
   g:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>',
   d:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>',
+  niveau:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V14M10 20V9M16 20V4M22 20H2"/></svg>',
   jeu:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>'
 };
 const FR = %%FR%%;
@@ -412,7 +496,8 @@ function accueil(){
   adresse({});
   app.innerHTML = tete('accueil', null, null)
     + '<div class="accueil"><button class="porte" data-act="planches"><img src="' + D.poste + '" alt=""><b>' + t('apprendre') + '</b><span>' + t('apprendre_sous') + '</span></button>'
-    + '<button class="porte" data-act="exercices"><span class="porte-ico">' + ICO.jeu + '</span><b>' + t('exercer') + '</b><span>' + t('exercer_sous') + '</span></button></div>';
+    + '<button class="porte" data-act="exercices"><span class="porte-ico">' + ICO.jeu + '</span><b>' + t('exercer') + '</b><span>' + t('exercer_sous') + '</span></button>'
+    + '<button class="porte" data-act="test"><span class="porte-ico">' + ICO.niveau + '</span><b>' + t('test') + '</b><span>' + t('test_sous') + '</span></button></div>';
 }
 
 function vignettes(p){
@@ -824,6 +909,216 @@ function bilan(){
   S.fini = true;
 }
 
+/* ═══ Étape 3 : le test de positionnement ══════════════════════════════
+   Quatre parties (test.py). AUCUNE rétroaction. Deux formes, la première au
+   hasard, l'autre à la passation suivante. Le résultat vit sur l'appareil ;
+   l'oral dans IndexedDB, gardé jusqu'à ce que le formateur confirme. Un
+   résultat non confirmé se rouvre au rechargement. */
+const TK = 'resto-test', TF = 'resto-test-forme';
+let T = null;
+const TD = D.test;
+const F = () => TD.formes[T.forme];
+const idb = {
+  ouvrir(){ return new Promise((ok, ko) => { try { const r = indexedDB.open('resto-test', 1);
+    r.onupgradeneeded = () => r.result.createObjectStore('oral'); r.onsuccess = () => ok(r.result); r.onerror = () => ko(r.error); } catch(e){ ko(e); } }); },
+  async mettre(k, v){ try { const db = await this.ouvrir(); await new Promise(ok => { const t = db.transaction('oral', 'readwrite'); t.objectStore('oral').put(v, k); t.oncomplete = ok; t.onerror = ok; }); } catch(e){} },
+  async prendre(k){ try { const db = await this.ouvrir(); return await new Promise(ok => { const r = db.transaction('oral').objectStore('oral').get(k); r.onsuccess = () => ok(r.result); r.onerror = () => ok(null); }); } catch(e){ return null; } },
+  async vider(){ try { const db = await this.ouvrir(); db.transaction('oral', 'readwrite').objectStore('oral').clear(); } catch(e){} }
+};
+// Ni l'espace formateur ouvert ni la minuterie ne se gardent : au rechargement, le code se redemande.
+function tGarder(){ ecrire(TK, Object.assign({}, T, {_ouvert: undefined, _s: undefined})); }
+function enTete(k, n, total){
+  // Une sortie, toujours : la passation reprend au début de la partie en cours.
+  return '<div class="rj-tete"><div><p class="rj-enseigne">' + esc(NOM) + ' · ' + esc(FR.test) + '</p><h1>' + t(k) + '</h1></div>'
+    + '<div><button class="btn-rj btn-rj--pile" data-act="accueil">' + tb('accueil') + '</button></div></div>'
+    + (total ? '<div class="jeu"><div class="barre"><i style="width:' + (100 * n / total) + '%"></i></div></div>' : '');
+}
+function test(){
+  arreter();
+  adresse({ecran: 'test'});
+  const r = lire(TK, null);
+  if (r && r.termine) { T = r; return resultats(); }
+  // Une passation interrompue reprend au début de sa partie, même forme.
+  if (r && r.partie) { T = r; return introPartie(r.partie); }
+  app.innerHTML = tete('test', 'test_sous', 'accueil')
+    + '<div class="regle"><p>' + t('t_intro1') + '</p><p>' + t('t_intro2') + '</p><p class="seuil">' + t('t_cadrage') + '</p>'
+    + '<button class="btn-rj btn-rj--pri btn-rj--pile" data-t="demarrer">' + tb('commencer') + '</button></div>';
+}
+function demarrer(){
+  const avant = lire(TF, null);
+  const forme = avant ? (avant === 1 ? 2 : 1) : (Math.random() < .5 ? 1 : 2);
+  ecrire(TF, forme);
+  T = {forme, A: {cran: 1, i: 0, bonnes: 0, erreurs: 0, niveau: 0}, B: [], C: [], D: {}, bi: 0, ci: 0, di: 0,
+       termine: false, confirme: false, oral: {}, notes: '', palier: null};
+  tGarder();
+  introPartie('A');
+}
+function introPartie(p){
+  T.partie = p; tGarder(); Bruit.arreter();
+  app.innerHTML = enTete('part' + p) + '<div class="regle"><p>' + t('part' + p + '_c') + '</p>'
+    + (p === 'C' ? regleHTML() : '')
+    + '<button class="btn-rj btn-rj--pri btn-rj--pile" data-t="partie">' + tb('continuer') + '</button></div>';
+}
+function lancerPartie(){ ({A: aItem, B: bItem, C: cItem, D: dItem})[T.partie](); }
+function choixImages(ids){ return '<div class="choix imgs">' + ids.map((id, i) => '<button class="opt" data-r="' + i + '"><img src="' + parId[id].img + '" alt=""></button>').join('') + '</div>'; }
+
+// A · adaptative : trois bonnes montent d'un cran, deux erreurs arrêtent.
+function aItem(){
+  const a = T.A, it = F().A[a.cran][a.i];
+  app.innerHTML = enTete('partA', a.cran - 1 + a.i / 4, 3) + '<p class="question">' + t('partA_c') + '</p>'
+    + '<div class="ecoute"><button class="btn-rj btn-rj--pri btn-rj--pile" data-t="son">' + tb('reecouter') + '</button></div>' + choixImages(it.o);
+  jouerNormal(it.son);
+}
+function aRepondre(i){
+  const a = T.A, it = F().A[a.cran][a.i];
+  i === it.bonne ? a.bonnes++ : a.erreurs++;
+  a.i++;
+  if (a.bonnes >= TD.regles.valide) { a.niveau = a.cran; a.cran++; a.i = a.bonnes = a.erreurs = 0; if (a.cran > 3) return finA(); }
+  else if (a.erreurs >= TD.regles.arret) return finA();
+  tGarder(); aItem();
+}
+function finA(){ tGarder(); introPartie('B'); }
+
+// B · une seule écoute, passée en entier.
+function bItem(){
+  const it = F().B[T.bi];
+  if (!it) return introPartie('C');
+  if (it.type === 'chef') { Bruit.niveau = 1; Bruit.demarrer(); } else Bruit.arreter();
+  const choix = it.type === 'chef' ? choixImages(it.o)
+    : '<div class="choix tickets">' + it.cartes.map((c, i) => '<button class="opt" data-r="' + i + '">' + ticketHTML(c) + '</button>').join('') + '</div>';
+  app.innerHTML = enTete('partB', T.bi, F().B.length)
+    + '<p class="qui">' + t(it.type === 'chef' ? 'qui_chef' : 'qui_client') + '</p>'
+    + '<div class="ecoute"><button class="btn-rj btn-rj--pri btn-rj--pile" data-t="une">' + tb('jouer_une') + '</button></div>'
+    + (it.q ? '<p class="question">' + t(it.q) + '</p>' : '') + choix;
+  app.querySelectorAll('.opt').forEach(o => o.disabled = true);
+}
+function bJouer(b){
+  const it = F().B[T.bi];
+  b.disabled = true; b.innerHTML = tb('deja_joue');
+  // Les choix s'ouvrent à la fin du son, ou s'il ne part pas (issue de secours).
+  const ouvrir = () => { audio.onended = audio.onerror = null; clearTimeout(T._s);
+    app.querySelectorAll('.opt').forEach(o => o.disabled = false); const o = app.querySelector('.opt'); if (o) o.focus({preventScroll: true}); };
+  audio.onended = audio.onerror = ouvrir; T._s = setTimeout(ouvrir, 12000);
+  jouerNormal(it.son);
+}
+function bRepondre(i){ const it = F().B[T.bi]; T.B.push(i === it.bonne); T.bi++; tGarder(); bItem(); }
+const ticketHTML = ([p, ch, g]) => p === g || !parId[p].img
+  ? '<span class="ticket cuisson"><span class="chg">' + esc(D.ex.changements[ch]) + '</span><img src="' + parId[g].img + '" alt=""></span>'
+  : '<span class="ticket"><img src="' + parId[p].img + '" alt=""><span class="chg">' + esc(D.ex.changements[ch]) + '</span><img src="' + parId[g].img + '" alt=""></span>';
+
+// C · l'allergie, éliminatoire.
+function cItem(){
+  Bruit.arreter();
+  const it = F().C[T.ci];
+  if (!it) return introPartie('D');
+  app.innerHTML = enTete('partC', T.ci, F().C.length) + '<p class="qui">' + t(it.qui) + '</p>'
+    + '<div class="ecoute"><button class="btn-rj btn-rj--pri btn-rj--pile" data-t="son">' + tb('reecouter') + '</button></div>'
+    + '<div class="choix mots actes">' + it.actes.map((a, i) => '<div class="acte-ligne"><button class="opt" data-r="' + i + '">' + t(a.k) + '</button></div>').join('') + '</div>';
+  jouerNormal(it.son);
+}
+function cRepondre(i){ const it = F().C[T.ci]; T.C.push(it.actes[i].s); T.ci++; tGarder(); cItem(); }
+
+// D · redire à voix haute, enregistré sur l'appareil.
+let rec = null, morceaux = [];
+function dItem(){
+  const it = F().D[T.di];
+  if (!it) return finTest();
+  app.innerHTML = enTete('partD', T.di, F().D.length) + '<p class="qui">' + t(it.qui) + '</p>'
+    + '<div class="ecoute"><button class="btn-rj btn-rj--pri btn-rj--pile" data-t="une">' + tb('jouer_une') + '</button></div>'
+    + '<div class="oral"><button class="btn-rj btn-rj--pile rec" data-t="rec" disabled>' + tb('enregistrer') + '</button>'
+    + '<p class="etat" id="etat" aria-live="polite"></p><button class="btn-rj btn-rj--pile" data-t="passer">' + tb('passer') + '</button></div>';
+}
+function dJouer(b){
+  const it = F().D[T.di];
+  b.disabled = true; b.innerHTML = tb('deja_joue');
+  const ouvrir = () => { audio.onended = audio.onerror = null; clearTimeout(T._s); const r = app.querySelector('[data-t=rec]'); if (r) { r.disabled = false; r.focus({preventScroll: true}); } };
+  audio.onended = audio.onerror = ouvrir; T._s = setTimeout(ouvrir, 12000);
+  jouerNormal(it.son);
+}
+async function dEnregistrer(b){
+  const it = F().D[T.di], etat = document.getElementById('etat');
+  if (rec && rec.state === 'recording') { rec.stop(); return; }
+  try {
+    const flux = await navigator.mediaDevices.getUserMedia({audio: true});
+    morceaux = []; rec = new MediaRecorder(flux);
+    rec.ondataavailable = e => morceaux.push(e.data);
+    rec.onstop = async () => {
+      flux.getTracks().forEach(x => x.stop());
+      await idb.mettre(T.forme + '-' + it.id, new Blob(morceaux, {type: rec.mimeType || 'audio/webm'}));
+      T.D[it.id] = true; etat.innerHTML = t('enregistre');
+      T.di++; tGarder(); setTimeout(dItem, 700);
+    };
+    rec.start(); b.innerHTML = tb('arreter'); b.classList.add('en-cours'); etat.textContent = '●';
+  } catch(e) { etat.innerHTML = t('micro_refuse'); }
+}
+function dPasser(){ if (rec && rec.state === 'recording') { rec.onstop = null; rec.stop(); } T.D[F().D[T.di].id] = false; T.di++; tGarder(); dItem(); }
+
+function finTest(){ T.termine = true; T.partie = null; tGarder(); Bruit.arreter(); resultats(); }
+
+// Le palier, par la règle de test.py appliquée une seule fois.
+function palierPropose(){
+  const R = TD.regles, A = T.A.niveau, B = T.B.filter(Boolean).length, cOk = !T.C.includes('grave');
+  const notes = Object.values(T.oral || {}), note = notes.length && notes.every(n => n.r != null && n.l != null);
+  if (A <= R.debutant_a || B <= R.debutant_b) return 'debutant';
+  const oralOk = !note || (notes.filter(n => n.r === 0).length >= R.oral_aise && notes.filter(n => n.l === 2).length <= 1);
+  if (A === 3 && B >= R.aise_b && cOk && oralOk) return 'aise';
+  return 'fonctionnel';
+}
+function resultats(){
+  arreter(); adresse({ecran: 'test'});
+  const pal = T.palier || palierPropose(), cOk = !T.C.includes('grave');
+  let h = tete('resultat', null, 'accueil')
+    + '<div class="resultat"><div class="bloc"><p>' + t('palier_propose') + '</p><p class="gros-palier">' + t('p_' + pal) + '</p>'
+    + '<p class="' + (cOk ? 'ok-txt' : 'grave-sous') + '">' + t(cOk ? 'c_reussie' : 'c_ratee') + '</p>'
+    + '<p class="n">' + (T.confirme ? t('confirme') : t('pas_examen')) + '</p></div>'
+    + '<div class="bloc parts">'
+    + '<div><span>' + t('res_A') + '</span><b>' + esc(FR.cran) + ' ' + T.A.niveau + ' / 3</b></div>'
+    + '<div><span>' + t('res_B') + '</span><b>' + T.B.filter(Boolean).length + ' / ' + F().B.length + '</b></div>'
+    + '<div><span>' + t('ex_allergie') + '</span><b>' + T.C.filter(s => s === 'juste').length + ' / ' + F().C.length + '</b></div>'
+    + '<div><span>' + t('res_D') + '</span><b>' + (Object.keys(T.oral || {}).length ? '✓' : t('non_note')) + '</b></div>'
+    + '<p class="n">' + esc(FR.forme) + ' ' + T.forme + '</p></div>';
+  h += '<div class="bloc formateur" id="formateur">' + (T._ouvert ? formateurHTML() : '<h2>' + t('formateur') + '</h2><div class="code-f"><label for="codeF">' + esc(FR.code) + '</label>'
+    + '<input id="codeF" inputmode="numeric" autocomplete="off"><button class="btn-rj" data-t="code">' + esc(FR.ouvrir) + '</button></div>') + '</div>';
+  if (T.confirme) h += '<button class="btn-rj btn-rj--pile" data-t="refaire">' + tb('refaire_test') + '</button>';
+  app.innerHTML = h + '</div>';
+}
+function formateurHTML(){
+  const pal = palierPropose();
+  return '<h2>' + t('formateur') + '</h2>' + F().D.map(it => {
+      const n = (T.oral || {})[it.id] || {};
+      return '<div class="oral-f"><p class="qui">' + t(it.qui) + '</p><p><b>« ' + esc(it.attendu) + ' »</b></p>'
+        + '<div class="gestes-bilan"><button class="btn-rj petit" data-t="ecoute-rep" data-id="' + it.id + '">' + ICO.son + esc(FR.ecouter_reponse) + '</button>'
+        + '<button class="btn-rj petit" data-t="ecoute-mod" data-id="' + it.id + '">' + ICO.son + esc(FR.modele) + '</button></div>'
+        + (T.D[it.id] ? '' : '<p class="n">' + esc(FR.pas_de_reponse) + '</p>')
+        + '<p class="n">' + esc(FR.oral_redit) + '</p><div class="choisir3">' + TD.oral_redit.map((x, k) => '<button class="btn-rj petit" data-t="or" data-id="' + it.id + '" data-k="' + k + '" aria-pressed="' + (n.r === k) + '">' + esc(x) + '</button>').join('') + '</div>'
+        + '<p class="n">' + esc(FR.oral_langue) + '</p><div class="choisir3">' + TD.oral_langue.map((x, k) => '<button class="btn-rj petit" data-t="ol" data-id="' + it.id + '" data-k="' + k + '" aria-pressed="' + (n.l === k) + '">' + esc(x) + '</button>').join('') + '</div></div>';
+    }).join('')
+    + '<p>' + esc(FR.palier_propose) + ' : <b>' + esc(FR['p_' + pal]) + '</b></p>'
+    + '<div class="choisir3">' + ['debutant', 'fonctionnel', 'aise'].map(p => '<button class="btn-rj" data-t="confirmer" data-p="' + p + '" aria-pressed="' + (T.confirme && T.palier === p) + '">' + esc(FR['p_' + p]) + '</button>').join('') + '</div>'
+    + '<label class="n" for="notesF">' + esc(FR.notes) + '</label><textarea id="notesF" rows="3">' + esc(T.notes || '') + '</textarea>';
+}
+async function ecouterBlob(id){ const b = await idb.prendre(T.forme + '-' + id); if (b) { audio.pause(); audio.src = URL.createObjectURL(b); audio.play().catch(() => {}); } }
+
+app.addEventListener('input', e => { if (e.target.id === 'notesF' && T) { T.notes = e.target.value; tGarder(); } });
+app.addEventListener('click', e => {
+  const b = e.target.closest('[data-t], [data-r]'); if (!b || !app.contains(b)) return;
+  e.stopImmediatePropagation();
+  const a = b.dataset.t;
+  if (a === 'demarrer') return demarrer();
+  if (a === 'partie') return lancerPartie();
+  if (a === 'son') { const p = T.partie, it = p === 'A' ? F().A[T.A.cran][T.A.i] : F().C[T.ci]; return jouerNormal(it.son); }
+  if (a === 'une') return T.partie === 'D' ? dJouer(b) : bJouer(b);
+  if (a === 'rec') return dEnregistrer(b);
+  if (a === 'passer') return dPasser();
+  if (b.dataset.r != null) { const i = +b.dataset.r; return ({A: aRepondre, B: bRepondre, C: cRepondre})[T.partie](i); }
+  if (a === 'code') { if (document.getElementById('codeF').value.trim() === TD.code) { T._ouvert = true; resultats(); } else document.getElementById('codeF').value = ''; return; }
+  if (a === 'ecoute-rep') return ecouterBlob(b.dataset.id);
+  if (a === 'ecoute-mod') return jouerNormal(F().D.find(x => x.id === b.dataset.id).modele);
+  if (a === 'or' || a === 'ol') { T.oral = T.oral || {}; const n = T.oral[b.dataset.id] = T.oral[b.dataset.id] || {}; n[a === 'or' ? 'r' : 'l'] = +b.dataset.k; tGarder(); return resultats(); }
+  if (a === 'confirmer') { T.palier = b.dataset.p; T.confirme = true; tGarder(); return resultats(); }
+  if (a === 'refaire') { try { localStorage.removeItem(TK); } catch(e){} idb.vider(); T = null; return test(); }
+}, true);
+
 app.addEventListener('change', e => { if (e.target.id === 'filtre' && S) lancer(S.k, e.target.value); });
 app.addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
@@ -833,6 +1128,7 @@ app.addEventListener('click', e => {
   if (a === 'accueil') return accueil();
   if (a === 'planches') return planches();
   if (a === 'exercices') return exercices();
+  if (a === 'test') return test();
   if (b.dataset.ex) { lancer(b.dataset.ex); window.scrollTo(0, 0); return; }
   if (b.dataset.planche) { planche(b.dataset.planche); window.scrollTo(0, 0); return; }
   if (b.dataset.bruit != null) { Bruit.regler(+b.dataset.bruit); app.querySelectorAll('[data-bruit]').forEach(x => x.setAttribute('aria-pressed', x === b)); return; }
@@ -907,6 +1203,7 @@ if (q.get('planche')) {
   if (i >= 0) ouvrir(i);
 } else if (q.get('ex')) lancer(q.get('ex'));
 else if (q.get('ecran') === 'exercices') exercices();
+else if (q.get('ecran') === 'test') test();
 else if (q.get('ecran') === 'planches') planches();
 else accueil();
 })();
