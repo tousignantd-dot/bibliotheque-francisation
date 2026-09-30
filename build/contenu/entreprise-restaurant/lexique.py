@@ -134,6 +134,7 @@ LEXIQUE = [
 
     # ── Les plats de la maison ─────────────────────────────────────────────
     ("poutine", "plats", "la poutine", "", "croquis", "Des frites, du fromage en grains, de la sauce brune."),
+    ("steak", "plats", "le steak", "le bifteck", "", "Se commande saignant, à point ou bien cuit. Le hamburger (bœuf haché), lui, se sert toujours bien cuit — norme à revérifier (MAPAQ)."),
     ("pate-chinois", "plats", "le pâté chinois", "", "croquis", "Bœuf haché, blé d'Inde, patates pilées."),
     ("club", "plats", "le club sandwich", "", "croquis", ""),
     ("hamburger", "plats", "le hamburger", "le burger", "croquis", ""),

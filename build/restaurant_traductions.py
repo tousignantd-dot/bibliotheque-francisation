@@ -128,6 +128,9 @@ import exercices as EX  # noqa: E402
 for n, ligne in enumerate(EX.REGLE, 1):
     INTERFACE[f"regle_{n}"] = ligne
 INTERFACE["regle_pref"] = EX.REGLE_PREFERENCE
+INTERFACE["regle_cuisine"] = EX.REGLE_CUISINE
+INTERFACE["critere_grave"] = EX.CRITERE_GRAVE
+INTERFACE["auto_bilan"] = "réussis, selon vous"
 for k, texte, _ex in EX.FORMULES:
     INTERFACE["formule_" + k] = texte
 for k, texte in EX.SEUILS.items():

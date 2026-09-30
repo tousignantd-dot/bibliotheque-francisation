@@ -43,7 +43,7 @@ URL = "/assets/interactive/restaurant"
 
 # Incrémenter après toute image ou tout son refait : même nom, même adresse,
 # le navigateur servirait l'ancien sans rien dire.
-MEDIA_V = "2"   # 2 : modèles à redire refaits (audit, tour 1), 30 sept. 2026
+MEDIA_V = "3"   # 3 : actes, règle et consignes refaits (audit, tour 2), 30 sept. 2026
 
 
 def donnees():
@@ -337,6 +337,9 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .acte-ligne{display:flex;gap:8px;align-items:stretch}
 .acte-ligne .opt{flex:1}
 .ecoute-acte{align-self:center}
+.ticket.cuisson{grid-template-columns:auto 1fr}
+@media (max-width:640px){.ticket.cuisson{grid-template-columns:1fr;grid-template-areas:none}.ticket.cuisson .chg{grid-area:auto}}
+.critere{font-weight:800;color:var(--warn-ink);display:flex;gap:10px;align-items:flex-start;justify-content:space-between}
 .pourquoi{display:block;font-weight:700;color:var(--text-strong);margin-top:6px}
 @media (max-width:640px){.ticket{grid-template-columns:1fr auto 1fr}.ticket img{max-height:90px}.choix.tickets{grid-template-columns:repeat(2,minmax(0,1fr))}.ticket{grid-template-columns:1fr 1fr;grid-template-areas:"p p" "c i"}.ticket img:first-child{grid-area:p}.ticket .chg{grid-area:c;justify-self:center;font-size:15px}.ticket img:last-child{grid-area:i}}
 </style>
@@ -630,7 +633,9 @@ function construire(k, filtre){
   if (k === 'commande') {
     const pool = melange(E.commandes).slice(0, N);
     const pl = places(pool.length, 4), pl3 = places(pool.length, 3);
-    const carteHTML = ([p, ch, g]) => '<span class="ticket"><img src="' + parId[p].img + '" alt="' + esc(parId[p].mot) + '"><span class="chg">' + esc(E.changements[ch]) + '</span><img src="' + parId[g].img + '" alt="' + esc(parId[g].mot) + '"></span>';
+    const carteHTML = ([p, ch, g]) => p === g || !parId[p].img
+      ? '<span class="ticket cuisson"><span class="chg">' + esc(E.changements[ch]) + '</span><img src="' + parId[g].img + '" alt=""></span>'
+      : '<span class="ticket"><img src="' + parId[p].img + '" alt="' + esc(parId[p].mot) + '"><span class="chg">' + esc(E.changements[ch]) + '</span><img src="' + parId[g].img + '" alt="' + esc(parId[g].mot) + '"></span>';
     return pool.map((c, i) => {
       const autres = melange(c.cartes.slice(1));
       const place = c.cartes.length === 4 ? pl[i] : pl3[i];
@@ -671,7 +676,9 @@ function lancer(k, filtre){
 }
 function regleHTML(){
   return '<ol class="regle-liste">' + [1, 2, 3].map(n => '<li><span>' + t('regle_' + n) + '</span><button class="btn-rj petit" data-regle="' + (n - 1) + '" aria-label="' + esc(FR.ecouter) + '">' + ICO.son + '</button></li>').join('') + '</ol>'
-    + '<p class="pref"><span>' + t('regle_pref') + '</span><button class="btn-rj petit" data-regle="3" aria-label="' + esc(FR.ecouter) + '">' + ICO.son + '</button></p>';
+    + '<p class="pref"><span>' + t('regle_pref') + '</span><button class="btn-rj petit" data-regle="3" aria-label="' + esc(FR.ecouter) + '">' + ICO.son + '</button></p>'
+    + '<p class="pref"><span>' + t('regle_cuisine') + '</span><button class="btn-rj petit" data-regle="4" aria-label="' + esc(FR.ecouter) + '">' + ICO.son + '</button></p>'
+    + '<p class="critere"><span>' + t('critere_grave') + '</span><button class="btn-rj petit" data-regle="5" aria-label="' + esc(FR.ecouter) + '">' + ICO.son + '</button></p>';
 }
 function nonRelu(){ const l = L(); return l && !l.relu ? '<p class="non-relu">' + t('non_relu') + '</p>' : ''; }
 function regle(){
@@ -725,7 +732,15 @@ function item(){
   const f = document.getElementById('filtre'); if (f) f.value = S.filtre;
   if (it.son) jouerNormal(it.son);
   const premier = app.querySelector('.opt, [data-act=voirmot], [data-act=reecouter]'); if (premier) premier.focus({preventScroll: true});
-  if (it.unique) app.querySelectorAll('.opt').forEach(o => o.disabled = true), audio.onended = () => { audio.onended = null; app.querySelectorAll('.opt').forEach(o => o.disabled = false); };
+  if (it.unique) {
+    // Les choix s'ouvrent à la fin du son — ou s'il ne part pas (lecture
+    // refusée, fichier en erreur) : jamais de choix grisés sans issue (G1).
+    const ouvrir = () => { audio.onended = audio.onerror = null; clearTimeout(S.secours);
+      app.querySelectorAll('.opt').forEach(o => o.disabled = false); const o = app.querySelector('.opt'); if (o) o.focus({preventScroll: true}); };
+    app.querySelectorAll('.opt').forEach(o => o.disabled = true);
+    audio.onended = audio.onerror = ouvrir;
+    S.secours = setTimeout(ouvrir, 12000);
+  }
 }
 function montrerApres(it){
   // La phrase entendue s'écrit APRÈS la réponse : on apprend à écouter, pas à lire.
@@ -736,6 +751,9 @@ function montrerApres(it){
   if (it.note) h += '<div class="piege">' + esc(FR.piege) + ' : ' + esc(it.note) + '</div>';
   if (it.type === 'img' && it.redit) h += '<p class="dit">' + esc(FR.on_repond) + ' <b>« ' + esc(it.redit) + ' »</b> <button class="btn-rj petit" data-act="remodele" aria-label="' + esc(FR.ecouter) + '">' + ICO.son + '</button></p>';
   a.innerHTML = h;
+  // (audit, tour 2, C3) le retour et son « pourquoi » viennent à l'écran.
+  const r = document.getElementById('retro');
+  if (r && r.getBoundingClientRect().bottom > innerHeight) r.scrollIntoView({block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
   document.getElementById('suite').innerHTML = '<button class="btn-rj btn-rj--pri" data-act="suivant">' + esc(FR.suivant) + ICO.d + '</button>';
   document.querySelector('[data-act=suivant]').focus({preventScroll: true});
 }
@@ -751,7 +769,11 @@ function repondre(i){
     // (audit, tour 1, E1) POURQUOI ce choix, puis la règle — et pour une simple
     // préférence, seulement la phrase sur la préférence.
     const pourquoi = c.p ? '<span class="pourquoi">' + t(c.p) + '</span>' : '';
-    const rappel = '<span class="rappel-regle">' + (it.contre ? t('regle_pref') : [1, 2, 3].map(n => t('regle_' + n)).join('<br>')) + '</span>';
+    // En cuisine, « je l'écris sur la commande » ne s'applique pas : son propre rappel.
+    const cuisine = it.qui !== 'qui_client';
+    const rappel = '<span class="rappel-regle">' + (it.contre ? t('regle_pref')
+      : cuisine ? t('regle_cuisine') + '<br>' + t('regle_3') : [1, 2, 3].map(n => t('regle_' + n)).join('<br>')) + '</span>'
+      + (s === 'grave' ? '<span class="rappel-regle">' + t('critere_grave') + '</span>' : '');
     if (s === 'juste') {
       S.premier++; retro.className = 'retro ok';
       const pj = it.choix[it.bonne].p; retro.innerHTML = t('juste_acte') + (pj ? '<span class="pourquoi">' + t(pj) + '</span>' : '');
@@ -787,7 +809,7 @@ function autoEval(bien){
 function bilan(){
   const k = S.k, tot = S.items.length;
   app.innerHTML = tete('ex_' + k, null, 'exercices') + '<div class="bilan"><p class="fin">' + t('fin') + '</p>'
-    + '<p class="score">' + S.premier + ' / ' + tot + '</p><p>' + t('premier_coup') + '</p>'
+    + '<p class="score">' + S.premier + ' / ' + tot + '</p><p>' + t(k === 'rappel' || k === 'redis' ? 'auto_bilan' : 'premier_coup') + '</p>'
     + (k === 'allergie' ? '<p class="graves' + (S.graves ? ' non' : '') + '">' + S.graves + ' ' + esc(FR.graves) + '</p><p class="grave-sous">' + t('grave_sous') + '</p>'
        : FR['seuil_' + k] ? '<p class="seuil">' + t('seuil_' + k) + '</p>' : '')
     + '<div class="gestes-bilan"><button class="btn-rj btn-rj--pri btn-rj--pile" data-act="encore">' + tb('recommencer') + '</button>'

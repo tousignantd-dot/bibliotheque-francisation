@@ -54,10 +54,10 @@ CONSIGNES = [
      "laitue", ["bac", "oignon", "tomate"], "Oui, chef : je remplis le bac de laitue."),
     ("c09", "Mets des gants avant de toucher au poulet cru.", "Qu'est-ce qu'il faut mettre ?",
      "gants", ["poulet", "tablier", "filet"], "Oui, chef : je mets des gants."),
-    ("c10", "Prends le thermomètre pis vérifie la soupe.", "Avec quoi faut-il vérifier la soupe ?",
-     "thermometre", ["tasse-mesurer", "louche", "etiquette"], "Oui, chef : je vérifie la soupe avec le thermomètre."),
-    ("c11", "Oublie pas l'étiquette sur la sauce d'hier.", "Qu'est-ce qu'il ne faut pas oublier ?",
-     "etiquette", ["thermometre", "tablier", "gants"], "Oui, chef : je mets une étiquette sur la sauce."),
+    ("c10", "Prends le thermomètre, pas la louche, pis vérifie la soupe.", "Avec quoi faut-il vérifier la soupe ?",
+     "thermometre", ["louche", "tasse-mesurer", "etiquette"], "Oui, chef : je vérifie la soupe avec le thermomètre."),
+    ("c11", "Oublie pas l'étiquette sur le bac d'hier, pis rapporte le thermomètre.", "Qu'est-ce qu'il faut mettre sur le bac ?",
+     "etiquette", ["thermometre", "tablier", "gants"], "Oui, chef : je mets une étiquette sur le bac, et je rapporte le thermomètre."),
     ("c12", "Les assiettes sales, mets-les dans le lave-vaisselle, pas dans l'évier.", "Où vont les assiettes sales ?",
      "lave-vaisselle", ["evier", "lavabo", "bac-vaisselle"], "Oui, chef : je les mets dans le lave-vaisselle."),
     ("c13", "Va chercher des patates pis l'éplucheur.", "Quel outil faut-il apporter ?",
@@ -111,12 +111,15 @@ COMMANDES = [
      ("club", "avec", "champignon"), ("hamburger", "sans", "tomate"), "Un club avec des champignons, c'est bien ça ?"),
     ("k15", "f", "Des crêpes avec du bacon, s'il vous plaît.",
      ("crepes", "avec", "bacon"), ("pain-dore", "a-part", "sirop-erable"), "Des crêpes avec du bacon, c'est bien ça ?"),
-    ("k16", "m", "Un hamburger bien cuit, s'il vous plaît.",
-     ("hamburger", "bien-cuit", None), None, "Un hamburger bien cuit, c'est bien ça ?"),
-    ("k17", "f", "Mon hamburger, je le veux saignant… non, à point.",
-     ("hamburger", "a-point", None), None, "Un hamburger à point, c'est bien ça ?"),
-    ("k18", "m", "Le hamburger, pas trop cuit : saignant.",
-     ("hamburger", "saignant", None), None, "Un hamburger saignant, c'est bien ça ?"),
+    # Audit, tour 2 (A2) : les cuissons se prennent sur un STEAK. Le hamburger
+    # (bœuf haché) se sert toujours bien cuit — norme à revérifier au cadrage
+    # (MAPAQ), comme la zone de danger.
+    ("k16", "m", "Un steak bien cuit, s'il vous plaît.",
+     ("steak", "bien-cuit", None), None, "Un steak bien cuit, c'est bien ça ?"),
+    ("k17", "f", "Mon steak, je le veux saignant… non, à point.",
+     ("steak", "a-point", None), None, "Un steak à point, c'est bien ça ?"),
+    ("k18", "m", "Le steak, pas trop cuit : saignant.",
+     ("steak", "saignant", None), None, "Un steak saignant, c'est bien ça ?"),
 ]
 CHANGEMENTS = {"sans": "sans", "extra": "extra", "a-part": "à part", "avec": "avec",
                "bien-cuit": "bien cuit", "a-point": "à point", "saignant": "saignant"}
@@ -126,11 +129,16 @@ CUISSONS = ["saignant", "a-point", "bien-cuit"]
 # LA RÈGLE, écrite ici une fois, affichée avant la série et citée après. Audit,
 # tour 1 (C5/C6) : trois gestes numérotés, courts, et lus par une voix.
 REGLE = [
-    "Je fais répéter : « Allergique à quoi ? »",
+    "Si ce n'est pas clair, je fais répéter : « Allergique à quoi ? »",
     "Je l'écris sur la commande et je le dis à la cuisine.",
     "Je vérifie. Je ne dis jamais « il n'y en a pas » sans vérifier.",
 ]
 REGLE_PREFERENCE = "« Je n'aime pas » n'est pas une allergie : je l'écris, c'est tout."
+REGLE_CUISINE = "En cuisine, je redis l'allergie et la table, et je change mes gestes."
+# Audit, tour 2 (A3/E1) : la frontière faux/grave, écrite UNE fois et affichée
+# avec la règle. Chaque statut « grave » se relit contre elle.
+CRITERE_GRAVE = ("Erreur grave : dire ou laisser croire qu'un plat est sûr sans avoir vérifié, "
+                 "ou ne pas transmettre la bonne allergie.")
 
 # (id, qui parle, voix, phrase, contre-exemple ?, [(acte, statut, pourquoi)]) —
 # statut : "juste" · "faux" · "grave" (l'erreur éliminatoire de O2). Le
@@ -143,14 +151,14 @@ ALLERGIES = [
     ("a01", "client", "f", "Je suis allergique aux arachides. Est-ce qu'il y en a dans le pouding chômeur ?", False, [
         ("Je vérifie avec la cuisine, puis je reviens.", "juste", "On ne sait pas ce qu'il y a dans un dessert sans demander."),
         ("Non, il n'y en a pas dans le pouding.", "grave", "Vous n'avez pas vérifié : c'est l'erreur qui peut rendre quelqu'un très malade."),
-        ("Je vous conseille de ne pas prendre de dessert.", "faux", "Vous ne répondez pas : il faut demander à la cuisine.")]),
+        ("Je vérifie avec la cuisine s'il y a des noix.", "grave", "Elle a dit « arachides » : les noix, c'est autre chose.")]),
     ("a02", "client", "m", "Mon fils a une allergie au lait. La poutine, c'est correct pour lui ?", False, [
         ("Non, il y a du fromage. Je vérifie le reste.", "juste", "Le fromage est fait avec du lait ; la sauce aussi peut en contenir."),
         ("Oui, la poutine, c'est correct pour lui.", "grave", "Le fromage est fait avec du lait."),
         ("Il peut enlever le fromage lui-même, dans l'assiette.", "grave", "Enlever le fromage n'enlève pas le lait : il en reste dans l'assiette.")]),
     ("a03", "salle", "f", "Table quatre, le club : allergie au sésame !", False, [
         ("Je redis « sésame » et je vérifie le pain et la sauce.", "juste", "Le sésame se cache dans le pain et dans certaines sauces."),
-        ("J'enlève les graines du pain avec un couteau.", "grave", "Enlever les graines ne suffit pas : le pain en reste touché."),
+        ("Je redis « soya » et je vérifie le pain et la sauce.", "grave", "Le serveur a dit « sésame », pas « soya »."),
         ("Je continue : un club, ça n'a jamais de sésame, voyons.", "grave", "« Jamais » sans vérifier : c'est l'erreur éliminatoire.")]),
     ("a04", "client", "m", "Est-ce qu'il y a des noix dans la tarte au sucre ?", False, [
         ("Je vérifie avec la cuisine, puis je vous le dis.", "juste", "Même sans le mot « allergie », une question sur un allergène se vérifie."),
@@ -163,11 +171,11 @@ ALLERGIES = [
     ("a06", "client", "m", "J'ai une allergie aux fruits de mer. La soupe du jour, qu'est-ce qu'il y a dedans ?", False, [
         ("Je demande à la cuisine ce qu'il y a dans la soupe.", "juste", "Seule la cuisine sait ce qu'il y a dans la soupe aujourd'hui."),
         ("C'est une soupe aux légumes, il n'y a pas de problème.", "grave", "Vous n'avez pas vérifié : un bouillon peut contenir des fruits de mer."),
-        ("Je ne sais pas. Prenez plutôt un club sandwich.", "grave", "Proposer un autre plat, c'est dire qu'il est sans danger, sans l'avoir vérifié.")]),
+        ("Je demande à la cuisine s'il y a du poisson dans la soupe.", "grave", "Il a dit « fruits de mer » : c'est pour eux qu'il faut demander.")]),
     ("a07", "chef", "m", "Allergie aux arachides, table deux ! Change de gants pis prends une planche propre.", False, [
         ("« Oui, chef : arachides, table deux. » Gants et planche propres.", "juste", "Je redis l'allergie au chef, et je fais les deux gestes demandés."),
         ("Je garde mes gants : je viens de les laver à l'eau.", "grave", "L'eau n'enlève pas les arachides des gants : on les change."),
-        ("Je fais la commande d'abord, pis je change de gants après.", "grave", "Après, c'est trop tard : l'assiette est déjà touchée.")]),
+        ("« Oui, chef : arachides, table six. » Gants et planche propres.", "grave", "Le chef a dit table DEUX : la mauvaise table recevrait l'assiette.")]),
     ("a08", "client", "m", "Pas d'oignons pour moi, s'il vous plaît. C'est juste que je n'aime pas ça.", True, [
         ("J'écris « sans oignons », c'est tout.", "juste", ""),
         ("Je crie « allergie aux oignons ! » à la cuisine.", "faux", "Il a dit « je n'aime pas ça » : ce n'est pas une allergie."),
@@ -175,7 +183,7 @@ ALLERGIES = [
     ("a09", "client", "f", "Mon mari est allergique au poisson. Les frites, elles cuisent dans la même huile que le poisson ?", False, [
         ("Je vérifie avec la cuisine avant de répondre.", "juste", "Seule la cuisine sait quelle friteuse sert à quoi."),
         ("Non, jamais : les frites ont leur propre friteuse.", "grave", "Vous n'avez pas vérifié."),
-        ("Oui, mais ce n'est pas grave, l'huile est très chaude.", "grave", "La chaleur n'enlève pas l'allergie.")]),
+        ("Je vérifie avec la cuisine pour les fruits de mer.", "grave", "Elle a dit « poisson » : c'est pour le poisson qu'il faut vérifier.")]),
     ("a10", "salle", "m", "Le pain doré, table six : allergie aux œufs !", False, [
         ("Je dis au serveur : le pain doré contient des œufs.", "juste", "Le pain doré est fait avec des œufs : le client doit choisir autre chose."),
         ("Je fais le pain doré avec moins d'œufs, c'est correct.", "grave", "Même un peu d'œuf peut rendre malade."),
@@ -183,19 +191,20 @@ ALLERGIES = [
     ("a11", "client", "f", "Attention, j'ai une allergie ! Le hamburger, c'est correct pour moi ?", False, [
         ("Pardon, vous êtes allergique à quoi ?", "juste", "Elle n'a pas dit à quoi : il faut le savoir avant tout."),
         ("Oui, le hamburger, c'est correct pour vous.", "grave", "Vous ne savez même pas à quoi elle est allergique."),
-        ("J'écris « allergie » sur la commande, c'est tout.", "faux", "La cuisine ne peut rien faire sans savoir à quoi.")]),
+        ("J'écris « allergie » sur la commande, c'est tout.", "grave", "Sans savoir à quoi, la cuisine ne peut pas la traiter : l'allergie n'est pas transmise.")]),
     ("a12", "client", "m", "Je ne digère pas le lait. La soupe, il y a de la crème dedans ?", False, [
         ("C'est une allergie ? Je vérifie la soupe avec la cuisine.", "juste", "« Je ne digère pas » n'est pas clair : on demande, puis on vérifie."),
         ("Non, il n'y a pas de crème dans la soupe.", "grave", "Vous n'avez pas vérifié."),
-        ("Ce n'est pas une allergie, alors c'est correct.", "faux", "On ne décide pas pour le client : on lui demande.")]),
+        ("Ce n'est pas une allergie, alors c'est correct.", "grave", "Vous dites que c'est sûr sans avoir demandé ni vérifié.")]),
     ("a13", "client", "f", "Un hamburger, s'il vous plaît. Je suis allergique à la moutarde.", False, [
         ("J'écris « allergie : moutarde » et je le dis à la cuisine.", "juste", "Écrit ET dit : la cuisine change aussi ses gestes."),
         ("Il n'y a pas de moutarde dans le hamburger, madame.", "grave", "Vous n'avez pas vérifié : la sauce peut en contenir."),
-        ("J'écris « sans moutarde », comme pour les oignons.", "faux", "« Sans », c'est pour une préférence : la cuisine doit savoir que c'est une allergie.")]),
+        ("J'écris « sans moutarde », comme pour les oignons.", "grave", "« Sans », c'est pour une préférence : l'allergie n'est pas transmise à la cuisine.")]),
     ("a14", "client", "m", "Une poutine, s'il vous plaît. Pis ma fille est allergique aux œufs.", False, [
         ("J'écris l'allergie aux œufs et je la dis à la cuisine.", "juste", "Même si le plat n'en a pas, la cuisine doit le savoir."),
         ("Pas de problème : une poutine, ça n'a pas d'œufs.", "grave", "Vous n'avez pas vérifié la sauce ni la friteuse."),
-        ("Je lui conseille de prendre juste des frites.", "faux", "Vous ne transmettez pas l'allergie à la cuisine.")]),
+        ("J'écris l'allergie au lait et je la dis à la cuisine.", "grave", "Il a dit « œufs », pas « lait »."),
+    ]),
 ]
 QUI = {"client": "Un client vous parle, en salle.", "salle": "Le serveur parle à la cuisine. Vous êtes en cuisine.",
        "chef": "Le chef vous parle. Vous êtes en cuisine."}
@@ -206,6 +215,7 @@ FORMULES = [("chef", "Au chef, je réponds : « Oui, chef : … »", "c05"),
 
 # Les seuils du test, dits à l'apprenant (audit A1).
 SEUILS = {"chef": "Au test : 7 consignes sur 8.", "commande": "Au test : 5 commandes sur 6.",
+          "ecoute": "Au test : 18 mots sur 20.", "image": "Au test : 18 mots sur 20.", "pieges": "Au test : 18 mots sur 20.",
           "allergie": "Au test : une seule erreur grave fait échouer."}
 
 # ── O3 · Les pièges ────────────────────────────────────────────────────────
@@ -249,10 +259,14 @@ def verifier():
         assert not any(nomme(x, q) for x in noms), f"{i} : un choix est nommé dans la question"
         assert " pis " not in r, f"{i} : le modèle à redire dit « pis »"
     for i, _v, _ph, bon, autre, _r in COMMANDES:
-        assert bon[0] in img and bon[1] in CHANGEMENTS, i
+        assert bon[1] in CHANGEMENTS, i
         if bon[2] is None:
+            # La cuisson : la carte montre la COUPE (les croquis saignant, à point,
+            # bien cuit sont des steaks) ; le plat n'a pas besoin de croquis.
+            assert all(c in img for c in CUISSONS), i
             assert bon[1] in CUISSONS and autre is None, i
             continue
+        assert bon[0] in img, i
         assert autre[0] in img and bon[2] in img and autre[2] in img, i
         assert all(a != b for a, b in zip(bon, autre)), f"{i} : les deux cartes doivent différer sur les trois traits"
     ch = [c[3][1] for c in COMMANDES]
@@ -262,6 +276,13 @@ def verifier():
         assert all(p for _a, s, p in actes if s != "juste"), f"{i} : un choix faux sans « pourquoi »"
         n = [len(a) for a, _s, _p in actes]
         assert max(n) <= 1.25 * min(n) + 6, f"{i} : longueurs trop inégales {n}"
+    for i, _qui, _v, _ph, contre, actes in ALLERGIES:
+        for a, st, _p in actes:
+            if st == "faux" and not contre:
+                assert not re.search(r"correct|conseille|prenez|pas de problème", a.lower()), f"{i} : « {a} » laisse croire que c'est sûr : grave"
+    voisin = sum(any(st == "grave" and any(w in a.lower() for w in ("vérifie", "redis", "écris", "demande", "oui, chef")) for a, st, _p in actes)
+                 for *_x, contre, actes in ALLERGIES if not contre)
+    assert voisin * 2 >= len(ALLERGIES) - 2, f"(D4) seulement {voisin} items où le bon geste porte le mauvais allergène"
     plus_longue = sum(max(actes, key=lambda x: len(x[0]))[1] == "juste" for *_x, actes in ALLERGIES)
     assert plus_longue * 3 <= len(ALLERGIES) + 1, f"la bonne est la plus longue {plus_longue} fois"
     assert sum(c for *_x, c, _a in ALLERGIES) >= 2, "au moins deux contre-exemples"

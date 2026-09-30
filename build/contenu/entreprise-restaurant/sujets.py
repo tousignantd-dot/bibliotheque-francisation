@@ -179,3 +179,6 @@ SUJETS.update({
     "emporter": ("objet", "a brown paper take-out bag, folded closed at the top, next to a closed white take-out food container and a paper cup with a lid. " + _NU),
     "terminal": ("objet", "a handheld card payment terminal: a small black device with a BLANK grey screen and a keypad of plain round buttons with no numbers and no symbols. " + _NU),
 })
+
+# Audit de l'étape 2, tour 2 : les cuissons se prennent sur un steak.
+SUJETS["steak"] = ("objet", "a whole grilled beef steak with dark grill marks on a white plate, seen at a three-quarter angle from slightly above, alone. No knife, no fork. No label, no letters, no numbers, no brand. ")
