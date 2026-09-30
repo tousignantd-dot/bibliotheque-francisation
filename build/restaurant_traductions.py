@@ -203,7 +203,17 @@ INTERFACE.update({
     "rien_enregistre": "rien d'enregistré",
     "avant_maintenant": "Avant → maintenant",
     "aucun_nom": "aucun nom",
+    "provisoire_micro": "Provisoire : le micro n'était pas disponible. Redites les trois phrases à votre formateur.",
+    "avec_formateur": "à faire avec le formateur",
+    "oral_de_vive_voix": "Sans micro : écoutez la personne redire la phrase, puis notez.",
+    "ia_avis": "Ce que vous dites ou écrivez part à un service d'intelligence artificielle, qui répond. Rien n'est gardé.",
+    "aller_verifier": "Aller vérifier à la cuisine",
+    "cuisine_dit": "La cuisine vous répond :",
+    "reessayer": "Réessayer",
 })
+import situations as _SI  # noqa: E402
+for i, txt in _SI.REPONSES_CUISINE.items():
+    INTERFACE["rc_" + i] = txt
 # Étape 4 : le service joué (situations.py)
 import situations as SI  # noqa: E402
 INTERFACE.update({

@@ -103,9 +103,9 @@ SITUATIONS = [
      "Une cliente commande avec des changements.",
      ["redire", "preciser"],
      "a woman in her sixties, short white hair, pearl earrings, a lavender cardigan",
-     ["Tu es madame Lessard, cliente régulière. Tu commandes un hamburger, sans oignons, avec les "
-      "frites à part… non, avec une salade à la place des frites.",
-      "Tu veux ton hamburger bien cuit, mais tu ne le dis QUE si on te demande la cuisson.",
+     ["Tu es madame Lessard, cliente régulière. Tu commandes un steak, sans oignons, avec les "
+      "frites… non, avec une salade à la place des frites.",
+      "Tu veux ton steak à point, mais tu ne le dis QUE si on te demande la cuisson.",
       "Tu veux un café avec du lait.",
       "Tu donnes UNE chose à la fois quand on te la demande.",
       "Tu attends que le serveur redise la commande. S'il se trompe, tu corriges gentiment.",
@@ -121,9 +121,11 @@ SITUATIONS = [
       "Tu veux la tarte au sucre et tu demandes s'il y a des noix dedans.",
       "Si le serveur répond « non » ou « il n'y en a pas » SANS vérifier, tu insistes : « Vous "
       "êtes sûr ? Vous avez vérifié ? »",
-      "Si le serveur dit qu'il vérifie avec la cuisine, tu es content. Il revient : la tarte au "
-      "sucre de la maison n'a pas de noix, mais la croûte vient d'un fournisseur ; tu choisis le "
-      "pouding chômeur à la place.",
+      "Si le serveur dit qu'il vérifie avec la cuisine, tu es content et tu attends. Quand il "
+      "revient, tu demandes : « Pis, qu'est-ce que la cuisine dit ? » — et tu attends SA réponse ; "
+      "tu ne la donnes jamais toi-même, tu ne sais pas ce que la cuisine a dit.",
+      "S'il te dit que la croûte peut contenir des noix, tu choisis le pouding chômeur à la place "
+      "et tu le remercies.",
       "Si le serveur confond noix et arachides, tu le reprends."]),
     ("mecontent", "salle", "Monsieur Fortin", "jr_masculin", ["fonctionnel", "aise"],
      "Un client n'est pas content de son steak.",
@@ -159,7 +161,9 @@ PALIERS_JEU = {
                     "patient la première fois qu'il te fait répéter, un peu moins la troisième."),
     "aise": ("Palier à l'aise : l'employé comprend bien. Tu parles comme en vrai service : phrases "
              "rapides, expressions québécoises (« pis », « correct », « tantôt »), parfois deux "
-             "demandes dans la même phrase. Tu montres ton impatience si on te fait attendre."),
+             "demandes dans la même phrase — SAUF si ton personnage donne une chose à la fois : "
+             "alors tu gardes ce trait, c'est lui que l'employé doit apprendre à gérer. Tu montres "
+             "ton impatience si on te fait attendre."),
 }
 DEBIT_JEU = {"debutant": "lent", "fonctionnel": None, "aise": None}
 
@@ -176,6 +180,15 @@ GESTES = [
     {"id": "relais", "porte": "salle", "nom": "Passer le relais au gérant", "phrase": "Pour un rabais, je vais chercher le gérant."},
 ]
 
+# Ce que la cuisine répond quand le serveur va vérifier : l'ÉCRAN le donne (bouton
+# « Aller vérifier à la cuisine »), jamais le client — sinon l'employé qui a bien
+# fait devait inventer la réponse, c'est-à-dire affirmer sans vérifier (audit,
+# tour 1, majeur).
+REPONSES_CUISINE = {
+    "allergie-salle": "La tarte au sucre est faite ici, sans noix. Mais la croûte vient d'un fournisseur : "
+                      "elle PEUT contenir des noix. Le pouding chômeur est sans noix.",
+}
+
 PORTES = {
     "cuisine": {"scenario": "resto-cuisine", "ia": "chef", "eleve": "commis", "etiquettes": ("CHEF", "COMMIS"),
                 "ouverture": "Bonjour, chef ! Je commence mon quart."},
@@ -185,28 +198,36 @@ PORTES = {
 # « Chez Jocelyne » → « Bienvenue chez Jocelyne ! »
 
 
-def _bilan(porte):
-    gestes = [g for g in GESTES if g["porte"] in (porte, "deux")]
-    liste = " · ".join(f"{g['id']} ({g['nom'].lower()} : « {g['phrase']} »)" for g in gestes)
+def _bilan(cas):
+    """La consigne du juge pour UNE situation (audit, tour 1, E1) : les gestes de
+    la situation seulement, la règle d'allergie de SA porte, des critères qui ne
+    créditent pas ce que l'autre personne a soufflé."""
+    sit = next(x for x in SITUATIONS if x[0] == cas)
+    porte, gestes = sit[1], [g for g in GESTES if g["id"] in sit[6]]
+    liste = "\n".join(f"- {g['id']} : {g['nom'].lower()} (« {g['phrase']} »)" for g in gestes)
     lieu = ("en CUISINE : un CHEF (joué par un modèle) et un COMMIS" if porte == "cuisine"
             else "en SALLE : un CLIENT (joué par un modèle) et un SERVEUR")
+    regle = (_EX.REGLE_CUISINE + " " + _EX.REGLE[2] if porte == "cuisine"
+             else " ".join(_EX.REGLE) + " " + _EX.REGLE_PREFERENCE)
     return (
         f"Tu es formateur en restauration au Québec. Voici la transcription d'un moment de service {lieu} "
-        "(un employé immigrant qui apprend le français). Juge l'EMPLOYÉ, geste par geste, sans juger sa "
-        f"grammaire.\nLes gestes : {liste}.\n"
-        "L'allergie suit cette règle : " + " ".join(_EX.REGLE) + " " + _EX.REGLE_PREFERENCE + "\n"
-        + _EX.CRITERE_GRAVE + " Le geste « allergie » n'est « necessaire » que si une allergie ou un allergène est mentionné "
-        "pendant ce moment. Une allergie ou une table redite FAUSSE, que l'employé ne redit pas juste lui-même ensuite, est "
-        "une erreur grave, même si l'autre personne l'a corrigée. Si l'employé a commis une erreur grave, mets \"grave\": true et cite sa "
-        "réplique dans \"grave_citation\" ; sinon \"grave\": false.\n"
-        "Pour CHAQUE geste, dis s'il était « necessaire » dans ce moment, s'il a été « fait », cite la "
-        "réplique de l'employé qui le montre (ou vide), et donne un conseil d'une phrase courte et simple, "
-        "en français facile, qui propose la phrase à dire. Ajoute « resume » : une phrase simple sur ce qui "
-        "a marché. Rends EXACTEMENT un objet par geste de la liste, avec son id tel quel, dans l'ordre "
-        "de la liste, et AUCUN autre id. Les conseils et le résumé vouvoient l'employé. "
-        "Réponds UNIQUEMENT en JSON : {\"gestes\": [{\"id\": \"…\", \"necessaire\": true, "
-        "\"fait\": false, \"citation\": \"…\", \"conseil\": \"…\"}, …], \"grave\": false, "
-        "\"grave_citation\": \"\", \"resume\": \"…\"}."
+        "(un employé immigrant qui apprend le français). Juge l'EMPLOYÉ, geste par geste, sans juger sa grammaire.\n"
+        f"Les gestes de ce moment, et SEULEMENT eux :\n{liste}\n"
+        "Règles pour juger :\n"
+        "- Un geste ne compte « fait » que si l'employé l'a fait DE LUI-MÊME, en français. S'il ne l'a fait "
+        "qu'après que l'autre personne le lui a demandé ou soufflé (« Redis-moi ça », « Pis tes gants ? », "
+        "« Vérifiez avec la cuisine »), il n'est PAS fait : dis-le dans le conseil.\n"
+        "- Un geste dit dans une autre langue que le français n'est pas fait.\n"
+        + ("- L'allergie suit cette règle : " + regle + "\n" if "allergie" in sit[6] else "")
+        + "- " + _EX.CRITERE_GRAVE + " Une allergie ou une table redite FAUSSE est une erreur grave, même si "
+        "elle est corrigée ensuite. Si l'employé a commis une erreur grave, mets \"grave\": true et cite sa "
+        "réplique dans \"grave_citation\" ; sinon \"grave\": false et \"grave_citation\": \"\".\n"
+        "Pour CHAQUE geste de la liste, dans l'ordre, avec son id EXACT, dis s'il était « necessaire » dans ce "
+        "moment, s'il a été « fait », cite la réplique de l'employé qui le montre (ou vide), et donne un conseil "
+        "d'une phrase courte, en français simple et CORRECT (« vous avez bien redit »), qui vouvoie l'employé et "
+        "propose la phrase à dire. Ajoute « resume » : une phrase simple sur ce qui a marché. Réponds UNIQUEMENT "
+        "en JSON : {\"gestes\": [{\"id\": \"…\", \"necessaire\": true, \"fait\": false, \"citation\": \"…\", "
+        "\"conseil\": \"…\"}], \"grave\": false, \"grave_citation\": \"\", \"resume\": \"…\"}."
     )
 
 
@@ -255,7 +276,7 @@ def scenario_serveur(porte):
             eleve: {"qui": f"Tu es {eleve} chez {NOM}.", "conduite": "Tu travailles poliment."},
         },
         "paliers": PALIERS_JEU,
-        "bilan": _bilan(porte),
+        "bilan": _bilan,   # appelée par le serveur avec l'id de la situation
         "etiquettes": P["etiquettes"],
     }
 
@@ -275,6 +296,9 @@ def verifier():
         assert sum(s[1] == p for s in SITUATIONS) == 4, p
         assert any(s[1] == p and "debutant" in s[4] for s in SITUATIONS), f"{p} : rien au palier débutant"
         assert any(s[1] == p and "allergie" in s[6] for s in SITUATIONS), f"{p} : l'allergie n'est pas jouée"
+    for ident, *_r in SITUATIONS:
+        _bilan(ident)
+    assert set(REPONSES_CUISINE) <= set(ids)
     sc = scenarios_serveur()
     for k, v in sc.items():
         assert set(v["ouverture"]) == set(v["roles"]), k

@@ -85,7 +85,8 @@ def le_service():
     """L'étape 4 (situations.py). Les portraits attendent le crédit d'images :
     chaque situation montre le décor de sa porte (le poste, ou la salle)."""
     SI.verifier()
-    return {"situations": [{"id": i, "porte": p, "nom": n, "voix": v, "paliers": pa, "gestes": g}
+    return {"situations": [{"id": i, "porte": p, "nom": n, "voix": v, "paliers": pa, "gestes": g,
+                            "cuisine": bool(SI.REPONSES_CUISINE.get(i))}
                            for i, p, n, v, pa, _c, g, _po, _f in SI.SITUATIONS],
             "gestes": [{"id": g["id"], "phrase": g["phrase"]} for g in SI.GESTES],
             "portes": {p: {"scenario": v["scenario"], "eleve": v["eleve"]} for p, v in SI.PORTES.items()},
@@ -1044,7 +1045,7 @@ function bItem(){
 function bJouer(b){
   const it = F().B[T.bi];
   b.disabled = true; b.innerHTML = tb('deja_joue');
-  T.joue = T.joue || {}; T.joue[it.id] = true; tGarder();
+  audio.onplaying = () => { audio.onplaying = null; T.joue = T.joue || {}; T.joue[it.id] = true; tGarder(); };
   // Les choix s'ouvrent à la fin du son, ou s'il ne part pas (issue de secours).
   const ouvrir = () => { audio.onended = audio.onerror = null; clearTimeout(T._s);
     app.querySelectorAll('.opt').forEach(o => o.disabled = false); const o = app.querySelector('.opt'); if (o) o.focus({preventScroll: true}); };
@@ -1081,7 +1082,7 @@ function dItem(){
 function dJouer(b){
   const it = F().D[T.di];
   b.disabled = true; b.innerHTML = tb('deja_joue');
-  T.joue = T.joue || {}; T.joue[it.id] = true; tGarder();
+  audio.onplaying = () => { audio.onplaying = null; T.joue = T.joue || {}; T.joue[it.id] = true; tGarder(); };
   const ouvrir = () => { audio.onended = audio.onerror = null; clearTimeout(T._s); const r = app.querySelector('[data-t=rec]'); if (r) { r.disabled = false; r.focus({preventScroll: true}); } };
   audio.onended = audio.onerror = ouvrir; T._s = setTimeout(ouvrir, 12000);
   jouerNormal(it.son);
@@ -1100,9 +1101,16 @@ async function dEnregistrer(b){
       T.di++; tGarder(); setTimeout(dItem, 700);
     };
     rec.start(); b.innerHTML = tb('arreter'); b.classList.add('en-cours'); etat.textContent = '●';
-  } catch(e) { etat.innerHTML = t('micro_refuse'); }
+  } catch(e) {
+    // Pas de micro (refusé, absent) : ce n'est pas « ne sait pas parler ». L'item
+    // est marqué « micro » — l'oral se fera avec le formateur, palier provisoire.
+    etat.innerHTML = t('micro_refuse');
+    T.D[it.id] = 'micro'; T.micro = true; tGarder();
+    const p = app.querySelector('[data-t=passer]'); if (p) p.innerHTML = tb('continuer');
+  }
 }
-function dPasser(){ if (rec && rec.state === 'recording') { rec.onstop = null; rec.stop(); } T.D[F().D[T.di].id] = false; T.di++; tGarder(); dItem(); }
+function dPasser(){ if (rec && rec.state === 'recording') { rec.onstop = null; rec.stop(); }
+  const id = F().D[T.di].id; if (T.D[id] !== 'micro') T.D[id] = T.micro ? 'micro' : false; T.di++; tGarder(); dItem(); }
 
 function finTest(){ T.termine = true; T.partie = null; tGarder(); Bruit.arreter(); resultats(); }
 
@@ -1110,6 +1118,8 @@ function finTest(){ T.termine = true; T.partie = null; tGarder(); Bruit.arreter(
 // (audit du test, tour 1) Un item passé compte « Rien ou faux » ; sans oral
 // noté en entier, le palier est PROVISOIRE et ne dépasse pas « fonctionnel ».
 function oralNotes(){
+  // Enregistré, ou sans micro (noté par le formateur de vive voix) : la note du
+  // formateur. Sauté alors que le micro marchait : « Rien ou faux ».
   return F().D.map(it => T.D[it.id] ? ((T.oral || {})[it.id] || {}) : {r: 2, l: 2, passe: true});
 }
 function oralComplet(){ return oralNotes().every(n => n.r != null && n.l != null); }
@@ -1117,7 +1127,7 @@ function palierPropose(){
   const R = TD.regles, A = T.A.niveau, B = T.B.filter(Boolean).length, cOk = !T.C.includes('grave');
   const notes = oralNotes(), complet = oralComplet();
   if (A <= R.debutant_a || B <= R.debutant_b) return 'debutant';
-  if (notes.filter(n => n.r === 2).length >= R.oral_debutant) return 'debutant';
+  if (notes.filter(n => n.r === 2).length >= R.oral_debutant) return 'debutant';   // n.r vide pour un item sans micro
   if (!complet) return 'fonctionnel';
   const oralOk = notes.filter(n => n.r === 0).length >= R.oral_aise && notes.filter(n => n.l === 2).length <= 1;
   if (A === 3 && B >= R.aise_b && cOk && oralOk) return 'aise';
@@ -1129,7 +1139,7 @@ function resultats(){
   let h = tete('resultat', null, 'accueil')
     + '<div class="resultat"><div class="bloc"><p>' + t('palier_propose') + '</p><p class="gros-palier">' + t('p_' + pal) + '</p>'
     + '<p class="' + (cOk ? 'ok-txt' : 'grave-sous') + '">' + t(cOk ? 'c_reussie' : 'c_ratee') + '</p>'
-    + (!T.confirme && !oralComplet() ? '<p class="seuil">' + t('provisoire') + '</p>' : '')
+    + (!T.confirme && !oralComplet() ? '<p class="seuil">' + t(T.micro ? 'provisoire_micro' : 'provisoire') + '</p>' : '')
     + '<p class="n">' + (T.confirme ? t('confirme') : t('pas_examen')) + '</p></div>'
     + '<div class="bloc parts">'
     + '<div><span>' + t('res_A') + '</span><b>' + T.A.niveau + ' / 3</b></div>'
@@ -1137,7 +1147,7 @@ function resultats(){
     + '<div><span>' + t('res_B_chef') + '</span><b>' + F().B.filter((it, i) => it.type === 'chef' && T.B[i]).length + ' / ' + F().B.filter(it => it.type === 'chef').length + '</b></div>'
     + '<div><span>' + t('res_B_commande') + '</span><b>' + F().B.filter((it, i) => it.type === 'commande' && T.B[i]).length + ' / ' + F().B.filter(it => it.type === 'commande').length + '</b></div>'
     + '<div><span>' + t('ex_allergie') + '</span><b>' + T.C.filter(s => s === 'juste').length + ' / ' + F().C.length + '</b></div>'
-    + '<div><span>' + t('res_D') + '</span><b>' + (!Object.values(T.D).some(Boolean) ? t('rien_enregistre') : oralComplet() ? '✓' : t('non_note')) + '</b></div>'
+    + '<div><span>' + t('res_D') + '</span><b>' + (T.micro && !oralComplet() ? t('avec_formateur') : !Object.values(T.D).some(Boolean) ? t('rien_enregistre') : oralComplet() ? '✓' : t('non_note')) + '</b></div>'
     + '<p class="n">' + esc(FR.forme) + ' ' + T.forme + '</p></div>';
   h += '<div class="bloc formateur" id="formateur">' + (T._ouvert ? formateurHTML() : '<h2>' + t('formateur') + '</h2><div class="code-f"><label for="codeF">' + esc(FR.code) + '</label>'
     + '<input id="codeF" inputmode="numeric" autocomplete="off"><button class="btn-rj" data-t="code">' + esc(FR.ouvrir) + '</button></div>') + '</div>';
@@ -1154,8 +1164,9 @@ function formateurHTML(){
   return '<h2>' + t('formateur') + '</h2>' + F().D.map(it => {
       const n = (T.oral || {})[it.id] || {};
       return '<div class="oral-f"><p class="qui">' + t(it.qui) + '</p><p><b>« ' + esc(it.attendu) + ' »</b></p>'
-        + '<div class="gestes-bilan">' + (T.D[it.id] ? '<button class="btn-rj petit" data-t="ecoute-rep" data-id="' + it.id + '">' + ICO.son + esc(FR.ecouter_reponse) + '</button>' : '')
+        + '<div class="gestes-bilan">' + (T.D[it.id] === true ? '<button class="btn-rj petit" data-t="ecoute-rep" data-id="' + it.id + '">' + ICO.son + esc(FR.ecouter_reponse) + '</button>' : '')
         + '<button class="btn-rj petit" data-t="ecoute-mod" data-id="' + it.id + '">' + ICO.son + esc(FR.modele) + '</button></div>'
+        + (T.D[it.id] === 'micro' ? '<p class="n">' + esc(FR.oral_de_vive_voix) + '</p>' : '')
         + (T.D[it.id] ? '' : '<p class="n">' + esc(FR.pas_de_reponse) + '</p></div>')
         + (!T.D[it.id] ? '' : '<p class="n">' + esc(FR.oral_redit) + '</p><div class="choisir3">' + TD.oral_redit.map((x, k) => '<button class="btn-rj petit" data-t="or" data-id="' + it.id + '" data-k="' + k + '" aria-pressed="' + (n.r === k) + '">' + esc(x) + '</button>').join('') + '</div>'
         + '<p class="n">' + esc(FR.oral_langue) + '</p><div class="choisir3">' + TD.oral_langue.map((x, k) => '<button class="btn-rj petit" data-t="ol" data-id="' + it.id + '" data-k="' + k + '" aria-pressed="' + (n.l === k) + '">' + esc(x) + '</button>').join('') + '</div></div>');
@@ -1203,6 +1214,8 @@ app.addEventListener('click', e => {
    voix ne tournent jamais ensemble : ouvert, le micro dégrade la sortie audio. */
 const SV = D.service;
 let codeAcces = new URLSearchParams(location.search).get('code') || '';
+// Le code authentifie : il ne reste pas dans l'adresse ni dans l'historique (audit, tour 1).
+if (codeAcces) { try { localStorage.setItem('resto-code', codeAcces); } catch(e) {} const u = new URL(location.href); u.searchParams.delete('code'); history.replaceState(null, '', u); }
 try { codeAcces = codeAcces || localStorage.getItem('resto-code') || ''; } catch(e) {}
 let niveauJeu = null, V = null;
 function niveauDuTest(){ const r = lire('resto-test', null); return r && r.termine ? (r.palier || palierDe(r)) : null; }
@@ -1220,6 +1233,7 @@ function service(){
   }
   const l = L();
   app.innerHTML = tete('service', 'service_sous', 'accueil')
+    + '<p class="n">' + t('ia_avis') + '</p>'
     + '<p style="margin:10px 0 4px"><b>' + esc(FR.niveau_jeu) + '</b>' + (niveauJeu ? '' : ' — ' + esc(FR.faire_test)) + '</p>'
     + '<div class="choisir3">' + ['debutant', 'fonctionnel', 'aise'].map(p => '<button class="btn-rj petit" data-s="niv" data-v="' + p + '" aria-pressed="' + (p === niveauJeu) + '">' + esc(FR['p_' + p]) + '</button>').join('') + '</div>'
     + ['cuisine', 'salle'].map(p => '<h2 class="porte-titre">' + t('porte_' + p) + '<span class="appui-sous">' + t('porte_' + p + '_sous') + '</span></h2><div class="clients">'
@@ -1228,25 +1242,31 @@ function service(){
       + '</div>').join('');
 }
 
-function arreterService(){ if (typeof recoStop === 'function') recoStop(); try { audio.pause(); } catch(e){} }
+function arreterService(){ if (typeof recoStop === 'function') recoStop(); try { audio.pause(); } catch(e){} Bruit.arreter(); }
 function scene(id){
   const s = SV.situations.find(x => x.id === id);
   if (!niveauJeu) niveauJeu = 'debutant';
-  V = {s, hist: [], humeur: 'neutre', fini: false, sansLire: false, porte: SV.portes[s.porte]};
+  // (audit, tour 1) O1 se pratique ENTENDU : en cuisine, dès le palier fonctionnel,
+  // le texte du chef est masqué par défaut, et le bruit de cuisine joue.
+  const masquer = s.porte === 'cuisine' && niveauJeu !== 'debutant';
+  V = {s, hist: [], humeur: 'neutre', fini: false, sansLire: masquer, porte: SV.portes[s.porte]};
   adresse({ecran: 'service', sit: id});
   app.innerHTML = tete('service', null, 'service')
     + '<div class="scene"><div class="avatar"><img src="' + SV.decor[s.porte] + '" alt=""><p class="nom">' + esc(s.nom) + '</p><p class="humeur" id="hum" aria-live="polite"></p>'
     + '<p class="carte-sit">' + t('carte_' + s.id) + '</p></div>'
-    + '<div><div class="choisir3"><button class="btn-rj petit" data-s="sanslire" aria-pressed="false">' + esc(FR.ecouter_sans_lire) + '</button></div>'
+    + '<div><div class="choisir3"><button class="btn-rj petit" data-s="sanslire" aria-pressed="' + V.sansLire + '">' + esc(FR.ecouter_sans_lire) + '</button>'
+    + (s.cuisine ? '<button class="btn-rj petit" data-s="verifier">' + esc(FR.aller_verifier) + '</button>' : '') + '</div>'
+    + '<div class="bloc regle" id="repCuisine" hidden><p class="n">' + esc(FR.cuisine_dit) + '</p><p>' + t('rc_' + s.id) + '</p></div>'
     + '<details class="bloc phrases-scene"><summary><b>' + t('mes_gestes') + '</b></summary><ul class="gestes-liste">'
     + s.gestes.map(g => { const G = SV.gestes.find(x => x.id === g); return '<li><b>' + t('g_' + g) + '</b> — « ' + esc(G.phrase) + ' »</li>'; }).join('') + '</ul></details>'
-    + '<div class="fil" id="fil" aria-live="polite"></div>'
+    + '<div class="fil' + (V.sansLire ? ' cache' : '') + '" id="fil" aria-live="polite"></div>'
     + '<div class="saisie"><button class="btn-rj rec" id="micro" data-s="micro">' + esc(FR.parler) + '</button>'
     + '<input id="txt" placeholder="' + esc(FR.ecrire) + '" aria-label="' + esc(FR.ecrire) + '"><button class="btn-rj btn-rj--pri" id="env" data-s="envoyer">' + esc(FR.envoyer) + '</button></div>'
     + '<div class="suite" id="suiteSc"><button class="btn-rj" data-s="fini">' + esc(FR.fini) + '</button></div>'
     + '<p class="retro non" id="err"></p></div></div>';
   montrerHumeur('neutre');
   window.scrollTo(0, 0);
+  if (s.porte === 'cuisine') { Bruit.niveau = Math.max(1, lire(BRUIT, 1)); Bruit.demarrer(); }
   tourService();
 }
 function bulleS(qui, texte){
@@ -1280,7 +1300,7 @@ async function tourService(){
     attente.remove();
     if (!r.ok) {
       if (r.status === 401) { codeAcces = ''; try { localStorage.removeItem('resto-code'); } catch(e){} err.textContent = FR.code_refuse; }
-      else err.textContent = d.error || FR.erreur_reseau;
+      else err.innerHTML = esc(d.error || FR.erreur_reseau) + ' <button class="btn-rj petit" data-s="reessayer">' + esc(FR.reessayer) + '</button>';
       return;
     }
     if (d.ouverture) { V.hist.push({role: 'user', contenu: d.ouverture}); bulleS('vous', d.ouverture); }
@@ -1292,7 +1312,7 @@ async function tourService(){
       ['txt', 'env', 'micro'].forEach(id => { const x = document.getElementById(id); if (x) x.disabled = true; });
       document.getElementById('suiteSc').innerHTML = '<button class="btn-rj btn-rj--pri" data-s="fini">' + esc(FR.voir_bilan) + ICO.d + '</button>';
     }
-  } catch(e) { attente.remove(); err.textContent = FR.erreur_reseau; }
+  } catch(e) { attente.remove(); err.innerHTML = esc(FR.erreur_reseau) + ' <button class="btn-rj petit" data-s="reessayer">' + esc(FR.reessayer) + '</button>'; }
 }
 function envoyerS(texte){
   texte = (texte || '').trim(); if (!texte || V.fini) return;
@@ -1324,11 +1344,13 @@ function microS(){
   const b = document.getElementById('micro'), txt = document.getElementById('txt');
   if (!R) { document.getElementById('err').textContent = FR.micro_refuse; return; }
   if (reco) { recoFini = true; reco.stop(); return; }
-  audio.pause();
+  audio.pause(); Bruit.arreter();   // le micro ne doit pas entendre le bruit fabriqué
   let acquis = '';
   recoFini = false;
   const attendre = ms => { clearTimeout(recoMinuterie); recoMinuterie = setTimeout(() => { recoFini = true; if (reco) reco.stop(); }, ms); };
-  const terminer = () => { clearTimeout(recoMinuterie); reco = null; b.textContent = FR.parler; const dit = txt.value.trim(); if (dit) envoyerS(dit); };
+  const terminer = () => { clearTimeout(recoMinuterie); reco = null; b.textContent = FR.parler;
+    if (V && V.s.porte === 'cuisine' && !V.fini) Bruit.demarrer();
+    const dit = txt.value.trim(); if (dit) envoyerS(dit); };
   const demarrerR = () => {
     reco = new R(); reco.lang = 'fr-CA'; reco.interimResults = true; reco.continuous = true;
     reco.onresult = e => {
@@ -1360,7 +1382,14 @@ async function bilanService(){
   try {
     const r = await fetch('/api/jeu-de-role', {method: 'POST', headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({code: codeAcces, scenario: V.porte.scenario, cas: V.s.id, role: V.porte.eleve, niveau: niveauJeu, bilan: true, historique: V.hist.slice(1)})});
-    const d = await r.json().catch(() => ({}));
+    let d = await r.json().catch(() => ({}));
+    // Un geste attendu manque (le juge a inventé un id) : on relance une fois.
+    const manque = b => !b || V.s.gestes.some(g => !(b.gestes || []).some(x => x.id === g));
+    if (r.ok && manque(d.bilan)) {
+      const r2 = await fetch('/api/jeu-de-role', {method: 'POST', headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({code: codeAcces, scenario: V.porte.scenario, cas: V.s.id, role: V.porte.eleve, niveau: niveauJeu, bilan: true, historique: V.hist.slice(1)})});
+      const d2 = await r2.json().catch(() => ({})); if (r2.ok && d2.bilan && !manque(d2.bilan)) d = d2;
+    }
     if (!r.ok || !d.bilan) zone.innerHTML = '<p>' + esc(d.error || FR.erreur_reseau) + '</p>';
     else {
       const B = d.bilan;
@@ -1402,6 +1431,8 @@ app.addEventListener('click', e => {
   if (a === 'envoyer') return envoyerS(document.getElementById('txt').value);
   if (a === 'micro') return microS();
   if (a === 'fini') return bilanService();
+  if (a === 'reessayer') { document.getElementById('err').textContent = ''; return tourService(); }
+  if (a === 'verifier') { document.getElementById('repCuisine').hidden = false; V.verifie = true; return; }
 }, true);
 
 app.addEventListener('change', e => { if (e.target.id === 'filtre' && S) lancer(S.k, e.target.value); });
