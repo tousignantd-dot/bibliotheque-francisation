@@ -205,6 +205,10 @@ La visite en cuisine, décidée avant l'étape 1, viendra corriger ce lexique.</
 
 <section>
   <h2>2 · Le nom du restaurant</h2>
+  <div class="these"><p class="cle">Décidé le 30 septembre : <b>Chez Martin</b>, à votre demande. Recherche du même jour,
+  nom exact : aucun « Chez Martin » au Québec ; le nom existe en France (Rambouillet), en Belgique (Liège) et en Suisse.
+  La règle écarte d'ordinaire un nom pris en France ; c'est une décision explicite, consignée dans
+  <code>identite.py</code>. Les candidats d'origine restent ci-dessous, pour mémoire.</p></div>
   <p>Trois candidats, cherchés un à un sur le Web, nom exact entre guillemets. Ce n'est pas une recherche de marque
   de commerce : on vérifie seulement qu'aucun restaurant connu ne le porte.</p>
   <div class="opts2">{noms}</div>
