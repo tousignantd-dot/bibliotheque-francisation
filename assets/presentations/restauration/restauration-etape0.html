@@ -339,6 +339,8 @@ La visite en cuisine, décidée avant l'étape 1, viendra corriger ce lexique.</
   var CLE='restauration-etape0', s={mots:{},choix:{},manque:''};
   try{var l=JSON.parse(localStorage.getItem(CLE)||'null');if(l&&l.mots)s=l;}catch(e){}
   function sv(){try{localStorage.setItem(CLE,JSON.stringify(s));}catch(e){}}
+  // Un choix gardé qui n'est plus offert (le nom « ovila » après la deuxième ronde) s'oublie.
+  Object.keys(s.choix).forEach(function(g){if(!document.querySelector('.opt[data-g="'+g+'"][data-v="'+s.choix[g]+'"]'))delete s.choix[g];}); sv();
   var N=184;
   function peindre(){
     document.querySelectorAll('.mot').forEach(function(m){var v=s.mots[m.dataset.id];
