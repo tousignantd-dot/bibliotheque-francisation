@@ -106,7 +106,7 @@
   /* Le tableau ne prend pas toute la largeur du classeur : au-delà d'environ
      58 rem, l'œil perd la ligne entre le titre et sa date, et le sujet
      s'étire en une phrase qu'on ne balaye plus. Il se centre. */
-  .index-cadre{max-width:58rem; margin:0 auto}
+  .index-cadre{max-width:66rem; margin:0 auto}
   /* `table-layout:fixed` : sans lui, les cellules qui ne se coupent pas — les
      dates, les liens — imposaient leur largeur et le tableau débordait de la
      page de cent pixels malgré les largeurs déclarées. */
@@ -145,7 +145,9 @@
     text-overflow:ellipsis; max-width:100%}
   table.index .c-fam{width:7.5rem}
   table.index .c-type{width:8rem}
-  table.index .c-date{width:7.5rem}
+  table.index .c-date{width:9.5rem}
+  table.index .c-etat{width:6.5rem}
+  table.index td.c-etat{font-size:var(--fs-ui-sm); font-weight:700; color:var(--ink-500)}
   table.index .c-lien{width:6.5rem; text-align:right}
   table.index td.c-date{font-size:var(--fs-ui-sm); color:var(--ink-500);
     font-variant-numeric:tabular-nums; white-space:nowrap}
@@ -170,7 +172,7 @@
     table.index td{border:none; padding:2px var(--sp-4)}
     table.index td.c-lien{text-align:left; padding-top:var(--sp-2)}
     .t-liens{justify-content:flex-start}
-    table.index td.c-fam, table.index td.c-type{display:inline-block; padding-right:0}
+    table.index td.c-fam, table.index td.c-type, table.index td.c-etat{display:inline-block; padding-right:0}
     /* Sur un écran étroit, mieux vaut deux lignes de sujet qu'une phrase
        coupée au troisième mot. */
     table.index .t-quoi{white-space:normal; display:-webkit-box; -webkit-line-clamp:2;
@@ -335,7 +337,7 @@
   :root[data-systeme="trame"] .bande .chapeau{color:var(--ink-900)}
   :root[data-systeme="trame"] footer{background:var(--paper-200)}
   /* Manrope est plus large que Nunito : la date ne tenait plus dans sa colonne. */
-  :root[data-systeme="trame"] table.index .c-date{width:8.75rem}
+  :root[data-systeme="trame"] table.index .c-date{width:10rem}
   :root[data-systeme="trame"] table.index .c-fam{width:7rem}
   :root[data-systeme="trame"] table.index .c-type{width:7.5rem}
   :root[data-systeme="trame"] table.index td.c-date,
