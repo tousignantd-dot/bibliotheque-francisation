@@ -19,10 +19,12 @@ jamais ce que la caisse facture. Les cases que seul Daniel peut remplir
 
 # À remplir par Daniel une fois l'entreprise immatriculée. Vide → « à remplir », en ambre.
 VENDEUR = {
-    "nom": "Trame",     # décidé le 28 sept. 2026 ; entreprise individuelle, immatriculation à faire
-    "neq": "",          # numéro d'entreprise du Québec
-    "adresse": "",      # une adresse postale au Québec (la loi l'exige avant le contrat)
-    "telephone": "",    # la loi l'exige aussi
+    # « Trame » était pris au Registraire. Immatriculée le 30 sept. 2026 sous ce nom-ci,
+    # écrit en un seul mot, exactement comme au registre.
+    "nom": "Boucledidactique",
+    "neq": "2282619172",  # numéro d'entreprise du Québec
+    "adresse": "6398, avenue des Érables, Montréal (Québec) H2G 2M8",
+    "telephone": "514-240-4618",
     "courriel": "support@edufrancis.ca",
 }
 MISE_A_JOUR = "brouillon du 28 septembre 2026 (décisions prises ; relecture par un avocat à décider)"

@@ -27,7 +27,7 @@ TXT = {
                 "à voix haute, puis un bilan geste par geste.",
         "gratuit": "Les mots, les exercices, le test et la fiche restent gratuits. Paiement par carte chez Stripe ; "
                    "nous ne recevons ni votre nom ni votre carte. Le code s'affiche ici tout de suite, et il est aussi écrit sur votre reçu.",
-        "legal": "Vendu par Trame. Carte de crédit seulement. Remboursable dans les 14 jours si 3 conversations au plus ont servi. "
+        "legal": "Vendu par Boucledidactique. Carte de crédit seulement. Remboursable dans les 14 jours si 3 conversations au plus ont servi. "
                  "Réservé aux personnes majeures (ou avec l'accord d'un parent). Aucune taxe.",
         "conditions": "Conditions de vente",
         "equipe_tit": "Pour une équipe ?",
@@ -65,7 +65,7 @@ TXT = {
                 "out loud, then a step-by-step review.",
         "gratuit": "The words, the exercises, the test and the pocket card stay free. Card payment with Stripe; "
                    "we never see your name or your card. The code shows up here right away, and it is also on your receipt.",
-        "legal": "Sold by Trame. Credit card only. Refundable within 14 days if 3 conversations or fewer were used. "
+        "legal": "Sold by Boucledidactique. Credit card only. Refundable within 14 days if 3 conversations or fewer were used. "
                  "Adults only (or with a parent's consent). No tax.",
         "conditions": "Terms of sale (in French)",
         "equipe_tit": "For a team?",
@@ -103,7 +103,7 @@ TXT = {
                 "en voz alta, y luego un balance paso a paso.",
         "gratuit": "Las palabras, los ejercicios, la prueba y la ficha siguen gratis. Pago con tarjeta en Stripe; "
                    "no recibimos ni su nombre ni su tarjeta. El código aparece aquí enseguida, y también está en su recibo.",
-        "legal": "Vendido por Trame. Solo tarjeta de crédito. Reembolsable en 14 días si se usaron 3 conversaciones o menos. "
+        "legal": "Vendido por Boucledidactique. Solo tarjeta de crédito. Reembolsable en 14 días si se usaron 3 conversaciones o menos. "
                  "Solo para mayores de edad (o con el permiso de un padre o madre). Sin impuestos.",
         "conditions": "Condiciones de venta (en francés)",
         "equipe_tit": "¿Para un equipo?",
