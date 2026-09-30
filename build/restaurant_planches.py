@@ -43,7 +43,7 @@ URL = "/assets/interactive/restaurant"
 
 # Incrémenter après toute image ou tout son refait : même nom, même adresse,
 # le navigateur servirait l'ancien sans rien dire.
-MEDIA_V = "3"   # 3 : actes, règle et consignes refaits (audit, tour 2), 30 sept. 2026
+MEDIA_V = "4"   # 4 : actes refaits (audit, tour 3), 30 sept. 2026
 
 
 def donnees():
@@ -326,6 +326,8 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 @media (max-width:640px){.choix{grid-template-columns:repeat(2,minmax(0,1fr))}.choix.tickets{grid-template-columns:1fr}.choix.mots{grid-template-columns:1fr}}
 
 .seuil{font-weight:700;color:var(--rj-teinte);margin:0 0 6px}
+.seuil-porte{display:block;font-size:13px;font-weight:700;color:var(--rj-teinte);margin-top:4px}
+.seuil-porte .appui{font-size:12px}
 .non-relu{font-size:13px;color:var(--text-muted);margin:6px 0}
 .unique{text-align:center;font-weight:800;color:var(--rj-teinte);margin:6px 0 14px}
 .regle-liste{padding-left:0;margin:0 0 10px;list-style:none;counter-reset:geste}
@@ -577,9 +579,9 @@ function jouerNormal(src){ jouer(src); try { audio.playbackRate = 1; } catch(e){
 function exercices(){
   arreter();
   adresse({ecran: 'exercices'});
-  app.innerHTML = tete('exercices', null, 'accueil') + '<div class="exos">' + EXOS.map((x, i) =>
+  app.innerHTML = tete('exercices', null, 'accueil') + nonRelu() + '<div class="exos">' + EXOS.map((x, i) =>
     '<button class="exo-porte' + (x.pont ? ' pont' : '') + '" data-ex="' + x.k + '"><span class="rang">' + (i + 1) + '</span><span><b>' + t('ex_' + x.k) + '</b>'
-    + '<span class="sous">' + t('ex_' + x.k + '_c') + '</span></span></button>').join('') + '</div>';
+    + '<span class="sous">' + t('ex_' + x.k + '_c') + '</span>' + (FR['seuil_' + x.k] ? '<span class="seuil-porte">' + t('seuil_' + x.k) + '</span>' : '') + '</span></button>').join('') + '</div>';
 }
 
 // ── La construction des séries ──
@@ -713,7 +715,7 @@ function item(){
   if (!it) return bilan();
   S.essais = 0; S.fini = false;
   const k = S.k;
-  let h = tete('ex_' + k, 'ex_' + k + '_c', 'exercices') + (FR['seuil_' + k] ? '<p class="seuil">' + t('seuil_' + k) + '</p>' : '') + nonRelu() + filtreHTML() + barreBruit()
+  let h = tete('ex_' + k, 'ex_' + k + '_c', 'exercices') + filtreHTML() + barreBruit()
     + '<div class="jeu"><div class="barre"><i style="width:' + (100 * S.n / S.items.length) + '%"></i></div>';
   if (it.qui) h += '<p class="qui">' + t(it.qui) + '</p>';
   if (it.sujet) h += '<div class="sujet"><img src="' + it.sujet + '" alt=""></div>';
@@ -752,10 +754,12 @@ function montrerApres(it){
   if (it.type === 'img' && it.redit) h += '<p class="dit">' + esc(FR.on_repond) + ' <b>« ' + esc(it.redit) + ' »</b> <button class="btn-rj petit" data-act="remodele" aria-label="' + esc(FR.ecouter) + '">' + ICO.son + '</button></p>';
   a.innerHTML = h;
   // (audit, tour 2, C3) le retour et son « pourquoi » viennent à l'écran.
-  const r = document.getElementById('retro');
-  if (r && r.getBoundingClientRect().bottom > innerHeight) r.scrollIntoView({block: 'start', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'});
   document.getElementById('suite').innerHTML = '<button class="btn-rj btn-rj--pri" data-act="suivant">' + esc(FR.suivant) + ICO.d + '</button>';
   document.querySelector('[data-act=suivant]').focus({preventScroll: true});
+  // (audit, tour 3, C3) le retour et son « pourquoi » à l'écran — après le focus,
+  // sans animation : l'animation se faisait interrompre.
+  const r = document.getElementById('retro');
+  if (r && r.getBoundingClientRect().bottom > innerHeight) r.scrollIntoView({block: 'start', behavior: 'auto'});
 }
 function repondre(i){
   const it = S.items[S.n]; if (S.fini) return;
