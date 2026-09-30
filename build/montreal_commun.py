@@ -27,8 +27,27 @@ def lieux():
     return out
 
 
+FEMININES = {"sylvie"}
+
+
+def scenes():
+    """Les scènes « Parler » (scenes_1.py, scenes_2.py), dans l'ordre."""
+    out = []
+    for n in (1, 2):
+        if (CONTENU / f"scenes_{n}.py").exists():
+            out += charger(f"scenes_{n}").SCENES
+    return out
+
+
+def voix_apprenant(sc):
+    """L'apprenant s'entend dans la voix de l'autre genre que le personnage :
+    deux voix pareilles qui se répondent, on ne sait plus qui parle."""
+    return "thierry" if sc["perso"]["voix"] in FEMININES else "sylvie"
+
+
 def extraits():
-    """Tous les sons du guide : (chemin relatif à MEDIA/audio, langue, texte)."""
+    """Tous les sons du guide : (chemin relatif à MEDIA/audio, langue, texte[, voix]).
+    La voix n'est donnée que pour les scènes ; sinon, celle de la langue."""
     t = []
     for l in lieux():
         for lg in LANGUES:
@@ -36,4 +55,12 @@ def extraits():
     if (CONTENU / "extras.py").exists():
         for i, m in enumerate(charger("extras").MOTS):
             t.append((f"mots/{i:02d}.mp3", "fr", m["exemple"]))
+    for sc in scenes():
+        for k, tour in enumerate(sc["tours"]):
+            if "dit" in tour:
+                t.append((f"scenes/{sc['id']}/t{k}.mp3", "fr", tour["dit"], sc["perso"]["voix"]))
+            else:
+                t.append((f"scenes/{sc['id']}/t{k}c.mp3", "fr", tour["choix"][0][0], voix_apprenant(sc)))
+        for i, ph in enumerate(sc["phrases"]):
+            t.append((f"scenes/{sc['id']}/p{i}.mp3", "fr", ph[0], "sylvie"))
     return t

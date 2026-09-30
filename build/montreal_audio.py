@@ -19,12 +19,19 @@ from azure_voix import cle_region
 VOIX = {"fr": ("fr-CA", "fr-CA-Sylvie:DragonHDLatestNeural", "-3%"),
         "en": ("en-US", "en-US-Emma:DragonHDLatestNeural", "-3%"),
         "es": ("es-MX", "es-MX-Dalia:DragonHDLatestNeural", "-3%")}
+# Les personnages des scènes « Parler » : quatre voix québécoises, un peu
+# ralenties — l'auditeur est un touriste qui apprend.
+VOIX_SCENE = {"sylvie": "fr-CA-Sylvie:DragonHDLatestNeural", "thierry": "fr-CA-Thierry:DragonHDLatestNeural",
+              "jean": "fr-CA-JeanNeural", "antoine": "fr-CA-AntoineNeural"}
+TAUX_SCENE = "-8%"
 AUDIO = M.MEDIA / "audio"
 TEXTES = AUDIO / "textes.json"
 
 
-def ssml(lang, texte):
+def ssml(lang, texte, perso=None):
     loc, voix, taux = VOIX[lang]
+    if perso:
+        voix, taux = VOIX_SCENE[perso], TAUX_SCENE
     paras = [p.strip() for p in texte.split("\n\n") if p.strip()]
     corps = '<break time="600ms"/>'.join(html.escape(p) for p in paras)
     return (f'<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" '
@@ -33,9 +40,9 @@ def ssml(lang, texte):
             f'</prosody></lang></voice></speak>')
 
 
-def synth(rel, lang, texte, cle, region):
+def synth(rel, lang, texte, perso, cle, region):
     dest = AUDIO / rel; dest.parent.mkdir(parents=True, exist_ok=True)
-    f = dest.with_suffix(".xml"); f.write_text(ssml(lang, texte), encoding="utf-8")
+    f = dest.with_suffix(".xml"); f.write_text(ssml(lang, texte, perso), encoding="utf-8")
     out = subprocess.run(
         ["curl", "-s", "-m", "180", "-X", "POST", "-H", f"Ocp-Apim-Subscription-Key: {cle}",
          "-H", "Content-Type: application/ssml+xml",
@@ -55,7 +62,7 @@ def synth(rel, lang, texte, cle, region):
 if __name__ == "__main__":
     args = sys.argv[1:]
     faits = json.loads(TEXTES.read_text()) if TEXTES.exists() else {}
-    tous = M.extraits()
+    tous = [e if len(e) == 4 else (*e, None) for e in M.extraits()]
     noms = [a for a in args if not a.startswith("--")]
     cibles = ([e for e in tous if e[0] in noms] if noms else
               [e for e in tous if not (AUDIO / e[0]).exists() or faits.get(e[0]) != e[2]])
@@ -65,7 +72,7 @@ if __name__ == "__main__":
     echecs, verrou = [], threading.Lock()
     def un(e):
         try:
-            synth(*e, cle, region)
+            synth(*e, cle, region)   # e = (rel, langue, texte, perso)
             with verrou:   # écrit à chaque son : un arrêt en cours de route ne fait rien repayer
                 faits[e[0]] = e[2]
                 TEXTES.write_text(json.dumps(faits, ensure_ascii=False, indent=1), encoding="utf-8")

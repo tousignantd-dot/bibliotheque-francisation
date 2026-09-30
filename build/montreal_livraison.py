@@ -38,6 +38,7 @@ def main():
     audio = M.MEDIA / "audio"
     sons = sum((audio / g / f"{l['id']}.mp3").exists() for l in lieux for g in M.LANGUES)
     mots_sons = sum((audio / "mots" / f"{i:02d}.mp3").exists() for i in range(len(ex.MOTS)))
+    scenes = M.scenes()
     a_verifier = [(l, v) for l in lieux for v in l.get("verifier", [])]
     a_verifier += [({"nom": {"fr": "Circuits et guide pratique"}}, v) for v in getattr(ex, "VERIFIER", [])]
 
@@ -100,6 +101,7 @@ Compostelle : des croquis de carnet de voyage, une voix qui guide, un passeport 
   <div><b>3</b><span>langues, tout bascule d'un geste</span></div>
   <div><b>{sons}/{len(lieux) * 3}</b><span>textes lus (audioguide)</span></div>
   <div><b>{len(ex.CIRCUITS)}</b><span>circuits à pied</span></div>
+  <div><b>{len(scenes)}</b><span>scènes « Parler » pour se débrouiller en français</span></div>
   <div><b>{len(ex.PRATIQUE)}</b><span>fiches pratiques</span></div>
   <div><b>{len(ex.MOTS)}</b><span>mots d'ici ({mots_sons} lus)</span></div>
 </div>
@@ -114,6 +116,16 @@ au comptoir, « le saviez-vous ? », le conseil d'ici, l'itinéraire dans Google
 <b>La carte</b> des 28 épingles. <b>Quatre circuits</b> — le Vieux-Montréal, le Plateau et le Mile End gourmands, la montagne, de
 l'Olympique au fleuve — avec leur carte, leurs étapes et le chemin entre elles. <b>Le passeport</b>. <b>Pratique</b> : métro, pourboire,
 taxes, saisons, « Bonjour-Hi »… et <b>les mots d'ici</b> (dépanneur, tuque, il fait frette), avec leur phrase dite en québécois.</p>
+
+<h2>« Parler » — ajouté le 30 septembre 2026</h2>
+<p>Pour les touristes anglophones et hispanophones qui veulent se débrouiller en français (votre choix du 30 septembre).
+{len(scenes)} scènes de la vie montréalaise : {", ".join(E(sc["titre"]["fr"]) for sc in scenes)}. Le personnage parle en
+français québécois (Sylvie, Thierry, Jean — Azure) ; l'apprenant choisit sa réponse parmi trois, reçoit une explication dans sa
+langue quand il se trompe (faux amis, calques, registre, mots d'ici), entend la bonne réplique et la redit à voix haute. Étoiles au
+passeport, phrases à retenir, note culturelle. Chaque lieu qui a sa scène l'offre sous son audioguide. Onglet « Parler » ; les
+circuits sont passés dans « Découvrir ».</p>
+<p class="note">Pas de reconnaissance vocale pour l'instant : l'apprenant dit la phrase sans être écouté — rien ne part du téléphone.
+L'étage suivant, « Parler librement » avec l'assistant, reprendrait la route et la vente de Compostelle.</p>
 
 <h2>Décidé à votre place</h2>
 <p class="note">Vous étiez parti ; j'ai pris la recommandation chaque fois. Tout se renverse sans rien casser.</p>

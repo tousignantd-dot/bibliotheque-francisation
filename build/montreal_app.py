@@ -66,7 +66,41 @@ def donnees():
     mots = []
     for i, m in enumerate(ex.MOTS):
         mots.append(dict(m, son=(audio / "mots" / f"{i:02d}.mp3").exists()))
-    return {"lieux": lieux, "circuits": ex.CIRCUITS, "pratique": ex.PRATIQUE, "mots": mots}
+    scenes = M.scenes()
+    verifier_scenes(scenes, {l["id"] for l in lieux})
+    for sc in scenes:
+        sc["img"] = sc["lieu"] or sc["id"]
+        sc["son"] = all((audio / f"scenes/{sc['id']}/{n}.mp3").exists() for n in noms_sons(sc))
+    return {"lieux": lieux, "circuits": ex.CIRCUITS, "pratique": ex.PRATIQUE, "mots": mots, "scenes": scenes}
+
+
+def noms_sons(sc):
+    """Les sons d'une scène, dans la même convention que montreal_commun.extraits()."""
+    n = [f"t{k}" if "dit" in t else f"t{k}c" for k, t in enumerate(sc["tours"])]
+    return n + [f"p{i}" for i in range(len(sc["phrases"]))]
+
+
+def verifier_scenes(scenes, lieux):
+    """Ce qui ne lève aucune erreur à l'écran et casse pourtant la scène."""
+    ids = [sc["id"] for sc in scenes]
+    assert len(ids) == len(set(ids)), "scène en double"
+    for sc in scenes:
+        i = sc["id"]
+        assert sc["lieu"] is None or sc["lieu"] in lieux, f"{i} : lieu inconnu {sc['lieu']}"
+        assert sc["lieu"] or (M.MEDIA / "lieux" / f"{i}.jpg").exists(), f"{i} : pas de croquis"
+        for k in ("titre", "but", "note"):
+            assert all(sc[k].get(g) for g in M.LANGUES), f"{i} : {k}"
+        t = sc["tours"]
+        assert "dit" in t[0] and "dit" in t[-1], f"{i} : commence et finit par le personnage"
+        for a, b in zip(t, t[1:]):
+            assert ("dit" in a) != ("dit" in b), f"{i} : les tours doivent alterner"
+        for tour in t:
+            if "dit" in tour:
+                assert tour["sens"].get("en") and tour["sens"].get("es"), f"{i} : sens"
+            else:
+                ch = tour["choix"]
+                assert len(ch) == 3 and ch[0][2] is None and all(c[2] for c in ch[1:]), f"{i} : la bonne d'abord, une rétroaction par erreur"
+                assert all(all(c[2].get(g) for g in M.LANGUES) for c in ch[1:]), f"{i} : rétroaction incomplète"
 
 
 def icones():
@@ -287,6 +321,54 @@ details.fichep p{margin:0;padding:0 16px 16px;line-height:1.6}
 .plus-liens a small{display:block;font-weight:600;color:var(--doux);font-size:14px}
 .pied{color:var(--doux);font-size:13px;text-align:center;margin:28px 0 12px}
 
+/* Parler : les scènes */
+.scene-carte{display:flex;gap:12px;align-items:center;background:#fff;border-radius:var(--r);box-shadow:var(--ombre);padding:10px;text-decoration:none;color:inherit}
+.scene-carte img{width:110px;aspect-ratio:3/2;object-fit:cover;border-radius:10px;flex:none}
+.scene-carte b{display:block;font-size:17px;line-height:1.25}
+.scene-carte small{color:var(--doux);font-size:14px;display:block;margin-top:2px}
+.etoiles{color:#C9A227;font-size:15px;letter-spacing:1px;white-space:nowrap}
+.etoiles .v{color:#D9D2C2}
+.invite{display:flex;gap:12px;align-items:center;background:#FFF8EC;border:1.5px solid #EAD7B0;border-radius:var(--r);padding:12px 14px;margin:14px 0;text-decoration:none;color:inherit}
+.invite b{display:block}
+.invite small{color:var(--doux)}
+.invite .fl{margin-left:auto;font-weight:900;color:var(--rouge);font-size:22px}
+.but{background:#fff;border-radius:var(--r);box-shadow:var(--ombre);padding:12px 14px;margin:12px 0}
+.but small{display:block;font-size:12.5px;font-weight:900;letter-spacing:.05em;text-transform:uppercase;color:var(--rouge)}
+.fil-scene{display:flex;flex-direction:column;gap:10px;margin:14px 0}
+.bulle{max-width:88%;border-radius:18px;padding:10px 14px;position:relative}
+.bulle.perso{align-self:flex-start;background:#fff;box-shadow:var(--ombre);border-bottom-left-radius:4px}
+.bulle.moi{align-self:flex-end;background:var(--encre);color:#fff;border-bottom-right-radius:4px}
+.bulle .qui{display:block;font-size:12.5px;font-weight:900;opacity:.7;margin-bottom:2px}
+.bulle .fr{font-size:18px;font-weight:700;line-height:1.35}
+.bulle .tr{display:block;font-size:14.5px;opacity:.75;margin-top:3px}
+.bulle .rej{display:flex;gap:6px;margin-top:6px}
+.bulle .rej button{border:0;border-radius:999px;padding:4px 10px;font-size:13px;font-weight:800;min-height:32px;background:var(--fond);color:var(--encre)}
+.bulle.moi .rej button{background:rgba(255,255,255,.15);color:#fff}
+.retro{align-self:stretch;background:var(--rouge-pale);color:#6E1A1F;border-radius:14px;padding:10px 14px;font-size:15.5px}
+.choix-scene{display:grid;gap:8px;margin:6px 0 18px}
+.choix-scene button{text-align:left;border:2px solid var(--encre);background:#fff;border-radius:14px;padding:11px 14px;min-height:52px}
+.choix-scene button b{display:block;font-size:17px;line-height:1.3}
+.choix-scene button small{display:block;color:var(--doux);font-size:14px;margin-top:2px}
+.choix-scene button.faux{border-color:#D9B3B5;background:#FBF3F3;opacity:.7}
+.choix-scene .consigne{font-weight:900;margin:4px 0 2px}
+.repete{background:#fff;border-radius:14px;box-shadow:var(--ombre);padding:12px 14px;margin:0 0 18px}
+.repete p{margin:0 0 10px}
+.fin-scene{background:#fff;border-radius:var(--r);box-shadow:var(--ombre);padding:18px 16px;margin:10px 0 24px;text-align:center}
+.fin-scene .grandes{font-size:38px;color:#C9A227;letter-spacing:4px}
+.fin-scene .grandes .v{color:#E4DDCD}
+.fin-scene h2{margin:4px 0 6px;font-size:24px}
+.phrases{list-style:none;padding:0;margin:14px 0;text-align:left}
+.phrases li{display:flex;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--filet)}
+.phrases li button{border:0;background:var(--encre);color:#fff;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;flex:none}
+.phrases li button svg{width:16px;height:16px;fill:#fff}
+.phrases b{display:block}
+.phrases small{color:var(--doux)}
+.bascule-tr{display:flex;align-items:center;gap:8px;font-size:14.5px;font-weight:800;color:var(--doux);margin:4px 0}
+.bascule-tr input{width:20px;height:20px;accent-color:var(--encre)}
+.circuits-rangee{display:grid;grid-auto-flow:column;grid-auto-columns:78%;gap:12px;overflow-x:auto;margin:0 -16px;padding:2px 16px 10px;scrollbar-width:none}
+.circuits-rangee::-webkit-scrollbar{display:none}
+@media (min-width:640px){.circuits-rangee{grid-auto-columns:46%}}
+
 /* Choix de la langue */
 .bienvenue{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:24px 16px}
 .bienvenue img{border-radius:var(--r);margin:0 auto 20px;width:100%;max-width:520px;box-shadow:var(--ombre)}
@@ -321,7 +403,7 @@ const T = {
   carte: {fr: 'Carte', en: 'Map', es: 'Mapa'},
   circuits: {fr: 'Circuits', en: 'Walks', es: 'Recorridos'},
   passeport: {fr: 'Passeport', en: 'Passport', es: 'Pasaporte'},
-  plus: {fr: 'Pratique', en: 'Good to know', es: 'Práctico'},
+  plus: {fr: 'Pratique', en: 'Tips', es: 'Práctico'},
   tout: {fr: 'Tout', en: 'All', es: 'Todo'},
   voir: {fr: 'À voir', en: 'Sights', es: 'Qué ver'},
   quartier: {fr: 'Quartiers', en: 'Neighbourhoods', es: 'Barrios'},
@@ -367,18 +449,45 @@ const T = {
             en: ['First stamp! The trip begins.', 'Five places: you already know the city better than most visitors.', 'Ten places: you’re becoming a bit of a Montrealer.', 'Half the passport. Well done!', 'Passport complete. You are officially a Montrealer at heart.'],
             es: ['¡Primer sello! Empieza el viaje.', 'Cinco lugares: ya conoce la ciudad mejor que muchos visitantes.', 'Diez lugares: se está volviendo un poco montrealés.', 'La mitad del pasaporte. ¡Bravo!', 'Pasaporte completo. Ya es oficialmente montrealés de corazón.']},
   vie: {fr: 'Rien ne quitte votre téléphone : la langue, les tampons et votre position y restent.', en: 'Nothing leaves your phone: your language, stamps and location stay on it.', es: 'Nada sale de su teléfono: el idioma, los sellos y su ubicación se quedan en él.'},
+  parler: {fr: 'Parler', en: 'Speak', es: 'Hablar'},
+  parlerTitre: {fr: 'Se débrouiller en français', en: 'Get by in French', es: 'Defenderse en francés'},
+  parlerIntro: {fr: 'Douze petites scènes de la vie montréalaise. Le personnage vous parle en français d’ici ; vous choisissez quoi répondre, puis vous le dites à voix haute.',
+                en: 'Twelve short scenes from Montreal life. The character speaks Montreal French to you; you pick what to answer, then say it out loud.',
+                es: 'Doce escenas cortas de la vida en Montreal. El personaje le habla en francés de aquí; usted elige qué responder y luego lo dice en voz alta.'},
+  aucun: {fr: 'Pas encore joué', en: 'Not played yet', es: 'Aún no jugada'},
+  pratiquer: {fr: 'Pratiquer ici en français', en: 'Practise here in French', es: 'Practique aquí en francés'},
+  votreBut: {fr: 'Votre but', en: 'Your goal', es: 'Su objetivo'},
+  commencer: {fr: 'Commencer', en: 'Start', es: 'Empezar'},
+  vous: {fr: 'Vous', en: 'You', es: 'Usted'},
+  repondre: {fr: 'Que répondez-vous ?', en: 'What do you answer?', es: '¿Qué responde?'},
+  reessayer: {fr: 'Essayez encore.', en: 'Try again.', es: 'Inténtelo otra vez.'},
+  dites: {fr: 'Bonne réponse. Dites-la maintenant à voix haute, comme la voix l’a dite.', en: 'Right. Now say it out loud, the way you just heard it.', es: 'Correcto. Ahora dígalo en voz alta, como lo acaba de oír.'},
+  continuer: {fr: 'Continuer', en: 'Continue', es: 'Continuar'},
+  reecouter: {fr: 'Réécouter', en: 'Replay', es: 'Repetir'},
+  lent: {fr: 'Plus lent', en: 'Slower', es: 'Más lento'},
+  traduction: {fr: 'Afficher la traduction', en: 'Show translation', es: 'Mostrar la traducción'},
+  bravo: {fr: ['Continuez de pratiquer', 'Bien joué !', 'Parfait !'], en: ['Keep practising', 'Well done!', 'Perfect!'], es: ['Siga practicando', '¡Bien hecho!', '¡Perfecto!']},
+  aRetenir: {fr: 'Phrases à retenir', en: 'Phrases to keep', es: 'Frases para recordar'},
+  bonASavoir: {fr: 'Bon à savoir', en: 'Good to know', es: 'Bueno saber'},
+  rejouer: {fr: 'Rejouer la scène', en: 'Play again', es: 'Jugar de nuevo'},
+  autres: {fr: 'Toutes les scènes', en: 'All scenes', es: 'Todas las escenas'},
+  voirLieu: {fr: 'Voir le lieu', en: 'See the place', es: 'Ver el lugar'},
+  mesConv: {fr: 'Mes conversations', en: 'My conversations', es: 'Mis conversaciones'},
+  etoilesTot: {fr: 'étoiles', en: 'stars', es: 'estrellas'},
+  circuitsTous: {fr: 'Tous les circuits', en: 'All walks', es: 'Todos los recorridos'},
   aVerifier: {fr: 'Heures et prix changent : vérifiez avant de vous déplacer.', en: 'Hours and prices change: check before you go.', es: 'Horarios y precios cambian: verifique antes de ir.'},
 };
 
 // ---------- état (localStorage seulement) ----------
 const CLE = 'montreal-poche';
-let S = {lang: null, tampons: {}, filtre: 'tout', pres: false, vit: 1};
+let S = {lang: null, tampons: {}, filtre: 'tout', pres: false, vit: 1, scenes: {}, trad: true};
 try { Object.assign(S, JSON.parse(localStorage.getItem(CLE) || '{}')); } catch (e) {}
 function garder() { try { localStorage.setItem(CLE, JSON.stringify(S)); } catch (e) {} }
 const t = k => (T[k] && (T[k][S.lang] ?? T[k].fr)) ?? k;
 const L = o => o ? (o[S.lang] ?? o.fr) : '';
 const E = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
 const byId = Object.fromEntries(D.lieux.map(l => [l.id, l]));
+const sceneDuLieu = Object.fromEntries(D.scenes.filter(sc => sc.lieu).map(sc => [sc.lieu, sc]));
 const img = id => `${MEDIA}lieux/${id}.jpg?v=${V}`;
 const app = document.getElementById('app');
 let position = null;
@@ -390,6 +499,7 @@ const IC = {
   circuits: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h7a3.5 3.5 0 0 0 0-7H9a3.5 3.5 0 0 1 0-7h7"/></svg>',
   passeport: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M9 16h6"/></svg>',
   plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>',
+  parler: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/><path d="M9 10h6M9 14h4"/></svg>',
   jouer: '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>',
   pause: '<svg viewBox="0 0 24 24"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>',
   hp: '<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg>',
@@ -407,7 +517,7 @@ function entete(retour) {
 function onglets(actif) {
   const nav = document.getElementById('onglets');
   nav.hidden = false;
-  nav.querySelector('.col').innerHTML = [['', 'decouvrir'], ['#carte', 'carte'], ['#circuits', 'circuits'], ['#passeport', 'passeport'], ['#plus', 'plus']]
+  nav.querySelector('.col').innerHTML = [['', 'decouvrir'], ['#carte', 'carte'], ['#parler', 'parler'], ['#passeport', 'passeport'], ['#plus', 'plus']]
     .map(([h, k]) => `<a href="${h || '#'}" ${actif === k ? 'aria-current="page"' : ''}>${IC[k]}<span>${t(k)}</span></a>`).join('');
 }
 function toast(msg) {
@@ -487,6 +597,8 @@ function vueAccueil() {
   app.innerHTML = entete() + `<main class="col">
     <section class="hero"><img src="${img('accueil')}" alt="" width="1200" height="800"><div class="txt"><h1>${t('titre')}</h1><p>${t('accroche')}</p></div></section>
     <a class="progres" href="#passeport">${anneau(n, D.lieux.length)}<span><b>${t('monPass')}</b><small>${n} / ${D.lieux.length} ${t('tampons')}${palier() ? ' — ' + E(palier()) : ''}</small></span></a>
+    <h2 class="sec">${t('circuits')}</h2>
+    <div class="circuits-rangee">${D.circuits.map(carteCircuit).join('')}</div>
     <h2 class="sec">${D.lieux.length} ${t('lieux')}</h2>
     <div class="puces" role="group">${puces}</div>
     <div class="liste">${liste.map(carteLieu).join('')}</div>
@@ -514,6 +626,7 @@ function vueLieu(id) {
       <span style="flex:1;min-width:0"><b>${t('ecouter')}</b><small id="ecoute-etat">${aSon ? LANGUE_NOM[S.lang] : t('voixAppareil')}</small>
       <span class="barre-son"><i id="ecoute-barre"></i></span></span></button>
     <div class="vitesse" role="group">${vit}</div>
+    ${sceneDuLieu[l.id] ? inviteScene(sceneDuLieu[l.id]) : ''}
     <div class="texte">${paras}</div>
     ${l.commander ? `<div class="encart commander"><h3>${t('commander')}</h3><p>${E(L(l.commander))}</p></div>` : ''}
     <div class="encart savoir"><h3>${t('savoir')}</h3><p>${E(L(l.anecdote))}</p></div>
@@ -606,16 +719,19 @@ function vueCarte(cible) {
   if (position) L_.circleMarker(position, {radius: 8, color: '#fff', weight: 3, fillColor: '#1A73E8', fillOpacity: 1}).addTo(carteObj);
 }
 
-function vueCircuits() {
-  onglets('circuits');
-  app.innerHTML = entete() + `<main class="col"><h2 class="sec">${t('circuits')}</h2><p class="intro">${t('circuitsIntro')}</p>
-    <div class="liste">${D.circuits.map(c => `<a class="circuit-carte" href="#circuit/${c.id}">
+function carteCircuit(c) {
+  return `<a class="circuit-carte" href="#circuit/${c.id}">
       <div class="imgs">${c.etapes.slice(0, 3).map(e => `<img src="${img(e)}" alt="" loading="lazy">`).join('')}</div>
-      <div class="t"><h3>${E(L(c.nom))}</h3><div class="meta">${c.etapes.length} ${t('etapes')} · ${E(L(c.duree))}</div><p>${E(L(c.intro))}</p></div></a>`).join('')}</div></main>`;
+      <div class="t"><h3>${E(L(c.nom))}</h3><div class="meta">${c.etapes.length} ${t('etapes')} · ${E(L(c.duree))}</div><p>${E(L(c.intro))}</p></div></a>`;
+}
+function vueCircuits() {
+  onglets('decouvrir');
+  app.innerHTML = entete() + `<main class="col"><h2 class="sec">${t('circuits')}</h2><p class="intro">${t('circuitsIntro')}</p>
+    <div class="liste">${D.circuits.map(carteCircuit).join('')}</div></main>`;
 }
 function vueCircuit(id) {
   const c = D.circuits.find(x => x.id === id); if (!c) { location.hash = '#circuits'; return; }
-  onglets('circuits');
+  onglets('decouvrir');
   const lia = L(c.liaisons);
   let lis = '';
   c.etapes.forEach((e, i) => {
@@ -643,7 +759,9 @@ function vuePasseport() {
     <h2>${t('monPass')}</h2><p class="sous">${n} / ${D.lieux.length} ${t('tampons')}</p>
     ${p ? `<p class="palier">${E(p)}</p>` : `<p class="sous">${t('passInvite')}</p>`}
     <div class="grille">${D.lieux.map(l => `<a class="tampon ${S.tampons[l.id] ? '' : 'vide'}" href="#lieu/${l.id}">${tampon(l, S.tampons[l.id])}</a>`).join('')}</div>
-    </section><p class="pied">${t('vie')}</p></main>`;
+    </section>
+    <h2 class="sec">${t('mesConv')} · ${D.scenes.reduce((a, sc) => a + ((S.scenes[sc.id] || {}).etoiles || 0), 0)} / ${D.scenes.length * 3} ${t('etoilesTot')}</h2>
+    <div class="liste">${D.scenes.map(carteScene).join('')}</div><p class="pied">${t('vie')}</p></main>`;
 }
 
 function vuePlus() {
@@ -664,6 +782,127 @@ function vueMots() {
   window.scrollTo(0, 0);
 }
 
+// ---------- Parler : les scènes ----------
+// Le personnage parle français ; l'apprenant choisit sa réplique parmi trois
+// (la bonne est toujours la première du contenu : l'ordre affiché est mêlé,
+// mais de façon stable, pour qu'une reprise ne change pas la place des choix).
+const sonScene = (id, n) => `${MEDIA}audio/scenes/${id}/${n}.mp3?v=${V}`;
+function etoiles(n, cls = 'etoiles') {
+  return `<span class="${cls}" aria-label="${n} / 3">${'★'.repeat(n)}<span class="v">${'★'.repeat(3 - n)}</span></span>`;
+}
+function carteScene(sc) {
+  const r = S.scenes[sc.id];
+  return `<a class="scene-carte" href="#scene/${sc.id}"><img src="${img(sc.img)}" alt="" loading="lazy">
+    <span><b>${E(L(sc.titre))}</b><small>${E(L(sc.but))}</small>
+    ${r ? etoiles(r.etoiles) : `<small>${t('aucun')}</small>`}</span></a>`;
+}
+function inviteScene(sc) {
+  const r = S.scenes[sc.id];
+  return `<a class="invite" href="#scene/${sc.id}"><span><b>${t('pratiquer')}</b><small>${E(L(sc.titre))}${r ? ' · ' : ''}</small>${r ? etoiles(r.etoiles) : ''}</span><span class="fl">→</span></a>`;
+}
+function vueParler() {
+  onglets('parler');
+  app.innerHTML = entete() + `<main class="col"><h2 class="sec" style="margin-top:18px">${t('parlerTitre')}</h2><p class="intro">${t('parlerIntro')}</p>
+    <div class="liste">${D.scenes.map(carteScene).join('')}</div></main>`;
+}
+function melange(n, graine) {
+  const a = [...Array(n).keys()]; let x = graine;
+  for (let i = n - 1; i > 0; i--) { x = (x * 9301 + 49297) % 233280; const j = Math.floor(x / 233280 * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function jouerSon(url, lent) {
+  arreterSon();
+  lecteur.src = url; lecteur.playbackRate = lent ? 0.8 : S.vit;
+  lecteur.play().catch(() => {});
+}
+let SC = null;   // la scène en cours : {id, k, erreurs, log, faux, attente}
+function avancer() {
+  // Pose les répliques du personnage jusqu'au prochain choix, ou jusqu'à la fin.
+  const sc = D.scenes.find(x => x.id === SC.id);
+  while (SC.k < sc.tours.length && 'dit' in sc.tours[SC.k]) {
+    SC.log.push({qui: 'perso', k: SC.k}); SC.k++;
+  }
+  SC.attente = SC.k < sc.tours.length ? 'choix' : 'fin';
+  const dernier = SC.log[SC.log.length - 1];
+  if (dernier && dernier.qui === 'perso') jouerSon(sonScene(sc.id, `t${dernier.k}`));
+  if (SC.attente === 'fin') {
+    const n = SC.erreurs === 0 ? 3 : SC.erreurs <= 2 ? 2 : 1;
+    SC.etoiles = n;
+    const avant = S.scenes[sc.id];
+    if (!avant || avant.etoiles < n) S.scenes[sc.id] = {etoiles: n, date: new Date().toISOString()};
+    garder();
+  }
+}
+function bulle(sc, e) {
+  const tr = S.trad && S.lang !== 'fr';
+  if (e.qui === 'perso') {
+    const tour = sc.tours[e.k];
+    return `<div class="bulle perso"><span class="qui">${E(sc.perso.nom)}</span><span class="fr" lang="fr-CA">${E(tour.dit)}</span>
+      ${tr ? `<span class="tr">${E(tour.sens[S.lang])}</span>` : ''}
+      <span class="rej"><button data-son="t${e.k}">${t('reecouter')}</button><button data-son="t${e.k}" data-lent="1">${t('lent')}</button></span></div>`;
+  }
+  const c = sc.tours[e.k].choix[0];
+  return `<div class="bulle moi"><span class="qui">${t('vous')}</span><span class="fr" lang="fr-CA">${E(c[0])}</span>
+    ${tr ? `<span class="tr">${E(c[1][S.lang])}</span>` : ''}
+    <span class="rej"><button data-son="t${e.k}c">${t('reecouter')}</button><button data-son="t${e.k}c" data-lent="1">${t('lent')}</button></span></div>`;
+}
+function vueScene(id) {
+  const sc = D.scenes.find(x => x.id === id); if (!sc) { location.hash = '#parler'; return; }
+  onglets('parler');
+  if (!SC || SC.id !== id) SC = {id, k: 0, erreurs: 0, log: [], faux: [], attente: 'debut'};
+  const tr = S.trad && S.lang !== 'fr';
+  let bas = '';
+  if (SC.attente === 'debut') {
+    bas = `<button class="bouton plein" data-scene="go" style="width:100%;margin:8px 0 24px">${t('commencer')}</button>`;
+  } else if (SC.attente === 'choix') {
+    const tour = sc.tours[SC.k];
+    const ordre = melange(3, SC.k * 7 + sc.id.length);
+    const retro = SC.faux.length ? `<div class="retro" role="status">${E(L(tour.choix[SC.faux[SC.faux.length - 1]][2]))} ${t('reessayer')}</div>` : '';
+    bas = retro + `<div class="choix-scene"><p class="consigne">${t('repondre')}</p>${ordre.map(i => {
+      const c = tour.choix[i];
+      return `<button data-choix="${i}" class="${SC.faux.includes(i) ? 'faux' : ''}" ${SC.faux.includes(i) ? 'disabled' : ''}><b lang="fr-CA">${E(c[0])}</b>${tr ? `<small>${E(c[1][S.lang])}</small>` : ''}</button>`;
+    }).join('')}</div>`;
+  } else if (SC.attente === 'repete') {
+    bas = `<div class="repete"><p>${t('dites')}</p><button class="bouton plein" data-scene="suite" style="width:100%">${t('continuer')}</button></div>`;
+  } else {
+    const r = SC.etoiles;
+    bas = `<div class="fin-scene">${etoiles(r, 'grandes')}<h2>${E(T.bravo[S.lang][r - 1])}</h2>
+      <h3 style="margin:18px 0 0;text-align:left">${t('aRetenir')}</h3>
+      <ul class="phrases">${sc.phrases.map((ph, i) => `<li><button data-son="p${i}" aria-label="${E(ph[0])}">${IC.hp}</button>
+        <span><b lang="fr-CA">${E(ph[0])}</b>${S.lang !== 'fr' ? `<small>${E(ph[1][S.lang])}</small>` : ''}</span></li>`).join('')}</ul>
+      <div class="encart savoir" style="text-align:left"><h3>${t('bonASavoir')}</h3><p>${E(L(sc.note))}</p></div>
+      <div class="actions"><button class="bouton plein" data-scene="rejouer">${t('rejouer')}</button>
+      ${sc.lieu ? `<a class="bouton" href="#lieu/${sc.lieu}">${t('voirLieu')}</a>` : ''}
+      <a class="bouton" href="#parler">${t('autres')}</a></div></div>`;
+  }
+  app.innerHTML = entete('#parler') + `<main class="col">
+    <div class="lieu-img"><img src="${img(sc.img)}" alt="" width="1200" height="800"></div>
+    <h2 class="sec" style="margin-top:14px">${E(L(sc.titre))}</h2>
+    <div class="but"><small>${t('votreBut')}</small>${E(L(sc.but))}</div>
+    ${S.lang !== 'fr' ? `<label class="bascule-tr"><input type="checkbox" id="trad" ${S.trad ? 'checked' : ''}>${t('traduction')}</label>` : ''}
+    <div class="vitesse" role="group">${[0.85, 1, 1.15].map(v => `<button aria-pressed="${S.vit === v}" data-vit="${v}">${String(v).replace('.', S.lang === 'en' ? '.' : ',')}×</button>`).join('')}</div>
+    <div class="fil-scene" aria-live="polite">${SC.log.map(e => bulle(sc, e)).join('')}</div>
+    ${bas}</main>`;
+  if (SC.attente !== 'debut') {
+    const f = app.querySelector('.fil-scene'); const der = f.lastElementChild;
+    (SC.attente === 'fin' ? app.querySelector('.fin-scene') : der || f).scrollIntoView({block: 'start', behavior: 'smooth'});
+  }
+}
+function actionScene(b) {
+  const sc = D.scenes.find(x => x.id === SC.id);
+  if (b.dataset.scene === 'go') { avancer(); }
+  else if (b.dataset.scene === 'suite') { avancer(); }
+  else if (b.dataset.scene === 'rejouer') { SC = {id: sc.id, k: 0, erreurs: 0, log: [], faux: [], attente: 'debut'}; avancer(); }
+  else if (b.dataset.choix !== undefined) {
+    const i = +b.dataset.choix;
+    if (i === 0) {
+      SC.log.push({qui: 'moi', k: SC.k}); jouerSon(sonScene(sc.id, `t${SC.k}c`));
+      SC.k++; SC.faux = []; SC.attente = 'repete';
+    } else { SC.faux.push(i); SC.erreurs++; }
+  }
+  vueScene(sc.id);
+}
+
 // ---------- routeur ----------
 function route() {
   if (carteObj) { carteObj.remove(); carteObj = null; }
@@ -671,12 +910,17 @@ function route() {
   document.documentElement.lang = LOC[S.lang];
   document.title = t('titre');
   const [v, a] = location.hash.slice(1).split('/');
-  if (v !== 'lieu') arreterSon();
+  if (v !== 'lieu' && v !== 'scene') arreterSon();
+  if (v !== 'scene') SC = null;
   ({lieu: () => vueLieu(a), carte: () => vueCarte(a), circuits: vueCircuits, circuit: () => vueCircuit(a),
+    parler: vueParler, scene: () => vueScene(a),
     passeport: vuePasseport, plus: vuePlus, pratique: vuePratique, mots: vueMots}[v] || vueAccueil)();
 }
 window.addEventListener('hashchange', route);
 
+document.addEventListener('change', ev => {
+  if (ev.target.id === 'trad') { S.trad = ev.target.checked; garder(); if (SC) vueScene(SC.id); }
+});
 document.addEventListener('click', ev => {
   const b = ev.target.closest('button'); if (!b) return;
   if (b.dataset.choisir) { S.lang = b.dataset.choisir; garder(); route(); }
@@ -699,6 +943,8 @@ document.addEventListener('click', ev => {
     garder(); const joue = enCours; vueLieu(id); window.scrollTo(0, y); enCours = joue; majEcoute();
   }
   else if (b.dataset.mot !== undefined) direMot(+b.dataset.mot);
+  else if (SC && (b.dataset.scene || b.dataset.choix !== undefined)) actionScene(b);
+  else if (SC && b.dataset.son) jouerSon(sonScene(SC.id, b.dataset.son), !!b.dataset.lent);
 });
 
 route();

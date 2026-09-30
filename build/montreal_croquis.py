@@ -96,6 +96,15 @@ SUJETS = {
     "dieu-du-ciel": "A cosy Montreal microbrewery pub: a wooden bar with a row of beer taps, glasses of "
         "beers of different colours from pale gold to black, a chalkboard showing only simple drawings of "
         "hops (no words), friends at a table.",
+    # Les scènes « Parler » qui ne tiennent à aucun lieu du guide (30 sept. 2026).
+    "metro": "A Montreal metro station: a ticket booth window with an attendant inside, turnstiles, a "
+        "distinctive rounded blue-and-white metro train arriving at the platform behind, a traveller with "
+        "a small backpack at the booth, plain signs shown only as blank coloured shapes.",
+    "depanneur": "A small Montreal corner store (dépanneur) interior: a narrow counter with a cash register, "
+        "a clerk behind it, shelves of snacks, a glass fridge of drinks and a small rack of wine bottles, a "
+        "customer putting a bottle of water on the counter.",
+    "pharmacie": "A neighbourhood pharmacy counter: a pharmacist in a white coat behind the counter handing a "
+        "small box to a customer, shelves of plain boxes and bottles behind, a small bell on the counter.",
 }
 ORDRE = list(SUJETS)
 
