@@ -123,8 +123,28 @@ def journal(ident, statut, note):
 CC.journal = journal  # generer() appelle journal() du module : inscrire sous « montreal »
 
 
+# Les mascottes candidates de la version enfants (proposition du 30 sept. 2026).
+MASCOTTE = (
+    "A friendly children's-book character drawn in the same travel-sketchbook style: crisp black ink line of "
+    "even weight, a few flat, soft, slightly muted colour fills, no gradient, no heavy shading. Full body, "
+    "standing, three-quarter view, centred on a PURE WHITE background with nothing else around it: no ground "
+    "shadow, no scenery, no frame, no border. Warm, curious and kind expression, big round eyes, NOT scary, NOT "
+    "cartoonish-plastic. NO TEXT ANYWHERE: no letters, no logo, no badge with writing.\n\nTHE CHARACTER: ")
+MASCOTTES = {
+    "raton": "A young raccoon from Mount Royal park, standing upright, wearing a small canvas explorer satchel "
+        "across the body and holding a folded paper map, one paw raised as if saying hello.",
+    "ecureuil": "A small black squirrel (the black-furred squirrels common in Montreal parks), standing upright, "
+        "bushy tail curled high, wearing a tiny red scarf and a small canvas explorer satchel, holding a magnifying glass.",
+    "castor": "A young beaver standing upright, wearing a small red tuque and a canvas explorer satchel, holding a "
+        "little compass in one paw, flat tail visible behind.",
+}
+
+
 def cibles_connues():
-    return {("vignette", k): (CC.REGISTRE + quoi, "3:2", BASE, 1200) for k, quoi in SUJETS.items()}
+    t = {("vignette", k): (CC.REGISTRE + quoi, "3:2", BASE, 1200) for k, quoi in SUJETS.items()}
+    for k, quoi in MASCOTTES.items():
+        t[("mascotte", k)] = (MASCOTTE + quoi, "1:1", BASE.parent / "mascottes", 700)
+    return t
 
 
 if __name__ == "__main__":
@@ -133,7 +153,7 @@ if __name__ == "__main__":
     t = cibles_connues()
     noms = [a for a in args if not a.startswith("--")]
     cibles = ([c for c in t if c[1] in noms] if noms
-              else [c for c in t if not (BASE / f"{c[1]}.png").exists()])
+              else [c for c in t if not (t[c][2] / f"{c[1]}.png").exists()])
     if "--essai" in args:
         for c in cibles:
             print(f"  {c[1]:22} {len(t[c][0]):5} car.")
