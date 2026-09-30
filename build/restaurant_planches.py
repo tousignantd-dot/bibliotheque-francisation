@@ -43,7 +43,7 @@ URL = "/assets/interactive/restaurant"
 
 # Incrémenter après toute image ou tout son refait : même nom, même adresse,
 # le navigateur servirait l'ancien sans rien dire.
-MEDIA_V = "4"   # 4 : actes refaits (audit, tour 3), 30 sept. 2026
+MEDIA_V = "5"   # 5 : quatre actes réécrits (audit, tour 4), 30 sept. 2026
 
 
 def donnees():
@@ -758,8 +758,10 @@ function montrerApres(it){
   document.querySelector('[data-act=suivant]').focus({preventScroll: true});
   // (audit, tour 3, C3) le retour et son « pourquoi » à l'écran — après le focus,
   // sans animation : l'animation se faisait interrompre.
-  const r = document.getElementById('retro');
-  if (r && r.getBoundingClientRect().bottom > innerHeight) r.scrollIntoView({block: 'start', behavior: 'auto'});
+  // (audit, tour 4) on défile jusqu'à la BONNE réponse, retour dessous — pas
+  // au retour seul, qui poussait la réponse verte hors de l'écran.
+  const r = app.querySelector('.opt.juste') || document.getElementById('retro');
+  if (r && document.getElementById('retro').getBoundingClientRect().bottom > innerHeight) r.scrollIntoView({block: 'start', behavior: 'auto'});
 }
 function repondre(i){
   const it = S.items[S.n]; if (S.fini) return;

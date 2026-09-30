@@ -225,8 +225,9 @@ def traduire_interface(code):
         d = appel(f"Traduis vers l'{nom} les textes de l'écran d'une application où des employés de "
                   "restaurant apprennent le vocabulaire français de leur travail. Textes courts, clairs, "
                   "vouvoiement ou forme polie neutre, ton simple. Les `acte_…` sont des gestes de l'employé, "
-                  "à la première personne : garde-les à la première personne. Garde EN FRANÇAIS les mots cités "
-                  "entre « » : c'est ce que l'employé doit dire ou reconnaître. « La salle » est la salle à manger "
+                  "à la première personne : garde-les à la première personne. Garde EN FRANÇAIS les phrases citées "
+                  "entre « » (ce que l'employé dit à voix haute) ; mais les NOMS d'aliments et d'allergènes hors "
+                  "guillemets se TRADUISENT, sans ajouter de guillemets (« arachides » → maní / peanuts). « La salle » est la salle à manger "
                   "du restaurant (où sont les clients), « le serveur » la personne qui sert. Rends chaque `k` exact.\n\n"
                   + lignes, SCHEMA_UI)
         ui.update({x["k"]: x["t"] for x in d["textes"]})
