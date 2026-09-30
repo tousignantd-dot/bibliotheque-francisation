@@ -23,6 +23,29 @@ Le 30 août 2026, deux sessions ont récidivé sur un fichier partagé :
 sans rapport. La règle existait (`git commit -- <chemins>`) ; ce qui manquait
 était de **savoir** qu'un fichier était tenu. D'où `docs/qui-fait-quoi.md`.
 
+## Le classeur (`presentations.html`), rangé par chantier
+
+Réorganisé le 30 septembre 2026 : 24 onglets nés un chantier à la fois étaient
+devenus illisibles. **Cinq étagères, et pas une de plus** — francis,
+formations (en entreprise), portfolio, voyage, maison — puis des **chantiers**
+(`<div class="chantier" data-chantier="…">`) dans chacune. **Chaque fiche porte
+`data-etat`** : `service`, `trancher` (étiquette ambre) ou `travail` (audits,
+planches, versions antérieures — replié, mais la recherche le trouve).
+
+- Une fiche neuve va dans le `.liste` de son chantier ; un chantier neuf est un
+  bloc de plus **dans** une étagère. Ajouter un onglet de premier niveau
+  demande l'accord de Daniel.
+- Aucun nombre ne s'écrit : tout se compte au chargement. Après l'ajout :
+  `python3 build/controles/classeur.py` (code 1 sur écart) puis
+  `python3 build/dernieres_versions.py`.
+- Les anciennes ancres (`#defibrillateur`, `#hotellerie`, `#entreprise`…)
+  mènent toujours au bon chantier par `data-anciens`.
+- Les lots du portfolio (SimDEA, barista, courriel, bougies, plaquettes, CV)
+  restent engendrés par `portfolio-conception/onglets_simulateurs.py`, entre
+  marqueurs `FAMILLE-*`, désormais comme fiches dans leur chantier.
+- Rien n'a été déplacé sur le disque. Une page neuve va dans
+  `assets/presentations/<chantier>/`.
+
 ## Déploiement (Railway)
 
 - Push sur `main` → redéploiement automatique sur Railway. **L'adresse de

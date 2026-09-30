@@ -123,6 +123,12 @@ ETAT_EXCEPTIONS = {
     "la reception d'hotel, en trois langues": "service",
     "en route vers compostelle — le plan": "service",
     "maison francœur — le lexique a valider": "service",
+    # Corrections de Daniel sur le premier classement (30 sept. 2026).
+    "teaser — animatique de 48 s": "service",
+    "application ou navigateur": "service",
+    "le courriel aux directions": "service",
+    "planifier — proposition pour l'administration": "service",
+    "travailler avec claude": "service",
 }
 
 
@@ -192,7 +198,184 @@ def releve():
     return out
 
 
+# ── L'application : une seule fois, le 30 septembre 2026 ─────────────────
+# Après elle, l'étagère et le chantier se lisent dans la PAGE (la section et
+# le bloc où la fiche est rangée) et l'état sur la fiche (`data-etat`). Les
+# devinettes ci-dessus ne servent plus : une fiche neuve se range à la main,
+# et `build/controles/classeur.py` vérifie qu'elle l'a été.
+
+# (clé, eyebrow, titre, chapeau, anciennes familles) — dans l'ordre d'affichage.
+TETES = {
+    "francis": ("La plateforme", "francis",
+                "La plateforme de francisation, pour les centres : ce qu'on présente, "
+                "ce qu'on décide, ce qu'on suit, ce qu'il faut comprendre, et la Loi 25.", ""),
+    "formations": ("Pour les employeurs", "Formations en entreprise",
+                   "Les trousses de français pour un métier, vendues aux employeurs. "
+                   "Une par client ou par métier, dans l'ordre où elles se construisent.",
+                   ""),
+    "portfolio": ("Pour le portfolio", "Portfolio",
+                  "Le métier de concepteur pédagogique, hors francisation : simulateurs, "
+                  "prototypes, CV. En tête de chaque pièce, la dernière version ; les "
+                  "audits et les essais sont dans le travail.", ""),
+    "voyage": ("Grand public", "Voyage",
+               "Les applications de voyage vendues par code : on les achète, on les "
+               "garde dans son téléphone.", ""),
+    "maison": ("L'entreprise", "La maison",
+               "L'entreprise elle-même : sa forme, sa vente, son identité.", "entreprise"),
+}
+
+# étagère → [(clé du chantier, titre affiché, chapeau ou famille d'origine dont
+# on reprend le chapeau, anciennes familles, blocs engendrés)]
+CHANTIERS = {
+    "francis": [
+        ("presenter", "Présenter", "=presenter", "presenter", []),
+        ("decider", "Décider", "Les pages qui appellent une réponse : un tri à faire, "
+         "une proposition à retenir ou à écarter, un plan à valider.", "decider", []),
+        ("suivre", "Suivre", "=suivre", "suivre", []),
+        ("comprendre", "Comprendre", "=comprendre", "comprendre", []),
+        ("loi25", "Loi 25", "=loi25", "loi25", []),
+    ],
+    "formations": [
+        ("rive-claire", "Hôtel Rive-Claire", "=hotellerie", "hotellerie", []),
+        ("francoeur", "Maison Francœur", "=francoeur", "francoeur", []),
+        ("belrive", "Belrive", "La première trousse, pour une usine : les situations "
+         "de travail, le déroulé de la journée, le bloc jouable, le diagnostic et le "
+         "procédurier.", "", []),
+        ("chaussures", "Chaussures", "Vendre des chaussures en français : le cadrage, "
+         "le premier bloc, l'écran du jeu de rôle.", "", []),
+        ("demarchage", "Démarchage", "Ce qu'on laisse à un employeur pour ouvrir la "
+         "porte.", "", []),
+    ],
+    "portfolio": [
+        ("simdea", "SimDEA", "La formation au défibrillateur, le simulateur et la pièce "
+         "« Vous. ». Le lien du haut est la dernière version ; sa date est celle où la "
+         "page servie a changé.", "simdea defibrillateur", ["SIMDEA"]),
+        ("barista", "Barista", "Avant l'ouverture : la tournée de la machine en 3D, "
+         "puis le jeu où l'on trouve la panne.",
+         "barista avant-louverture barista-graphique",
+         ["BARISTA", "AVANT-LOUVERTURE", "BARISTA-GRAPHIQUE"]),
+        ("courriel", "Le courriel de trop", "=courriel", "courriel", ["COURRIEL"]),
+        ("bougies", "À la main d'abord", "=bougies", "bougies", ["BOUGIES"]),
+        ("plaquettes", "Le dernier millimètre", "=plaquettes", "plaquettes", ["PLAQUETTES"]),
+        ("prototypes", "Prototypes", "=prototype", "prototype", []),
+        ("boucle", "Boucle", "=boucle", "boucle", []),
+        ("vitrine", "Vitrine", "Le CV, la stratégie pour se mettre en marché, et le "
+         "système de design Braise.", "cv", ["CV"]),
+    ],
+    "voyage": [
+        ("compostelle", "En route vers Compostelle", "=compostelle", "compostelle", []),
+        ("montreal", "Montréal en poche", "=montreal", "montreal", []),
+    ],
+    "maison": [
+        ("structure", "Structure", "La forme de l'entreprise : incorporation, nom, "
+         "assurance, Loi 25 côté entreprises.", "", []),
+        ("vente", "Vente", "Le marché, le plan d'affaires, la communication et les "
+         "conditions de vente.", "", []),
+        ("identite", "Identité", "Trame, le système de design de la maison, et son banc "
+         "d'essai.", "", []),
+    ],
+}
+ORDRE_ETAT = {"service": 0, "trancher": 1, "travail": 2}
+
+
+def appliquer():
+    s = PAGE.read_text(encoding="utf-8")
+    classes = releve()
+    # 1. Les fiches, rangées par (étagère, titre du chantier), avec leur état.
+    arts = []
+    for m in re.finditer(r'<section class="famille" data-fam="([^"]+)">', s):
+        fin = s.find('<section class="famille"', m.end())
+        fin = fin if fin > 0 else s.index("</main>")
+        for a in re.finditer(r'<article class="fiche".*?</article>', s[m.start():fin], re.S):
+            arts.append(a.group(0))
+    assert len(arts) == len(classes) == 227, (len(arts), len(classes))
+    rang = {}
+    for art, f in zip(arts, classes):
+        assert f["titre"] in texte(art), f["titre"]
+        rang.setdefault((f["etagere"], f["chantier"]), []).append((f, art))
+    # Les chapeaux d'origine, repris tels quels quand un chantier en hérite.
+    chapeaux = {m.group(1): m.group(2).strip() for m in re.finditer(
+        r'<section class="famille" data-fam="([^"]+)">\s*<div class="tete">.*?'
+        r'<h2>.*?</h2>\s*<p>(.*?)</p>', s, re.S)}
+    # Les blocs engendrés par portfolio-conception/onglets_simulateurs.py.
+    blocs = {}
+    for m in re.finditer(r'<!--<<FAMILLE-([A-Z-]+)>>-->(.*?)<!--<</FAMILLE-\1>>-->', s, re.S):
+        blocs[m.group(1)] = m.group(2)
+    titres_engendres = set()
+    for b in blocs.values():
+        titres_engendres |= {texte(t) for t in re.findall(r'<h3 class="titre">(.*?)</h3>', b, re.S)}
+
+    def marquer(art, etat):
+        return art.replace('<article class="fiche"', '<article class="fiche" data-etat="%s"' % etat, 1)
+
+    def fiches_de(titre_ch, etagere):
+        lot = rang.pop((etagere, titre_ch), [])
+        lot.sort(key=lambda x: ORDRE_ETAT[x[0]["etat"]])     # tri stable
+        return [marquer(a, f["etat"]) for f, a in lot if f["titre"] not in titres_engendres]
+
+    def bloc_engendre(nom):
+        b = blocs[nom]
+        # Ne garder que les fiches : la section, sa tête et son chapeau
+        # disparaissent — le chantier porte le sien.
+        out = []
+        for a in re.findall(r'<article class="fiche".*?</article>', b, re.S):
+            t = texte(re.search(r'<h3 class="titre">(.*?)</h3>', a, re.S).group(1))
+            etat = next(f["etat"] for f in classes if f["titre"] == t)
+            out.append("        " + marquer(a.strip(), etat))
+        return "<!--<<FAMILLE-%s>>-->\n%s\n        <!--<</FAMILLE-%s>>-->" % (
+            nom, "\n".join(out), nom)
+
+    etageres = []
+    for e, (eyebrow, h2, chapeau, anciens) in TETES.items():
+        h = ['    <section class="famille" data-fam="%s"%s>' % (
+                e, ' data-anciens="%s"' % anciens if anciens else ""),
+             '      <div class="tete">',
+             '        <span class="eyebrow e-teal">%s</span>' % eyebrow,
+             '        <h2>%s</h2>' % h2,
+             '        <p>%s</p>' % chapeau,
+             '      </div>']
+        for cle, titre, ch, anc, engendres in CHANTIERS[e]:
+            ch = chapeaux[ch[1:]] if ch.startswith("=") else ch
+            h += ['      <div class="chantier" data-chantier="%s"%s>' % (
+                     cle, ' data-anciens="%s"' % anc if anc else ""),
+                  '        <div class="ch-tete"><h3 class="ch-titre">%s</h3>' % titre,
+                  '          <p>%s</p></div>' % ch,
+                  '        <div class="liste">']
+            for n in engendres:
+                h.append("        " + bloc_engendre(n))
+            h += ["\n" + a for a in fiches_de(titre if titre != "En route vers Compostelle"
+                                              else "Compostelle", e)]
+            h += ['        </div>', '      </div>']
+        h.append('    </section>')
+        etageres.append("\n".join(h))
+    # Les fiches rangées sous un titre de chantier qui ne correspond à aucun bloc
+    # seraient perdues : on refuse plutôt.
+    reste = {k: v for k, v in rang.items() if v and any(f["titre"] not in titres_engendres for f, _ in v)}
+    assert not reste, sorted(reste)
+
+    # 2. Remplacer la zone des familles, en gardant « vide » et la note.
+    debut = s.index("    <!-- ══════════ PRÉSENTER")
+    fin_main = s.index("</main>")
+    fin = s.rindex("</section>", 0, fin_main) + len("</section>")
+    vide = re.search(r'<p class="vide" id="vide">.*?</p>', s).group(0)
+    note = re.search(r'<div class="note">.*?</div>', s, re.S).group(0)
+    neuf = ("    <!-- Cinq étagères, une par chantier (réorganisation du 30 septembre\n"
+            "         2026). Une fiche vit dans le bloc .chantier de son projet et porte\n"
+            "         son état : data-etat = service · trancher · travail. Le travail est\n"
+            "         replié à l'écran ; la recherche le trouve quand même. Contrôle :\n"
+            "         python3 build/controles/classeur.py -->\n"
+            + "\n\n".join(etageres) + "\n\n    " + vide + "\n\n    " + note)
+    s = s[:debut] + neuf + s[fin:]
+    PAGE.write_text(s, encoding="utf-8")
+    n = len(re.findall(r'<article class="fiche"', s))
+    print("  %d fiches rangées dans %d étagères" % (n, len(etageres)))
+    assert n == 227
+
+
 def main(argv):
+    if "--appliquer" in argv:
+        appliquer()
+        return 0
     r = releve()
     if "--texte" in argv:
         for e, nom in ETAGERES:
