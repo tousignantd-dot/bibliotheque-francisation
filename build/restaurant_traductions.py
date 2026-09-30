@@ -65,9 +65,74 @@ INTERFACE = {
     "decor": "Dans la cuisine",
     "decor_sous": "Touchez un endroit du poste pour entendre son nom.",
     "fermer": "Fermer",
+    # Étape 2 : les exercices
+    "accueil": "Accueil",
+    "apprendre": "Apprendre les mots",
+    "apprendre_sous": "Le poste et les douze planches, mot par mot.",
+    "exercer": "Je m'exerce",
+    "exercer_sous": "Huit exercices, du mot à la consigne du chef.",
+    "exercices": "Les exercices",
+    "retour_ex": "Tous les exercices",
+    "filtre": "Quels mots ?",
+    "tous": "Toutes les planches",
+    "a_revoir_filtre": "Mes mots à revoir",
+    "rien_a_revoir": "Aucun mot à revoir pour l'instant.",
+    "ex_ecoute": "Je l'entends, je le trouve",
+    "ex_ecoute_c": "Écoutez, puis touchez la bonne image.",
+    "ex_image": "Le mot et son image",
+    "ex_image_c": "Touchez le bon mot.",
+    "ex_rappel": "Je me souviens",
+    "ex_rappel_c": "Dites le mot à voix haute, puis vérifiez.",
+    "ex_pieges": "Les pièges",
+    "ex_pieges_c": "Écoutez le mot d'ici. Touchez la bonne image.",
+    "ex_chef": "La consigne du chef",
+    "ex_chef_c": "Écoutez le chef, puis répondez à la question.",
+    "ex_commande": "La commande modifiée",
+    "ex_commande_c": "Écoutez le client. Touchez la bonne commande.",
+    "ex_allergie": "L'allergie",
+    "ex_allergie_c": "Écoutez. Que faites-vous ?",
+    "ex_redis": "Je le redis",
+    "ex_redis_c": "Écoutez, puis redites à voix haute. Ensuite, écoutez le modèle.",
+    "reecouter": "Réécouter",
+    "lentement": "Plus lentement",
+    "voir_mot": "Voir le mot",
+    "savais": "Je le savais",
+    "a_revoir": "À revoir",
+    "bravo": "Bien joué !",
+    "essaie": "Pas tout à fait. Essayez encore.",
+    "reponse": "Voici la bonne réponse.",
+    "fin": "Série terminée",
+    "premier_coup": "du premier coup",
+    "recommencer": "Une autre série",
+    "bruit": "Bruit de cuisine",
+    "bruit_0": "Aucun",
+    "bruit_1": "Faible",
+    "bruit_2": "Fort",
+    "regle_titre": "La règle",
+    "compris": "J'ai compris, je commence",
+    "juste_acte": "Oui, c'est le bon geste.",
+    "faux_acte": "Ce n'est pas le bon geste.",
+    "grave": "Erreur grave.",
+    "grave_sous": "Au test, une seule erreur grave fait échouer.",
+    "graves": "erreur(s) grave(s)",
+    "phrase": "Ce qui a été dit",
+    "a_vous": "À vous : dites-le à voix haute.",
+    "modele": "Écouter le modèle",
+    "question": "Question",
 }
 for k, t, _p in PLANCHES:
     INTERFACE["p_" + k] = t
+# Les textes des exercices qui se lisent (la question, la règle, les actes) :
+# l'appui va dessous. Les phrases ENTENDUES, elles, ne se traduisent pas.
+import exercices as EX  # noqa: E402
+INTERFACE["regle"] = EX.REGLE
+for k, t in EX.QUI.items():
+    INTERFACE["qui_" + k] = t
+for i, _ph, q, *_r in EX.CONSIGNES:
+    INTERFACE["q_" + i] = q
+for i, _qui, _v, _ph, _c, actes in EX.ALLERGIES:
+    for n, (acte, _s) in enumerate(actes):
+        INTERFACE[f"acte_{i}_{n}"] = acte
 
 
 def cle():
@@ -135,7 +200,7 @@ def traduire_interface(code):
     lignes = "\n".join(f"- k={k} | {t}" for k, t in INTERFACE.items())
     d = appel(f"Traduis vers l'{nom} les textes de l'écran d'une application où des employés de "
               "restaurant apprennent le vocabulaire français de leur travail. Textes courts, clairs, "
-              "vouvoiement ou forme polie neutre, ton simple. Rends chaque `k` exact.\n\n" + lignes,
+              "vouvoiement ou forme polie neutre, ton simple. Les `acte_…` sont des gestes de l'employé, à la première personne : garde-les à la première personne. Garde EN FRANÇAIS les mots cités entre « » : c'est ce que l'employé doit dire ou reconnaître. Rends chaque `k` exact.\n\n" + lignes,
               SCHEMA_UI)
     ui = {x["k"]: x["t"] for x in d["textes"]}
     manque = [k for k in INTERFACE if k not in ui]

@@ -32,6 +32,9 @@ sys.path.insert(0, str(CONTENU))
 from lexique import LEXIQUE, PLANCHES, verifier  # noqa: E402
 from decor import ZONES  # noqa: E402
 import identite as IDE  # noqa: E402
+import exercices as EX  # noqa: E402
+sys.path.insert(0, str(RACINE / "build"))
+from restaurant_traductions import INTERFACE  # noqa: E402  (le français de l'écran : une seule source)
 
 CROQUIS = RACINE / "assets" / "interactive" / "restaurant" / "croquis"
 SONS = RACINE / "assets" / "interactive" / "restaurant" / "sons"
@@ -72,7 +75,34 @@ def donnees():
     return {"planches": [{"k": k, "t": t, "poste": p} for k, t, p in PLANCHES],
             "mots": mots, "langues": langues,
             "poste": f"{URL}/croquis/poste.jpg?v={MEDIA_V}",
-            "zones": [z[0] for z in ZONES]}
+            "zones": [z[0] for z in ZONES], "ex": exercices(mots)}
+
+
+def s_(chemin):
+    assert (SONS / chemin).exists(), f"voix manquante : {chemin}"
+    return f"{URL}/sons/{chemin}?v={MEDIA_V}"
+
+
+def exercices(mots):
+    """L'étape 2 : le contenu d'exercices.py, avec ses sons. Le carré latin des
+    commandes se construit ICI, et le build refuse une carte devinable."""
+    EX.verifier()
+    cons = [{"id": i, "son": s_(f"chef/{i}.mp3"), "phrase": ph, "q": "q_" + i, "o": [b] + d,
+             "redit": r, "redit_son": s_(f"redit/{i}.mp3")} for i, ph, _q, b, d, r in EX.CONSIGNES]
+    com = []
+    for i, _v, ph, (a, m, g), (a2, m2, g2), r in EX.COMMANDES:
+        cartes = [[a, m, g], [a, m2, g2], [a2, m, g2], [a2, m2, g]]   # carré latin : la première est la bonne
+        for trait in range(3):   # aucun trait ne désigne la bonne par vote majoritaire
+            valeurs = [c[trait] for c in cartes]
+            assert valeurs.count(cartes[0][trait]) == 2, f"{i} : trait {trait} devinable"
+        com.append({"id": i, "son": s_(f"commandes/{i}.mp3"), "phrase": ph, "cartes": cartes,
+                    "redit": r, "redit_son": s_(f"redit/{i}.mp3")})
+    alg = [{"id": i, "son": s_(f"allergies/{i}.mp3"), "phrase": ph, "qui": "qui_" + qui, "contre": c,
+            "actes": [{"k": f"acte_{i}_{n}", "s": st} for n, (_a, st) in enumerate(actes)]}
+           for i, qui, _v, ph, c, actes in EX.ALLERGIES]
+    return {"consignes": cons, "commandes": com, "allergies": alg,
+            "pieges": [{"id": i, "o": [i] + c} for i, c in EX.PIEGES], "ordinaires": EX.ORDINAIRES,
+            "changements": EX.CHANGEMENTS}
 
 
 def main():
@@ -82,6 +112,7 @@ def main():
             .replace("%%SURTITRE%%", html.escape(IDE.SURTITRE))
             .replace("%%SECTEUR%%", html.escape(IDE.SECTEUR))
             .replace("%%SECTEUR_COURT%%", html.escape(IDE.SECTEUR_COURT))
+            .replace("%%FR%%", json.dumps(INTERFACE, ensure_ascii=False))
             .replace("%%DONNEES%%", json.dumps(d, ensure_ascii=False).replace("</", "<\\/")))
     SORTIE.parent.mkdir(parents=True, exist_ok=True)
     SORTIE.write_text(page, encoding="utf-8")
@@ -216,6 +247,71 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
   .zone .pastille{min-width:22px;height:22px;font-size:12px}
 }
 @media (max-width:480px){.secteur small{display:none}.secteur b{font-size:16px}.secteur .long{display:none}.secteur .court{display:inline}}
+
+/* Accueil et exercices (étape 2) */
+.accueil{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px}
+.porte{font:inherit;cursor:pointer;text-align:start;border:1px solid var(--line-200);background:var(--surface-card);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:6px;color:var(--text-body)}
+.porte:hover{border-color:var(--rj-teinte)}
+.porte img{width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:10px}
+.porte .porte-ico{display:grid;place-items:center;aspect-ratio:3/2;border-radius:10px;background:var(--rj-fond);color:var(--rj-teinte)}
+.porte .porte-ico svg{width:64px;height:64px}
+.porte b{font-size:22px;color:var(--text-strong)}
+.exos{display:grid;gap:10px;margin-top:14px}
+.exo-porte{font:inherit;cursor:pointer;text-align:start;border:1px solid var(--line-200);background:var(--surface-card);border-radius:14px;padding:14px 16px;display:flex;gap:14px;align-items:center;color:var(--text-body)}
+.exo-porte:hover{border-color:var(--rj-teinte)}
+.exo-porte .rang{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--rj-fond);color:var(--rj-teinte);font-weight:900}
+.exo-porte b{font-size:18px;color:var(--text-strong);display:block}
+.exo-porte .sous{display:block;font-size:14px;margin-top:2px}
+.exo-porte.pont{border-color:var(--rj-teinte);box-shadow:inset 4px 0 0 var(--rj-teinte)}
+.filtre{margin-top:4px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.filtre select{font:inherit;font-size:16px;min-height:44px;padding:8px 10px;border-radius:10px;border:1px solid var(--line-300);background:var(--surface-card);color:var(--text-strong);max-width:100%}
+.bruit{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;font-weight:700;font-size:14px}
+.bruit [aria-pressed=true]{background:var(--rj-fond);border-color:var(--rj-teinte)}
+.jeu{margin-top:12px}
+.jeu .barre{height:6px;border-radius:3px;background:var(--line-200);overflow:hidden;margin-bottom:12px}
+.jeu .barre i{display:block;height:100%;background:var(--accent)}
+.jeu .qui{font-weight:700;text-align:center;margin:0 0 8px}
+.jeu .sujet{background:#fff;border-radius:14px;border:1px solid var(--line-200);display:grid;place-items:center;padding:8px;max-width:300px;margin:0 auto 12px}
+.jeu .sujet img{width:100%;max-width:260px;aspect-ratio:1/1;object-fit:contain}
+.jeu .ecoute{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:6px 0 14px}
+.question{font-size:19px;font-weight:800;color:var(--text-strong);margin:4px 0 12px;text-align:center}
+.question .appui{font-size:15px}
+.choix{display:grid;gap:10px;grid-template-columns:repeat(4,minmax(0,1fr))}
+.choix.mots{grid-template-columns:repeat(2,minmax(0,1fr))}
+.choix.actes{grid-template-columns:1fr}
+.choix.tickets{grid-template-columns:repeat(2,minmax(0,1fr))}
+.opt{font:inherit;cursor:pointer;border:2px solid var(--line-200);background:#fff;border-radius:12px;padding:8px;color:#17181A;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:52px}
+.opt:hover{border-color:var(--rj-teinte)}
+.opt img{width:100%;aspect-ratio:1/1;object-fit:contain}
+.choix.mots .opt{font-size:19px;font-weight:800;padding:12px}
+.choix.actes .opt{align-items:flex-start;text-align:start;font-size:17px;font-weight:700;padding:12px 14px}
+.choix.actes .opt .appui{font-size:14px}
+.ticket{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;width:100%}
+.ticket img{width:100%;aspect-ratio:1/1;object-fit:contain}
+.ticket .chg{font-weight:900;font-size:17px;border:2px solid #17181A;border-radius:6px;padding:2px 7px;background:#fff;white-space:nowrap}
+.opt.faux{border-color:var(--no-line,#C0392B);background:var(--no-bg,#FDECEA);animation:non .3s}
+.opt.juste{border-color:var(--ok-line,#2E7D32);background:var(--ok-bg,#E8F5E9)}
+.opt[disabled]{cursor:default}
+@keyframes non{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@media (prefers-reduced-motion:reduce){.opt.faux{animation:none}}
+.retro{margin:12px 0 0;font-weight:800;min-height:1.4em}
+.retro.ok{color:var(--ok-ink,#1B5E20)} .retro.non{color:var(--no-ink,#9B1C1C)}
+.rappel-regle{display:block;font-weight:600;font-size:15px;color:var(--text-body);margin-top:6px}
+.apres .dit{margin:8px 0 0;font-size:17px}
+.apres .piege{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-ink);font-size:15px;font-weight:700}
+.suite{display:flex;justify-content:flex-end;margin-top:12px}
+.revele{text-align:center;margin:10px 0}
+.revele .gros{font-size:30px;font-weight:900;color:var(--text-strong);margin:6px 0}
+.revele .gros-phrase{font-size:22px;font-weight:800;color:var(--text-strong);margin:6px 0}
+.gestes-bilan{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.bilan{text-align:center;padding:20px 0}
+.bilan .score{font-size:44px;font-weight:900;color:var(--text-strong);margin:4px 0}
+.bilan .graves{font-size:20px;font-weight:900;color:var(--ok-ink,#1B5E20)} .bilan .graves.non{color:var(--no-ink,#9B1C1C)}
+.grave-sous{font-weight:700;color:var(--warn-ink)}
+.regle{background:var(--surface-card);border:2px solid var(--warn-line);border-radius:14px;padding:16px;margin-top:10px}
+.regle h2{margin:0 0 8px;font-size:22px}
+.regle p{font-size:17px}
+@media (max-width:640px){.choix{grid-template-columns:repeat(2,minmax(0,1fr))}.choix.tickets{grid-template-columns:1fr}.choix.mots{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -235,15 +331,11 @@ const ICO = {
   oeil:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>',
   x:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
   g:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>',
-  d:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>'
+  d:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>',
+  jeu:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>'
 };
-const FR = {choisir:'Choisissez votre langue',choisir_sous:'Les mots restent en français. Votre langue vous aide à comprendre.',
-  francais_seul:'Français seulement',francais_seul_sous:'Sans traduction',planches:'Les planches du restaurant',
-  planches_sous:'Touchez une planche, puis un mot pour l’entendre.',cuisine:'Cuisine',salle:'Salle',deux:'Cuisine et salle',
-  toucher:'Touchez un mot pour l’entendre.',ecouter:'Écouter',voir:'Voir dans ma langue',cacher:'Cacher',retour:'Toutes les planches',
-  langue:'Changer de langue',non_relu:'Traduction pas encore vérifiée par une personne.',piege:'Attention',aussi:'On entend aussi',
-  suivant:'Suivant',precedent:'Précédent',mots:'mots',decor:'Dans la cuisine',decor_sous:'Touchez un endroit du poste pour entendre son nom.',fermer:'Fermer'};
-D.planches.forEach(p => FR['p_' + p.k] = p.t);
+const FR = %%FR%%;
+
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const app = $('#app'), fiche = $('#fiche'), carte = $('#carte');
@@ -261,24 +353,34 @@ function jouer(src){ if (!src) return; try { audio.pause(); audio.src = src; aud
 
 function adresse(o){
   const u = new URL(location.href);
-  ['planche','mot'].forEach(k => u.searchParams.delete(k));
+  ['planche','mot','ecran','ex'].forEach(k => u.searchParams.delete(k));
   Object.entries(o || {}).forEach(([k,v]) => v && u.searchParams.set(k, v));
   history.replaceState(null, '', u);
 }
 function tete(titreK, sousK, retour){
+  const r = {planches: ['planches', 'retour'], exercices: ['exercices', 'retour_ex'], accueil: ['accueil', 'accueil']}[retour];
   return '<div class="rj-tete"><div><p class="rj-enseigne">' + esc(NOM) + '</p><h1>' + t(titreK) + '</h1>'
     + (sousK ? '<p style="margin:6px 0 0">' + t(sousK) + '</p>' : '') + '</div><div style="display:flex;gap:8px;flex-wrap:wrap">'
-    + (retour ? '<button class="btn-rj btn-rj--pile" data-act="accueil">' + tb('retour') + '</button>' : '')
+    + (r ? '<button class="btn-rj btn-rj--pile" data-act="' + r[0] + '">' + tb(r[1]) + '</button>' : '')
     + '<button class="btn-rj btn-rj--pile" data-act="langue">' + tb('langue') + '</button></div></div>';
 }
 
 function ecranLangue(){
+  arreter();
   adresse({});
   app.innerHTML = '<div class="rj-tete"><div><p class="rj-enseigne">' + esc(NOM) + '</p><h1>' + esc(FR.choisir) + '</h1>'
     + '<p style="margin:6px 0 0">' + esc(FR.choisir_sous) + '</p></div></div>'
     + '<button class="sans-trad" data-lang="fr">' + esc(FR.francais_seul) + '<small>' + esc(FR.francais_seul_sous) + '</small></button>'
     + '<div class="langues">' + D.langues.map(l => '<button data-lang="' + l.c + '" lang="' + l.c + '">' + esc(l.loc) + '</button>').join('') + '</div>';
   app.querySelector('button').focus();
+}
+
+function accueil(){
+  arreter();
+  adresse({});
+  app.innerHTML = tete('accueil', null, null)
+    + '<div class="accueil"><button class="porte" data-act="planches"><img src="' + D.poste + '" alt=""><b>' + t('apprendre') + '</b><span>' + t('apprendre_sous') + '</span></button>'
+    + '<button class="porte" data-act="exercices"><span class="porte-ico">' + ICO.jeu + '</span><b>' + t('exercer') + '</b><span>' + t('exercer_sous') + '</span></button></div>';
 }
 
 function vignettes(p){
@@ -289,10 +391,11 @@ function vignettes(p){
   for (let i = avec.length; i < 3; i++) v += '<i>' + ICO.son + '</i>';
   return '<span class="vign">' + v + '</span>';
 }
-function accueil(){
-  adresse({});
+function planches(){
+  arreter();
+  adresse({ecran: 'planches'});
   const posteN = D.zones.length;
-  app.innerHTML = tete('planches', 'planches_sous', false)
+  app.innerHTML = tete('planches', 'planches_sous', 'accueil')
     + '<div class="planches">'
     + '<button class="pl poste" data-planche="poste"><img class="large" src="' + D.poste + '" alt=""><span><span class="etiq">' + esc(FR.cuisine) + '</span><br><b>' + t('decor') + '</b><br><span class="n">' + posteN + ' ' + esc(FR.mots) + '</span></span></button>'
     + D.planches.map(p => {
@@ -315,16 +418,16 @@ function planche(k){
   adresse({planche: k});
   if (k === 'poste') return decor();
   const p = D.planches.find(x => x.k === k);
-  if (!p) return accueil();
+  if (!p) return planches();
   liste = D.mots.filter(m => m.p === k);
-  app.innerHTML = tete('p_' + k, 'toucher', true)
+  app.innerHTML = tete('p_' + k, 'toucher', 'planches')
     + '<div class="planche">' + liste.map((m, i) =>
       '<button class="art' + (m.piege ? ' piege' : '') + '" data-i="' + i + '"><span class="num">' + (i + 1) + '</span>'
       + illustration(m, false) + '<span class="mot">' + esc(m.mot) + '</span></button>').join('') + '</div>';
 }
 function decor(){
   liste = D.zones.map(id => parId[id]);
-  app.innerHTML = tete('decor', 'decor_sous', true)
+  app.innerHTML = tete('decor', 'decor_sous', 'planches')
     + '<div class="decor"><img src="' + D.poste + '" alt="">' + liste.map((m, i) => {
       const [x,y,w,h] = m.zone;
       return '<button class="zone" data-i="' + i + '" aria-label="' + (i + 1) + ' — ' + esc(m.mot) + '" style="left:' + x + '%;top:' + y + '%;width:' + w + '%;height:' + h + '%"><span class="pastille">' + (i + 1) + '</span></button>';
@@ -362,12 +465,313 @@ function fermer(){
   if (retourFocus && document.contains(retourFocus)) retourFocus.focus();
 }
 
+/* ═══ Étape 2 : les exercices ══════════════════════════════════════════
+   Huit exercices, chacun rattaché à un objectif du cadrage. Séries de 8 ;
+   deux essais puis la réponse (l'allergie : un seul, c'est un geste) ; la
+   bonne réponse TOURNE de place d'un item à l'autre ; la phrase entendue ne
+   s'écrit qu'APRÈS la réponse. */
+const EXOS = [
+  {k: 'ecoute', filtre: true}, {k: 'image', filtre: true}, {k: 'rappel', filtre: true}, {k: 'pieges'},
+  {k: 'chef', bruit: true, pont: true}, {k: 'commande', pont: true}, {k: 'allergie', bruit: true, pont: true}, {k: 'redis', bruit: true}];
+const N = 8;
+const REVOIR = 'resto-a-revoir', BRUIT = 'resto-bruit';
+let S = null;   // la série en cours
+
+function lire(k, d){ try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch(e){ return d; } }
+function ecrire(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+function aRevoir(id, oui){
+  const r = new Set(lire(REVOIR, []));
+  oui ? r.add(id) : r.delete(id);
+  ecrire(REVOIR, [...r]);
+}
+const melange = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+// Les places de la bonne réponse : des blocs mélangés de 0..n-1, jamais deux
+// fois la même de suite (la bonne toujours au même endroit trahit l'exercice).
+function places(nItems, n){
+  const out = [];
+  while (out.length < nItems) {
+    let b = melange([...Array(n).keys()]);
+    if (out.length && b[0] === out[out.length - 1]) b.push(b.shift());
+    out.push(...b);
+  }
+  return out.slice(0, nItems);
+}
+function poser(bonne, autres, place){ const o = autres.slice(); o.splice(place, 0, bonne); return o; }
+
+/* Le bruit de cuisine, fabriqué dans le navigateur (décision du plan : réglable,
+   on peut le couper). La hotte (bruit brun filtré), la friture (bruit blanc
+   haut, qui ondule), et un choc de métal de temps en temps. */
+const Bruit = {
+  ctx: null, noeuds: [], minuteur: null, niveau: lire(BRUIT, 1),
+  demarrer(){
+    this.arreter();
+    if (!this.niveau) return;
+    try { this.ctx = this.ctx || new (window.AudioContext || window.webkitAudioContext)(); } catch(e){ return; }
+    const c = this.ctx; if (c.state === 'suspended') c.resume();
+    const g = c.createGain(); g.gain.value = this.niveau === 2 ? 0.22 : 0.08; g.connect(c.destination);
+    const tampon = (brun) => {
+      const b = c.createBuffer(1, c.sampleRate * 2, c.sampleRate), d = b.getChannelData(0); let l = 0;
+      for (let i = 0; i < d.length; i++) { const w = Math.random() * 2 - 1; if (brun) { l = (l + 0.02 * w) / 1.02; d[i] = l * 3.5; } else d[i] = w; }
+      const s = c.createBufferSource(); s.buffer = b; s.loop = true; return s;
+    };
+    const hotte = tampon(true), bp = c.createBiquadFilter(); bp.type = 'lowpass'; bp.frequency.value = 500;
+    hotte.connect(bp).connect(g); hotte.start();
+    const frit = tampon(false), hp = c.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 3500;
+    const fg = c.createGain(); fg.gain.value = 0.25; const lfo = c.createOscillator(), lg = c.createGain();
+    lfo.frequency.value = 0.7; lg.gain.value = 0.15; lfo.connect(lg).connect(fg.gain); lfo.start();
+    frit.connect(hp).connect(fg).connect(g); frit.start();
+    this.noeuds = [hotte, frit, lfo, g];
+    const choc = () => {
+      if (!this.ctx) return;
+      const t0 = c.currentTime;
+      [1830, 2710, 4190].forEach((f, n) => {
+        const o = c.createOscillator(), e = c.createGain(); o.frequency.value = f * (0.9 + Math.random() * 0.2);
+        e.gain.setValueAtTime(0.35 / (n + 1), t0); e.gain.exponentialRampToValueAtTime(0.001, t0 + 0.35);
+        o.connect(e).connect(g); o.start(t0); o.stop(t0 + 0.4);
+      });
+      this.minuteur = setTimeout(choc, 1500 + Math.random() * 3000);
+    };
+    this.minuteur = setTimeout(choc, 800);
+  },
+  arreter(){
+    clearTimeout(this.minuteur);
+    this.noeuds.forEach(n => { try { n.stop ? n.stop() : n.disconnect(); } catch(e){} });
+    this.noeuds = [];
+  },
+  regler(n){ this.niveau = n; ecrire(BRUIT, n); this.demarrer(); }
+};
+function arreter(){ Bruit.arreter(); try { audio.pause(); } catch(e){} S = null; }
+function jouerLent(src){ jouer(src); try { audio.playbackRate = 0.75; audio.preservesPitch = true; } catch(e){} }
+function jouerNormal(src){ jouer(src); try { audio.playbackRate = 1; } catch(e){} }
+
+function exercices(){
+  arreter();
+  adresse({ecran: 'exercices'});
+  app.innerHTML = tete('exercices', null, 'accueil') + '<div class="exos">' + EXOS.map((x, i) =>
+    '<button class="exo-porte' + (x.pont ? ' pont' : '') + '" data-ex="' + x.k + '"><span class="rang">' + (i + 1) + '</span><span><b>' + t('ex_' + x.k) + '</b>'
+    + '<span class="sous">' + t('ex_' + x.k + '_c') + '</span></span></button>').join('') + '</div>';
+}
+
+// ── La construction des séries ──
+function avecImage(filtre){
+  let ms = D.mots.filter(m => m.img && m.son);
+  if (filtre === 'revoir') { const r = new Set(lire(REVOIR, [])); ms = ms.filter(m => r.has(m.id)); }
+  else if (filtre && filtre !== 'tous') ms = ms.filter(m => m.p === filtre);
+  return ms;
+}
+function voisins(m, n, cle){
+  // D'abord la même planche, puis le même poste ; jamais le même mot écrit.
+  const pl = D.planches.find(p => p.k === m.p);
+  const pris = new Set([m[cle] || m.mot]);
+  const out = [];
+  const tirer = arr => melange(arr).forEach(x => { if (out.length < n && !pris.has(x.mot) && x.id !== m.id) { pris.add(x.mot); out.push(x); } });
+  tirer(D.mots.filter(x => x.img && x.p === m.p));
+  tirer(D.mots.filter(x => x.img && (D.planches.find(p => p.k === x.p) || {}).poste === pl.poste));
+  tirer(D.mots.filter(x => x.img));
+  return out;
+}
+const imgChoix = m => ({html: '<img src="' + m.img + '" alt="">', cle: m.id});
+function construire(k, filtre){
+  const E = D.ex;
+  if (k === 'ecoute' || k === 'image' || k === 'rappel') {
+    const pool = melange(avecImage(filtre)).slice(0, N);
+    const pl = places(pool.length, 4);
+    return pool.map((m, i) => {
+      const v = voisins(m, 3);
+      if (k === 'ecoute') return {son: m.son, revoir: m.id, choix: poser(imgChoix(m), v.map(imgChoix), pl[i]), bonne: pl[i], apres: m.mot, type: 'img'};
+      if (k === 'image') return {sujet: m.img, son: null, revoir: m.id, choix: poser({html: esc(m.mot)}, v.map(x => ({html: esc(x.mot)})), pl[i]), bonne: pl[i], apres: m.mot, apresSon: m.son, type: 'mot'};
+      return {sujet: m.img, rappel: m, revoir: m.id, type: 'rappel'};
+    });
+  }
+  if (k === 'pieges') {
+    // Six pièges et deux mots ordinaires, entrelacés : une série faite QUE de
+    // pièges apprendrait à tout soupçonner.
+    const p = melange(E.pieges).slice(0, 6).map(x => ({id: x.id, o: x.o.slice(1)}));
+    const o = melange(E.ordinaires).slice(0, 2).map(id => ({id, o: voisins(parId[id], 3).map(x => x.id)}));
+    const pool = [...p.slice(0, 3), o[0], ...p.slice(3), o[1]];
+    const pl = places(pool.length, 4);
+    return pool.map((x, i) => { const m = parId[x.id]; return {son: m.son, revoir: m.id, choix: poser(imgChoix(m), x.o.map(id => imgChoix(parId[id])), pl[i]), bonne: pl[i], apres: m.mot, note: m.piege ? m.note.replace(/^PIÈGE\s*:\s*/, '') : '', type: 'img'}; });
+  }
+  if (k === 'chef') {
+    const pool = melange(E.consignes).slice(0, N), pl = places(pool.length, 4);
+    return pool.map((c, i) => ({son: c.son, q: c.q, choix: poser(imgChoix(parId[c.o[0]]), c.o.slice(1).map(id => imgChoix(parId[id])), pl[i]), bonne: pl[i], apres: c.phrase, type: 'img'}));
+  }
+  if (k === 'commande') {
+    const pool = melange(E.commandes).slice(0, N), pl = places(pool.length, 4);
+    const carteHTML = ([p, ch, g]) => '<span class="ticket"><img src="' + parId[p].img + '" alt="' + esc(parId[p].mot) + '"><span class="chg">' + esc(E.changements[ch]) + '</span><img src="' + parId[g].img + '" alt="' + esc(parId[g].mot) + '"></span>';
+    return pool.map((c, i) => {
+      const autres = melange(c.cartes.slice(1));
+      return {son: c.son, choix: poser({html: carteHTML(c.cartes[0])}, autres.map(x => ({html: carteHTML(x)})), pl[i]), bonne: pl[i], apres: c.phrase, type: 'ticket'};
+    });
+  }
+  if (k === 'allergie') {
+    // Au moins un contre-exemple par série (un « je n'aime pas »), pas plus de deux.
+    const contre = melange(E.allergies.filter(a => a.contre)), vrai = melange(E.allergies.filter(a => !a.contre));
+    const pool = melange([...contre.slice(0, 1 + (Math.random() < .5 ? 1 : 0)), ...vrai]).slice(0, N);
+    if (!pool.some(a => a.contre)) pool[0] = contre[0];
+    const pl = places(pool.length, 3);
+    return pool.map((a, i) => {
+      const bonne = a.actes.find(x => x.s === 'juste'), autres = melange(a.actes.filter(x => x.s !== 'juste'));
+      const ch = poser(bonne, autres, pl[i]);
+      return {son: a.son, qui: a.qui, choix: ch.map(x => ({html: t(x.k), s: x.s})), bonne: pl[i], apres: a.phrase, type: 'acte', contre: a.contre};
+    });
+  }
+  if (k === 'redis') {
+    const pool = melange([...melange(E.consignes).slice(0, 5), ...melange(E.commandes).slice(0, 3)]);
+    return pool.map(c => ({son: c.son, modele: c.redit_son, redit: c.redit, phrase: c.phrase, type: 'redis'}));
+  }
+  return [];
+}
+
+// ── Le déroulé ──
+function lancer(k, filtre){
+  const x = EXOS.find(e => e.k === k); if (!x) return exercices();
+  arreter();
+  adresse({ecran: 'exercices', ex: k});
+  if (k === 'allergie' && !filtre) return regle();
+  const items = construire(k, filtre || (x.filtre ? 'tous' : null));
+  S = {k, x, filtre: filtre || 'tous', items, n: 0, premier: 0, graves: 0};
+  if (x.bruit) Bruit.demarrer();
+  item();
+}
+function regle(){
+  app.innerHTML = tete('ex_allergie', null, 'exercices')
+    + '<div class="regle"><h2>' + t('regle_titre') + '</h2><p>' + t('regle') + '</p><p class="grave-sous">' + t('grave_sous') + '</p>'
+    + '<button class="btn-rj btn-rj--pri btn-rj--pile" data-act="commencer">' + tb('compris') + '</button></div>';
+}
+function barreBruit(){
+  if (!S.x.bruit) return '';
+  return '<div class="bruit" role="group" aria-label="' + esc(FR.bruit) + '"><span>' + esc(FR.bruit) + '</span>'
+    + [0, 1, 2].map(n => '<button class="btn-rj petit" data-bruit="' + n + '" aria-pressed="' + (Bruit.niveau === n) + '">' + esc(FR['bruit_' + n]) + '</button>').join('') + '</div>';
+}
+function filtreHTML(){
+  if (!S.x.filtre) return '';
+  const r = lire(REVOIR, []).length;
+  return '<div class="filtre"><label for="filtre">' + esc(FR.filtre) + '</label><select id="filtre">'
+    + '<option value="tous">' + esc(FR.tous) + '</option>'
+    + (r ? '<option value="revoir">' + esc(FR.a_revoir_filtre) + ' (' + r + ')</option>' : '')
+    + D.planches.filter(p => D.mots.some(m => m.p === p.k && m.img)).map(p => '<option value="' + p.k + '">' + esc(p.t) + '</option>').join('')
+    + '</select></div>';
+}
+function item(){
+  const it = S.items[S.n];
+  if (!it) return bilan();
+  S.essais = 0; S.fini = false;
+  const k = S.k;
+  let h = tete('ex_' + k, 'ex_' + k + '_c', 'exercices') + filtreHTML() + barreBruit()
+    + '<div class="jeu"><div class="barre"><i style="width:' + (100 * S.n / S.items.length) + '%"></i></div>';
+  if (it.qui) h += '<p class="qui">' + t(it.qui) + '</p>';
+  if (it.sujet) h += '<div class="sujet"><img src="' + it.sujet + '" alt=""></div>';
+  if (it.son) h += '<div class="ecoute"><button class="btn-rj btn-rj--pri btn-rj--pile" data-act="reecouter">' + tb('reecouter') + '</button>'
+    + '<button class="btn-rj btn-rj--pile" data-act="lent">' + tb('lentement') + '</button></div>';
+  if (it.q) h += '<p class="question">' + t(it.q) + '</p>';
+  if (it.type === 'rappel') h += '<div class="revele" id="revele"><button class="btn-rj btn-rj--pri btn-rj--pile" data-act="voirmot">' + tb('voir_mot') + '</button></div>';
+  else if (it.type === 'redis') h += '<p class="question">' + t('a_vous') + '</p><div class="revele" id="revele"><button class="btn-rj btn-rj--pile" data-act="modele">' + tb('modele') + '</button></div>';
+  else h += '<div class="choix ' + {img: 'imgs', mot: 'mots', ticket: 'tickets', acte: 'mots actes'}[it.type] + '">' + it.choix.map((c, i) =>
+      '<button class="opt" data-o="' + i + '">' + c.html + '</button>').join('') + '</div>';
+  h += '<p class="retro" id="retro" aria-live="polite"></p><div class="apres" id="apres"></div><div class="suite" id="suite"></div></div>';
+  app.innerHTML = h;
+  const f = document.getElementById('filtre'); if (f) f.value = S.filtre;
+  if (it.son) jouerNormal(it.son);
+  const premier = app.querySelector('.opt, [data-act=voirmot], [data-act=reecouter]'); if (premier) premier.focus({preventScroll: true});
+}
+function montrerApres(it){
+  // La phrase entendue s'écrit APRÈS la réponse : on apprend à écouter, pas à lire.
+  const a = document.getElementById('apres');
+  let h = '';
+  if (it.apres) h += '<p class="dit"><span>' + (it.type === 'img' || it.type === 'mot' ? '' : esc(FR.phrase) + ' : ') + '</span><b>« ' + esc(it.apres) + ' »</b>'
+    + (it.apresSon ? ' <button class="btn-rj petit" data-act="apresson" aria-label="' + esc(FR.ecouter) + '">' + ICO.son + '</button>' : '') + '</p>';
+  if (it.note) h += '<div class="piege">' + esc(FR.piege) + ' : ' + esc(it.note) + '</div>';
+  a.innerHTML = h;
+  document.getElementById('suite').innerHTML = '<button class="btn-rj btn-rj--pri" data-act="suivant">' + esc(FR.suivant) + ICO.d + '</button>';
+  document.querySelector('[data-act=suivant]').focus({preventScroll: true});
+}
+function repondre(i){
+  const it = S.items[S.n]; if (S.fini) return;
+  const opts = [...app.querySelectorAll('.opt')], b = opts[i], retro = document.getElementById('retro');
+  if (it.type === 'acte') {
+    // Un geste, un seul essai : la conséquence vient APRÈS le choix.
+    S.fini = true;
+    opts.forEach(o => o.disabled = true);
+    opts[it.bonne].classList.add('juste');
+    const s = it.choix[i].s;
+    if (s === 'juste') { S.premier++; retro.className = 'retro ok'; retro.innerHTML = t('juste_acte'); }
+    else {
+      b.classList.add('faux');
+      if (s === 'grave') { S.graves++; retro.className = 'retro non'; retro.innerHTML = t('grave') + '<span class="rappel-regle">' + t('regle') + '</span>'; }
+      else { retro.className = 'retro non'; retro.innerHTML = t('faux_acte') + '<span class="rappel-regle">' + t('regle') + '</span>'; }
+    }
+    return montrerApres(it);
+  }
+  if (i === it.bonne) {
+    S.fini = true; b.classList.add('juste'); opts.forEach(o => o.disabled = true);
+    if (S.essais === 0) { S.premier++; if (it.revoir) aRevoir(it.revoir, false); }
+    retro.className = 'retro ok'; retro.innerHTML = t('bravo');
+    return montrerApres(it);
+  }
+  S.essais++; b.classList.add('faux'); b.disabled = true;
+  if (S.essais >= 2) {
+    S.fini = true; opts.forEach(o => o.disabled = true); opts[it.bonne].classList.add('juste');
+    if (it.revoir) aRevoir(it.revoir, true);
+    retro.className = 'retro non'; retro.innerHTML = t('reponse');
+    return montrerApres(it);
+  }
+  retro.className = 'retro non'; retro.innerHTML = t('essaie');
+}
+function autoEval(bien){
+  const it = S.items[S.n];
+  if (bien) S.premier++;
+  if (it.revoir) aRevoir(it.revoir, !bien);
+  S.n++; item();
+}
+function bilan(){
+  const k = S.k, tot = S.items.length;
+  app.innerHTML = tete('ex_' + k, null, 'exercices') + '<div class="bilan"><p class="fin">' + t('fin') + '</p>'
+    + '<p class="score">' + S.premier + ' / ' + tot + '</p><p>' + t('premier_coup') + '</p>'
+    + (k === 'allergie' ? '<p class="graves' + (S.graves ? ' non' : '') + '">' + S.graves + ' ' + esc(FR.graves) + '</p><p class="grave-sous">' + t('grave_sous') + '</p>' : '')
+    + '<div class="gestes-bilan"><button class="btn-rj btn-rj--pri btn-rj--pile" data-act="encore">' + tb('recommencer') + '</button>'
+    + '<button class="btn-rj btn-rj--pile" data-act="exercices">' + tb('retour_ex') + '</button></div></div>';
+  Bruit.arreter();
+  S.fini = true;
+}
+
+app.addEventListener('change', e => { if (e.target.id === 'filtre' && S) lancer(S.k, e.target.value); });
 app.addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
   if (b.dataset.lang) { langue = b.dataset.lang === 'fr' ? null : b.dataset.lang; poserLangue(b.dataset.lang); return accueil(); }
-  if (b.dataset.act === 'langue') return ecranLangue();
-  if (b.dataset.act === 'accueil') return accueil();
+  const a = b.dataset.act;
+  if (a === 'langue') return ecranLangue();
+  if (a === 'accueil') return accueil();
+  if (a === 'planches') return planches();
+  if (a === 'exercices') return exercices();
+  if (b.dataset.ex) { lancer(b.dataset.ex); window.scrollTo(0, 0); return; }
   if (b.dataset.planche) { planche(b.dataset.planche); window.scrollTo(0, 0); return; }
+  if (b.dataset.bruit != null) { Bruit.regler(+b.dataset.bruit); app.querySelectorAll('[data-bruit]').forEach(x => x.setAttribute('aria-pressed', x === b)); return; }
+  if (a === 'commencer') { const k = 'allergie'; S = null; const items = construire(k); S = {k, x: EXOS.find(e => e.k === k), filtre: null, items, n: 0, premier: 0, graves: 0}; Bruit.demarrer(); return item(); }
+  if (a === 'encore') return lancer(S.k, S.k === 'allergie' ? 'x' : S.filtre);
+  if (S) {
+    const it = S.items[S.n];
+    if (a === 'reecouter') return jouerNormal(it.son);
+    if (a === 'lent') return jouerLent(it.son);
+    if (a === 'apresson') return jouerNormal(it.apresSon);
+    if (a === 'suivant') { S.n++; item(); window.scrollTo(0, 0); return; }
+    if (b.dataset.o != null) return repondre(+b.dataset.o);
+    if (a === 'voirmot') {
+      const m = it.rappel;
+      document.getElementById('revele').innerHTML = '<p class="gros">' + esc(m.mot) + '</p>'
+        + '<div class="gestes-bilan"><button class="btn-rj btn-rj--pile" data-act="bien">' + tb('savais') + '</button><button class="btn-rj btn-rj--pile" data-act="mal">' + tb('a_revoir') + '</button></div>';
+      jouerNormal(m.son); return;
+    }
+    if (a === 'modele') {
+      document.getElementById('revele').innerHTML = '<p class="gros-phrase">« ' + esc(it.redit) + ' »</p><p class="dit">' + esc(FR.phrase) + ' : « ' + esc(it.phrase) + ' »</p>'
+        + '<div class="gestes-bilan"><button class="btn-rj petit" data-act="remodele">' + ICO.son + esc(FR.modele) + '</button></div>'
+        + '<div class="gestes-bilan"><button class="btn-rj btn-rj--pile" data-act="bien">' + tb('savais') + '</button><button class="btn-rj btn-rj--pile" data-act="mal">' + tb('a_revoir') + '</button></div>';
+      jouerNormal(it.modele); return;
+    }
+    if (a === 'remodele') return jouerNormal(it.modele);
+    if (a === 'bien') return autoEval(true);
+    if (a === 'mal') return autoEval(false);
+  }
   if (b.dataset.i != null) return ouvrir(+b.dataset.i);
 });
 carte.addEventListener('click', e => {
@@ -400,14 +804,19 @@ document.addEventListener('keydown', e => {
 // Démarrage : la langue de l'adresse, sinon celle déjà choisie, sinon le choix.
 const q = new URLSearchParams(location.search);
 const choisie = q.get('langue') || lireLangue();
-window.__resto = {D, etat: () => ({langue, planche: q.get('planche'), liste: liste.map(m => m.id), rang, ouverte: !fiche.hidden})};
+window.__resto = {D, etat: () => ({langue, planche: q.get('planche'), liste: liste.map(m => m.id), rang, ouverte: !fiche.hidden,
+  serie: S && {k: S.k, n: S.n, total: S.items.length, premier: S.premier, graves: S.graves, fini: S.fini,
+               bonne: S.items[S.n] && S.items[S.n].bonne, item: S.items[S.n]}}), bruit: Bruit};
 if (!choisie || (choisie !== 'fr' && !D.langues.some(l => l.c === choisie))) { ecranLangue(); return; }
 langue = choisie === 'fr' ? null : choisie;
 if (q.get('planche')) {
   planche(q.get('planche'));
   const i = liste.findIndex(m => m.id === q.get('mot'));
   if (i >= 0) ouvrir(i);
-} else accueil();
+} else if (q.get('ex')) lancer(q.get('ex'));
+else if (q.get('ecran') === 'exercices') exercices();
+else if (q.get('ecran') === 'planches') planches();
+else accueil();
 })();
 </script>
 </body>

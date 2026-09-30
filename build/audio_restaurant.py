@@ -44,9 +44,22 @@ def dit(texte):
 def travaux():
     t = []
     for e in LEXIQUE:
-        t.append((f"{e[0]}.mp3", PRONONCIATION.get(e[0], dit(e[2])), e[2]))
+        t.append((f"{e[0]}.mp3", PRONONCIATION.get(e[0], dit(e[2])), e[2], VOIX_MOTS, azure_voix.TAUX_SONS))
         if e[3] and len(e[3]) > 2:
-            t.append((f"autre/{e[0]}.mp3", dit(e[3]), e[3]))
+            t.append((f"autre/{e[0]}.mp3", dit(e[3]), e[3], VOIX_MOTS, azure_voix.TAUX_SONS))
+    # Étape 2 (exercices.py) : le chef = Thierry HD, les clients alternent,
+    # le modèle de l'employé = Sylvie ; tous au débit NORMAL (taux None) —
+    # c'est la leçon, l'écran offre « Plus lentement ».
+    import exercices as EX
+    V = {"f": "hd_feminin", "m": "hd_masculin"}
+    for i, phrase, _q, _b, _d, redit in EX.CONSIGNES:
+        t.append((f"chef/{i}.mp3", phrase, phrase, "hd_masculin", None))
+        t.append((f"redit/{i}.mp3", redit, redit, "hd_feminin", None))
+    for i, v, phrase, _b, _a, redit in EX.COMMANDES:
+        t.append((f"commandes/{i}.mp3", phrase, phrase, V[v], None))
+        t.append((f"redit/{i}.mp3", redit, redit, "hd_feminin", None))
+    for i, _qui, v, phrase, _c, _actes in EX.ALLERGIES:
+        t.append((f"allergies/{i}.mp3", phrase, phrase, V[v], None))
     return t
 
 
@@ -55,7 +68,7 @@ def controle():
     cle, region = azure_voix.cle_region()
 
     def un(x):
-        chemin, _dit, affiche = x
+        chemin, _dit, affiche = x[:3]
         entendu, conf = FE.retranscrire(SORTIE / chemin, cle, region)
         sim = difflib.SequenceMatcher(None, FE.plat(affiche), FE.plat(entendu)).ratio()
         return {"fichier": chemin, "attendu": affiche, "entendu": entendu,
@@ -89,11 +102,11 @@ def main():
     a_faire = [x for x in tout if x[0] in a.fichiers or (not a.fichiers and not (SORTIE / x[0]).exists())]
 
     def un(x):
-        chemin, texte, _ = x
+        chemin, texte, _affiche, role, taux = x
         dest = SORTIE / chemin
         dest.parent.mkdir(parents=True, exist_ok=True)
         try:
-            d = azure_voix.parle(texte, VOIX_MOTS, dest, cle=cle, region=region, reference=azure_voix.TAUX_SONS)
+            d = azure_voix.parle(texte, role, dest, cle=cle, region=region, reference=taux)
             print("  %-28s %4.2f s  %s" % (chemin, d, texte[:50]), flush=True)
         except Exception as e:
             print("  %-28s ÉCHEC %s" % (chemin, e), flush=True)
