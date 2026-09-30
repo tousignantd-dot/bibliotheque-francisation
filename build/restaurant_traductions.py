@@ -209,6 +209,7 @@ INTERFACE.update({
     "ia_avis": "Ce que vous dites ou écrivez part à un service d'intelligence artificielle, qui répond. Rien n'est gardé ici.",
     "micro_test": "Le micro n'est pas disponible. Continuez : vous redirez ces phrases à votre formateur.",
     "phrase_a_redire": "La phrase à faire redire",
+    "non_evalue": "pas évalué cette fois",
     "aller_verifier": "Aller vérifier à la cuisine",
     "cuisine_dit": "La cuisine vous répond :",
     "reessayer": "Réessayer",

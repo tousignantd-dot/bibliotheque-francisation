@@ -1405,11 +1405,13 @@ async function bilanService(){
       // gestes connus, une fois chacun (essai réel du 30 sept. 2026).
       const connus = new Set(SV.gestes.map(g => g.id)), vus = new Set();
       const G0 = (B.gestes || []).filter(g => connus.has(g.id) && !vus.has(g.id) && vus.add(g.id));
+      // Un geste attendu que le juge n'a pas rendu, même après la relance : dit « non évalué », jamais tu.
+      V.s.gestes.filter(id => !vus.has(id)).forEach(id => G0.push({id, necessaire: true, fait: false, nonEvalue: true}));
       const G = G0.filter(g => g.necessaire).concat(G0.filter(g => !g.necessaire));
       zone.innerHTML = (B.resume ? '<p>' + esc(B.resume) + '</p>' : '') + '<ul class="bilan-gestes">' + G.map(g => {
-        const e = !g.necessaire ? 'inutile' : g.fait ? 'fait' : 'manque';
+        const e = g.nonEvalue ? 'inutile' : !g.necessaire ? 'inutile' : g.fait ? 'fait' : 'manque';
         return '<li class="' + e + '"><span class="marque">' + (e === 'fait' ? '✓' : e === 'manque' ? '→' : '·') + '</span><span><b>' + esc(nom(g.id)) + '</b> — '
-          + esc(FR['geste_' + e]) + (g.citation ? '<small>« ' + esc(g.citation) + ' »</small>' : '') + (e === 'manque' && g.conseil ? '<small>' + esc(g.conseil) + '</small>' : '') + '</span></li>'; }).join('') + '</ul>';
+          + esc(g.nonEvalue ? FR.non_evalue : FR['geste_' + e]) + (g.citation ? '<small>« ' + esc(g.citation) + ' »</small>' : '') + (e === 'manque' && g.conseil ? '<small>' + esc(g.conseil) + '</small>' : '') + '</span></li>'; }).join('') + '</ul>';
     }
   } catch(e) { zone.innerHTML = '<p>' + esc(FR.erreur_reseau) + '</p>'; }
   const corr = document.getElementById('corr');
