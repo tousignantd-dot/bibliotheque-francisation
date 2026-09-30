@@ -38,6 +38,9 @@ def consigne(ident):
         # Le seul croquis avec une personne : le préambule « objet » sans la
         # phrase qui les exclut.
         return FC.PREAMBULES["objet"].replace("no person, no hand, ", "no other person, no hand in close-up, ").replace("THE OBJECT: ", "THE PERSON: ") + quoi
+    if famille == "geste":
+        # Les verbes de préparation : deux mains seules, jamais un visage.
+        return FC.PREAMBULES["objet"].replace("no person, no hand, ", "no person, no face, no body: only the hands and wrists named below, with plain white sleeves, ").replace("THE OBJECT: ", "THE SCENE: ") + quoi
     return FC.PREAMBULES[famille] + quoi
 
 
