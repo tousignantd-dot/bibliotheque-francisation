@@ -1,12 +1,13 @@
 """L'identité de la trousse de restauration — lue par l'écran et les pages.
 
-Le nom est à trancher (deuxième ronde du 30 sept. 2026) : « Chez Ovila » refusé,
-« Chez Martin » retiré par Daniel (pris en France, en Belgique, en Suisse).
-Candidats sur la page de l'étape 0 : Chez Jocelyne (recommandé), Chez Aldéric,
-Restaurant Beaulac. Ce n'est pas une recherche de marque de commerce.
+Le nom : « Chez Jocelyne », choisi par Daniel le 30 sept. 2026 à la deuxième ronde
+(« Chez Ovila » refusé, « Chez Martin » retiré : pris en France, en Belgique, en
+Suisse). Recherche du même jour, nom exact : aucun restaurant de ce nom ; une
+Jocelyne cuisine au Restaurant Chez Pascal (Embrun, France) — le prénom, pas
+l'enseigne. Ce n'est pas une recherche de marque de commerce.
 """
 
-NOM = None   # à trancher
+NOM = "Chez Jocelyne"
 SURTITRE = "Formation en milieu de travail"
 SECTEUR = "Restauration · Cuisine et salle"
 SECTEUR_COURT = "Restauration"

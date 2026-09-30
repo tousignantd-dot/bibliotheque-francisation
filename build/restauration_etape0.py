@@ -209,8 +209,8 @@ La visite en cuisine, décidée avant l'étape 1, viendra corriger ce lexique.</
 
 <section>
   <h2>2 · Le nom du restaurant</h2>
-  <div class="these"><p class="cle">Deuxième ronde, 30 septembre : « Chez Ovila » et « Chez Martin » écartés à votre
-  demande. Les prénoms d'ici derrière un « Chez » sont presque tous pris ; trois candidats restent libres.</p></div>
+  <div class="these"><p class="cle">Décidé le 30 septembre : <b>Chez Jocelyne</b>, à la deuxième ronde (« Chez Ovila »
+  et « Chez Martin » écartés à votre demande). Les candidats restent ci-dessous, pour mémoire.</p></div>
   <p>Trois candidats, cherchés un à un sur le Web, nom exact entre guillemets. Ce n'est pas une recherche de marque
   de commerce : on vérifie seulement qu'aucun restaurant connu ne le porte.</p>
   <div class="opts2">{noms}</div>
