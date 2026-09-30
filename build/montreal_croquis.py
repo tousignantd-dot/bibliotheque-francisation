@@ -140,14 +140,82 @@ MASCOTTES = {
 }
 
 
+# Filou, la mascotte retenue (30 sept. 2026) : ses poses se dessinent en
+# RETOUCHE du croquis « filou » (le raton, une seule sacoche) passé en
+# référence — texte seul, le modèle redessinerait un autre raton à chaque fois.
+POSE = ("Redraw EXACTLY this same raccoon character — same face, same markings, same proportions, same colours, "
+        "same ink-and-wash style, same single canvas satchel worn across the body — in a new pose. Pure white "
+        "background, full body, no ground shadow, no scenery, no frame, no text.\n\nTHE NEW POSE: ")
+POSES = {
+    "salut": "standing, waving hello with one paw raised high, big friendly smile.",
+    "raconte": "standing, telling a story: one paw open and pointing to the side as if showing something, mouth open, lively.",
+    "loupe": "leaning forward curiously, looking through a magnifying glass held in one paw, one eyebrow raised, thinking.",
+    "surprise": "jumping slightly with surprise and delight, both paws on the cheeks, eyes wide and happy.",
+    "bravo": "jumping for joy with both arms raised in victory, eyes closed with a huge happy grin.",
+}
+
+
 def cibles_connues():
     t = {("vignette", k): (CC.REGISTRE + quoi, "3:2", BASE, 1200) for k, quoi in SUJETS.items()}
     for k, quoi in MASCOTTES.items():
         t[("mascotte", k)] = (MASCOTTE + quoi, "1:1", BASE.parent / "mascottes", 700)
+    t[("mascotte", "filou")] = (MASCOTTE + MASCOTTES["raton"].replace(
+        "wearing a small canvas explorer satchel", "wearing ONE single small canvas explorer satchel (only one bag, "
+        "on one hip, strap across the chest)"), "1:1", BASE.parent / "mascottes", 700)
+    for k, quoi in POSES.items():
+        t[("pose", k)] = (POSE + quoi, "1:1", BASE.parent / "filou", 600)
     return t
 
 
+def generer_pose(cible, t):
+    """Une pose de Filou : la même requête que CC.generer, avec le croquis de référence."""
+    import base64, io, json, urllib.request
+    from PIL import Image
+    genre, ident = cible
+    consigne, cadre, dossier, largeur = t[cible]
+    ref = base64.b64encode((BASE.parent / "mascottes" / "filou.jpg").read_bytes()).decode()
+    corps = {"contents": [{"parts": [{"inline_data": {"mime_type": "image/jpeg", "data": ref}}, {"text": consigne}]}],
+             "generationConfig": {"responseModalities": ["IMAGE"], "imageConfig": {"aspectRatio": cadre}}}
+    url = ("https://generativelanguage.googleapis.com/v1beta/models/"
+           f"{CC.MODELE}:generateContent?key=" + CC.FC.cle("GOOGLE_API_KEY"))
+    req = urllib.request.Request(url, data=json.dumps(corps).encode(), headers={"Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=300) as r:
+        d = json.loads(r.read())
+    parts = (d.get("candidates") or [{}])[0].get("content", {}).get("parts", [])
+    donnees = next((base64.b64decode((p.get("inlineData") or p.get("inline_data"))["data"])
+                    for p in parts if p.get("inlineData") or p.get("inline_data")), None)
+    if not donnees:
+        journal(ident, "echec", "sans image"); raise RuntimeError("sans image")
+    dossier.mkdir(parents=True, exist_ok=True)
+    Image.open(io.BytesIO(donnees)).convert("RGB").save(dossier / f"{ident}.png")
+    CC.servir(dossier, ident, largeur)
+    journal(ident, "ok", f"pose {cadre}")
+    print(f"  pose     {ident}", flush=True)
+
+
+def detourer(dossier=None, largeur=420):
+    """Filou sur fond transparent (<pose>-d.webp), pour les fonds de couleur du
+    mode famille. Le blanc est retiré par REMPLISSAGE depuis les bords : un
+    seuil global mangerait aussi le blanc du museau et du ventre."""
+    from PIL import Image, ImageDraw
+    dossier = dossier or BASE.parent / "filou"
+    for src in sorted(dossier.glob("*.png")):
+        if src.stem.endswith("-d") or src.stem.endswith(".orig"):
+            continue
+        im = Image.open(src).convert("RGBA")
+        w, h = im.size
+        for xy in ((0, 0), (w - 1, 0), (0, h - 1), (w - 1, h - 1), (w // 2, 0), (w // 2, h - 1), (0, h // 2), (w - 1, h // 2)):
+            if im.getpixel(xy)[3] and min(im.getpixel(xy)[:3]) > 225:
+                ImageDraw.floodfill(im, xy, (255, 255, 255, 0), thresh=40)
+        im = im.crop(im.getbbox())
+        im.thumbnail((largeur, largeur), Image.LANCZOS)
+        im.save(dossier / f"{src.stem}-d.webp", quality=86, method=6)
+        print("  détouré", src.stem)
+
+
 if __name__ == "__main__":
+    if "--detourer" in sys.argv:
+        detourer(); sys.exit(0)
     from concurrent.futures import ThreadPoolExecutor
     args = sys.argv[1:]
     t = cibles_connues()
@@ -161,7 +229,7 @@ if __name__ == "__main__":
     echecs = []
     def un(c):
         try:
-            CC.generer(c, t)
+            (generer_pose if c[0] == "pose" else CC.generer)(c, t)
         except Exception as e:
             echecs.append(c); print(f"  {c} : {e}")
     with ThreadPoolExecutor(5) as ex:

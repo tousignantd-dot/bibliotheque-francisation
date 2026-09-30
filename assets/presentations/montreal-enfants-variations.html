@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="fr-CA"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Montréal en famille — trois habits</title>
+<link rel="stylesheet" href="/assets/design-system/tokens/fonts.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Baloo+2:wght@600;700;800&display=swap">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#F4F1EA;color:#1E2733;font:17px/1.55 Nunito,system-ui,sans-serif}
+main{max-width:1200px;margin:0 auto;padding:28px 16px 60px}
+.eyebrow{font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#B3262E}
+h1{font-size:36px;line-height:1.1;margin:6px 0 10px}
+.lead{font-size:19px;color:#5D6572;max-width:780px}
+.vars{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:26px;margin-top:26px;align-items:start}
+.var h2{margin:0 0 4px;font-size:22px;display:flex;align-items:center;gap:10px}
+.lettre{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:#1E2733;color:#fff;font-size:17px}
+.var>p{margin:0 0 14px;color:#5D6572;font-size:15.5px;min-height:5.2em}
+.choisir{display:block;width:100%;max-width:340px;margin:14px auto 0;border:2px solid #1E2733;background:#fff;border-radius:14px;padding:12px;font:900 16px Nunito,system-ui,sans-serif;cursor:pointer}
+.choisir[aria-pressed=true]{background:#1E2733;color:#fff}
+.fin{margin-top:34px;background:#fff;border-radius:16px;padding:18px}
+.fin textarea{width:100%;min-height:80px;border:1.5px solid #D8D2C4;border-radius:12px;padding:10px;font:16px Nunito,system-ui,sans-serif}
+.btn-export{background:#B3262E;color:#fff;border:0;border-radius:12px;padding:13px 20px;font:900 16px Nunito,system-ui,sans-serif;cursor:pointer;margin-top:10px}
+#etat{color:#5D6572;margin-left:10px;font-weight:700}
+
+/* ---------- le téléphone, commun ---------- */
+.tel{--r:22px;max-width:340px;margin:0 auto;border:10px solid #16151C;border-radius:38px;overflow:hidden;background:var(--fond);color:var(--encre);font-family:var(--police)}
+.tel .barre{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--barre)}
+.tel .logo{display:flex;align-items:center;gap:6px;font-weight:800;font-size:20px;color:var(--logo)}
+.tel .logo img{width:34px;height:34px;border-radius:50%;object-fit:cover;object-position:50% 12%;background:#fff}
+.tel .lg{display:flex;gap:2px;background:rgba(255,255,255,.7);border-radius:999px;padding:3px;font-size:12px}
+.tel .lg b,.tel .lg i{font-style:normal;padding:3px 8px;border-radius:999px}
+.tel .lg b{background:var(--encre);color:#fff}
+.tel .ecran{padding:12px 12px 16px;display:grid;gap:12px}
+.tel .hero{display:flex;align-items:flex-end;gap:4px;min-height:130px}
+.tel .hero .filou{width:118px;flex:none;margin-bottom:-6px}
+.tel .bulle{background:var(--bulle);color:var(--bulle-t);border-radius:var(--r);padding:12px 14px;font-size:17px;line-height:1.3;font-weight:600;position:relative;margin-bottom:34px}
+.tel .prog{display:flex;align-items:center;gap:8px;font-weight:800;font-size:14px}
+.tel .jauge{flex:1;height:14px;border-radius:999px;background:var(--jauge-fond);overflow:hidden}
+.tel .jauge i{display:block;height:100%;background:var(--jauge)}
+.tel .lieu{display:flex;gap:10px;align-items:center;background:var(--carte);border-radius:var(--r);padding:8px;text-decoration:none;color:inherit}
+.tel .lieu img{width:112px;aspect-ratio:3/2;object-fit:cover;border-radius:calc(var(--r) - 8px)}
+.tel .lieu h3{margin:2px 0 6px;font-size:18px;line-height:1.1}
+.tel .pastille{display:inline-block;font-size:11.5px;font-weight:800;color:#fff;border-radius:999px;padding:2px 9px}
+.tel .p1{background:var(--c1)}
+.tel .ecoute{border:0;border-radius:999px;background:var(--action);color:var(--action-t);font:inherit;font-weight:700;font-size:14px;padding:6px 12px}
+.tel .enigme{background:var(--enigme);border-radius:var(--r);padding:12px;position:relative}
+.tel .enigme .filou-p{position:absolute;right:4px;top:-26px;width:70px}
+.tel .enigme h4{margin:0;font-size:20px;color:var(--titre-enigme)}
+.tel .enigme p{margin:4px 70px 8px 0;font-size:15.5px;font-weight:600;line-height:1.3}
+.tel .rep{display:grid;gap:7px}
+.tel .rep button{font:inherit;font-weight:700;font-size:15.5px;border-radius:calc(var(--r) - 6px);padding:9px;background:#fff;color:var(--encre);border:var(--bord-rep)}
+.tel .rep button.ok{background:var(--ok);color:#fff;border-color:var(--ok)}
+.tel .bravo{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:14.5px;font-weight:600}
+.tel .bravo img{width:44px}
+.tel .carnet h4{margin:0 0 8px;font-size:17px}
+.tel .stickers{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.tel .st{aspect-ratio:1;border-radius:50%;display:grid;place-items:center;position:relative;background:var(--st-vide);border:var(--st-vide-bord)}
+.tel .st em{font-style:normal;font-size:10px;font-weight:800;position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);background:var(--st-etiquette);color:#fff;border-radius:999px;padding:1px 6px;white-space:nowrap}
+.tel .st:not(.on) em{position:static;transform:none;background:none;color:var(--doux);font-size:22px}
+.tel .st.on{background:var(--st-fond);border:var(--st-bord);box-shadow:var(--st-ombre)}
+.tel .st.on:nth-child(1){transform:rotate(-8deg)}.tel .st.on:nth-child(2){transform:rotate(6deg)}.tel .st.on:nth-child(3){transform:rotate(-3deg)}
+.tel .st img{width:84%;border-radius:50%}
+.tel nav{display:grid;grid-template-columns:repeat(4,1fr);background:var(--nav);text-align:center;font-weight:800;font-size:12.5px}
+.tel nav span{padding:11px 0;color:var(--nav-t)}
+.tel nav .on{color:var(--nav-on);background:var(--nav-on-fond)}
+
+/* ---------- A · Bonbon ---------- */
+.v-a{--police:'Fredoka',Nunito,sans-serif;--fond:#FFF6D6;--encre:#2B1B4A;--doux:#8C7FA6;--barre:#FF4F7B;--logo:#fff;
+  --bulle:#fff;--bulle-t:#2B1B4A;--jauge-fond:#FFE39A;--jauge:#00B8A9;--carte:#fff;--c1:#00B8A9;--action:#FF4F7B;--action-t:#fff;
+  --enigme:#D8F6F2;--titre-enigme:#00897E;--ok:#00B8A9;--bord-rep:3px solid #2B1B4A;--st-vide:#FFF0BF;--st-vide-bord:3px dashed #E8C765;
+  --st-fond:#fff;--st-bord:4px solid #FFC23D;--st-ombre:0 4px 0 #E0A21C;--st-etiquette:#FF4F7B;--nav:#2B1B4A;--nav-t:#B9AEDB;--nav-on:#FFC23D;--nav-on-fond:transparent;--r:24px}
+.v-a .rep button,.v-a .ecoute{box-shadow:0 4px 0 #2B1B4A}
+.v-a .rep button.ok{box-shadow:0 4px 0 #00796F}
+.v-a .bulle{border:3px solid #2B1B4A;box-shadow:0 4px 0 #2B1B4A}
+.v-a .lieu{border:3px solid #2B1B4A;box-shadow:0 4px 0 #2B1B4A}
+.v-a .jauge{border:3px solid #2B1B4A}
+
+/* ---------- B · Carnet d'aventure ---------- */
+.v-b{--police:'Baloo 2',Nunito,sans-serif;--fond:#E4F6EA;--encre:#173B2B;--doux:#6E8C7C;--barre:#fff;--logo:#FF7A00;
+  --bulle:#FF7A00;--bulle-t:#fff;--jauge-fond:#fff;--jauge:repeating-linear-gradient(90deg,#22B573 0 12px,#1C9C62 12px 24px);--carte:#fff;--c1:#1DA1F2;
+  --action:#22B573;--action-t:#fff;--enigme:#fff;--titre-enigme:#1DA1F2;--ok:#FF7A00;--bord-rep:2px dashed #9BC7AE;--st-vide:transparent;
+  --st-vide-bord:3px dashed #9BC7AE;--st-fond:#fff;--st-bord:6px solid #fff;--st-ombre:0 3px 10px rgba(23,59,43,.25);--st-etiquette:#1DA1F2;
+  --nav:#fff;--nav-t:#6E8C7C;--nav-on:#fff;--nav-on-fond:#FF7A00;--r:18px}
+.v-b .enigme{border:3px solid #1DA1F2}
+.v-b .lieu{border-left:8px solid #1DA1F2}
+.v-b .ecran{background-image:radial-gradient(#BFE5CD 1.6px,transparent 1.7px);background-size:18px 18px}
+.v-b .bulle{border-radius:22px 22px 22px 4px}
+.v-b .st.on img{border-radius:50%}
+
+/* ---------- C · Métro pop ---------- */
+.v-c{--police:Nunito,system-ui,sans-serif;--fond:#FFFFFF;--encre:#141414;--doux:#8A8A8A;--barre:#FFD200;--logo:#141414;
+  --bulle:#0071BC;--bulle-t:#fff;--jauge-fond:#EDEDED;--jauge:linear-gradient(90deg,#00A650 0 25%,#F58220 25% 50%,#FFD200 50% 75%,#0071BC 75%);
+  --carte:#F5F5F5;--c1:#00A650;--action:#F58220;--action-t:#fff;--enigme:#F58220;--titre-enigme:#fff;--ok:#00A650;
+  --bord-rep:0;--st-vide:#F1F1F1;--st-vide-bord:3px solid #E0E0E0;--st-fond:#fff;--st-bord:6px solid #0071BC;--st-ombre:none;--st-etiquette:#141414;
+  --nav:#141414;--nav-t:#9A9A9A;--nav-on:#141414;--nav-on-fond:#FFD200;--r:20px}
+.v-c .enigme{color:#fff}
+.v-c .enigme p{color:#fff}
+.v-c .bravo{color:#fff}
+.v-c .rep button{color:#141414}
+.v-c .rep button.ok{color:#fff}
+.v-c .st.on:nth-child(2){border-color:#F58220}.v-c .st.on:nth-child(3){border-color:#00A650}
+.v-c .lieu{border-left:10px solid #00A650}
+.v-c .bulle{border-radius:24px 24px 24px 4px}
+</style></head><body><main>
+<span class="eyebrow">Montréal en famille · design · 30 septembre 2026</span>
+<h1>Trois habits pour Filou</h1>
+<p class="lead">Plus jeune, plus enjoué, des couleurs vives. Les trois téléphones montrent exactement les mêmes écrans — l'accueil
+de Filou, une énigme résolue, le carnet d'autocollants — pour qu'on compare l'habit et rien d'autre. Seul le mode famille
+change d'habit : la fiche des grands garde le sien.</p>
+<div class="vars"><article class="var" id="var-a"><h2><span class="lettre">A</span> Bonbon</h2><p>Framboise, turquoise et jaune soleil sur crème. Boutons en relief qu'on a envie d'enfoncer, coins très ronds, police Fredoka. Le plus « jouet » des trois : parle aux 6-8 ans.</p><div class="tel v-a">
+  <div class="barre"><span class="logo"><img src="/assets/interactive/montreal/filou/salut-d.webp" alt="">Filou</span><span class="lg"><b>FR</b><i>EN</i><i>ES</i></span></div>
+  <div class="ecran">
+    <section class="hero"><img class="filou" src="/assets/interactive/montreal/filou/salut-d.webp" alt="">
+      <div class="bulle">Salut ! Moi, c'est <b>Filou</b>. On part explorer Montréal ?</div></section>
+    <div class="prog"><span>Mon carnet</span><div class="jauge"><i style="width:30%"></i></div><b>3 / 10</b></div>
+    <a class="lieu"><img src="/assets/interactive/montreal/lieux/vieux-port.jpg" alt=""><div><span class="pastille p1">À voir</span><h3>Le Vieux-Port</h3>
+      <button class="ecoute"><span>▶</span> Écoute Filou</button></div></a>
+    <section class="enigme"><img class="filou-p" src="/assets/interactive/montreal/filou/loupe-d.webp" alt="">
+      <h4>Énigme !</h4><p>Regarde la Grande roue. Elle a quelle forme ?</p>
+      <div class="rep"><button class="ok">Un cercle</button><button>Un carré</button><button>Un triangle</button></div>
+      <div class="bravo"><img src="/assets/interactive/montreal/filou/bravo-d.webp" alt=""><span><b>Bravo !</b> Ronde comme une pizza géante !</span></div></section>
+    <section class="carnet"><h4>Mes autocollants</h4><div class="stickers">
+      <span class="st on"><img src="/assets/interactive/montreal/filou/bravo-d.webp" alt=""><em>Capitaine</em></span>
+      <span class="st on"><img src="/assets/interactive/montreal/filou/surprise-d.webp" alt=""><em>Explorateur</em></span>
+      <span class="st on"><img src="/assets/interactive/montreal/filou/raconte-d.webp" alt=""><em>Conteur</em></span>
+      <span class="st"><em>?</em></span></div></section>
+  </div>
+  <nav><span class="on">Explorer</span><span>Carte</span><span>Parler</span><span>Carnet</span></nav>
+</div>
+      <button type="button" class="choisir" data-v="a" aria-pressed="false">Je choisis A</button></article><article class="var" id="var-b"><h2><span class="lettre">B</span> Carnet d'aventure</h2><p>Orange, bleu ciel et vert sur menthe. Autocollants à gros bord blanc, chemin en pointillé d'un lieu à l'autre, police Baloo. L'explorateur plutôt que le jouet : tient jusqu'à 11 ans.</p><div class="tel v-b">
+  <div class="barre"><span class="logo"><img src="/assets/interactive/montreal/filou/salut-d.webp" alt="">Filou</span><span class="lg"><b>FR</b><i>EN</i><i>ES</i></span></div>
+  <div class="ecran">
+    <section class="hero"><img class="filou" src="/assets/interactive/montreal/filou/salut-d.webp" alt="">
+      <div class="bulle">Salut ! Moi, c'est <b>Filou</b>. On part explorer Montréal ?</div></section>
+    <div class="prog"><span>Mon carnet</span><div class="jauge"><i style="width:30%"></i></div><b>3 / 10</b></div>
+    <a class="lieu"><img src="/assets/interactive/montreal/lieux/vieux-port.jpg" alt=""><div><span class="pastille p1">À voir</span><h3>Le Vieux-Port</h3>
+      <button class="ecoute"><span>▶</span> Écoute Filou</button></div></a>
+    <section class="enigme"><img class="filou-p" src="/assets/interactive/montreal/filou/loupe-d.webp" alt="">
+      <h4>Énigme !</h4><p>Regarde la Grande roue. Elle a quelle forme ?</p>
+      <div class="rep"><button class="ok">Un cercle</button><button>Un carré</button><button>Un triangle</button></div>
+      <div class="bravo"><img src="/assets/interactive/montreal/filou/bravo-d.webp" alt=""><span><b>Bravo !</b> Ronde comme une pizza géante !</span></div></section>
+    <section class="carnet"><h4>Mes autocollants</h4><div class="stickers">
+      <span class="st on"><img src="/assets/interactive/montreal/filou/bravo-d.webp" alt=""><em>Capitaine</em></span>
+      <span class="st on"><img src="/assets/interactive/montreal/filou/surprise-d.webp" alt=""><em>Explorateur</em></span>
+      <span class="st on"><img src="/assets/interactive/montreal/filou/raconte-d.webp" alt=""><em>Conteur</em></span>
+      <span class="st"><em>?</em></span></div></section>
+  </div>
+  <nav><span class="on">Explorer</span><span>Carte</span><span>Parler</span><span>Carnet</span></nav>
+</div>
+      <button type="button" class="choisir" data-v="b" aria-pressed="false">Je choisis B</button></article><article class="var" id="var-c"><h2><span class="lettre">C</span> Métro pop</h2><p>Les quatre couleurs des lignes du métro de Montréal — vert, orange, jaune, bleu — en grands aplats, pastilles rondes comme des stations. Le plus montréalais : l'enfant reconnaît les couleurs en descendant sous terre.</p><div class="tel v-c">
+  <div class="barre"><span class="logo"><img src="/assets/interactive/montreal/filou/salut-d.webp" alt="">Filou</span><span class="lg"><b>FR</b><i>EN</i><i>ES</i></span></div>
+  <div class="ecran">
+    <section class="hero"><img class="filou" src="/assets/interactive/montreal/filou/salut-d.webp" alt="">
+      <div class="bulle">Salut ! Moi, c'est <b>Filou</b>. On part explorer Montréal ?</div></section>
+    <div class="prog"><span>Mon carnet</span><div class="jauge"><i style="width:30%"></i></div><b>3 / 10</b></div>
+    <a class="lieu"><img src="/assets/interactive/montreal/lieux/vieux-port.jpg" alt=""><div><span class="pastille p1">À voir</span><h3>Le Vieux-Port</h3>
+      <button class="ecoute"><span>▶</span> Écoute Filou</button></div></a>
+    <section class="enigme"><img class="filou-p" src="/assets/interactive/montreal/filou/loupe-d.webp" alt="">
+      <h4>Énigme !</h4><p>Regarde la Grande roue. Elle a quelle forme ?</p>
+      <div class="rep"><button class="ok">Un cercle</button><button>Un carré</button><button>Un triangle</button></div>
+      <div class="bravo"><img src="/assets/interactive/montreal/filou/bravo-d.webp" alt=""><span><b>Bravo !</b> Ronde comme une pizza géante !</span></div></section>
+    <section class="carnet"><h4>Mes autocollants</h4><div class="stickers">
+      <span class="st on"><img src="/assets/interactive/montreal/filou/bravo-d.webp" alt=""><em>Capitaine</em></span>
+      <span class="st on"><img src="/assets/interactive/montreal/filou/surprise-d.webp" alt=""><em>Explorateur</em></span>
+      <span class="st on"><img src="/assets/interactive/montreal/filou/raconte-d.webp" alt=""><em>Conteur</em></span>
+      <span class="st"><em>?</em></span></div></section>
+  </div>
+  <nav><span class="on">Explorer</span><span>Carte</span><span>Parler</span><span>Carnet</span></nav>
+</div>
+      <button type="button" class="choisir" data-v="c" aria-pressed="false">Je choisis C</button></article></div>
+<div class="fin"><h2 style="margin:0 0 6px;font-size:20px">Votre choix</h2>
+<p style="margin:0 0 8px;color:#5D6572">Choisissez une lettre, ajoutez au besoin ce qu'il faut emprunter ailleurs (« C, mais avec les
+boutons en relief de A »), puis exportez et recollez dans la conversation.</p>
+<textarea id="note" placeholder="Une remarque, un mélange…"></textarea><br>
+<button type="button" class="btn-export" id="exporter">Exporter mon choix</button><span id="etat">Aucun choix</span></div>
+</main>
+<script>
+(function(){
+  var CLE='montreal-enfants-design', c={};
+  try{ c=JSON.parse(localStorage.getItem(CLE)||'{}'); }catch(e){}
+  var note=document.getElementById('note'); note.value=c.note||'';
+  function peindre(){
+    document.querySelectorAll('.choisir').forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.v===c.v?'true':'false'); });
+    document.getElementById('etat').textContent = c.v ? 'Choix : '+c.v.toUpperCase() : 'Aucun choix';
+  }
+  function garder(){ try{ localStorage.setItem(CLE,JSON.stringify(c)); }catch(e){} }
+  document.addEventListener('click',function(e){
+    var b=e.target.closest('.choisir'); if(b){ c.v = c.v===b.dataset.v ? null : b.dataset.v; garder(); peindre(); }
+  });
+  note.addEventListener('input',function(){ c.note=note.value; garder(); });
+  document.getElementById('exporter').addEventListener('click',function(){
+    var t=JSON.stringify({plan:'montreal-enfants-design',date:new Date().toISOString().slice(0,10),variante:c.v||null,note:c.note||''},null,2);
+    var fin=function(){ document.getElementById('etat').textContent='Copié — à recoller dans la conversation.'; };
+    if(navigator.clipboard) navigator.clipboard.writeText(t).then(fin,function(){prompt('Copiez :',t);}); else prompt('Copiez :',t);
+  });
+  peindre();
+})();
+</script>
+</body></html>
