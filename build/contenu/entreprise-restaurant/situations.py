@@ -85,8 +85,8 @@ SITUATIONS = [
       "Tu ne termines PAS tant que l'allergie ET la table n'ont pas été redites justes par le commis, "
       "et que les gants ne sont pas changés."]),
     ("il-en-manque", "cuisine", "Le chef Réal", "jr_masculin", ["fonctionnel", "aise"],
-     "Le chef vous demande quelque chose qu'il n'y a plus.",
-     ["manque", "repeter"],
+     "Le chef vous envoie chercher quelque chose.",
+     ["oui-chef", "manque", "repeter"],
      "a cook in his fifties, white chef jacket, short grey beard, looking at the pass",
      ["Tu es Réal, le chef. Tu demandes au commis d'aller chercher du fromage en grains pour "
       "trois poutines.",
@@ -144,7 +144,8 @@ SITUATIONS = [
      "a woman in her twenties, long black hair in a ponytail, a red winter coat, car keys in hand",
      ["Tu es madame Nguyen. Tu es pressée : tu veux un club sandwich et une soupe du jour, POUR "
       "EMPORTER.",
-      "Tu veux la soupe, mais tu ne sais pas laquelle c'est : tu le demandes.",
+      "Tu veux la soupe, mais tu ne sais pas laquelle c'est : tu le demandes, et tu attends la "
+      "réponse de la serveuse ; tu ne la donnes jamais toi-même.",
       "Tu payes par carte, au terminal. Tu demandes si le pourboire est compris.",
       "Tu attends que la serveuse redise la commande et dise « pour emporter ».",
       "Quand tout est clair, tu dis merci et tu termines."]),
@@ -187,6 +188,7 @@ GESTES = [
 REPONSES_CUISINE = {
     "allergie-salle": "La tarte au sucre est faite ici, sans noix. Mais la croûte vient d'un fournisseur : "
                       "elle PEUT contenir des noix. Le pouding chômeur est sans noix.",
+    "emporter": "La soupe du jour : une soupe aux légumes (carottes, céleri, orge).",
 }
 
 PORTES = {
@@ -218,14 +220,20 @@ def _bilan(cas):
         "qu'après que l'autre personne le lui a demandé ou soufflé (« Redis-moi ça », « Pis tes gants ? », "
         "« Vérifiez avec la cuisine »), il n'est PAS fait : dis-le dans le conseil.\n"
         "- Un geste dit dans une autre langue que le français n'est pas fait.\n"
-        + ("- L'allergie suit cette règle : " + regle + "\n" if "allergie" in sit[6] else "")
-        + "- " + _EX.CRITERE_GRAVE + " Une allergie ou une table redite FAUSSE est une erreur grave, même si "
-        "elle est corrigée ensuite. Si l'employé a commis une erreur grave, mets \"grave\": true et cite sa "
-        "réplique dans \"grave_citation\" ; sinon \"grave\": false et \"grave_citation\": \"\".\n"
-        "Pour CHAQUE geste de la liste, dans l'ordre, avec son id EXACT, dis s'il était « necessaire » dans ce "
+        # (audit du service, tour 2, majeur) L'erreur grave n'existe QUE là où une
+        # allergie est en jeu : ailleurs, une tomate oubliée n'est pas éliminatoire.
+        + (("- L'allergie suit cette règle : " + regle + "\n"
+            "- " + _EX.CRITERE_GRAVE + " Une allergie ou une table d'allergie redite FAUSSE est une erreur grave, "
+            "même si elle est corrigée ensuite. Si l'employé a commis une erreur grave, mets \"grave\": true et "
+            "cite sa réplique dans \"grave_citation\" ; sinon \"grave\": false et \"grave_citation\": \"\".\n")
+           if "allergie" in sit[6] else
+           "- Aucune allergie n'est en jeu ici : mets TOUJOURS \"grave\": false et \"grave_citation\": \"\". "
+           "Une erreur de commande ou de table se dit dans le geste concerné.\n")
+        + "Pour CHAQUE geste de la liste, dans l'ordre, avec son id EXACT, dis s'il était « necessaire » dans ce "
         "moment, s'il a été « fait », cite la réplique de l'employé qui le montre (ou vide), et donne un conseil "
         "d'une phrase courte, en français simple et CORRECT (« vous avez bien redit »), qui vouvoie l'employé et "
-        "propose la phrase à dire. Ajoute « resume » : une phrase simple sur ce qui a marché. Réponds UNIQUEMENT "
+        "propose la phrase à dire. Ajoute « resume » : une phrase simple sur ce qui a marché, adressée à l'employé "
+        "(« Vous avez… »), jamais à la troisième personne. Réponds UNIQUEMENT "
         "en JSON : {\"gestes\": [{\"id\": \"…\", \"necessaire\": true, \"fait\": false, \"citation\": \"…\", "
         "\"conseil\": \"…\"}], \"grave\": false, \"grave_citation\": \"\", \"resume\": \"…\"}."
     )

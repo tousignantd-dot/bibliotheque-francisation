@@ -187,8 +187,8 @@ def le_test(mots):
             o, k = poser(juste, autres, 3)
             C.append({"id": i, "son": s_(f"test/{i}.mp3"), "qui": "qui_" + qui,
                       "actes": [{"k": f"acte_{i}_{n}", "s": actes[n][1]} for n in o], "bonne": k})
-        D = [{"id": i, "qui": "qui_" + qui, "son": s_(f"test/{i}.mp3"), "modele": s_(f"test/{i}-modele.mp3"), "attendu": modele}
-             for i, qui, _v, _ph, modele in TE.D[f]]
+        D = [{"id": i, "qui": "qui_" + qui, "son": s_(f"test/{i}.mp3"), "modele": s_(f"test/{i}-modele.mp3"),
+              "attendu": modele, "phrase": ph} for i, qui, _v, ph, modele in TE.D[f]]
         formes[f] = {"A": A, "B": B, "C": C, "D": D}
     return {"formes": formes, "code": TE.CODE_FORMATEUR, "oral_redit": TE.ORAL_REDIT, "oral_langue": TE.ORAL_LANGUE,
             "regles": {"debutant_a": TE.DEBUTANT_A, "debutant_b": TE.DEBUTANT_B, "aise_b": TE.AISE_B,
@@ -459,7 +459,7 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .avatar .humeur{text-align:center;font-weight:700;margin:2px 0}
 .carte-sit{font-size:14px;margin:6px 0 0}
 .fil{display:flex;flex-direction:column;gap:8px;min-height:120px;margin-top:10px}
-.fil.cache .bulle .txt{filter:blur(6px)}
+.fil.cache .bulle.client .txt{filter:blur(6px)}
 .bulle{max-width:88%;padding:10px 12px;border-radius:14px;line-height:1.4}
 .bulle .qui{display:block;font-size:12px;font-weight:800;color:var(--text-muted)}
 .bulle.client{align-self:flex-start;background:var(--surface-card);border:1px solid var(--line-200)}
@@ -1104,7 +1104,7 @@ async function dEnregistrer(b){
   } catch(e) {
     // Pas de micro (refusé, absent) : ce n'est pas « ne sait pas parler ». L'item
     // est marqué « micro » — l'oral se fera avec le formateur, palier provisoire.
-    etat.innerHTML = t('micro_refuse');
+    etat.innerHTML = t('micro_test');
     T.D[it.id] = 'micro'; T.micro = true; tGarder();
     const p = app.querySelector('[data-t=passer]'); if (p) p.innerHTML = tb('continuer');
   }
@@ -1166,7 +1166,7 @@ function formateurHTML(){
       return '<div class="oral-f"><p class="qui">' + t(it.qui) + '</p><p><b>« ' + esc(it.attendu) + ' »</b></p>'
         + '<div class="gestes-bilan">' + (T.D[it.id] === true ? '<button class="btn-rj petit" data-t="ecoute-rep" data-id="' + it.id + '">' + ICO.son + esc(FR.ecouter_reponse) + '</button>' : '')
         + '<button class="btn-rj petit" data-t="ecoute-mod" data-id="' + it.id + '">' + ICO.son + esc(FR.modele) + '</button></div>'
-        + (T.D[it.id] === 'micro' ? '<p class="n">' + esc(FR.oral_de_vive_voix) + '</p>' : '')
+        + (T.D[it.id] === 'micro' ? '<p class="n">' + esc(FR.oral_de_vive_voix) + '</p><p>' + esc(FR.phrase_a_redire) + ' : « ' + esc(it.phrase) + ' » <button class="btn-rj petit" data-t="ecoute-phrase" data-id="' + it.id + '">' + ICO.son + '</button></p>' : '')
         + (T.D[it.id] ? '' : '<p class="n">' + esc(FR.pas_de_reponse) + '</p></div>')
         + (!T.D[it.id] ? '' : '<p class="n">' + esc(FR.oral_redit) + '</p><div class="choisir3">' + TD.oral_redit.map((x, k) => '<button class="btn-rj petit" data-t="or" data-id="' + it.id + '" data-k="' + k + '" aria-pressed="' + (n.r === k) + '">' + esc(x) + '</button>').join('') + '</div>'
         + '<p class="n">' + esc(FR.oral_langue) + '</p><div class="choisir3">' + TD.oral_langue.map((x, k) => '<button class="btn-rj petit" data-t="ol" data-id="' + it.id + '" data-k="' + k + '" aria-pressed="' + (n.l === k) + '">' + esc(x) + '</button>').join('') + '</div></div>');
@@ -1192,6 +1192,7 @@ app.addEventListener('click', e => {
   if (b.dataset.r != null) { const i = +b.dataset.r; return ({A: aRepondre, B: bRepondre, C: cRepondre})[T.partie](i); }
   if (a === 'code') { if (document.getElementById('codeF').value.trim() === TD.code) { T._ouvert = true; resultats(); } else document.getElementById('codeF').value = ''; return; }
   if (a === 'ecoute-rep') return ecouterBlob(b.dataset.id);
+  if (a === 'ecoute-phrase') return jouerNormal(F().D.find(x => x.id === b.dataset.id).son);
   if (a === 'ecoute-mod') return jouerNormal(F().D.find(x => x.id === b.dataset.id).modele);
   if (a === 'or' || a === 'ol') { T.oral = T.oral || {}; const n = T.oral[b.dataset.id] = T.oral[b.dataset.id] || {}; n[a === 'or' ? 'r' : 'l'] = +b.dataset.k; tGarder(); return resultats(); }
   if (a === 'confirmer') {
@@ -1255,7 +1256,7 @@ function scene(id){
     + '<div class="scene"><div class="avatar"><img src="' + SV.decor[s.porte] + '" alt=""><p class="nom">' + esc(s.nom) + '</p><p class="humeur" id="hum" aria-live="polite"></p>'
     + '<p class="carte-sit">' + t('carte_' + s.id) + '</p></div>'
     + '<div><div class="choisir3"><button class="btn-rj petit" data-s="sanslire" aria-pressed="' + V.sansLire + '">' + esc(FR.ecouter_sans_lire) + '</button>'
-    + (s.cuisine ? '<button class="btn-rj petit" data-s="verifier">' + esc(FR.aller_verifier) + '</button>' : '') + '</div>'
+    + (s.cuisine ? '<button class="btn-rj petit" data-s="verifier" id="btnVerif" hidden>' + esc(FR.aller_verifier) + '</button>' : '') + '</div>'
     + '<div class="bloc regle" id="repCuisine" hidden><p class="n">' + esc(FR.cuisine_dit) + '</p><p>' + t('rc_' + s.id) + '</p></div>'
     + '<details class="bloc phrases-scene"><summary><b>' + t('mes_gestes') + '</b></summary><ul class="gestes-liste">'
     + s.gestes.map(g => { const G = SV.gestes.find(x => x.id === g); return '<li><b>' + t('g_' + g) + '</b> — « ' + esc(G.phrase) + ' »</li>'; }).join('') + '</ul></details>'
@@ -1319,6 +1320,9 @@ function envoyerS(texte){
   arreterService();
   document.getElementById('txt').value = '';
   V.hist.push({role: 'user', contenu: texte}); bulleS('vous', texte);
+  // Le bouton de la cuisine n'apparaît qu'une fois que l'employé a dit qu'il allait
+  // vérifier : sinon il révélait la réponse avant la question (audit, tour 2).
+  const bv = document.getElementById('btnVerif'); if (bv && /v[ée]rifi|cuisine|demande/i.test(texte)) bv.hidden = false;
   tourService();
 }
 async function direS(txt){
@@ -1394,7 +1398,7 @@ async function bilanService(){
     else {
       const B = d.bilan;
       // L'erreur grave à l'allergie, À PART et en tête : c'est l'éliminatoire.
-      if (B.grave) { const g = document.getElementById('graveBloc'); g.hidden = false; g.className = 'bloc regle';
+      if (B.grave && V.s.gestes.includes('allergie')) { const g = document.getElementById('graveBloc'); g.hidden = false; g.className = 'bloc regle';
         g.innerHTML = '<p class="grave-sous">' + t('grave_service') + '</p>' + (B.grave_citation ? '<p>« ' + esc(B.grave_citation) + ' »</p>' : '') + '<p>' + t('critere_grave') + '</p>'; }
       const nom = id => FR['g_' + id] || id;
       // Le juge invente parfois un geste ou en répète un : on ne garde que les
