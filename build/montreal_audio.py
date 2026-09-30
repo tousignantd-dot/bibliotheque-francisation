@@ -24,19 +24,28 @@ VOIX = {"fr": ("fr-CA", "fr-CA-Sylvie:DragonHDLatestNeural", "-3%"),
 VOIX_SCENE = {"sylvie": "fr-CA-Sylvie:DragonHDLatestNeural", "thierry": "fr-CA-Thierry:DragonHDLatestNeural",
               "jean": "fr-CA-JeanNeural", "antoine": "fr-CA-AntoineNeural"}
 TAUX_SCENE = "-8%"
+# Filou, la mascotte du mode famille : une voix d'homme par langue, jouée plus
+# haut et un peu plus vite — Azure n'a pas de voix d'enfant au Québec.
+VOIX_FILOU = {"fr": ("fr-CA", "fr-CA-Thierry:DragonHDLatestNeural"),
+              "en": ("en-US", "en-US-Andrew:DragonHDLatestNeural"),
+              "es": ("es-MX", "es-MX-Jorge:DragonHDLatestNeural")}
+PROSODIE_FILOU = 'rate="+4%" pitch="+9%"'
 AUDIO = M.MEDIA / "audio"
 TEXTES = AUDIO / "textes.json"
 
 
 def ssml(lang, texte, perso=None):
     loc, voix, taux = VOIX[lang]
-    if perso:
-        voix, taux = VOIX_SCENE[perso], TAUX_SCENE
+    prosodie = f'rate="{taux}"'
+    if perso == "filou":
+        loc, voix = VOIX_FILOU[lang]; prosodie = PROSODIE_FILOU
+    elif perso:
+        voix, prosodie = VOIX_SCENE[perso], f'rate="{TAUX_SCENE}"'
     paras = [p.strip() for p in texte.split("\n\n") if p.strip()]
     corps = '<break time="600ms"/>'.join(html.escape(p) for p in paras)
     return (f'<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" '
             f'xmlns:mstts="https://www.w3.org/2001/mstts" xml:lang="{loc}">'
-            f'<voice name="{voix}"><lang xml:lang="{loc}"><prosody rate="{taux}">{corps}'
+            f'<voice name="{voix}"><lang xml:lang="{loc}"><prosody {prosodie}>{corps}'
             f'</prosody></lang></voice></speak>')
 
 

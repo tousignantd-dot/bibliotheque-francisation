@@ -31,12 +31,56 @@ FEMININES = {"sylvie"}
 
 
 def scenes():
-    """Les scènes « Parler » (scenes_1.py, scenes_2.py), dans l'ordre."""
+    """Les scènes « Parler » (scenes_1.py, scenes_2.py), puis celles des enfants
+    (enfants.py, id « e-… », deux choix par tour, `enfant: True`)."""
     out = []
     for n in (1, 2):
         if (CONTENU / f"scenes_{n}.py").exists():
             out += charger(f"scenes_{n}").SCENES
+    if (CONTENU / "enfants.py").exists():
+        out += [dict(sc, enfant=True) for sc in charger("enfants").SCENES_ENFANTS]
     return out
+
+
+# ---------- le mode famille (Filou) ----------
+FILOU_GENERIQUE = {
+    "salut": {"fr": "Salut ! Moi, c'est Filou, le raton du mont Royal. On part explorer Montréal ?",
+              "en": "Hi! I'm Filou, the raccoon from Mount Royal. Shall we go explore Montreal?",
+              "es": "¡Hola! Soy Filou, el mapache del monte Royal. ¿Nos vamos a explorar Montreal?"},
+    "essaie": {"fr": "Oups ! Regarde bien, et essaie encore.",
+               "en": "Oops! Look carefully, and try again.",
+               "es": "¡Uy! Mira bien e inténtalo otra vez."},
+    "diplome": {"fr": "Bravo, explorateur ! Tu as tous tes autocollants. Ton diplôme t'attend !",
+                "en": "Well done, explorer! You have all your stickers. Your certificate is waiting!",
+                "es": "¡Bravo, explorador! Tienes todas tus pegatinas. ¡Tu diploma te espera!"},
+}
+ET_OU = {"fr": "ou", "en": "or", "es": "o"}
+
+
+def ordre_enigme(e):
+    """L'ordre d'affichage des trois réponses, fixé à la construction : la voix
+    les lit dans l'ordre où l'écran les montre. La bonne est la première du
+    contenu ; on la déplace selon le lieu, jamais au hasard d'un rechargement."""
+    k = sum(map(ord, e["lieu"])) % 3
+    o = [1, 2]; o.insert(k, 0)
+    return o
+
+
+def enfants():
+    """Les dix fiches du mode famille, avec l'énigme dans l'ordre d'affichage."""
+    if not (CONTENU / "enfants.py").exists():
+        return []
+    out = []
+    for e in charger("enfants").ENFANTS:
+        o = ordre_enigme(e)
+        g = dict(e["enigme"]); g["choix"] = [e["enigme"]["choix"][i] for i in o]; g["bonne"] = o.index(0)
+        out.append(dict(e, enigme=g))
+    return out
+
+
+def texte_enigme(e, lg):
+    c = [x[lg] for x in e["enigme"]["choix"]]
+    return f'{e["enigme"]["q"][lg]} {c[0]}, {c[1]}, {ET_OU[lg]} {c[2]} ?'.replace(" ?", " ?" if lg == "fr" else "?")
 
 
 def voix_apprenant(sc):
@@ -55,6 +99,15 @@ def extraits():
     if (CONTENU / "extras.py").exists():
         for i, m in enumerate(charger("extras").MOTS):
             t.append((f"mots/{i:02d}.mp3", "fr", m["exemple"]))
+    for e in enfants():
+        for lg in LANGUES:
+            b = f"famille/{lg}/{e['lieu']}"
+            t += [(f"{b}-r.mp3", lg, e["raconte"][lg], "filou"), (f"{b}-e.mp3", lg, texte_enigme(e, lg), "filou"),
+                  (f"{b}-b.mp3", lg, e["enigme"]["bravo"][lg], "filou"), (f"{b}-d.mp3", lg, e["defi"][lg], "filou")]
+    if enfants():
+        for k, v in FILOU_GENERIQUE.items():
+            for lg in LANGUES:
+                t.append((f"famille/{lg}/{k}.mp3", lg, v[lg], "filou"))
     for sc in scenes():
         for k, tour in enumerate(sc["tours"]):
             if "dit" in tour:

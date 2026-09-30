@@ -71,7 +71,14 @@ def donnees():
     for sc in scenes:
         sc["img"] = sc["lieu"] or sc["id"]
         sc["son"] = all((audio / f"scenes/{sc['id']}/{n}.mp3").exists() for n in noms_sons(sc))
-    return {"lieux": lieux, "circuits": ex.CIRCUITS, "pratique": ex.PRATIQUE, "mots": mots, "scenes": scenes}
+    fam = M.enfants()
+    for e in fam:
+        assert e["lieu"] in {l["id"] for l in lieux}, e["lieu"]
+        assert (M.MEDIA / "filou" / f"{e['pose']}-d.webp").exists(), f"{e['lieu']} : pose {e['pose']}"
+        e["son"] = [g for g in M.LANGUES if all((audio / f"famille/{g}/{e['lieu']}-{x}.mp3").exists() for x in "rebd")]
+    return {"lieux": lieux, "circuits": ex.CIRCUITS, "pratique": ex.PRATIQUE, "mots": mots, "scenes": scenes,
+            "famille": fam, "filou": M.FILOU_GENERIQUE,
+            "filouSons": [f"{g}/{k}" for g in M.LANGUES for k in M.FILOU_GENERIQUE if (audio / f"famille/{g}/{k}.mp3").exists()]}
 
 
 def noms_sons(sc):
@@ -99,7 +106,8 @@ def verifier_scenes(scenes, lieux):
                 assert tour["sens"].get("en") and tour["sens"].get("es"), f"{i} : sens"
             else:
                 ch = tour["choix"]
-                assert len(ch) == 3 and ch[0][2] is None and all(c[2] for c in ch[1:]), f"{i} : la bonne d'abord, une rétroaction par erreur"
+                assert len(ch) == (2 if sc.get("enfant") else 3), f"{i} : nombre de choix"
+                assert ch[0][2] is None and all(c[2] for c in ch[1:]), f"{i} : la bonne d'abord, une rétroaction par erreur"
                 assert all(all(c[2].get(g) for g in M.LANGUES) for c in ch[1:]), f"{i} : rétroaction incomplète"
 
 
@@ -153,6 +161,7 @@ PAGE = r"""<!doctype html>
 <link rel="icon" href="%BASE%icones/icone-192.png">
 <link rel="stylesheet" href="/assets/design-system/tokens/fonts.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap">
 <style>
 :root{
   --fond:#F6F1E7; --carte:#FFFFFF; --encre:#1E2733; --doux:#5D6572; --filet:#E2D9C6;
@@ -369,6 +378,93 @@ details.fichep p{margin:0;padding:0 16px 16px;line-height:1.6}
 .circuits-rangee::-webkit-scrollbar{display:none}
 @media (min-width:640px){.circuits-rangee{grid-auto-columns:46%}}
 
+/* ===== Mode famille : habit « Bonbon » (A), choisi le 30 sept. 2026 ===== */
+body.famille{--fond:#FFF6D6;--encre:#2B1B4A;--doux:#6E5F8C;--filet:#F0DFA6;--rouge:#FF4F7B;--rouge-pale:#FFE3EA;--bleu:#00897E;
+  --framb:#FF4F7B;--turq:#00B8A9;--soleil:#FFC23D;--ombre:0 4px 0 #2B1B4A;--r:24px;font-family:Fredoka,Nunito,system-ui,sans-serif}
+body.famille header.barre{background:#FF4F7B;border-bottom:0}
+body.famille .marque{color:#fff;font-weight:700}
+body.famille .marque img{width:36px;height:36px;object-fit:contain}
+body.famille .langues{border:0}
+body.famille .langues button[aria-pressed=true]{background:var(--encre)}
+body.famille nav.onglets{background:var(--encre);border-top:0}
+body.famille nav.onglets a{color:#B9AEDB;font-family:Fredoka,Nunito,sans-serif;font-weight:600}
+body.famille nav.onglets a[aria-current=page]{color:var(--soleil)}
+body.famille .bouton{border:3px solid var(--encre);box-shadow:0 4px 0 var(--encre);border-radius:18px;font-weight:700}
+body.famille .bouton.plein{background:var(--framb);border-color:var(--encre)}
+.cadre-b{background:#fff;border:3px solid var(--encre);border-radius:var(--r);box-shadow:0 4px 0 var(--encre)}
+.f-hero{display:flex;align-items:flex-end;gap:2px;margin:16px 0 8px;min-height:170px}
+.f-hero img{width:44%;max-width:190px;flex:none;margin-bottom:-8px}
+.f-bulle{padding:14px 16px;font-size:19px;line-height:1.3;font-weight:600;margin-bottom:40px;position:relative}
+.f-bulle button{margin-top:8px}
+.btn-son{display:inline-flex;align-items:center;gap:8px;border:3px solid var(--encre);background:var(--framb);color:#fff;border-radius:999px;
+  padding:8px 16px;font:700 17px Fredoka,Nunito,sans-serif;box-shadow:0 4px 0 var(--encre);min-height:48px}
+.btn-son svg{width:18px;height:18px;fill:#fff}
+.btn-son.turq{background:var(--turq)}
+.btn-son:active,.rep-f button:active,body.famille .bouton:active{transform:translateY(3px);box-shadow:0 1px 0 var(--encre)}
+.f-prog{display:flex;align-items:center;gap:10px;padding:12px 14px;margin:12px 0;text-decoration:none;color:inherit;font-weight:600}
+.f-prog .jauge{flex:1;height:18px;border:3px solid var(--encre);border-radius:999px;background:#FFE39A;overflow:hidden}
+.f-prog .jauge i{display:block;height:100%;background:var(--turq)}
+.f-lieux{display:grid;gap:14px;grid-template-columns:1fr}
+@media (min-width:640px){.f-lieux{grid-template-columns:1fr 1fr}}
+.f-lieu{display:flex;gap:12px;align-items:center;padding:8px;text-decoration:none;color:inherit;position:relative}
+.f-lieu>img{width:120px;aspect-ratio:3/2;object-fit:cover;border-radius:16px;flex:none}
+.f-lieu b{display:block;font-size:19px;line-height:1.15}
+.f-lieu small{color:var(--doux);font-size:14.5px}
+.f-lieu .gagne{position:absolute;right:-6px;top:-10px;width:52px;transform:rotate(10deg)}
+.f-titre{font:700 26px/1.1 Fredoka,Nunito,sans-serif;margin:26px 0 12px}
+.f-raconte{display:flex;gap:8px;align-items:flex-start;margin:14px 0}
+.f-raconte img{width:96px;flex:none}
+.f-raconte .f-bulle{margin:0;flex:1;font-size:17.5px}
+.f-enigme{background:#D8F6F2;border:3px solid var(--encre);border-radius:var(--r);padding:14px;margin:26px 0 14px;position:relative}
+.f-enigme>img{position:absolute;right:6px;top:-40px;width:92px}
+.f-enigme h3{margin:0;font:700 24px Fredoka,sans-serif;color:#00796F}
+.f-enigme .q{margin:6px 90px 10px 0;font-size:18px;font-weight:600;line-height:1.3}
+.rep-f{display:grid;gap:9px;margin-top:10px}
+.rep-f button{font:700 18px Fredoka,Nunito,sans-serif;border:3px solid var(--encre);background:#fff;color:var(--encre);border-radius:18px;
+  padding:12px;box-shadow:0 4px 0 var(--encre);min-height:54px}
+.rep-f button.ok{background:var(--turq);color:#fff}
+.rep-f button.non{background:#FFE3EA;border-color:#C98AA0;box-shadow:0 4px 0 #C98AA0;color:#8A5068;animation:secoue .35s}
+@keyframes secoue{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.f-bravo{display:flex;gap:10px;align-items:center;margin-top:12px;font-size:17px;font-weight:600}
+.f-bravo img{width:80px;flex:none}
+.f-defi{background:#FFF0BF;border:3px dashed #E0A21C;border-radius:var(--r);padding:14px;margin:14px 0}
+.f-defi h3{margin:0 0 4px;font:700 20px Fredoka,sans-serif;color:#B7791F}
+.f-defi p{margin:0 0 8px;font-size:17px}
+.f-gagne{text-align:center;padding:16px;margin:14px 0}
+.f-gagne h3{margin:6px 0 0;font:700 21px Fredoka,sans-serif}
+.autoc{display:inline-grid;place-items:center;position:relative;width:118px;aspect-ratio:1;border-radius:50%;background:#fff;
+  border:5px solid var(--soleil);box-shadow:0 4px 0 #E0A21C}
+.autoc img{width:80%}
+.autoc em{position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);background:var(--framb);color:#fff;font:700 12px Fredoka,sans-serif;
+  font-style:normal;border-radius:999px;padding:2px 9px;white-space:nowrap;max-width:130px;overflow:hidden;text-overflow:ellipsis;border:2px solid var(--encre)}
+.autoc.vide{background:#FFF0BF;border:3px dashed #E8C765;box-shadow:none}
+.autoc.vide span{font:700 30px Fredoka,sans-serif;color:#C9A94A}
+.autoc.nouveau{animation:colle .6s cubic-bezier(.3,1.6,.5,1)}
+@keyframes colle{0%{transform:scale(.2) rotate(-40deg);opacity:0}100%{transform:scale(1) rotate(0)}}
+.carnet-f{display:grid;grid-template-columns:repeat(2,1fr);gap:26px 12px;justify-items:center;margin:18px 0 26px}
+@media (min-width:520px){.carnet-f{grid-template-columns:repeat(3,1fr)}}
+.carnet-f a{text-decoration:none;color:inherit}
+.carnet-f a:nth-child(3n+1) .autoc:not(.vide){transform:rotate(-7deg)}.carnet-f a:nth-child(3n+2) .autoc:not(.vide){transform:rotate(5deg)}
+.f-diplome{padding:16px;margin:10px 0 24px;text-align:center}
+.f-diplome input{width:100%;max-width:320px;font:600 20px Fredoka,sans-serif;border:3px solid var(--encre);border-radius:14px;padding:10px 12px;margin:10px 0;text-align:center}
+.bascule-f{display:flex;gap:14px;align-items:center;padding:12px 14px;margin:14px 0;text-decoration:none;color:#2B1B4A;
+  background:#FFF6D6;border:3px solid #2B1B4A;border-radius:22px;box-shadow:0 4px 0 #2B1B4A;font-family:Fredoka,Nunito,sans-serif}
+.bascule-f img{width:74px;flex:none}
+.bascule-f b{display:block;font-size:20px;font-weight:700;color:#FF4F7B}
+.bascule-f small{font-size:15px;color:#6E5F8C}
+.lien-grands{display:block;text-align:center;font-weight:600;margin:10px 0 24px;color:var(--doux)}
+#diplome{display:none}
+@media print{
+  body.imprime *{visibility:hidden}
+  body.imprime #diplome,body.imprime #diplome *{visibility:visible}
+  body.imprime #diplome{display:block;position:fixed;inset:0;padding:40px;text-align:center;font-family:Fredoka,Nunito,sans-serif;color:#2B1B4A}
+  body.imprime nav.onglets{display:none}
+  #diplome .cadre{border:8px solid #FF4F7B;border-radius:30px;padding:36px 28px;outline:4px solid #00B8A9;outline-offset:6px}
+  #diplome h1{font-size:40px;margin:10px 0 0}#diplome .nom{font-size:46px;color:#FF4F7B;margin:18px 0}
+  #diplome .st{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:20px 0}#diplome .st img{width:70px}
+  #diplome img.f{width:170px}
+}
+
 /* Choix de la langue */
 .bienvenue{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:24px 16px}
 .bienvenue img{border-radius:var(--r);margin:0 auto 20px;width:100%;max-width:520px;box-shadow:var(--ombre)}
@@ -385,6 +481,7 @@ details.fichep p{margin:0;padding:0 16px 16px;line-height:1.6}
 <div id="app"></div>
 <nav class="onglets" id="onglets" hidden><div class="col"></div></nav>
 <audio id="lecteur" preload="none"></audio>
+<div id="diplome" aria-hidden="true"></div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const D = /*DONNEES*/;
@@ -475,19 +572,48 @@ const T = {
   mesConv: {fr: 'Mes conversations', en: 'My conversations', es: 'Mis conversaciones'},
   etoilesTot: {fr: 'étoiles', en: 'stars', es: 'estrellas'},
   circuitsTous: {fr: 'Tous les circuits', en: 'All walks', es: 'Todos los recorridos'},
+  famBouton: {fr: 'En famille avec Filou', en: 'Family mode with Filou', es: 'En familia con Filou'},
+  famSous: {fr: 'Des énigmes, des défis et des autocollants pour les 6 à 11 ans.', en: 'Riddles, challenges and stickers for kids aged 6 to 11.', es: 'Adivinanzas, retos y pegatinas para niños de 6 a 11 años.'},
+  modeGrands: {fr: 'Revenir au mode adulte', en: 'Back to grown-up mode', es: 'Volver al modo adulto'},
+  explorer: {fr: 'Explorer', en: 'Explore', es: 'Explorar'},
+  carnetOnglet: {fr: 'Carnet', en: 'Stickers', es: 'Álbum'},
+  parents: {fr: 'Parents', en: 'Parents', es: 'Padres'},
+  monCarnet: {fr: 'Mon carnet d’explorateur', en: 'My explorer sticker book', es: 'Mi álbum de explorador'},
+  ecouteFilou: {fr: 'Écoute Filou', en: 'Listen to Filou', es: 'Escucha a Filou'},
+  enigmeT: {fr: 'Énigme !', en: 'Riddle!', es: '¡Adivinanza!'},
+  ecouterQ: {fr: 'Écoute la question', en: 'Hear the question', es: 'Escucha la pregunta'},
+  defiT: {fr: 'Défi', en: 'Challenge', es: 'Reto'},
+  ecouterD: {fr: 'Écoute le défi', en: 'Hear the challenge', es: 'Escucha el reto'},
+  tonAutoc: {fr: 'Ton autocollant', en: 'Your sticker', es: 'Tu pegatina'},
+  gagneA: {fr: 'Résous l’énigme pour le gagner !', en: 'Solve the riddle to win it!', es: '¡Resuelve la adivinanza para ganarla!'},
+  gagne: {fr: 'Il est dans ton carnet !', en: 'It’s in your sticker book!', es: '¡Ya está en tu álbum!'},
+  ficheGrands: {fr: 'La fiche des grands', en: 'The grown-ups’ page', es: 'La página de los adultos'},
+  parlerEnfants: {fr: 'Parle français comme un grand !', en: 'Speak French like a pro!', es: '¡Habla francés como un grande!'},
+  parlerEnfantsS: {fr: 'Commande ta crème glacée, dis bonjour au marchand…', en: 'Order your ice cream, say hello at the market…', es: 'Pide tu helado, saluda al vendedor…'},
+  toi: {fr: 'Toi', en: 'You', es: 'Tú'},
+  diplomeT: {fr: 'Ton diplôme d’explorateur', en: 'Your explorer certificate', es: 'Tu diploma de explorador'},
+  prenom: {fr: 'Ton prénom', en: 'Your first name', es: 'Tu nombre'},
+  imprimer: {fr: 'Imprimer mon diplôme', en: 'Print my certificate', es: 'Imprimir mi diploma'},
+  diplomeH: {fr: 'Diplôme d’explorateur de Montréal', en: 'Montreal Explorer Certificate', es: 'Diploma de explorador de Montreal'},
+  diplomeTx: {fr: 'a trouvé les dix autocollants de Filou.', en: 'found all ten of Filou’s stickers.', es: 'encontró las diez pegatinas de Filou.'},
+  prenomVie: {fr: 'Ton prénom reste dans ce téléphone.', en: 'Your name stays on this phone.', es: 'Tu nombre se queda en este teléfono.'},
+  encore: {fr: n => `Encore ${n} autocollant${n > 1 ? 's' : ''} et ton diplôme est à toi !`, en: n => `${n} more sticker${n > 1 ? 's' : ''} and your certificate is yours!`, es: n => `¡${n} pegatina${n > 1 ? 's' : ''} más y el diploma es tuyo!`},
   aVerifier: {fr: 'Heures et prix changent : vérifiez avant de vous déplacer.', en: 'Hours and prices change: check before you go.', es: 'Horarios y precios cambian: verifique antes de ir.'},
 };
 
 // ---------- état (localStorage seulement) ----------
 const CLE = 'montreal-poche';
-let S = {lang: null, tampons: {}, filtre: 'tout', pres: false, vit: 1, scenes: {}, trad: true};
+let S = {lang: null, tampons: {}, filtre: 'tout', pres: false, vit: 1, scenes: {}, trad: true, famille: false, autoc: {}, prenom: ''};
 try { Object.assign(S, JSON.parse(localStorage.getItem(CLE) || '{}')); } catch (e) {}
 function garder() { try { localStorage.setItem(CLE, JSON.stringify(S)); } catch (e) {} }
 const t = k => (T[k] && (T[k][S.lang] ?? T[k].fr)) ?? k;
 const L = o => o ? (o[S.lang] ?? o.fr) : '';
 const E = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
 const byId = Object.fromEntries(D.lieux.map(l => [l.id, l]));
-const sceneDuLieu = Object.fromEntries(D.scenes.filter(sc => sc.lieu).map(sc => [sc.lieu, sc]));
+const sceneDuLieu = Object.fromEntries(D.scenes.filter(sc => sc.lieu && !sc.enfant).map(sc => [sc.lieu, sc]));
+const sceneEnfantDuLieu = Object.fromEntries(D.scenes.filter(sc => sc.lieu && sc.enfant).map(sc => [sc.lieu, sc]));
+const famById = Object.fromEntries(D.famille.map(e => [e.lieu, e]));
+const scenesDuMode = () => D.scenes.filter(sc => !!sc.enfant === !!S.famille);
 const img = id => `${MEDIA}lieux/${id}.jpg?v=${V}`;
 const app = document.getElementById('app');
 let position = null;
@@ -511,6 +637,7 @@ function entete(retour) {
   const lg = LANGS.map(g => `<button aria-pressed="${g === S.lang}" data-lang="${g}" lang="${LOC[g]}">${g.toUpperCase()}</button>`).join('');
   const gauche = retour
     ? `<button class="retour" data-retour="${E(retour)}">${IC.fleche}${t('retour')}</button>`
+    : S.famille ? `<a class="marque" href="#"><img src="${MEDIA}filou/salut-d.webp" alt=""><span>Filou</span></a>`
     : `<a class="marque" href="#"><i class="pt"></i><span>${t('titre')}</span></a>`;
   return `<header class="barre"><div class="col">${gauche}<div class="langues" role="group" aria-label="Langue · Language · Idioma">${lg}</div></div></header>`;
 }
@@ -518,7 +645,7 @@ function onglets(actif) {
   const nav = document.getElementById('onglets');
   nav.hidden = false;
   nav.querySelector('.col').innerHTML = [['', 'decouvrir'], ['#carte', 'carte'], ['#parler', 'parler'], ['#passeport', 'passeport'], ['#plus', 'plus']]
-    .map(([h, k]) => `<a href="${h || '#'}" ${actif === k ? 'aria-current="page"' : ''}>${IC[k]}<span>${t(k)}</span></a>`).join('');
+    .map(([h, k]) => `<a href="${h || '#'}" ${actif === k ? 'aria-current="page"' : ''}>${IC[k]}<span>${t(S.famille ? ({decouvrir: 'explorer', passeport: 'carnetOnglet', plus: 'parents'}[k] || k) : k)}</span></a>`).join('');
 }
 function toast(msg) {
   const d = document.createElement('div'); d.className = 'toast'; d.textContent = msg; d.setAttribute('role', 'status');
@@ -596,6 +723,7 @@ function vueAccueil() {
     + `<button class="pres" aria-pressed="${!!(S.pres && position)}" data-pres="1">${t('pres')}</button>`;
   app.innerHTML = entete() + `<main class="col">
     <section class="hero"><img src="${img('accueil')}" alt="" width="1200" height="800"><div class="txt"><h1>${t('titre')}</h1><p>${t('accroche')}</p></div></section>
+    ${D.famille.length ? `<button class="bascule-f" data-famille="1" style="width:100%;text-align:left"><img src="${MEDIA}filou/salut-d.webp" alt=""><span><b>${t('famBouton')}</b><small>${t('famSous')}</small></span></button>` : ''}
     <a class="progres" href="#passeport">${anneau(n, D.lieux.length)}<span><b>${t('monPass')}</b><small>${n} / ${D.lieux.length} ${t('tampons')}${palier() ? ' — ' + E(palier()) : ''}</small></span></a>
     <h2 class="sec">${t('circuits')}</h2>
     <div class="circuits-rangee">${D.circuits.map(carteCircuit).join('')}</div>
@@ -713,9 +841,10 @@ function vueCarte(cible) {
   carteObj = L_.map('carte', {zoomControl: true}).setView([45.515, -73.585], 12);
   fond(carteObj);
   const marq = {};
-  D.lieux.forEach(l => { marq[l.id] = L_.marker(l.geo, {icon: epingle(l.cat)}).addTo(carteObj).bindPopup(pop(l)); });
+  const visibles = S.famille ? D.lieux.filter(l => famById[l.id]) : D.lieux;
+  visibles.forEach(l => { marq[l.id] = L_.marker(l.geo, {icon: epingle(l.cat)}).addTo(carteObj).bindPopup(pop(l)); });
   if (cible && marq[cible]) { carteObj.setView(byId[cible].geo, 15); marq[cible].openPopup(); }
-  else carteObj.fitBounds(D.lieux.map(l => l.geo), {padding: [30, 30]});
+  else carteObj.fitBounds(visibles.map(l => l.geo), {padding: [30, 30]});
   if (position) L_.circleMarker(position, {radius: 8, color: '#fff', weight: 3, fillColor: '#1A73E8', fillOpacity: 1}).addTo(carteObj);
 }
 
@@ -760,8 +889,8 @@ function vuePasseport() {
     ${p ? `<p class="palier">${E(p)}</p>` : `<p class="sous">${t('passInvite')}</p>`}
     <div class="grille">${D.lieux.map(l => `<a class="tampon ${S.tampons[l.id] ? '' : 'vide'}" href="#lieu/${l.id}">${tampon(l, S.tampons[l.id])}</a>`).join('')}</div>
     </section>
-    <h2 class="sec">${t('mesConv')} · ${D.scenes.reduce((a, sc) => a + ((S.scenes[sc.id] || {}).etoiles || 0), 0)} / ${D.scenes.length * 3} ${t('etoilesTot')}</h2>
-    <div class="liste">${D.scenes.map(carteScene).join('')}</div><p class="pied">${t('vie')}</p></main>`;
+    <h2 class="sec">${t('mesConv')} · ${scenesDuMode().reduce((a, sc) => a + ((S.scenes[sc.id] || {}).etoiles || 0), 0)} / ${scenesDuMode().length * 3} ${t('etoilesTot')}</h2>
+    <div class="liste">${scenesDuMode().map(carteScene).join('')}</div><p class="pied">${t('vie')}</p></main>`;
 }
 
 function vuePlus() {
@@ -802,13 +931,24 @@ function inviteScene(sc) {
 }
 function vueParler() {
   onglets('parler');
-  app.innerHTML = entete() + `<main class="col"><h2 class="sec" style="margin-top:18px">${t('parlerTitre')}</h2><p class="intro">${t('parlerIntro')}</p>
-    <div class="liste">${D.scenes.map(carteScene).join('')}</div></main>`;
+  app.innerHTML = entete() + `<main class="col"><h2 class="sec" style="margin-top:18px">${t(S.famille ? 'parlerEnfants' : 'parlerTitre')}</h2>
+    <p class="intro">${t(S.famille ? 'parlerEnfantsS' : 'parlerIntro')}</p>
+    <div class="liste">${scenesDuMode().map(carteScene).join('')}</div></main>`;
 }
 function melange(n, graine) {
   const a = [...Array(n).keys()]; let x = graine;
   for (let i = n - 1; i > 0; i--) { x = (x * 9301 + 49297) % 233280; const j = Math.floor(x / 233280 * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
   return a;
+}
+function texteScene(sc, n) {
+  const m = n.match(/^([tp])(\d+)(c?)$/), k = +m[2];
+  return m[1] === 'p' ? sc.phrases[k][0] : m[3] ? sc.tours[k].choix[0][0] : sc.tours[k].dit;
+}
+function direScene(sc, n, lent) {
+  if (sc.son) return jouerSon(sonScene(sc.id, n), lent);
+  arreterSon();
+  if (!window.speechSynthesis) return;
+  const u = new SpeechSynthesisUtterance(texteScene(sc, n)); u.lang = 'fr-CA'; u.rate = lent ? 0.8 : S.vit; speechSynthesis.speak(u);
 }
 function jouerSon(url, lent) {
   arreterSon();
@@ -824,7 +964,7 @@ function avancer() {
   }
   SC.attente = SC.k < sc.tours.length ? 'choix' : 'fin';
   const dernier = SC.log[SC.log.length - 1];
-  if (dernier && dernier.qui === 'perso') jouerSon(sonScene(sc.id, `t${dernier.k}`));
+  if (dernier && dernier.qui === 'perso') direScene(sc, `t${dernier.k}`);
   if (SC.attente === 'fin') {
     const n = SC.erreurs === 0 ? 3 : SC.erreurs <= 2 ? 2 : 1;
     SC.etoiles = n;
@@ -842,7 +982,7 @@ function bulle(sc, e) {
       <span class="rej"><button data-son="t${e.k}">${t('reecouter')}</button><button data-son="t${e.k}" data-lent="1">${t('lent')}</button></span></div>`;
   }
   const c = sc.tours[e.k].choix[0];
-  return `<div class="bulle moi"><span class="qui">${t('vous')}</span><span class="fr" lang="fr-CA">${E(c[0])}</span>
+  return `<div class="bulle moi"><span class="qui">${t(sc.enfant ? 'toi' : 'vous')}</span><span class="fr" lang="fr-CA">${E(c[0])}</span>
     ${tr ? `<span class="tr">${E(c[1][S.lang])}</span>` : ''}
     <span class="rej"><button data-son="t${e.k}c">${t('reecouter')}</button><button data-son="t${e.k}c" data-lent="1">${t('lent')}</button></span></div>`;
 }
@@ -856,7 +996,7 @@ function vueScene(id) {
     bas = `<button class="bouton plein" data-scene="go" style="width:100%;margin:8px 0 24px">${t('commencer')}</button>`;
   } else if (SC.attente === 'choix') {
     const tour = sc.tours[SC.k];
-    const ordre = melange(3, SC.k * 7 + sc.id.length);
+    const ordre = melange(tour.choix.length, SC.k * 7 + sc.id.length);
     const retro = SC.faux.length ? `<div class="retro" role="status">${E(L(tour.choix[SC.faux[SC.faux.length - 1]][2]))} ${t('reessayer')}</div>` : '';
     bas = retro + `<div class="choix-scene"><p class="consigne">${t('repondre')}</p>${ordre.map(i => {
       const c = tour.choix[i];
@@ -896,11 +1036,111 @@ function actionScene(b) {
   else if (b.dataset.choix !== undefined) {
     const i = +b.dataset.choix;
     if (i === 0) {
-      SC.log.push({qui: 'moi', k: SC.k}); jouerSon(sonScene(sc.id, `t${SC.k}c`));
+      SC.log.push({qui: 'moi', k: SC.k}); direScene(sc, `t${SC.k}c`);
       SC.k++; SC.faux = []; SC.attente = 'repete';
     } else { SC.faux.push(i); SC.erreurs++; }
   }
   vueScene(sc.id);
+}
+
+// ---------- mode famille : Filou ----------
+// Un habit (body.famille, l'habit « Bonbon ») et des vues à part ; les
+// données restent celles du guide. Rien ne quitte le téléphone : les
+// autocollants et le prénom du diplôme vivent dans le localStorage.
+const sonFam = (lieu, x) => `${MEDIA}audio/famille/${S.lang}/${lieu}-${x}.mp3?v=${V}`;
+const sonFamG = k => `${MEDIA}audio/famille/${S.lang}/${k}.mp3?v=${V}`;
+const fil = pose => `${MEDIA}filou/${pose}-d.webp`;
+function voixTel(texte, loc) {
+  if (!window.speechSynthesis || !texte) return;
+  const u = new SpeechSynthesisUtterance(texte); u.lang = loc; speechSynthesis.speak(u);
+}
+function direFam(url, texte, existe) {
+  // Le son de Filou quand il a été produit, sinon la voix du téléphone.
+  arreterSon();
+  if (existe) { lecteur.src = url; lecteur.playbackRate = 1; lecteur.play().catch(() => voixTel(texte, LOC[S.lang])); }
+  else voixTel(texte, LOC[S.lang]);
+}
+const aSonFam = () => { const e = famById[FE && FE.id]; return !!e && e.son.includes(S.lang); };
+const aSonG = k => D.filouSons.includes(`${S.lang}/${k}`);
+function autoc(e, date, nouveau) {
+  return date ? `<span class="autoc${nouveau ? ' nouveau' : ''}"><img src="${fil(e.pose)}" alt=""><em>${E(L(e.autocollant))}</em></span>`
+              : `<span class="autoc vide"><span>?</span></span>`;
+}
+function famAccueil() {
+  onglets('decouvrir');
+  const n = D.famille.filter(e => S.autoc[e.lieu]).length, tot = D.famille.length;
+  app.innerHTML = entete() + `<main class="col">
+    <section class="f-hero"><img src="${fil('salut')}" alt="">
+      <div class="f-bulle cadre-b">${E(L(D.filou.salut))}<br><button class="btn-son" data-fsong="salut">${IC.jouer}${t('ecouteFilou')}</button></div></section>
+    <a class="f-prog cadre-b" href="#passeport"><span>${t('carnetOnglet')}</span><span class="jauge"><i style="width:${100 * n / tot}%"></i></span><b>${n} / ${tot}</b></a>
+    <h2 class="f-titre">${t('explorer')}</h2>
+    <div class="f-lieux">${D.famille.map(e => { const l = byId[e.lieu]; return `<a class="f-lieu cadre-b" href="#lieu/${e.lieu}"><img src="${img(e.lieu)}" alt="" loading="lazy">
+      <span><b>${E(L(l.nom))}</b><small>${E(L(e.autocollant))}</small></span>${S.autoc[e.lieu] ? `<img class="gagne" src="${fil(e.pose)}" alt="">` : ''}</a>`; }).join('')}</div>
+    <h2 class="f-titre">${t('parlerEnfants')}</h2>
+    <div class="liste">${scenesDuMode().map(carteScene).join('')}</div>
+    <button class="lien-grands" data-famille="0" style="border:0;background:none;width:100%;font:inherit;text-decoration:underline">${t('modeGrands')}</button></main>`;
+}
+let FE = null;   // la fiche enfant en cours : {id, faux: [], nouveau}
+function famLieu(id) {
+  const e = famById[id], l = byId[id];
+  onglets(null);
+  if (!FE || FE.id !== id) FE = {id, faux: [], nouveau: false};
+  const g = e.enigme, fait = !!S.autoc[id];
+  const reps = g.choix.map((c, i) => {
+    const cls = fait && i === g.bonne ? 'ok' : FE.faux.includes(i) ? 'non' : '';
+    return `<button data-frep="${i}" class="${cls}" ${fait || FE.faux.includes(i) ? 'disabled' : ''}>${E(L(c))}</button>`;
+  }).join('');
+  const sc = sceneEnfantDuLieu[id];
+  app.innerHTML = entete('#') + `<main class="col">
+    <div class="lieu-img"><img src="${img(id)}" alt="" width="1200" height="800"></div>
+    <h1 class="f-titre" style="font-size:30px;margin:16px 0 4px">${E(L(l.nom))}</h1>
+    <div class="f-raconte"><img src="${fil('raconte')}" alt=""><div class="f-bulle cadre-b">${E(L(e.raconte))}<br>
+      <button class="btn-son" data-fson="r">${IC.jouer}${t('ecouteFilou')}</button></div></div>
+    <section class="f-enigme"><img src="${fil(fait ? 'bravo' : 'loupe')}" alt="">
+      <h3>${t('enigmeT')}</h3><p class="q">${E(L(g.q))}</p>
+      <button class="btn-son turq" data-fson="e">${IC.jouer}${t('ecouterQ')}</button>
+      <div class="rep-f">${reps}</div>
+      ${fait ? `<div class="f-bravo"><img src="${fil('bravo')}" alt=""><span>${E(L(g.bravo))}</span></div>` : ''}</section>
+    <section class="f-defi"><h3>${t('defiT')}</h3><p>${E(L(e.defi))}</p><button class="btn-son" data-fson="d">${IC.jouer}${t('ecouterD')}</button></section>
+    <section class="f-gagne cadre-b">${autoc(e, S.autoc[id], FE.nouveau)}<h3>${fait ? t('gagne') : t('gagneA')}</h3></section>
+    ${sc ? `<a class="invite" href="#scene/${sc.id}"><span><b>${t('parlerEnfants')}</b><small>${E(L(sc.titre))}</small></span><span class="fl">→</span></a>` : ''}
+    <a class="lien-grands" href="#grand/${id}">${t('ficheGrands')} →</a></main>`;
+  if (!FE.nouveau) window.scrollTo(0, 0);
+}
+function famRepondre(i) {
+  const e = famById[FE.id];
+  if (i === e.enigme.bonne) {
+    S.autoc[e.lieu] = new Date().toISOString(); garder(); FE.nouveau = true;
+    direFam(sonFam(e.lieu, 'b'), L(e.enigme.bravo), aSonFam());
+    const y = window.scrollY; famLieu(e.lieu); window.scrollTo(0, y);
+    if (D.famille.every(x => S.autoc[x.lieu])) setTimeout(() => toast(L(D.filou.diplome)), 1200);
+  } else {
+    FE.faux.push(i); direFam(sonFamG('essaie'), L(D.filou.essaie), aSonG('essaie'));
+    const y = window.scrollY; famLieu(e.lieu); window.scrollTo(0, y);
+  }
+}
+function famCarnet() {
+  onglets('passeport');
+  const n = D.famille.filter(e => S.autoc[e.lieu]).length, tot = D.famille.length;
+  const dip = n >= tot
+    ? `<section class="f-diplome cadre-b"><img src="${fil('bravo')}" alt="" style="width:120px"><h2 class="f-titre" style="margin:6px 0">${t('diplomeT')}</h2>
+        <input id="prenom" value="${E(S.prenom)}" placeholder="${t('prenom')}" autocomplete="off" maxlength="30"><br>
+        <button class="btn-son" data-imprimer="1">${t('imprimer')}</button><p style="color:var(--doux);font-size:14px">${t('prenomVie')}</p></section>`
+    : `<section class="f-diplome cadre-b"><img src="${fil('surprise')}" alt="" style="width:110px"><h3 class="f-titre" style="font-size:21px;margin:6px 0 0">${E(T.encore[S.lang](tot - n))}</h3></section>`;
+  app.innerHTML = entete() + `<main class="col"><h2 class="f-titre">${t('monCarnet')}</h2>
+    <a class="f-prog cadre-b" href="#"><span>${n} / ${tot}</span><span class="jauge"><i style="width:${100 * n / tot}%"></i></span></a>
+    <div class="carnet-f">${D.famille.map(e => `<a href="#lieu/${e.lieu}">${autoc(e, S.autoc[e.lieu])}</a>`).join('')}</div>${dip}</main>`;
+}
+function imprimerDiplome() {
+  const d = document.getElementById('diplome');
+  d.innerHTML = `<div class="cadre"><img class="f" src="${fil('bravo')}" alt=""><h1>${t('diplomeH')}</h1>
+    <div class="nom">${E(S.prenom || '…')}</div><p style="font-size:22px">${t('diplomeTx')}</p>
+    <div class="st">${D.famille.map(e => `<img src="${fil(e.pose)}" alt="">`).join('')}</div>
+    <p>${new Date().toLocaleDateString(LOC[S.lang], {day: 'numeric', month: 'long', year: 'numeric'})} · Filou</p></div>`;
+  document.body.classList.add('imprime');
+  const fin = () => { document.body.classList.remove('imprime'); window.removeEventListener('afterprint', fin); };
+  window.addEventListener('afterprint', fin);
+  setTimeout(() => window.print(), 300);
 }
 
 // ---------- routeur ----------
@@ -910,9 +1150,15 @@ function route() {
   document.documentElement.lang = LOC[S.lang];
   document.title = t('titre');
   const [v, a] = location.hash.slice(1).split('/');
-  if (v !== 'lieu' && v !== 'scene') arreterSon();
+  if (v !== 'lieu' && v !== 'scene' && v !== 'grand') arreterSon();
   if (v !== 'scene') SC = null;
-  ({lieu: () => vueLieu(a), carte: () => vueCarte(a), circuits: vueCircuits, circuit: () => vueCircuit(a),
+  if (v !== 'lieu') FE = null;
+  document.body.classList.toggle('famille', !!S.famille);
+  if (S.famille) {
+    const f = {'': famAccueil, lieu: () => famById[a] ? famLieu(a) : vueLieu(a), passeport: famCarnet}[v || ''];
+    if (f) return f();
+  }
+  ({lieu: () => vueLieu(a), grand: () => vueLieu(a), carte: () => vueCarte(a), circuits: vueCircuits, circuit: () => vueCircuit(a),
     parler: vueParler, scene: () => vueScene(a),
     passeport: vuePasseport, plus: vuePlus, pratique: vuePratique, mots: vueMots}[v] || vueAccueil)();
 }
@@ -920,6 +1166,7 @@ window.addEventListener('hashchange', route);
 
 document.addEventListener('change', ev => {
   if (ev.target.id === 'trad') { S.trad = ev.target.checked; garder(); if (SC) vueScene(SC.id); }
+  if (ev.target.id === 'prenom') { S.prenom = ev.target.value.trim().slice(0, 30); garder(); }
 });
 document.addEventListener('click', ev => {
   const b = ev.target.closest('button'); if (!b) return;
@@ -943,8 +1190,15 @@ document.addEventListener('click', ev => {
     garder(); const joue = enCours; vueLieu(id); window.scrollTo(0, y); enCours = joue; majEcoute();
   }
   else if (b.dataset.mot !== undefined) direMot(+b.dataset.mot);
+  else if (b.dataset.famille) { S.famille = b.dataset.famille === '1'; garder(); location.hash = ''; route(); window.scrollTo(0, 0); }
+  else if (b.dataset.fsong) direFam(sonFamG(b.dataset.fsong), L(D.filou[b.dataset.fsong]), aSonG(b.dataset.fsong));
+  else if (FE && b.dataset.fson) { const e = famById[FE.id], x = b.dataset.fson;
+    const txt = x === 'r' ? L(e.raconte) : x === 'e' ? `${L(e.enigme.q)} ${e.enigme.choix.map(L).join(', ')}` : x === 'b' ? L(e.enigme.bravo) : L(e.defi);
+    direFam(sonFam(e.lieu, x), txt, aSonFam()); }
+  else if (FE && b.dataset.frep !== undefined) famRepondre(+b.dataset.frep);
+  else if (b.dataset.imprimer) imprimerDiplome();
   else if (SC && (b.dataset.scene || b.dataset.choix !== undefined)) actionScene(b);
-  else if (SC && b.dataset.son) jouerSon(sonScene(SC.id, b.dataset.son), !!b.dataset.lent);
+  else if (SC && b.dataset.son) direScene(D.scenes.find(x => x.id === SC.id), b.dataset.son, !!b.dataset.lent);
 });
 
 route();

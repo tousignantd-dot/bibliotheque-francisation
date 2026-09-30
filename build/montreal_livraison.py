@@ -39,6 +39,7 @@ def main():
     sons = sum((audio / g / f"{l['id']}.mp3").exists() for l in lieux for g in M.LANGUES)
     mots_sons = sum((audio / "mots" / f"{i:02d}.mp3").exists() for i in range(len(ex.MOTS)))
     scenes = M.scenes()
+    fam = M.enfants()
     a_verifier = [(l, v) for l in lieux for v in l.get("verifier", [])]
     a_verifier += [({"nom": {"fr": "Circuits et guide pratique"}}, v) for v in getattr(ex, "VERIFIER", [])]
 
@@ -126,6 +127,16 @@ passeport, phrases à retenir, note culturelle. Chaque lieu qui a sa scène l'of
 circuits sont passés dans « Découvrir ».</p>
 <p class="note">Pas de reconnaissance vocale pour l'instant : l'apprenant dit la phrase sans être écouté — rien ne part du téléphone.
 L'étage suivant, « Parler librement » avec l'assistant, reprendrait la route et la vente de Compostelle.</p>
+
+<h2>« En famille avec Filou » — le pilote, 30 septembre 2026</h2>
+<p>Toutes les recommandations de la proposition, et l'habit A « Bonbon ». Un bouton sur l'accueil bascule l'application : Filou, le raton
+du mont Royal, guide les 6 à 11 ans dans {len(fam)} lieux — il raconte, pose une énigme qui se résout en regardant le lieu (vérifiée en
+ligne, lieu par lieu), lance un défi ; la bonne réponse colle un autocollant dans le carnet, et le carnet complet donne un diplôme à
+imprimer (le prénom reste dans le téléphone). Quatre scènes « Parle français comme un grand ! » à deux choix. La carte n'a plus que les
+dix lieux, et « La fiche des grands » reste à un geste.</p>
+<p class="note"><b>Les voix de Filou ne sont pas encore produites</b> : Azure refuse la clé depuis le 30 septembre (401, « invalid
+subscription key »), alors qu'elle servait une heure plus tôt. D'ici là, la voix du téléphone lit tout. Une fois la clé réglée :
+<code>python3 build/montreal_audio.py</code> fait les 159 sons qui manquent, puis <code>python3 build/montreal_app.py</code>.</p>
 
 <h2>Décidé à votre place</h2>
 <p class="note">Vous étiez parti ; j'ai pris la recommandation chaque fois. Tout se renverse sans rien casser.</p>
