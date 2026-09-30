@@ -28,7 +28,7 @@ DECISIONS = [
     ("Le côté ludique", "Un passeport à tampons, comme la credencial : l'utilisateur tamponne lui-même le lieu visité (« J'y suis allé »), sans contrôle de position."),
     ("La carte", "Leaflet et OpenStreetMap, chargés en ligne. « Autour de moi » trie les lieux par distance ; la position ne quitte jamais le téléphone."),
     ("Les couleurs", "Crème, encre et rouge — le rouge de la croix du drapeau de Montréal. Chaque genre de lieu a sa couleur ET son mot."),
-    ("Pas encore en ligne", "Tout est commité, rien n'est poussé : la mise en ligne attend votre accord."),
+    ("En ligne", "Mise en ligne le 30 septembre 2026, à votre demande. Page non indexée (noindex) et liée de nulle part : on y entre par l'adresse ou le code QR."),
 ]
 
 
@@ -104,8 +104,7 @@ Compostelle : des croquis de carnet de voyage, une voix qui guide, un passeport 
   <div><b>{len(ex.MOTS)}</b><span>mots d'ici ({mots_sons} lus)</span></div>
 </div>
 <div class="qr">{qr_svg(URL, cote=200)}
-  <div><p style="margin:0 0 6px"><b>Sur le téléphone, une fois mise en ligne</b> — le code QR mène à
-  <code>{E(URL)}</code>. D'ici là, elle s'ouvre en local :</p>
+  <div><p style="margin:0 0 6px"><b>Sur le téléphone</b> — le code QR mène à <code>{E(URL)}</code>.</p>
   <a class="btn" href="/modules-autonomes/montreal/" target="_blank" rel="noopener">Ouvrir l'application</a></div></div>
 
 <h2>Ce qu'il y a dedans</h2>
@@ -133,7 +132,6 @@ ensemble. Heures et prix ne sont jamais écrits : l'application dit de vérifier
 
 <h2>La suite possible</h2>
 <ul>
-<li>Mettre en ligne (un push) et l'ouvrir au téléphone par le code QR.</li>
 <li>Une relecture par un Montréalais anglophone et un hispanophone.</li>
 <li>D'autres lieux (le Marché Bonsecours, la Grande Bibliothèque, le Village, la plage de Verdun…), d'autres langues (mandarin, portugais, allemand).</li>
 <li>Le mode hors ligne complet, comme « Préparer pour le chemin » de Compostelle.</li>
