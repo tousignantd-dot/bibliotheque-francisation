@@ -30,7 +30,6 @@ autre chose.
 
 | Session | Ouverte | Ce que je tiens | Jusqu'à |
 |---|---|---|---|
-| restauration (Chez Jocelyne) | 30 sept. 2026 | presentations.html (une fiche) | quelques minutes |
 
 Le nom de session est celui que donne `ListAgents` (`claude-38`, `claude-71`…).
 Il ne survit pas à la fermeture, et c'est voulu : une ligne dont le nom ne
