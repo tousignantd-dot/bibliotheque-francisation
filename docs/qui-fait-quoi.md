@@ -30,7 +30,6 @@ autre chose.
 
 | Session | Ouverte | Ce que je tiens | Jusqu'à |
 |---|---|---|---|
-| Organisation du classeur [6afefb] | 30 sept. 2026 | `presentations.html` (réorganisation par chantier), `build/classeur.py`, `build/controles/classeur.py` | fin de la réorganisation |
 
 Le nom de session est celui que donne `ListAgents` (`claude-38`, `claude-71`…).
 Il ne survit pas à la fermeture, et c'est voulu : une ligne dont le nom ne
