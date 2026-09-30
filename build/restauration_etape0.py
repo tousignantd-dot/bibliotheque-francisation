@@ -25,23 +25,27 @@ E = html.escape
 
 # ── Le nom : cherché le 30 sept. 2026, nom exact entre guillemets ──────────
 NOMS = [
-    ("ovila", "Chez Ovila", True,
-     "Aucun restaurant de ce nom trouvé (deux recherches). « Vignoble d'Ovila » existe au Québec : un vignoble, pas un restaurant.",
-     "Deux syllabes claires, un vieux prénom d'ici : on entend tout de suite un restaurant familial québécois. "
-     "Il rappelle un personnage de feuilleton connu (Les filles de Caleb) — à vous de dire si c'est un atout."),
+    ("jocelyne", "Chez Jocelyne", True,
+     "Aucun restaurant de ce nom trouvé (deux recherches, 30 sept.). Une « Jocelyne » cuisine au Restaurant Chez Pascal, à Embrun (France) : le prénom, pas l'enseigne.",
+     "Trois syllabes nettes, un prénom très d'ici pour une propriétaire de restaurant familial ; se dit bien en commande (« Chez Jocelyne, bonjour ! »)."),
+    ("alderic", "Chez Aldéric", False,
+     "Aucun restaurant de ce nom. Le plus proche : « Chez Alcide », un chalet-restaurant en Savoie — un autre prénom.",
+     "Un vieux prénom québécois, rare, chaleureux ; un peu plus dur à dire pour un débutant (le « d » et le « r » rapprochés)."),
     ("beaulac", "Restaurant Beaulac", False,
-     "Aucun restaurant de ce nom trouvé. Beaulac est un nom de lieu (Beaulac-Garthby) et de famille ; le seul casse-croûte du village s'appelle autrement.",
+     "Aucun restaurant de ce nom trouvé (première ronde). Beaulac est un nom de lieu et de famille d'ici.",
      "Facile à dire, sonne vrai ; plus neutre, moins chaleureux qu'un « Chez »."),
-    ("tancrede", "Chez Tancrède", False,
-     "Aucun restaurant de ce nom. Un chef prénommé Tancrède tient « Le Parvis », à Meaux (France) : le prénom seul, pas l'enseigne.",
-     "Original, mais « Tancrède » se dit mal pour un débutant et sonne plus français que québécois."),
 ]
 ECARTES = [
-    ("Chez Rosaire", "un bar à poutine de Shawinigan porte ce nom — écarté."),
-    ("La Bonne Fourchette", "un restaurant de Donnacona porte ce nom — écarté."),
-    ("Chez Clovis", "restaurants à Paris et à Saint-Tropez (France, pays de la langue apprise) — écarté."),
-    ("Chez Mado", "restaurants en Auvergne et à Marrakech — écarté."),
-    ("Chez Aurèle", "un café-bar en Corse — écarté."),
+    ("Chez Ovila", "refusé par vous le 30 sept."),
+    ("Chez Martin", "votre premier choix ; aucun au Québec, mais pris en France (Rambouillet), en Belgique (Liège) et en Suisse — écarté à votre demande."),
+    ("Chez Réjean", "un restaurant de Saint-Pamphile — écarté."),
+    ("Chez Denise", "Saint-Sauveur et Shannon, et une série de Radio-Canada dont c'est le décor — écarté."),
+    ("Chez Normand", "le Casse-croûte Normand sert de la poutine à Verdun depuis 1964 — écarté."),
+    ("Chez Lucien", "Ottawa (ByWard) et Lyon — écarté."),
+    ("Chez Rita", "une taqueria rue Saint-Jean à Québec, un italien à Verdun, deux à Paris — écarté."),
+    ("Chez Huguette · Chez Fernande · Chez Albertine · Chez Gédéon", "tous pris en France ou en Belgique — écartés."),
+    ("Chez Gisèle · Chez Yvon · Chez Ghislain · Chez Rolande", "trop proches d'enseignes existantes (Gisèle Buvette à Québec, Chez Yvonne, Chez Ghislaine, Restaurant Rolande) — écartés."),
+    ("Chez Rosaire · La Bonne Fourchette · Chez Clovis · Chez Mado · Chez Aurèle", "première ronde : Shawinigan, Donnacona, France, Corse — écartés."),
 ]
 
 OBJECTIFS = [
@@ -205,10 +209,8 @@ La visite en cuisine, décidée avant l'étape 1, viendra corriger ce lexique.</
 
 <section>
   <h2>2 · Le nom du restaurant</h2>
-  <div class="these"><p class="cle">Décidé le 30 septembre : <b>Chez Martin</b>, à votre demande. Recherche du même jour,
-  nom exact : aucun « Chez Martin » au Québec ; le nom existe en France (Rambouillet), en Belgique (Liège) et en Suisse.
-  La règle écarte d'ordinaire un nom pris en France ; c'est une décision explicite, consignée dans
-  <code>identite.py</code>. Les candidats d'origine restent ci-dessous, pour mémoire.</p></div>
+  <div class="these"><p class="cle">Deuxième ronde, 30 septembre : « Chez Ovila » et « Chez Martin » écartés à votre
+  demande. Les prénoms d'ici derrière un « Chez » sont presque tous pris ; trois candidats restent libres.</p></div>
   <p>Trois candidats, cherchés un à un sur le Web, nom exact entre guillemets. Ce n'est pas une recherche de marque
   de commerce : on vérifie seulement qu'aucun restaurant connu ne le porte.</p>
   <div class="opts2">{noms}</div>
