@@ -160,7 +160,9 @@ def main():
                       f'<figcaption><b>{E(t)}</b>{E(d)}</figcaption></figure>'
                       for i, t, d in TEMOINS if (CROQUIS / f"{i}.jpg").exists())
     if voix:
-        v_html = "".join(f'<p><b>{E(f.stem)}</b><br><audio controls preload="none" '
+        v_html = ('<p>Au Québec, Azure HD n\'a que deux voix : il n\'y a rien à choisir, seulement à écouter. '
+                  'Chacune dit une consigne du chef, au débit réel, et une annonce de la salle. Sylvie dira les mots ; '
+                  'Thierry, le chef.</p>') + "".join(f'<p><b>{E(f.stem)}</b><br><audio controls preload="none" '
                          f'src="/assets/presentations/restauration/voix/{f.name}"></audio></p>' for f in voix)
     else:
         v_html = ('<div class="reserve"><p><strong>Pas d\'extrait pour l\'instant :</strong> le 30 septembre, Azure refuse '
@@ -178,7 +180,7 @@ def main():
 <p class="eyebrow">La restauration &middot; étape 0</p>
 <h1>Le cadrage, à valider</h1>
 <p class="chapeau">Le plan est tranché : deux portes, <b>la cuisine d'abord</b>, un restaurant familial québécois, la
-formule Francœur, les allergies éliminatoires, le bruit de la cuisine. Voici ce qu'il faut arrêter avant de
+formule Francœur <b>en trois langues</b> (on apprend le français ; l'espagnol et l'anglais dessous, relus), les allergies éliminatoires, le bruit de la cuisine. Voici ce qu'il faut arrêter avant de
 dessiner : les objectifs, le nom, le dessin et le décor, les voix, puis <b>{n} mots</b> un par un.
 La visite en cuisine, décidée avant l'étape 1, viendra corriger ce lexique.</p>
 

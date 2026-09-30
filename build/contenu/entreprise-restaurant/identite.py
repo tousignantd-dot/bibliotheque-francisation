@@ -11,3 +11,10 @@ NOM = "Chez Jocelyne"
 SURTITRE = "Formation en milieu de travail"
 SECTEUR = "Restauration · Cuisine et salle"
 SECTEUR_COURT = "Restauration"
+
+# Les langues : décision de Daniel du 30 sept. 2026, qui remplace les « onze langues
+# d'appui » du plan. On apprend le FRANÇAIS ; l'appui, dessous, est en espagnol
+# et en anglais seulement — relus avant la vente, plutôt que onze non relus. Les
+# voix ne changent pas : seul le français se dit (Azure HD, Sylvie et Thierry).
+LANGUE_APPRISE = "fr"
+LANGUES_APPUI = ["es", "en"]
