@@ -630,6 +630,40 @@ function fermer(){
   if (retourFocus && document.contains(retourFocus)) retourFocus.focus();
 }
 
+/* ═══ Étape 5 : le rapport au direct de la classe (le pilote) ══════════
+   Ouverte en séance (ou depuis le portail), la page connaît un code et
+   l'activité : elle rapporte chaque réponse FERMÉE au premier essai, et chaque
+   situation jouée avec ses gestes. Jamais les phrases dites, ni l'oral, ni le
+   test, ni la langue d'appui. `essais` compte les erreurs AVANT la réponse
+   (0 = du premier coup) : la page n'envoie que le premier essai, donc 0, et
+   « encore faux » au direct se lit « raté au premier essai » (leçon de la
+   répétition du pilote de l'hôtel). L'énoncé est lisible : le mot ou la phrase,
+   puis le code de l'item. */
+const CTX = (function () {
+  try {
+    const moi = new URLSearchParams(location.search);
+    let parent = new URLSearchParams('');
+    try { parent = new URLSearchParams(window.parent.location.search); } catch (e) {}
+    const code = moi.get('code') || parent.get('code');
+    const id = parseInt(moi.get('activityId') || parent.get('activityId'), 10);
+    return code && id ? {code, activityId: id} : null;
+  } catch (e) { return null; }
+})();
+function rapporter(o){
+  if (!CTX) return;
+  fetch('/api/student/progress', {method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(Object.assign({code: CTX.code, activityId: CTX.activityId,
+      activityTitle: 'Chez Jocelyne', event: 'zone_repondue', bonne: '', reponse: '', essais: 0}, o))}).catch(() => {});
+}
+const libelle = (txt, id) => { const s = String(txt || ''); return (s.length > 120 ? s.slice(0, 117) + '…' : s) + (s ? ' (' + id + ')' : String(id)); };
+const TITRES_EX = {ecoute: "Je l'entends, je le trouve", image: 'Le mot et son image', pieges: 'Les pièges',
+  chef: 'La consigne du chef', commande: 'La commande modifiée', allergie: "L'allergie"};
+function rapporterItem(it, ok, extra){
+  if (!S || !it.zid || !TITRES_EX[S.k]) return;
+  rapporter(Object.assign({zone: 'rj-' + S.k + '-' + it.zid, exo: 'rj-' + S.k, exoNum: TITRES_EX[S.k], exoTitre: TITRES_EX[S.k],
+    section: 'exercices', type: S.k, enonce: libelle(it.lib, it.zid), ok}, extra || {}));
+}
+
 /* ═══ Étape 2 : les exercices ══════════════════════════════════════════
    Huit exercices, chacun rattaché à un objectif du cadrage. Séries de 8 ;
    deux essais puis la réponse (l'allergie : un seul, c'est un geste) ; la
@@ -743,8 +777,8 @@ function construire(k, filtre){
     const pl = places(pool.length, 4);
     return pool.map((m, i) => {
       const v = voisins(m, 3);
-      if (k === 'ecoute') return {son: m.son, revoir: m.id, choix: poser(imgChoix(m), v.map(imgChoix), pl[i]), bonne: pl[i], apres: m.mot, type: 'img'};
-      if (k === 'image') return {sujet: m.img, son: null, revoir: m.id, choix: poser({html: esc(m.mot)}, v.map(x => ({html: esc(x.mot)})), pl[i]), bonne: pl[i], apres: m.mot, apresSon: m.son, type: 'mot'};
+      if (k === 'ecoute') return {zid: m.id, lib: m.mot, son: m.son, revoir: m.id, choix: poser(imgChoix(m), v.map(imgChoix), pl[i]), bonne: pl[i], apres: m.mot, type: 'img'};
+      if (k === 'image') return {zid: m.id, lib: m.mot, sujet: m.img, son: null, revoir: m.id, choix: poser({html: esc(m.mot)}, v.map(x => ({html: esc(x.mot)})), pl[i]), bonne: pl[i], apres: m.mot, apresSon: m.son, type: 'mot'};
       return {sujet: m.img, rappel: m, revoir: m.id, type: 'rappel'};
     });
   }
@@ -755,14 +789,14 @@ function construire(k, filtre){
     const o = melange(E.ordinaires).slice(0, 2).map(id => ({id, o: voisins(parId[id], 3).map(x => x.id)}));
     const pool = [...p.slice(0, 3), o[0], ...p.slice(3), o[1]];
     const pl = places(pool.length, 4);
-    return pool.map((x, i) => { const m = parId[x.id]; return {son: m.son, revoir: m.id, choix: poser(imgChoix(m), x.o.map(id => imgChoix(parId[id])), pl[i]), bonne: pl[i], apres: m.mot, note: m.piege ? m.note.replace(/^PIÈGE\s*:\s*/, '') : '', type: 'img'}; });
+    return pool.map((x, i) => { const m = parId[x.id]; return {zid: m.id, lib: m.mot, son: m.son, revoir: m.id, choix: poser(imgChoix(m), x.o.map(id => imgChoix(parId[id])), pl[i]), bonne: pl[i], apres: m.mot, note: m.piege ? m.note.replace(/^PIÈGE\s*:\s*/, '') : '', type: 'img'}; });
   }
   if (k === 'chef') {
     const pool = melange(E.consignes).slice(0, N), pl = places(pool.length, 4);
     // (audit, tour 1, A3/D2) Les trois derniers : une seule écoute, sans « Plus
     // lentement » — la condition de l'objectif. Après la réponse, on entend ce
     // qu'on répond au chef.
-    return pool.map((c, i) => ({son: c.son, q: c.q, choix: poser(imgChoix(parId[c.o[0]]), c.o.slice(1).map(id => imgChoix(parId[id])), pl[i]), bonne: pl[i], apres: c.phrase, type: 'img',
+    return pool.map((c, i) => ({zid: c.id, lib: c.phrase, son: c.son, q: c.q, choix: poser(imgChoix(parId[c.o[0]]), c.o.slice(1).map(id => imgChoix(parId[id])), pl[i]), bonne: pl[i], apres: c.phrase, type: 'img',
       unique: i >= pool.length - 3, modele: c.redit_son, redit: c.redit}));
   }
   if (k === 'commande') {
@@ -774,7 +808,7 @@ function construire(k, filtre){
     return pool.map((c, i) => {
       const autres = melange(c.cartes.slice(1));
       const place = c.cartes.length === 4 ? pl[i] : pl3[i];
-      return {son: c.son, choix: poser({html: carteHTML(c.cartes[0])}, autres.map(x => ({html: carteHTML(x)})), place), bonne: place, apres: c.phrase, type: 'ticket'};
+      return {zid: c.id, lib: c.phrase, son: c.son, choix: poser({html: carteHTML(c.cartes[0])}, autres.map(x => ({html: carteHTML(x)})), place), bonne: place, apres: c.phrase, type: 'ticket'};
     });
   }
   if (k === 'allergie') {
@@ -786,7 +820,7 @@ function construire(k, filtre){
     return pool.map((a, i) => {
       const bonne = a.actes.find(x => x.s === 'juste'), autres = melange(a.actes.filter(x => x.s !== 'juste'));
       const ch = poser(bonne, autres, pl[i]);
-      return {son: a.son, qui: a.qui, choix: ch.map(x => ({html: t(x.k), s: x.s, p: x.p, son: x.son})), bonne: pl[i], apres: a.phrase, type: 'acte', contre: a.contre};
+      return {zid: a.id, lib: a.phrase, son: a.son, qui: a.qui, choix: ch.map(x => ({html: t(x.k), s: x.s, p: x.p, son: x.son})), bonne: pl[i], apres: a.phrase, type: 'acte', contre: a.contre};
     });
   }
   if (k === 'redis') {
@@ -905,6 +939,7 @@ function repondre(i){
     opts.forEach(o => o.disabled = true);
     opts[it.bonne].classList.add('juste');
     const c = it.choix[i], s = c.s;
+    rapporterItem(it, s === 'juste', s === 'grave' ? {enonce: libelle(it.lib, it.zid) + ' — erreur grave'} : null);
     // (audit, tour 1, E1) POURQUOI ce choix, puis la règle — et pour une simple
     // préférence, seulement la phrase sur la préférence.
     const pourquoi = c.p ? '<span class="pourquoi">' + t(c.p) + '</span>' : '';
@@ -923,6 +958,7 @@ function repondre(i){
     }
     return montrerApres(it);
   }
+  if (S.essais === 0) rapporterItem(it, i === it.bonne);
   if (i === it.bonne) {
     S.fini = true; b.classList.add('juste'); opts.forEach(o => o.disabled = true);
     if (S.essais === 0) { S.premier++; if (it.revoir) aRevoir(it.revoir, false); }
@@ -1216,8 +1252,11 @@ app.addEventListener('click', e => {
 const SV = D.service;
 let codeAcces = new URLSearchParams(location.search).get('code') || '';
 // Le code authentifie : il ne reste pas dans l'adresse ni dans l'historique (audit, tour 1).
-if (codeAcces) { try { localStorage.setItem('resto-code', codeAcces); } catch(e) {} const u = new URL(location.href); u.searchParams.delete('code'); history.replaceState(null, '', u); }
+// Sauf en séance (activityId présent) : un rechargement perdrait le lien avec le direct
+// de la classe (vu à la répétition générale du 30 sept. 2026).
+if (codeAcces && !new URLSearchParams(location.search).get('activityId')) { try { localStorage.setItem('resto-code', codeAcces); } catch(e) {} const u = new URL(location.href); u.searchParams.delete('code'); history.replaceState(null, '', u); }
 try { codeAcces = codeAcces || localStorage.getItem('resto-code') || ''; } catch(e) {}
+if (!codeAcces && CTX) codeAcces = CTX.code;   // en séance : le jeton du participant
 let niveauJeu = null, V = null;
 function niveauDuTest(){ const r = lire('resto-test', null); return r && r.termine ? (r.palier || palierDe(r)) : null; }
 function palierDe(r){ const T0 = T; T = r; try { return palierPropose(); } finally { T = T0; } }
@@ -1408,6 +1447,13 @@ async function bilanService(){
       // Un geste attendu que le juge n'a pas rendu, même après la relance : dit « non évalué », jamais tu.
       V.s.gestes.filter(id => !vus.has(id)).forEach(id => G0.push({id, necessaire: true, fait: false, nonEvalue: true}));
       const G = G0.filter(g => g.necessaire).concat(G0.filter(g => !g.necessaire));
+      // Au direct : chaque geste nécessaire, puis la situation (réussie : aucun geste nécessaire manqué, pas d'erreur grave).
+      const titre = 'Le service · ' + niveauJeu;
+      G.filter(g => g.necessaire && !g.nonEvalue).forEach(g => rapporter({zone: 'rj-jeu-' + V.s.id + '-' + g.id, exo: 'rj-jeu', exoNum: titre,
+        exoTitre: 'Le service', section: 'service', type: 'geste', enonce: (FR['g_' + g.id] || g.id) + ' — ' + V.s.nom + ' (' + V.s.id + ')', ok: !!g.fait}));
+      rapporter({zone: 'rj-jeu-' + V.s.id, exo: 'rj-jeu', exoNum: titre, exoTitre: 'Le service', section: 'service', type: 'situation',
+        enonce: 'Situation : ' + V.s.id + (B.grave && V.s.gestes.includes('allergie') ? ' (erreur grave à l’allergie)' : ''),
+        ok: !(B.grave && V.s.gestes.includes('allergie')) && G.filter(g => g.necessaire && !g.nonEvalue).every(g => g.fait)});
       zone.innerHTML = (B.resume ? '<p>' + esc(B.resume) + '</p>' : '') + '<ul class="bilan-gestes">' + G.map(g => {
         const e = g.nonEvalue ? 'inutile' : !g.necessaire ? 'inutile' : g.fait ? 'fait' : 'manque';
         return '<li class="' + e + '"><span class="marque">' + (e === 'fait' ? '✓' : e === 'manque' ? '→' : '·') + '</span><span><b>' + esc(nom(g.id)) + '</b> — '
@@ -1515,7 +1561,7 @@ document.addEventListener('keydown', e => {
 // Démarrage : la langue de l'adresse, sinon celle déjà choisie, sinon le choix.
 const q = new URLSearchParams(location.search);
 const choisie = q.get('langue') || lireLangue();
-window.__resto = {D, etat: () => ({langue, planche: q.get('planche'), liste: liste.map(m => m.id), rang, ouverte: !fiche.hidden,
+window.__resto = {D, ctx: () => CTX, etat: () => ({langue, planche: q.get('planche'), liste: liste.map(m => m.id), rang, ouverte: !fiche.hidden,
   serie: S && {k: S.k, n: S.n, total: S.items.length, premier: S.premier, graves: S.graves, fini: S.fini,
                bonne: S.items[S.n] && S.items[S.n].bonne, item: S.items[S.n]}}), bruit: Bruit};
 if (!choisie || (choisie !== 'fr' && !D.langues.some(l => l.c === choisie))) { ecranLangue(); return; }
