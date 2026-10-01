@@ -40,13 +40,13 @@ REPONSES = [
      [("Touchez votre carte au tourniquet ; pas besoin de billet.", None),
       ("Touchez votre carte au tourniquet ; prenez aussi un billet.", "No need to buy a ticket : pas besoin de billet."),
       ("Achetez une carte au guichet ; pas besoin de billet.", "Tap your credit card : votre propre carte de crédit suffit."),
-      ("Achetez une carte au guichet, et un billet aussi.", "Tap your credit card, no need : rien à acheter.")]),
+      ("Achetez une carte au guichet ; prenez aussi un billet.", "Tap your credit card, no need : rien à acheter.")]),
     ("hotel", "marcus", "Vous arrivez à l'hôtel à 13 h.",
      "Your room won't be ready until three, but we can keep your bags.",
      [("Chambre prête à 15 h ; on peut garder vos bagages.", None),
       ("Chambre prête à 15 h ; gardez vos bagages avec vous.", "We can keep your bags : on vous les garde."),
       ("Chambre prête tout de suite ; on garde vos bagages.", "Won't be ready until three : pas avant 15 h."),
-      ("Chambre prête tout de suite ; gardez vos bagages.", "Not until three : pas avant 15 h ; et on vous garde vos bagages.")]),
+      ("Chambre prête tout de suite ; gardez vos bagages avec vous.", "Not until three : pas avant 15 h ; et on vous garde vos bagages.")]),
     ("hotel", "marcus", "Vous demandez où se prend le déjeuner.",
      "Breakfast is on the second floor, from six thirty to ten.",
      [("Un étage au-dessus de la rue, de 6 h 30 à 10 h.", None),
@@ -62,9 +62,15 @@ REPONSES = [
     ("cafe", "rosa", "Vous payez votre café.",
      "Do you want the receipt in the bag, or should I email it to you?",
      [("Elle demande : le reçu dans le sac, ou par courriel ?", None),
+      ("Elle demande : le reçu dans le sac, ou par message texte ?", "Email it to you : par courriel, pas par message texte."),
       ("Elle demande : un sac, ou le reçu par courriel ?", "The receipt in the bag : c'est le reçu qui va dans le sac."),
-      ("Elle demande votre courriel pour vous inscrire à une liste.", "Email it to you : vous envoyer le reçu, rien de plus."),
-      ("Elle demande si vous voulez un sac pour le café.", "Elle parle du reçu : in the bag, or email.")]),
+      ("Elle demande : un sac, ou le reçu par message texte ?", "The receipt in the bag, or email : le reçu, dans le sac ou par courriel.")]),
+    ("cafe", "maya", "Maya, croisée au café, vous pose une question.",
+     "So, what have you seen so far?",
+     [("Ce que vous avez vu jusqu'ici.", None),
+      ("Ce que vous avez vu aujourd'hui.", "So far : jusqu'ici, depuis le début du voyage."),
+      ("Ce que vous allez voir ensuite.", "What HAVE you seen : ce que vous avez vu, pas ce que vous verrez."),
+      ("Ce que vous allez voir aujourd'hui.", "Have you seen, so far : ce que vous avez vu jusqu'ici.")]),
     ("tour", "priya", "Vous demandez deux billets pour la tour.",
      "The next available time is four fifteen. Would that work for you?",
      [("Prochaine montée à 16 h 15 ; ça vous va ?", None),
@@ -76,7 +82,7 @@ REPONSES = [
      [("20 % de rabais pour les aînés, en semaine seulement.", None),
       ("30 % de rabais pour les aînés, en semaine seulement.", "Twenty : 20. Trente, ce serait thirty."),
       ("20 % de rabais pour les aînés, la fin de semaine seulement.", "Weekdays : les jours de semaine, du lundi au vendredi."),
-      ("30 % de rabais, la fin de semaine seulement.", "Twenty percent, on weekdays : 20 %, en semaine.")]),
+      ("30 % de rabais pour les aînés, la fin de semaine seulement.", "Twenty percent, on weekdays : 20 %, en semaine.")]),
     ("marche", "wei", "Vous commandez du fromage au poids.",
      "That's half a pound. It comes to six eighty.",
      [("Une demi-livre ; ça fait 6,80 $.", None),
@@ -90,17 +96,17 @@ REPONSES = [
       ("La carte est acceptée ; un guichet près de la porte.", "Cash only : comptant seulement."),
       ("La carte est acceptée ; un guichet au fond du marché.", "Cash only : comptant ; et la machine est by the door.")]),
     ("kensington", "raj", "Vous cherchez le tramway de Spadina.",
-     "Walk down to Spadina, it's two blocks east, and take it going south.",
+     "Walk over to Spadina — it's two blocks east — and take it southbound.",
      [("Deux coins de rue vers l'est ; le prendre en direction sud.", None),
       ("Deux coins de rue vers l'ouest ; le prendre en direction sud.", "East : l'est. L'ouest, ce serait west."),
-      ("Deux coins de rue vers l'est ; le prendre en direction nord.", "Going south : en direction sud."),
-      ("Deux coins de rue vers l'ouest ; en direction nord.", "Two blocks EAST, going SOUTH : à l'est, vers le sud.")]),
+      ("Deux coins de rue vers l'est ; le prendre en direction nord.", "Southbound : en direction sud."),
+      ("Deux coins de rue vers l'ouest ; le prendre en direction nord.", "Two blocks EAST, southbound : à l'est, vers le sud.")]),
     ("kensington", "raj", "Vous demandez si c'est loin.",
      "Not at all, it's a five-minute walk. You can't miss it.",
      [("Pas loin : cinq minutes à pied, impossible à manquer.", None),
       ("Pas loin : quinze minutes à pied, impossible à manquer.", "Five : cinq. Quinze, ce serait fifteen."),
       ("Pas loin : cinq minutes en autobus, impossible à manquer.", "A five-minute WALK : à pied."),
-      ("Assez loin : quinze minutes en autobus.", "Not at all, a five-minute walk : pas loin du tout, à pied.")]),
+      ("Pas loin : quinze minutes en autobus, impossible à manquer.", "A five-minute walk : cinq minutes, à pied.")]),
     ("iles", "kevin", "Vous voulez louer un vélo sur l'île.",
      "Bikes are fifteen dollars an hour, and we need a piece of ID.",
      [("15 $ l'heure ; il faut laisser une pièce d'identité.", None),
@@ -136,12 +142,12 @@ REPONSES = [
      [("Environ 20 minutes d'attente, ou le bar tout de suite.", None),
       ("Environ 30 minutes d'attente, ou le bar tout de suite.", "Twenty : 20. Trente, ce serait thirty."),
       ("Environ 20 minutes d'attente, ou la terrasse tout de suite.", "At the bar : au bar."),
-      ("Environ 30 minutes, ou la terrasse tout de suite.", "Twenty minutes, or the bar : 20 minutes, ou le bar.")]),
-    ("depart", "marcus", "Vous contestez un frais de minibar sur votre facture.",
+      ("Environ 30 minutes d'attente, ou la terrasse tout de suite.", "Twenty minutes, or the bar : 20 minutes, ou le bar.")]),
+    ("depart", "marcus", "Vous contestez des frais de minibar sur votre facture.",
      "You're right, the minibar charge is a mistake. I'll take it off.",
      [("Vous avez raison : c'est une erreur, il l'enlève.", None),
       ("Vous avez raison : c'est une erreur, remboursée plus tard.", "I'll take it off : il l'enlève maintenant."),
-      ("Ce n'est pas une erreur, mais il l'enlève quand même.", "You're right, a mistake : c'est bien une erreur."),
+      ("Ce n'est pas une erreur ; il l'enlève par geste commercial.", "You're right, a mistake : c'est bien une erreur."),
       ("Ce n'est pas une erreur ; on vous remboursera plus tard.", "You're right, I'll take it off : erreur reconnue, enlevée.")]),
     ("depart", "marcus", "Vous demandez où prendre l'UP Express.",
      "Go back to Union. It's on the upper level, and trains leave every fifteen minutes.",
@@ -161,31 +167,81 @@ NOMBRES = [
     ("aarti", "It's thirty-three seventeen, with tax.", [("33,17 $", None), ("33,70 $", "Seventeen finit sur un « n » : 17 cents."), ("13,17 $", "Thirty finit court : 30."), ("13,70 $", "Thirty-three seventeen : 33,17 $.")]),
     ("harper", "The tour starts at quarter to seven, p.m.", [("18 h 45", None), ("19 h 15", "Quarter TO : moins quart."), ("6 h 45", "P.m. : le soir."), ("7 h 15", "Quarter to seven, p.m. : 18 h 45.")]),
     ("liam", "The gates open at quarter past nine, a.m.", [("9 h 15", None), ("8 h 45", "Quarter PAST : et quart."), ("21 h 15", "A.m. : le matin."), ("20 h 45", "Quarter past nine, a.m. : 9 h 15.")]),
-    ("andrew", "Check-out is at half past eleven.", [("11 h 30", None), ("10 h 30", "Half past ELEVEN : onze heures et demie."), ("11 h 15", "Half past : et demie, pas et quart."), ("10 h 15", "Half past eleven : 11 h 30.")]),
+    ("andrew", "Check-out is at half past eleven.", [("11 h 30", None), ("11 h 50", "Half n'est pas fifty : half past, et demie."), ("11 h 15", "Half past : et demie, pas et quart."), ("11 h 45", "Half past eleven : 11 h 30.")]),
     ("sam", "We close at twenty to ten tonight.", [("21 h 40", None), ("22 h 20", "Twenty TO ten : dix heures moins vingt."), ("9 h 40", "Tonight : ce soir."), ("10 h 20", "Twenty to ten, tonight : 21 h 40.")]),
-    ("rosa", "Happy hour is from four to six.", [("De 16 h à 18 h", None), ("De 14 h à 16 h", "From FOUR : de quatre heures."), ("De 16 h à 19 h", "To SIX : jusqu'à six heures."), ("De 14 h à 19 h", "From four to six : de 16 h à 18 h.")]),
+    ("rosa", "The kitchen closes at nine thirty, and the bar at eleven.", [("Cuisine 21 h 30, bar 23 h", None), ("Cuisine 21 h 13, bar 23 h", "Thirty finit court : 30."), ("Cuisine 21 h 30, bar 19 h", "Eleven, pas seven : 23 h."), ("Cuisine 21 h 13, bar 19 h", "Nine thirty, eleven : 21 h 30 et 23 h.")]),
     ("arjun", "Platform eighteen, in about forty minutes.", [("Quai 18, dans environ 40 minutes", None), ("Quai 80, dans environ 40 minutes", "Eighteen finit sur un « n » : 18."), ("Quai 18, dans environ 14 minutes", "Forty finit court : 40."), ("Quai 80, dans environ 14 minutes", "Eighteen, forty : quai 18, 40 minutes.")]),
 ]
 
-# ── Le total à payer : (lieu, qui, contexte, en, prix, taxe?, pourboire %). Les quatre
-# totaux (rien, taxe seule, pourboire seul, les deux) sont calculés par total().
+# ── Le total à payer : (lieu, qui, contexte, en, prix entendu, prix mal entendu, pourboire %, mot du prix).
+# Tour 1 (majeur) : le contexte ne dit plus « pas de pourboire » et l'anglais décide. Les quatre choix
+# forment un carré (prix bien ou mal entendu, teen/ty) × (la règle du lieu ou la règle oubliée : la taxe
+# au magasin, le pourboire au restaurant et au café). Tout se CALCULE dans total().
 TOTAL = [
-    ("magasin", "rosa", "Au magasin, une tuque. Pas de pourboire au magasin.", "That's twenty-four, plus tax.", 24.00, True, 0),
-    ("resto", "ada", "Au restaurant. Vous laissez 18 % de pourboire, calculé avant la taxe.", "Your bill is forty, before tax.", 40.00, True, 18),
-    ("resto", "ada", "Au restaurant. Vous laissez 20 % de pourboire, calculé avant la taxe.", "That's sixty, before tax.", 60.00, True, 20),
-    ("tour", "priya", "Au guichet de la tour : deux billets. Pas de pourboire.", "Two tickets, that's ninety-four, plus tax.", 94.00, True, 0),
-    ("cafe", "rosa", "Au café, vous laissez 15 % au terminal, calculé avant la taxe.", "That's twelve, plus tax.", 12.00, True, 15),
-    ("marche", "wei", "Au marché, un sandwich. Pas de pourboire au comptoir.", "That's ten even, plus tax.", 10.00, True, 0),
+    ("magasin", "rosa", "Au magasin, une tuque.", "That's fourteen, plus tax.", 14.00, 40.00, 0, "fourteen"),
+    ("resto", "ada", "Au restaurant, à deux. Vous laissez 18 % du prix avant taxe.", "Your bill is fifty, before tax.", 50.00, 15.00, 18, "fifty"),
+    ("resto", "ada", "Au restaurant, en famille. Vous laissez 20 % du prix avant taxe.", "That's sixty, before tax.", 60.00, 16.00, 20, "sixty"),
+    ("tour", "priya", "Au guichet de la tour, deux billets.", "Two tickets, that's ninety, plus tax.", 90.00, 19.00, 0, "ninety"),
+    ("cafe", "rosa", "Au café. Vous laissez 15 % du prix avant taxe (au terminal : « montant personnalisé »).", "That's thirteen, plus tax.", 13.00, 30.00, 15, "thirteen"),
+    ("marche", "wei", "Au marché, un sandwich au comptoir.", "That's seventeen even, plus tax.", 17.00, 70.00, 0, "seventeen"),
 ]
 TAXE = 0.13
 
 
-def total(prix, taxe, pourboire):
-    """Les quatre totaux d'un item, et l'indice du bon (rien, taxe, pourboire, les deux)."""
-    t = round(prix * TAXE, 2); p = round(prix * pourboire / 100, 2) if pourboire else round(prix * 0.18, 2)
-    valeurs = [prix, prix + t, prix + p, prix + t + p]
-    bon = 3 if pourboire else 1
-    return [round(v, 2) for v in valeurs], bon
+def total(prix, mal, pb, mot):
+    """Les quatre choix (montant, rétroaction), la bonne d'abord, et le calcul de la bonne."""
+    def m(prix_, regle):
+        t = round(prix_ * TAXE, 2); p = round(prix_ * pb / 100, 2)
+        if regle:
+            return round(prix_ + t + p, 2)
+        return round(prix_ + t, 2) if pb else round(prix_, 2)   # oublié : le pourboire (resto, café), la taxe (ailleurs)
+    oubli = f"le pourboire de {pb} %, calculé sur le prix avant taxe" if pb else "la taxe de 13 %, ajoutée à la caisse"
+    oreille = f"« {mot} » : {prix:.0f} $, pas {mal:.0f} $ ({'-teen finit sur un « n »' if mot.endswith('teen') else '-ty finit court'})."
+    choix = [(m(prix, True), None),
+             (m(mal, True), oreille),
+             (m(prix, False), f"Le prix est juste ; mais il manque {oubli}."),
+             (m(mal, False), f"{oreille} Et il manque {oubli}.")]
+    t = round(prix * TAXE, 2); p = round(prix * pb / 100, 2)
+    calcul = f"{prix:.2f} $ + {t:.2f} $ de taxe" + (f" + {p:.2f} $ de pourboire" if pb else "") + f" = {m(prix, True):.2f} $"
+    return choix, calcul.replace(".", ",")
+
+
+# ── L'allergie (O3, éliminatoire) : la série JOUÉE EN ENTIER (bloquant du tour 1 : elle n'existait pas).
+# Carré (allergène ou non) × (elle en est sûre ou elle va vérifier), et un contre-exemple : le plat sans
+# danger qu'on peut commander (piège connu « seulement le geste prudent »). La règle est affichée avant.
+REGLE_ALLERGIE = ("Une allergie se dit avant de commander. Si la réponse n'est pas claire, "
+                  "on ne mange pas le plat : on attend la vérification, ou on prend autre chose.")
+_SAUMON = ["Pas de noix dans le saumon ; elle en est certaine.", "Pas de noix, croit-elle ; elle vérifie en cuisine.",
+           "Des noix dans le saumon ; elle en est certaine.", "Des noix, croit-elle ; elle vérifie en cuisine."]
+ALLERGIE = [
+    ("ada", "Vous êtes allergique aux noix. Vous demandez si le saumon en contient.",
+     "The salmon is fine, there are no nuts in it.", 0, "Elle en est sûre : ici, vous pouvez commander le saumon.",
+     {1: "No nuts : aucune ; et elle n'a pas à vérifier, elle le sait.", 2: "There are NO nuts : il n'y en a pas.",
+      3: "The salmon is fine : pas de noix, et elle en est sûre."}),
+    ("ada", "Vous êtes allergique aux noix. Vous demandez si le saumon en contient.",
+     "I don't think there are nuts in the salmon, but let me check with the kitchen.", 1,
+     "Elle n'en est pas sûre : on attend la réponse de la cuisine, ou on prend autre chose.",
+     {0: "I don't THINK, let me check : elle croit, mais elle va vérifier.", 2: "No nuts, I think : elle croit qu'il n'y en a pas.",
+      3: "I don't think there are nuts : elle croit qu'il n'y en a PAS."}),
+    ("ada", "Vous êtes allergique aux noix. Vous demandez si le saumon en contient.",
+     "The salmon has a pecan crust, so I wouldn't order it.", 2, "Des pacanes, ce sont des noix : on ne le commande pas.",
+     {0: "A pecan crust : une croûte de pacanes, ce sont des noix.", 1: "Elle est sûre : la croûte est faite de pacanes.",
+      3: "Elle n'a rien à vérifier : la croûte est aux pacanes."}),
+    ("wei", "Au marché, vous êtes allergique aux arachides. Vous demandez pour les biscuits.",
+     "These cookies are made in a bakery that uses peanuts.", None, "Faits là où il y a des arachides : on n'en prend pas.",
+     [("Faits là où il y a des arachides : on n'en prend pas.", None),
+      ("Faits là où il y a des arachides : on peut en prendre.", "A bakery that USES peanuts : il peut y en avoir des traces."),
+      ("Sans aucune arachide : on n'en prend pas quand même.", "That uses peanuts : la boulangerie en utilise."),
+      ("Sans aucune arachide : on peut en prendre.", "Uses peanuts : il y en a là où on les fait.")]),
+]
+
+
+def choix_allergie(it):
+    """Les quatre choix d'un item d'allergie, la bonne d'abord."""
+    qui, ctx, en, bon, apres, retro = it
+    if bon is None:
+        return retro
+    return [(_SAUMON[bon], None)] + [(_SAUMON[i], retro[i]) for i in range(4) if i != bon]
 
 
 # ── Où je vais : (qui, en, blocs, tourner) — on part de l'étoile, face au nord ; après le virage,
@@ -203,39 +259,73 @@ CHEMIN = [
 
 # ── Je le dis : (lieu, situation fr, modèle en, clés) — deux par lieu.
 DIRE = [
-    ("union", "Demandez où est le métro.", "Where is the subway?", ["~(where|is there|how (do|can) (i|we) get to|looking for|which way)", "subway|ttc|metro|station|train"]),
+    ("union", "Demandez où est le métro.", "Where is the subway?", ["~(^| )(where|which way|how (do|can) (i|we) get to|is there|looking for)", "subway|ttc|metro|station|train"]),
+    ("union", "Vous n'avez pas compris l'agent. Demandez-lui de répéter.", "Sorry, could you say that again?", [REPETER]),
     ("union", "Demandez si vous pouvez payer avec votre carte de crédit.", "Can I pay with my credit card?", ["~(card|credit|visa|tap)", "~(can i|do you|is it|could i|okay|ok)"]),
-    ("hotel", "Dites que vous avez une réservation au nom de Tremblay.", "I have a reservation under Tremblay.", ["reservation|booking|booked", "tremblay"]),
+    ("hotel", "Dites que vous avez une réservation au nom de Tremblay.", "I have a reservation under Tremblay.", ["~(^| )(reservation|booking|booked|reserved)( |$)", "~(^| )(trembl|trambl|tremble)[a-z]*( |$)", "~^(?!.*(^| )do you have a reservation)"]),
     ("hotel", "Demandez à quelle heure est le déjeuner.", "What time is breakfast?", ["what time|when", "breakfast"]),
-    ("cafe", "Commandez un grand café pour emporter.", "Can I get a large coffee to go?", [DEMANDE, "large", "coffee"]),
-    ("cafe", "On vous demande « Anything else? ». Répondez que c'est tout.", "That's it, thanks!", ["~(that s it|that s all|that is it|that is all|nothing else|no thanks|no thank you|i m good|im good)"]),
-    ("tour", "Demandez deux billets pour adultes.", "Two adult tickets, please.", ["two|2", "ticket|tickets|adult|adults"]),
-    ("tour", "Demandez s'il y a un rabais pour les aînés.", "Is there a discount for seniors?", ["discount|reduced|cheaper|deal", "senior|seniors|older"]),
-    ("marche", "Commandez un sandwich au bacon de dos.", "Can I get a peameal bacon sandwich?", [DEMANDE, "sandwich"]),
+    ("cafe", "Commandez un grand café pour emporter.", "Can I get a large coffee to go?", [DEMANDE, "large", "coffee", "~(to go|takeout|take out)"]),
+    ("cafe", "On vous demande « Anything else? ». Répondez que c'est tout.", "That's it, thanks!", ["~(that s it|that s all|that is it|that is all|that ll be all|that will be all|nothing else|(^| )nothing( |$)|no thanks|no thank you|i m good|im good|all good)"]),
+    ("cafe", "Maya vous demande « Where are you from? ». Répondez, puis relancez.", "I'm from Quebec. And you?", [ORIGINE, RELANCE]),
+    ("tour", "Demandez deux billets pour adultes.", "Two adult tickets, please.", ["two|2", "adult|adults"]),
+    ("tour", "Demandez s'il y a un rabais pour les aînés.", "Is there a discount for seniors?", ["discount|reduced|cheaper|deal|price|rate|special", "senior|seniors|older"]),
+    ("tour", "Maya vous demande combien de temps vous restez. Répondez, puis relancez.", "We're here for a week. How about you?", [SEJOUR, RELANCE]),
+    ("marche", "Commandez un sandwich au bacon de dos.", "Can I get a peameal bacon sandwich?", [DEMANDE, "sandwich", "peameal|bacon"]),
     ("marche", "Demandez combien ça coûte.", "How much is it?", ["how much|what s the price|what is the price|price"]),
     ("kensington", "Dites que vous êtes perdu et demandez de l'aide.", "Excuse me, I'm lost. Can you help me?", ["lost", "~(help|can you|could you)"]),
-    ("kensington", "Demandez si c'est loin à pied.", "Is it far to walk?", ["far|long|walk|walking"]),
-    ("iles", "Demandez à louer un vélo pour deux heures.", "Can I rent a bike for two hours?", ["rent|get|borrow|have", "bike|bicycle", "two|2"]),
+    ("kensington", "Demandez si c'est loin à pied.", "Is it far to walk?", ["~(^| )(is it|is that) (far|close|near)( |$)|(^| )how (far|long (does it take|is the walk|to walk))|(^| )(can|could) (i|we) walk( |$)|walking distance"]),
+    ("iles", "Demandez à louer un vélo pour deux heures.", "Can I rent a bike for two hours?", ["rent|get|borrow|have|want|like|need|take", "bike|bicycle", "two|2"]),
     ("iles", "Demandez à quelle heure est le dernier traversier.", "What time is the last ferry?", ["what time|when", "last", "ferry|boat"]),
     ("pharmacie", "Dites que vous avez un coup de soleil.", "I have a sunburn.", [MAL, "~(^| )(sunburn|sunburns|sunburned|sunburnt|burn|burned|burnt)( |$)"]),
-    ("pharmacie", "Demandez combien de fois par jour.", "How many times a day?", ["~(how many times|how often)"]),
-    ("resto", "Dites que vous êtes allergique aux noix.", "I'm allergic to nuts.", ["allergic|allergy", "nuts|nut|peanuts|peanut"]),
-    ("resto", "Demandez des additions séparées.", "Can we get separate bills?", ["separate|split", "bill|bills|check|checks"]),
+    ("pharmacie", "Demandez combien de fois par jour mettre la crème.", "How many times a day?", ["~(how many times|how often)"]),
+    ("resto", "Dites que vous êtes allergique aux noix.", "I'm allergic to nuts.", ["allergic|allergy|allergies", "~^(?!.*(^| )(not|n t) allergic)", "nuts|nut|peanut|almond|walnut|cashew|pecan|hazelnut|pistachio"]),
+    ("resto", "Demandez s'il y a des noix dans ce plat.", "Does this have any nuts in it?", ["~(^| )(does|do|is there|are there|any|contain|contains)( |$)", "nuts|nut|peanut|almond|walnut|cashew|pecan|hazelnut|pistachio"]),
+    ("resto", "La serveuse n'est pas sûre. Dites que vous prendrez autre chose.", "I'll have something else, then.", ["~(something else|something different|(^| )skip (it|that)|i ll pass|not (take|have|order|get) (it|that)|no (thanks|thank you)|i ll (have|take) the)"]),
+    ("resto", "Demandez des additions séparées.", "Can we get separate bills?", ["separate|split|separately", "~(bill|check|pay)"]),
     ("depart", "Dites poliment qu'il y a une erreur sur la facture.", "Sorry, I think there's a mistake on my bill.", ["mistake|error|wrong", "bill|invoice|charge"]),
-    ("depart", "Demandez où prendre le train pour l'aéroport.", "Where can I take the train to the airport?", ["~(where|how (do|can) (i|we) get|which way)", "airport|up express|train"]),
+    ("depart", "Demandez où prendre le train pour l'aéroport.", "Where can I take the train to the airport?", ["~(^| )(where|which way|how (do|can) (i|we) get)", "airport|up express|train|pearson"]),
 ]
 
 # Les réponses témoins des clés neuves (leçon de l'étape 1 : une clé se prouve dans les deux sens).
+def _cle(fr_debut, i):
+    """La i-e clé de la phrase à dire dont la situation commence ainsi (les indices bougent ; le texte, non)."""
+    return next(d[3][i] for d in DIRE if d[1].startswith(fr_debut))
+
+
 REFUS = [
-    (DIRE[5][3][0], "Yes, I want more"),
-    (DIRE[16][3][0], "I like nuts"),
+    (_cle("On vous demande « Anything", 0), "Yes, a muffin"),
+    (_cle("Dites que vous êtes allergique", 0), "I like nuts"),
+    (_cle("Dites que vous êtes allergique", 1), "I'm not allergic to nuts"),
+    (_cle("Demandez si c'est loin", 0), "I want to walk"),
+    (_cle("Demandez si c'est loin", 0), "How long is the movie?"),
+    (_cle("Dites que vous avez une réservation", 2), "Do you have a reservation for Tremblay?"),
+    (_cle("Demandez deux billets", 1), "Two tickets for kids"),
+    (_cle("Demandez où est le métro", 0), "I'd like to go somewhere by subway"),
+    (_cle("Commandez un grand café", 3), "Can I get a large coffee for here?"),
+    (_cle("Demandez s'il y a des noix", 1), "I like it"),
+    (_cle("La serveuse n'est pas sûre", 0), "I'll take it"),
 ]
 ACCEPTE = [
-    (DIRE[5][3][0], "No thanks, that's all"),
-    (DIRE[5][3][0], "I'm good, thanks"),
-    (DIRE[16][3][1], "I have a peanut allergy"),
-    (DIRE[17][3][1], "Can we split the bill?"),
+    (_cle("On vous demande « Anything", 0), "No thanks, that's all"),
+    (_cle("On vous demande « Anything", 0), "Nothing, thanks"),
+    (_cle("On vous demande « Anything", 0), "Nope, all good"),
+    (_cle("Dites que vous êtes allergique", 2), "I have an allergy to almonds"),
+    (_cle("Demandez des additions", 0), "Can we pay separately?"),
+    (_cle("Demandez si c'est loin", 0), "Is it close?"),
+    (_cle("Demandez si c'est loin", 0), "Is it near here?"),
+    (_cle("Dites que vous avez une réservation", 1), "I have a reservation under Trembley"),
+    (_cle("Demandez s'il y a un rabais", 0), "Senior price?"),
+    (_cle("Demandez à louer un vélo", 0), "I want a bike for two hours"),
+    (_cle("Demandez où prendre le train", 1), "How can we get to Pearson?"),
+    (_cle("Demandez s'il y a des noix", 0), "Are there any peanuts in it?"),
+    (_cle("La serveuse n'est pas sûre", 0), "I'll have something else"),
 ]
+# Les voisins trop proches, exclus des familles « entendre » et « souvenir » : deux choix vrais à la fois
+# (bloc et coin, médicament et comprimé), ou un choix qui se trouve sans comprendre (le nom propre, le prix).
+PROCHES = [{"block", "corner", "intersection"}, {"drug", "pill", "pharmacy"}, {"museum", "gallery"},
+           {"coffee", "double_double"}, {"room", "double_bed", "two_beds"}, {"cash", "change"},
+           {"check_in", "reservation"}, {"to_go", "bag"}]
+HORS_SERIE = {"intersection", "hockey", "price_four99", "thirteen", "fifteen", "peameal"}
 
 
 def verifier(lieux, voix, gens):
@@ -248,9 +338,19 @@ def verifier(lieux, voix, gens):
         assert q in qui_ok, q
         _choix(ch, en, carre=True)
         assert not _PR.majorite_trahit(ch), ("la majorité désigne la bonne", en)
-    for l, q, ctx, en, prix, taxe, pb in TOTAL:
-        vals, bon = total(prix, taxe, pb)
-        assert len(set(vals)) == 4, (en, vals)
+    for l, q, ctx, en, prix, mal, pb, mot in TOTAL:
+        ch, calcul = total(prix, mal, pb, mot)
+        assert len({v for v, _ in ch}) == 4, (en, ch)
+        assert mot in en, (en, mot)
+        assert "pourboire" not in ctx or pb, ("le contexte ne souffle pas la règle", ctx)
+    # Le plus grand montant ne doit pas être toujours le bon (tour 1 : 6 sur 6 sans écouter).
+    rangs = [sorted([v for v, _ in total(*it[4:])[0]], reverse=True).index(total(*it[4:])[0][0][0]) for it in TOTAL]
+    assert len(set(rangs)) > 1, ("la bonne est toujours au même rang de grandeur", rangs)
+    assert {it[3] for it in ALLERGIE} == {0, 1, 2, None}, "le saumon : sûr, à vérifier, avec noix — et le marché"
+    for it in ALLERGIE:
+        ch = choix_allergie(it)
+        assert it[0] in gens, it[0]
+        _choix(ch, it[2], carre=True)
     for q, en, blocs, tourner in CHEMIN:
         assert q in qui_ok and blocs in (2, 3) and tourner in ("gauche", "droite"), en
     from collections import Counter

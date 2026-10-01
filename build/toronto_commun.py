@@ -61,6 +61,8 @@ def extraits():
         out.append({"fichier": f"exos/tot-{k}.mp3", "texte": it[3], "voix": voix_de[it[1]]})
     for k, (q, en, b, t) in enumerate(EX.CHEMIN):
         out.append({"fichier": f"exos/ch-{k}.mp3", "texte": en, "voix": q})
+    for k, it in enumerate(EX.ALLERGIE):
+        out.append({"fichier": f"exos/all-{k}.mp3", "texte": it[2], "voix": voix_de[it[0]]})
     for k, (l, fr, en, cles) in enumerate(EX.DIRE):
         out.append({"fichier": f"exos/dire-{k}.mp3", "texte": en, "voix": n})
     return out
