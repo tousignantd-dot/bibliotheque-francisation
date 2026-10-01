@@ -40,13 +40,13 @@ OBJECTIFS = {
 }
 
 ORIGINE = "~(^| )(i m|i am|im|we re|we are|i come|we come|i m coming|we re coming|coming) from [a-z]+|(^| )(i|we) live in (?!toronto)[a-z]+|(^| )from (quebec|montreal|canada|france)|(^| )i m (quebecois|quebecoise|french canadian)( |$)"
-SEJOUR = "~^(?!.*(^| )(since|ago|depuis)( |$))(?!.*(^| )(i|we) (ve|have) been (here|in [a-z]+) (for|since)( |$)).*?(?:(^| )(for|until|till|leave|leaving|stay|staying|here|just|only|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fourteen|couple)( (?!since|ago)[a-z]+){0,3} (week|weeks|weekend|day|days|night|nights|month|monday|tuesday|wednesday|thursday|friday|saturday|sunday)(?! ago)( |$)|(^| )a (week|weekend|few days)( |$))"
+SEJOUR = "~^(?!.*(^| )(since|depuis) (a|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|couple|few|last|yesterday|this|monday|tuesday|wednesday|thursday|friday|saturday|sunday)( |$))(?!.*(^| )(day|days|week|weeks|night|nights|weekend) ago( |$))(?!.*(^| )(i|we) (ve|have) been (here|in [a-z]+) (for|since)( |$)).*?(?:(^| )(for|until|till|leave|leaving|stay|staying|here|just|only|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fourteen|couple)( (?!since|ago)[a-z]+){0,3} (week|weeks|weekend|day|days|night|nights|month|monday|tuesday|wednesday|thursday|friday|saturday|sunday)(?! ago)( |$)|(^| )a (week|weekend|few days)( |$))"
 RELANCE = "~(^| )(and you|and yourself|how about you|how about yourself|what about you|what about yourself|how are you|are you from|do you (live|work|like)|have you (ever )?been|what do you do|where do you live|what s your name)( |$)|^you$| you$"
 # Les clés partagées (audit tour 1, M7) : une demande, dite de toutes les façons naturelles.
-DEMANDE = "~^((hi|hello|hey|excuse me|good morning|yes|um|uh|okay|ok|so) )*(just )?(a|one) [a-z ]{0,12}(tea|coffee)( |$)|give me|(^| )(can|could|may) (i|we)( please)? (get|have)|(can|could) you( please)? (give|get) (me|us)|(i|we) d like|(i|we)d like|(i|we) would like|(i|we) ll (have|take|get|go with)|(i|we) want|do you have|(^| )please( |$)"
+DEMANDE = "~^((hi|hello|hey|excuse me|good morning|yes|um|uh|okay|ok|so) )*(just )?(a|one) [a-z ]{0,12}(tea|coffee)( |$)|give me|(^| )(can|could|may) (i|we)( please)? (get|have)|(can|could) you( please)? (give|get) (me|us)|(i|we) d like|(i|we)d like|(i|we) would like|(i|we) ll (have|take|get|go with)|(i|we) want|do you have|^(?!.*(you want|don t want|you get (a|one|the|some) )).*(^| )please( |$)"
 # Tour 3 : le cadre d'une plainte, dit de toutes les façons (I'm sunburned, my husband has a fever…).
 MAL = "~(^| )(i|we|he|she|my [a-z]+) (have|ve got|got|has|need|had|ve had)( a| an| some)? (?!no )[a-z]+|(^| )(i|we|he|she) (m|am|re|are|is|s|feel|feels|m feeling|am feeling|re feeling)( (really|very|so|a bit|a little|all|badly|pretty|quite|kind of))? (sunburned|sunburnt|burned|burnt|feverish|sick|hot)( |$)|(^| )(i m|i am|we re|he s|she s) running a|(^| )my [a-z]+ (is|are)( (really|very|so|all|badly|pretty|quite))? (burned|burnt|sunburned|red)( |$)|something for|(^| )(i|we) (burned|burnt) (myself|ourselves|my [a-z]+)( |$)"
-REPETER = "~(say (that|it) again|repeat|pardon|sorry|excuse me|come again|again|one more time|speak up|louder|(don t|didn t|do not|did not) (understand|get it|get that))"
+REPETER = "~(say (that|it) again|what did you say|what was that|repeat|pardon|sorry|excuse me|come again|again|one more time|speak up|louder|(don t|didn t|do not|did not) (understand|get it|get that))"
 
 FIN = {
     "P1": "À la fin, vous direz ces formules au micro, sans les lire, et on vous comprendra du premier ou du deuxième coup — même quand un son raté changerait le mot (three, tree).",
@@ -145,7 +145,7 @@ SEANCES = [
      {"type": "mot", "en": "receipt", "choix": [("receipt", None), ("recipe", "Recipe (une recette) se dit en trois syllabes. Ici : re·CEIPT, le reçu, le p muet."), ("receive", "Receive (recevoir) finit par un v. Ici : receipt, le reçu.")]},
    ],
    "dire": [("Demandez combien c'est.", "How much is it?", ["how much"]),
-            ("Demandez si vous pouvez payer par carte.", "Can I pay by card?", ["~(card|debit|credit|visa|tap)", "~(can i|do you|is it|could i)"]),
+            ("Demandez si vous pouvez payer par carte.", "Can I pay by card?", ["~(card|debit|credit|visa|tap)", "~(can i|do you|is it|could i|is (debit|credit|visa|card)|okay|ok)"]),
             ("On vous annonce 13 $. Vérifiez en le répétant.", "Thirteen?", ["~(^| )(thirteen|13)( |$)"]),
             ("Commandez deux cafés.", "Two coffees, please.", ["two|2", "coffee|coffees"])]},
 
@@ -175,7 +175,7 @@ SEANCES = [
      {"type": "dire", "fr": "Demandez à quelle heure ferme le musée.",
       "choix": [("What time does the museum close?", None), ("What time does the museum closes?", "Après does, close reste sans s."), ("What time the museum closes?", "Il manque does : « What time does the museum close? ».")]},
    ],
-   "dire": [("Demandez à quelle heure ça ouvre.", "What time does it open?", ["what time|when", "open|opens|opening"]),
+   "dire": [("Demandez à quelle heure ça ouvre.", "What time does it open?", ["what time|when|hours", "open|opens|opening"]),
             ("Demandez l'heure.", "What time is it?", ["what time|the time"]),
             ("Dites « à dix heures et demie ».", "At ten thirty.", ["ten|10", "thirty|30|half"]),
             ("Dites « demain matin ».", "Tomorrow morning.", ["tomorrow", "morning"])]},
@@ -239,7 +239,7 @@ SEANCES = [
      {"type": "dire", "fr": "Demandez comment vous rendre à la tour CN.",
       "choix": [("How do I get to the CN Tower?", None), ("How do I get the CN Tower?", "Sans « to », ce serait « comment j'obtiens la tour » ! « How do I get TO the CN Tower? »."), ("Where do I go CN Tower?", "Il manque des mots : « How do I get to the CN Tower? ».")]},
    ],
-   "dire": [("Demandez où est le métro.", "Where is the subway?", ["~(where|is there|how (do|can) (i|we) get to)", "subway|ttc|metro|station"]),
+   "dire": [("Demandez où est le métro.", "Where is the subway?", ["~(where|is there|how (do|can) (i|we) get to|looking for|which way)", "subway|ttc|metro|station"]),
             ("Demandez s'il y a une pharmacie près d'ici.", "Is there a pharmacy near here?", ["is there|where", "pharmacy|drugstore|drug store"]),
             ("Demandez combien coûte un billet.", "How much is a ticket?", ["how much", "ticket"]),
             ("Demandez si le déjeuner est inclus.", "Is breakfast included?", ["breakfast", "~(includ|come with|comes with)"])]},
@@ -484,12 +484,19 @@ REFUS = [(ORIGINE, "I'm in Toronto for a week. And you?"), (ORIGINE, "I live in 
          (SEJOUR, "Have a nice day"), (MAL, "I am a sunburn"), (MAL, "I'm fever"), (MAL, "I have no fever"),
          (MAL, "My name is sunburn"), (MAL, "I'm not sunburned"),
          (SEJOUR, "I'm from Quebec. I'm here since two days. And you?"), (SEJOUR, "I've been here for two days"),
-         (DEMANDE, "Do you want a tea?"), (DEMANDE, "Can you get a medium coffee")]
+         (DEMANDE, "Do you want a tea?"), (DEMANDE, "Can you get a medium coffee"),
+         (DEMANDE, "Do you want a tea, please?"), (DEMANDE, "Can you get a tea, please?"), (DEMANDE, "I don't want tea, please"),
+         (MAL, "I had no fever"), (MAL, "I didn't have a fever"), (SEJOUR, "I'm here since a week"), (SEJOUR, "I came two days ago"),
+         (REPETER, "What?")]
 ACCEPTE = [(ORIGINE, "We're from Sherbrooke"), (ORIGINE, "I live in Montreal"), (SEJOUR, "One week."), (SEJOUR, "Just the weekend"),
            (MAL, "I'm sunburned"), (MAL, "My husband has a fever"), (MAL, "I'm running a fever"), (MAL, "My skin is burned"),
            (DEMANDE, "A tea, please"), (DEMANDE, "Give me a tea"), (DEMANDE, "Do you have tea?"),
            (MAL, "I'm really sunburned"), (MAL, "I've had a fever since yesterday"), (MAL, "I'm feeling feverish"),
-           (ORIGINE, "I'm Québécois"), (RELANCE, "What's your name?"), (REPETER, "Could you speak up?")]
+           (ORIGINE, "I'm Québécois"), (RELANCE, "What's your name?"), (REPETER, "Could you speak up?"),
+           (REPETER, "What did you say?"), (REPETER, "What was that?"),
+           (SEJOUR, "I'm from Quebec. Since I'm on vacation, I'm here for a week. And you?"), (SEJOUR, "I'm here for one week since it's my vacation"),
+           (DEMANDE, "Can you get me a tea, please?"), (DEMANDE, "Tea, please"), (DEMANDE, "I take a tea, please"),
+           (MAL, "I had a fever all night")]
 
 
 def _cles(cles, modele, ou):
