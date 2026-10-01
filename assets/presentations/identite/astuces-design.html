@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Astuces de design</title>
+<style>
+@font-face{font-family:"Nunito";src:url("../../design-system/fonts/nunito-latin.woff2") format("woff2");font-weight:200 1000;font-display:swap}
+:root{--paper:#F7F7F5;--card:#fff;--ink:#17181A;--ink-2:#4A4D52;--line:#E4E3DE;--accent:#0A8F5B;--accent-bg:#E7F4EE;
+      --ambre:#9A5B00;--ambre-bg:#FBF1E0;--acier:#35597A;--acier-bg:#E9EFF5;--gris:#6B6E73;--gris-bg:#EFEFEC;--rouge:#B3261E}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.55 "Nunito",system-ui,-apple-system,"Segoe UI",sans-serif}
+.cadre{max-width:920px;margin:0 auto;padding:32px 16px 96px}
+.sur{font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+h1{font-size:34px;line-height:1.15;margin:6px 0 12px;font-weight:900;letter-spacing:-.01em}
+.chapeau{font-size:18px;color:var(--ink-2);max-width:62ch;margin:0 0 24px}
+.bilan{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:0 0 20px}
+.bilan div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.bilan b{display:block;font-size:30px;font-weight:900;line-height:1}
+.bilan span{font-size:14px;color:var(--ink-2)}
+.priorite{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;padding:16px 20px;margin:0 0 24px}
+.priorite h2{font-size:18px;margin:0 0 8px}
+.priorite ol{margin:0;padding-left:22px}
+.priorite li{margin:4px 0}
+.priorite a{color:var(--ink);font-weight:800}
+.barre{position:sticky;top:0;z-index:5;background:var(--paper);padding:12px 0;border-bottom:1px solid var(--line);margin-bottom:16px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.barre button,.dec button{font:inherit;font-size:15px;font-weight:700;min-height:44px;padding:0 16px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink);cursor:pointer}
+.barre button[aria-pressed=true],.dec button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.barre .fin{margin-left:auto;display:flex;gap:8px;align-items:center}
+.cpt{font-size:14px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.c{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px;margin:0 0 14px}
+.c[hidden]{display:none}
+.tete{display:flex;gap:14px;align-items:baseline}
+.num{font-weight:900;font-size:15px;color:var(--gris);font-variant-numeric:tabular-nums}
+.c h2{font-size:21px;line-height:1.25;margin:0;font-weight:800}
+.etis{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 8px}
+.eti,.prio{font-size:13px;font-weight:800;padding:3px 10px;border-radius:999px;border:1px solid var(--line);color:var(--ink-2);background:var(--paper)}
+.av-adopter{color:var(--accent);background:var(--accent-bg);border-color:transparent}
+.av-essayer{color:var(--ambre);background:var(--ambre-bg);border-color:transparent}
+.av-place{color:var(--acier);background:var(--acier-bg);border-color:transparent}
+.prio.p1{color:#fff;background:var(--ink);border-color:var(--ink)}
+.quoi{color:var(--ink-2);margin:6px 0 12px}
+.bloc{border-left:3px solid var(--line);padding:2px 0 2px 14px;margin:10px 0}
+.bloc b{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+.bloc p{margin:2px 0 0}
+.geste{border-left-color:var(--accent)}
+.dec{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.dec .note{flex:1 1 220px;min-height:44px;font:inherit;font-size:16px;padding:0 14px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink)}
+.c.fait{border-color:var(--ink)}
+.source{font-size:14px;color:var(--gris);margin-top:32px}
+@media (max-width:640px){h1{font-size:28px}.bilan{grid-template-columns:repeat(2,1fr)}.barre .fin{margin-left:0;width:100%}.c{padding:16px}}
+@media print{.barre,.dec{display:none}.c{break-inside:avoid}}
+</style></head>
+<body><div class="cadre">
+<div class="sur">La maison · Identité · à trancher</div>
+<h1>Les 20 astuces de design retenues</h1>
+<p class="chapeau">Le guide « 25 tricks to level up Claude Design » passé au crible de ce qui existe déjà : francis, Trame, les compétences, la mémoire. Seules les astuces retenues restent ici, sous leur numéro d'origine. Pour chaque astuce, un avis, la forme qu'elle prendrait, et le geste. Vos décisions restent sur ce poste ; « Exporter » les rend à une prochaine session.</p>
+
+<div class="bilan">
+  <div><b>9</b><span>à adopter</span></div>
+  <div><b>7</b><span>à essayer d'abord</span></div>
+  <div><b>4</b><span>déjà en place</span></div>
+</div>
+
+<div class="priorite">
+  <h2>Ce que je ferais d'abord</h2>
+  <ol>
+    <li><a href="#a12">Une compétence de ton</a> — rassembler vingt règles éparses en une seule, qui apprend de vos corrections.</li>
+    <li><a href="#a23">/tweak</a> — régler l'espacement au curseur au lieu de dix allers-retours, sans jamais écrire dans le HTML engendré.</li>
+    <li><a href="#a4">/francis et /trame</a> — le système appelable d'un mot, partout, avec les leçons du téléphone (<a href="#a20">astuce 20</a>).</li>
+    <li><a href="#a11">impeccable</a> — un essai sur le portail élève : l'audit visuel qui manque à côté de la boucle didactique.</li>
+  </ol>
+</div>
+
+<div class="barre" role="toolbar" aria-label="Filtrer">
+  <button type="button" data-f="tout" aria-pressed="true">Toutes</button>
+  <button type="button" data-f="adopter" aria-pressed="false">À adopter</button>
+  <button type="button" data-f="essayer" aria-pressed="false">À essayer</button>
+  <button type="button" data-f="place" aria-pressed="false">Déjà en place</button>
+  <button type="button" data-f="competence" aria-pressed="false">Compétences (5)</button>
+  <span class="fin"><span class="cpt" id="cpt"></span><button type="button" id="exp">Exporter</button></span>
+</div>
+
+<main id="liste">
+<article class="c" id="a1" data-n="1" data-avis="place" data-forme="rien" data-prio="0">
+  <div class="tete"><span class="num">01</span><h2>Un système de design, fait de zéro ou tiré d&#x27;un exemple</h2></div>
+  <div class="etis"><span class="eti av-place">Déjà en place</span><span class="eti forme">Rien à écrire</span></div>
+  <p class="quoi">Décrire la marque, ou montrer une capture, un site, un diaporama, et laisser Claude en tirer couleurs, polices et composants.</p>
+  <div class="bloc"><b>Pour nos projets</b><p>C&#x27;est déjà la fondation : francis (assets/design-system/), Trame et Braise existent, et Braise a justement été relevé sur une capture. La méthode du relevé est écrite (relever un design externe).</p></div>
+  <div class="bloc geste"><b>Le geste</b><p>Rien à faire.</p></div>
+  <div class="dec" role="group" aria-label="Votre décision sur l'astuce 1">
+    <button type="button" data-v="oui">Je prends</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur l'astuce 1">
+  </div>
+</article>
+<article class="c" id="a2" data-n="2" data-avis="adopter" data-forme="memoire" data-prio="2">
+  <div class="tete"><span class="num">02</span><h2>Une galerie de 2 000 systèmes prêts à lire (Refero Styles)</h2></div>
+  <div class="etis"><span class="eti av-adopter">À adopter</span><span class="eti forme">Fiche de mémoire</span><span class="prio p2">Ensuite</span></div>
+  <p class="quoi">styles.refero.design publie des systèmes réels, rédigés pour qu&#x27;un modèle les lise : on copie, on ajuste, on colle.</p>
+  <div class="bloc"><b>Pour nos projets</b><p>Utile là où il faut inventer une marque vite : les enseignes fictives des formations en entreprise (Maison Francœur, Rive-Claire, Chaussures Rivard) et les pièces du portfolio. Inutile pour francis, qui est fixé.</p></div>
+  <div class="bloc geste"><b>Le geste</b><p>Une ligne dans la compétence trousse-de-metier, à l&#x27;étape de l&#x27;identité de l&#x27;enseigne : partir d&#x27;un système Refero plutôt que d&#x27;une page blanche.</p></div>
+  <div class="dec" role="group" aria-label="Votre décision sur l'astuce 2">
+    <button type="button" data-v="oui">Je prends</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur l'astuce 2">
+  </div>
+</article>
+<article class="c" id="a3" data-n="3" data-avis="adopter" data-forme="memoire" data-prio="2">
+  <div class="tete"><span class="num">03</span><h2>Laisser Claude choisir les trois plus proches</h2></div>
+  <div class="etis"><span class="eti av-adopter">À adopter</span><span class="eti forme">Fiche de mémoire</span><span class="prio p2">Ensuite</span></div>
+  <p class="quoi">Donner la galerie et une phrase sur l&#x27;entreprise ; recevoir trois liens et une raison chacun.</p>
+  <div class="bloc"><b>Pour nos projets</b><p>Va avec l&#x27;astuce 2. La galerie se charge en JavaScript : le navigateur intégré la lit, un simple téléchargement non. Même geste pour les pièces du portfolio.</p></div>
+  <div class="bloc geste"><b>Le geste</b><p>Même ligne que l&#x27;astuce 2, avec la précision : passer par le navigateur, pas par un téléchargement.</p></div>
+  <div class="dec" role="group" aria-label="Votre décision sur l'astuce 3">
+    <button type="button" data-v="oui">Je prends</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur l'astuce 3">
+  </div>
+</article>
+<article class="c" id="a4" data-n="4" data-avis="adopter" data-forme="competence" data-prio="1">
+  <div class="tete"><span class="num">04</span><h2>Un système de design rangé dans une compétence</h2></div>
+  <div class="etis"><span class="eti av-adopter">À adopter</span><span class="eti forme">Compétence</span><span class="prio p1">D'abord</span></div>
+  <p class="quoi">Dans Claude Code, un système est une compétence : /duolingo, et tout ce qu&#x27;on demande sort dans ce style.</p>
+  <div class="bloc"><b>Pour nos projets</b><p>Le système francis a un SKILL.md, mais il dort dans le dépôt : il ne se déclenche que si une compétence de module le cite. Une page du portfolio ou de la maison peut le rater. En faire /francis et /trame le rend appelable partout, et règle le choix du système en un mot.</p></div>
+  <div class="bloc geste"><b>Le geste</b><p>Écrire deux compétences minces, /francis et /trame, qui pointent vers les jetons et les règles existants (sans les recopier), plus les pièges déjà payés : jetons recopiés et non importés en file://, sélection en plaque encre, violet réservé à la marque.</p></div>
+  <div class="dec" role="group" aria-label="Votre décision sur l'astuce 4">
+    <button type="button" data-v="oui">Je prends</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur l'astuce 4">
+  </div>
+</article>
+<article class="c" id="a5" data-n="5" data-avis="adopter" data-forme="memoire" data-prio="3">
+  <div class="tete"><span class="num">05</span><h2>Des polices choisies, pas celles par défaut (Fontshare, Fontesk)</h2></div>
+  <div class="etis"><span class="eti av-adopter">À adopter</span><span class="eti forme">Fiche de mémoire</span><span class="prio p3">Plus tard</span></div>
+  <p class="quoi">La police trahit le design fait à la va-vite. Fontshare est libre pour l&#x27;usage commercial ; Fontesk, licence par police ; Fontjoy pour les paires.</p>
+  <div class="bloc"><b>Pour nos projets</b><p>Nunito et Manrope/Source Serif sont fixés ; la question ne se pose que pour une enseigne fictive ou une pièce du portfolio. Deux leçons déjà payées s&#x27;y ajoutent : la police se loge en .woff2 local (Nunito en local), et la licence se vérifie avant.</p></div>
+  <div class="bloc geste"><b>Le geste</b><p>Une fiche de mémoire courte : Fontshare d&#x27;abord, licence vérifiée, fichier local, jamais la pile système.</p></div>
+  <div class="dec" role="group" aria-label="Votre décision sur l'astuce 5">
+    <button type="button" data-v="oui">Je prends</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur l'astuce 5">
+  </div>
+</article>
+<article class="c" id="a6" data-n="6" data-avis="essayer" data-forme="memoire" data-prio="2">
+  <div class="tete"><span class="num">06</span><h2>Écrire comme les cinq meilleurs du créneau</h2></div>
+  <div class="etis"><span class="eti av-essayer">À essayer</span><span class="eti forme">Fiche de mémoire</span><span class="prio p2">Ensuite</span></div>
+  <p class="quoi">Faire relever ce que les cinq meilleurs font dans leurs titres, boutons et premier écran, puis en tirer des règles de rédaction.</p>
+  <div class="bloc"><b>Pour nos projets</b><p>Pas pour les modules — leur langue suit le programme. Mais pour ce qui vend : la page publique d&#x27;edufrancis, le démarchage des employeurs, les courriels aux directions. On n&#x27;a jamais regardé ce que font les meilleurs éditeurs de formation linguistique.</p></div>
+  <div class="bloc geste"><b>Le geste</b><p>Une seule passe sur la page publique, avec le résultat versé à la compétence de ton (astuce 12) plutôt qu&#x27;à une fiche à part.</p></div>
+  <div class="dec" role="group" aria-label="Votre décision sur l'astuce 6">
+    <button type="button" data-v="oui">Je prends</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur l'astuce 6">
+  </div>
+</article>
+<article class="c" id="a7" data-n="7" data-avis="place" data-forme="rien" data-prio="0">
+  <div class="tete"><span class="num">07</span><h2>Mélanger deux systèmes</h2></div>
+  <div class="etis"><span class="eti av-place">Déjà en place</span><span class="eti forme">Rien à écrire</span></div>
+  <p class="quoi">La typographie de l&#x27;un, la couleur et le mouvement de l&#x27;autre : un mélange qui n&#x27;est la copie de personne.</p>
+  <div class="bloc"><b>Pour nos projets</b><p>Le banc d&#x27;essai des habillages fait déjà ce travail (francis ↔ Trame sur le classeur, un bloc de jetons par système). La technique sert surtout aux enseignes fictives, et l&#x27;astuce 2 la couvre.</p></div>
+  <div class="bloc geste"><b>Le geste</b><p>Rien à faire.</p></div>
+  <div class="dec" role="group" aria-label="Votre décision sur l'astuce 7">
+    <button type="button" data-v="oui">Je prends</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur l'astuce 7">
+  </div>
+</article>
+<article class="c" id="a9" data-n="9" data-avis="place" data-forme="rien" data-prio="0">
+  <div class="tete"><span class="num">09</span><h2>Partir d&#x27;un projet déjà fini</h2></div>
+  <div class="etis"><span class="eti av-place">Déjà en place</span><span class="eti forme">Rien à écrire</span></div>
+  <p class="quoi">Pointer vers un projet terminé et en reprendre système, médias et décisions.</p>
+  <div class="bloc"><b>Pour nos projets</b><p>C&#x27;est le rôle de la mémoire, des gabarits et de page-engendree. Le guide confirme la règle qu&#x27;on applique : pointer le dossier, pas une conversation passée.</p></div>
+  <div class="bloc geste"><b>Le geste</b><p>Rien à faire.</p></div>
+  <div class="dec" role="group" aria-label="Votre décision sur l'astuce 9">
+    <button type="button" data-v="oui">Je prends</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur l'astuce 9">
+  </div>
+</article>
+<article class="c" id="a10" data-n="10" data-avis="essayer" data-forme="ressource" data-prio="3">
+  <div class="tete"><span class="num">10</span><h2>Une bibliothèque de références visuelles</h2></div>
+  <div class="etis"><span class="eti av-essayer">À essayer</span><span class="eti forme">Ressource</span><span class="prio p3">Plus tard</span></div>
+  <p class="quoi">Une extension Chrome qui garde en un clic une capture, l&#x27;adresse et une note, et une page-mur pour les retrouver.</p>
+  <div class="bloc"><b>Pour nos projets</b><p>Le goût se nourrit, et on relève souvent des designs externes. Mais c&#x27;est un outil de plus à entretenir, et le « système d&#x27;exploitation du design » (astuce 25) le recouvre en partie.</p></div>
+  <div class="bloc geste"><b>Le geste</b><p>Plus tard, et seulement si les relevés de sites se multiplient. À construire alors comme une page du classeur plutôt qu&#x27;une extension.</p></div>
+  <div class="dec" role="group" aria-label="Votre décision sur l'astuce 10">
+    <button type="button" data-v="oui">Je prends</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur l'astuce 10">
+  </div>
+</article>
+<article class="c" id="a11" data-n="11" data-avis="essayer" data-forme="competence" data-prio="1">
+  <div class="tete"><span class="num">11</span><h2>impeccable : l&#x27;audit qui enlève l&#x27;air « fait par IA »</h2></div>
+  <div class="etis"><span class="eti av-essayer">À essayer</span><span class="eti forme">Compétence</span><span class="prio p1">D'abord</span></div>
+  <p class="quoi">Une compétence libre (1 compétence, 24 commandes) qui audite hiérarchie, espacement, typographie, accessibilité et états vides, puis corrige.</p>
+  <div class="bloc"><b>Pour nos projets</b><p>C&#x27;est le pendant visuel de boucle-didactique : la boucle audite la pédagogie, rien n&#x27;audite l&#x27;œil. Beaucoup de nos corrections (boutons à 12 px, barre alignée, cadre qui bouge) auraient pu sortir d&#x27;un audit. Risque : ses goûts par défaut peuvent contredire francis ; il faut lui dire que le système l&#x27;emporte.</p></div>
+  <div class="bloc geste"><b>Le geste</b><p>L&#x27;installer, le passer sur UNE page (le portail élève), lire ses constats sur une page de tri comme les autres audits, et ne garder que ceux qui ne contredisent pas le système.</p></div>
+  <div class="dec" role="group" aria-label="Votre décision sur l'astuce 11">
+    <button type="button" data-v="oui">Je prends</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur l'astuce 11">
+  </div>
+</article>
+<article class="c" id="a12" data-n="12" data-avis="adopter" data-forme="competence" data-prio="1">
+  <div class="tete"><span class="num">12</span><h2>Une compétence de ton de voix</h2></div>
+  <div class="etis"><span class="eti av-adopter">À adopter</span><span class="eti forme">Compétence</span><span class="prio p1">D'abord</span></div>
+  <p class="quoi">Mots bannis, façon d&#x27;écrire, exemples réels, plus des règles reconnues (anglais technique simplifié, guides de Google et d&#x27;Apple). Elle apprend à chaque correction.</p>
+  <div class="bloc"><b>Pour nos projets</b><p>Nos règles de rédaction sont éparpillées dans vingt fiches de mémoire : vouvoiement, aucun émoji, québécois (courriel, 15 h), « mode avec assistance » et jamais « IA », pseudo et jamais nom, phrases courtes. Le principe « une idée par phrase, des mots simples » est exactement celui du langage clair, qui compte double pour des apprenants en francisation.</p></div>
+  <div class="bloc geste"><b>Le geste</b><p>Écrire /ton-francis : les règles rassemblées, deux registres (ce que lit l&#x27;élève, ce que lit la direction ou l&#x27;employeur), cinq vrais textes de Daniel comme modèles, et la consigne de s&#x27;enrichir à chaque correction.</p></div>
+  <div class="dec" role="group" aria-label="Votre décision sur l'astuce 12">
+    <button type="button" data-v="oui">Je prends</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur l'astuce 12">
+  </div>
+</article>
+<article class="c" id="a16" data-n="16" data-avis="adopter" data-forme="memoire" data-prio="2">
+  <div class="tete"><span class="num">16</span><h2>Ne pas laisser Claude dessiner les icônes</h2></div>
+  <div class="etis"><span class="eti av-adopter">À adopter</span><span class="eti forme">Fiche de mémoire</span><span class="prio p2">Ensuite</span></div>
+  <p class="quoi">Prendre UN jeu d&#x27;icônes dans UN style (Iconify, Flaticon) et interdire d&#x27;en dessiner.</p>
+  <div class="bloc"><b>Pour nos projets</b><p>Les icônes de la barre d&#x27;outils viennent d&#x27;une remise de design, mais chaque pièce du portfolio en invente de nouvelles, au trait inégal. Un jeu libre (Tabler ou Lucide, licence MIT, par Iconify) donnerait une seule famille partout.</p></div>
+  <div class="bloc geste"><b>Le geste</b><p>Choisir le jeu, le loger dans assets/design-system/, et une fiche de mémoire : « jamais dessiner une icône ; si elle manque, la prendre dans le même jeu ».</p></div>
+  <div class="dec" role="group" aria-label="Votre décision sur l'astuce 16">
+    <button type="button" data-v="oui">Je prends</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur l'astuce 16">
+  </div>
+</article>
+<article class="c" id="a17" data-n="17" data-avis="place" data-forme="rien" data-prio="0">
+  <div class="tete"><span class="num">17</span><h2>Demander du SVG</h2></div>
+  <div class="etis"><span class="eti av-place">Déjà en place</span><span class="eti forme">Rien à écrire</span></div>
+  <p class="quoi">Icônes, schémas, illustrations au trait : en SVG, pour les redimensionner, les recolorer et les animer.</p>
+  <div class="bloc"><b>Pour nos projets</b><p>Déjà la pratique pour les schémas et les images au trait. Les croquis restent en image, avec raison : ce sont des dessins, pas des pictogrammes.</p></div>
+  <div class="bloc geste"><b>Le geste</b><p>Rien à faire.</p></div>
+  <div class="dec" role="group" aria-label="Votre décision sur l'astuce 17">
+    <button type="button" data-v="oui">Je prends</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur l'astuce 17">
+  </div>
+</article>
+<article class="c" id="a19" data-n="19" data-avis="adopter" data-forme="ressource" data-prio="3">
+  <div class="tete"><span class="num">19</span><h2>Le répertoire Creators Toolbox</h2></div>
+  <div class="etis"><span class="eti av-adopter">À adopter</span><span class="eti forme">Ressource</span><span class="prio p3">Plus tard</span></div>
+  <p class="quoi">Plus de 150 ressources de design réunies (composants, effets 3D, icônes, logos, maquettes).</p>
+  <div class="bloc"><b>Pour nos projets</b><p>Un signet, pas un chantier. Utile au moment de chercher une ressource précise ; tout n&#x27;y est pas gratuit.</p></div>
+  <div class="bloc geste"><b>Le geste</b><p>Une ligne dans une fiche de références (avec Refero et Fontshare).</p></div>
+  <div class="dec" role="group" aria-label="Votre décision sur l'astuce 19">
+    <button type="button" data-v="oui">Je prends</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur l'astuce 19">
+  </div>
+</article>
+<article class="c" id="a20" data-n="20" data-avis="adopter" data-forme="competence" data-prio="2">
+  <div class="tete"><span class="num">20</span><h2>Les règles d&#x27;interface d&#x27;Apple (HIG) en compétence</h2></div>
+  <div class="etis"><span class="eti av-adopter">À adopter</span><span class="eti forme">Compétence</span><span class="prio p2">Ensuite</span></div>
+  <p class="quoi">Cibles tactiles, échelle typographique, marges, contraste : les chiffres d&#x27;Apple dans une compétence /hig.</p>
+  <div class="bloc"><b>Pour nos projets</b><p>Nos seuils (17 px, 44 px, 4,5:1) sont les bons, mais le téléphone nous a coûté cher : le cadre à 100vh sous Safari, le boîtier SimDEA séparé sur mobile, le site installable. Les chiffres d&#x27;Apple pour l&#x27;iPhone combleraient ce qui manque. Plutôt qu&#x27;une compétence de plus, les verser dans /francis (astuce 4).</p></div>
+  <div class="bloc geste"><b>Le geste</b><p>Une section « Téléphone » dans /francis : zones sûres, dvh plutôt que vh, cibles, échelle — avec les leçons déjà payées.</p></div>
+  <div class="dec" role="group" aria-label="Votre décision sur l'astuce 20">
+    <button type="button" data-v="oui">Je prends</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur l'astuce 20">
+  </div>
+</article>
+<article class="c" id="a21" data-n="21" data-avis="essayer" data-forme="memoire" data-prio="2">
+  <div class="tete"><span class="num">21</span><h2>GSAP pour le mouvement de qualité vitrine</h2></div>
+  <div class="etis"><span class="eti av-essayer">À essayer</span><span class="eti forme">Fiche de mémoire</span><span class="prio p2">Ensuite</span></div>
+  <p class="quoi">La bibliothèque d&#x27;animation des grandes agences, entièrement gratuite depuis 2025, défilement et révélations compris.</p>
+  <div class="bloc"><b>Pour nos projets</b><p>Pas pour les modules. Mais les diaporamas HTML animés, le film des planches, la formation DEA et la vitrine du portfolio se jouent au temps près, et on règle aujourd&#x27;hui chaque minutage à la main en CSS. GSAP donne une ligne de temps qu&#x27;on peut caler sur une narration.</p></div>
+  <div class="bloc geste"><b>Le geste</b><p>Un essai sur UN diaporama animé, avec respect de prefers-reduced-motion ; si l&#x27;essai tient, une ligne dans piece-apprentissage.</p></div>
+  <div class="dec" role="group" aria-label="Votre décision sur l'astuce 21">
+    <button type="button" data-v="oui">Je prends</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur l'astuce 21">
+  </div>
+</article>
+<article class="c" id="a22" data-n="22" data-avis="essayer" data-forme="rien" data-prio="2">
+  <div class="tete"><span class="num">22</span><h2>/design dans Claude Code</h2></div>
+  <div class="etis"><span class="eti av-essayer">À essayer</span><span class="eti forme">Rien à écrire</span><span class="prio p2">Ensuite</span></div>
+  <p class="quoi">Une toile de planches modifiables, comme Figma, mais qui connaît l&#x27;espace de travail, les règles et la mémoire.</p>
+  <div class="bloc"><b>Pour nos projets</b><p>Encore en aperçu. Le moment de l&#x27;essayer : le prochain écran neuf du portail, là où on compare aujourd&#x27;hui des variantes 2a, 4a… par pages séparées.</p></div>
+  <div class="bloc geste"><b>Le geste</b><p>Rien à écrire ; l&#x27;essayer au prochain écran, avec /francis chargé.</p></div>
+  <div class="dec" role="group" aria-label="Votre décision sur l'astuce 22">
+    <button type="button" data-v="oui">Je prends</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur l'astuce 22">
+  </div>
+</article>
+<article class="c" id="a23" data-n="23" data-avis="adopter" data-forme="competence" data-prio="1">
+  <div class="tete"><span class="num">23</span><h2>/tweak : des curseurs sur la page, puis on fige</h2></div>
+  <div class="etis"><span class="eti av-adopter">À adopter</span><span class="eti forme">Compétence</span><span class="prio p1">D'abord</span></div>
+  <p class="quoi">Un panneau de curseurs (taille, espacement, couleurs, arrondis, sections masquées) posé sur n&#x27;importe quelle page ; « Figer » réécrit les valeurs.</p>
+  <div class="bloc"><b>Pour nos projets</b><p>C&#x27;est le geste qu&#x27;on fait le plus, à coups d&#x27;aller-retour : « un peu plus d&#x27;air », « le bouton plus bas », remesurer. Des curseurs font ce réglage en une minute. Piège à tenir absolument : nos pages sont engendrées, donc « Figer » ne doit JAMAIS écrire dans le HTML (une refonte a déjà été perdue ainsi). Il exporte les valeurs, et on les reporte dans le gabarit ou la feuille source.</p></div>
+  <div class="bloc geste"><b>Le geste</b><p>Écrire /tweak : un script injecté qui lit les jetons CSS de la page (--espace, --rayon, tailles), des curseurs dessus, et un bouton qui rend un bloc de jetons à coller dans la source — reporté par Claude selon page-engendree.</p></div>
+  <div class="dec" role="group" aria-label="Votre décision sur l'astuce 23">
+    <button type="button" data-v="oui">Je prends</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur l'astuce 23">
+  </div>
+</article>
+<article class="c" id="a24" data-n="24" data-avis="essayer" data-forme="memoire" data-prio="3">
+  <div class="tete"><span class="num">24</span><h2>Du texte dit aux animations calées</h2></div>
+  <div class="etis"><span class="eti av-essayer">À essayer</span><span class="eti forme">Fiche de mémoire</span><span class="prio p3">Plus tard</span></div>
+  <p class="quoi">Transcription mot à mot (Whisper), repérage des moments qui méritent une animation, animations HTML calées sur le temps, rendues en MP4 (HyperFrames).</p>
+  <div class="bloc"><b>Pour nos projets</b><p>On a une longueur d&#x27;avance : nos narrations sortent d&#x27;Azure, qui donne déjà le temps de chaque mot — pas besoin de Whisper. Et les captures passent déjà par Chrome sans fenêtre. Ce qui manque est le rendu direct HTML → MP4, pour les capsules et le film.</p></div>
+  <div class="bloc geste"><b>Le geste</b><p>Au prochain tournage de capsule : essayer HyperFrames avec les minutages Azure, et consigner le résultat dans le protocole des capsules.</p></div>
+  <div class="dec" role="group" aria-label="Votre décision sur l'astuce 24">
+    <button type="button" data-v="oui">Je prends</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur l'astuce 24">
+  </div>
+</article>
+<article class="c" id="a25" data-n="25" data-avis="essayer" data-forme="ressource" data-prio="3">
+  <div class="tete"><span class="num">25</span><h2>Son propre « système d&#x27;exploitation du design »</h2></div>
+  <div class="etis"><span class="eti av-essayer">À essayer</span><span class="eti forme">Ressource</span><span class="prio p3">Plus tard</span></div>
+  <p class="quoi">Une page où chaque design fini apparaît et où chaque image générée est indexée par ce qu&#x27;elle montre, pour la retrouver et la réutiliser.</p>
+  <div class="bloc"><b>Pour nos projets</b><p>On en a déjà les morceaux : le classeur, le tableau de bord, la page d&#x27;audit des 1 502 images, les registres de prompts. Ce qui manque, c&#x27;est la recherche par contenu. Coût réel : un passage d&#x27;un modèle de vision sur chaque image.</p></div>
+  <div class="bloc geste"><b>Le geste</b><p>Plus tard. Commencer par un seul dossier (les croquis du portfolio) et une recherche par les prompts déjà écrits, qui ne coûte rien.</p></div>
+  <div class="dec" role="group" aria-label="Votre décision sur l'astuce 25">
+    <button type="button" data-v="oui">Je prends</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur l'astuce 25">
+  </div>
+</article>
+</main>
+
+<p class="source">Source : « 25 tricks to level up Claude Design », RoboNuggets, liens vérifiés par l'auteur du 21 au 25 septembre 2026. Résumés et avis rédigés ici ; le guide n'est pas reproduit. Page engendrée par build/astuces_design_page.py.</p>
+</div>
+<script>
+(function(){
+  var DATA=[{"n": 1, "titre": "Un système de design, fait de zéro ou tiré d'un exemple", "avis": "place", "forme": "rien", "prio": 0}, {"n": 2, "titre": "Une galerie de 2 000 systèmes prêts à lire (Refero Styles)", "avis": "adopter", "forme": "memoire", "prio": 2}, {"n": 3, "titre": "Laisser Claude choisir les trois plus proches", "avis": "adopter", "forme": "memoire", "prio": 2}, {"n": 4, "titre": "Un système de design rangé dans une compétence", "avis": "adopter", "forme": "competence", "prio": 1}, {"n": 5, "titre": "Des polices choisies, pas celles par défaut (Fontshare, Fontesk)", "avis": "adopter", "forme": "memoire", "prio": 3}, {"n": 6, "titre": "Écrire comme les cinq meilleurs du créneau", "avis": "essayer", "forme": "memoire", "prio": 2}, {"n": 7, "titre": "Mélanger deux systèmes", "avis": "place", "forme": "rien", "prio": 0}, {"n": 9, "titre": "Partir d'un projet déjà fini", "avis": "place", "forme": "rien", "prio": 0}, {"n": 10, "titre": "Une bibliothèque de références visuelles", "avis": "essayer", "forme": "ressource", "prio": 3}, {"n": 11, "titre": "impeccable : l'audit qui enlève l'air « fait par IA »", "avis": "essayer", "forme": "competence", "prio": 1}, {"n": 12, "titre": "Une compétence de ton de voix", "avis": "adopter", "forme": "competence", "prio": 1}, {"n": 16, "titre": "Ne pas laisser Claude dessiner les icônes", "avis": "adopter", "forme": "memoire", "prio": 2}, {"n": 17, "titre": "Demander du SVG", "avis": "place", "forme": "rien", "prio": 0}, {"n": 19, "titre": "Le répertoire Creators Toolbox", "avis": "adopter", "forme": "ressource", "prio": 3}, {"n": 20, "titre": "Les règles d'interface d'Apple (HIG) en compétence", "avis": "adopter", "forme": "competence", "prio": 2}, {"n": 21, "titre": "GSAP pour le mouvement de qualité vitrine", "avis": "essayer", "forme": "memoire", "prio": 2}, {"n": 22, "titre": "/design dans Claude Code", "avis": "essayer", "forme": "rien", "prio": 2}, {"n": 23, "titre": "/tweak : des curseurs sur la page, puis on fige", "avis": "adopter", "forme": "competence", "prio": 1}, {"n": 24, "titre": "Du texte dit aux animations calées", "avis": "essayer", "forme": "memoire", "prio": 3}, {"n": 25, "titre": "Son propre « système d'exploitation du design »", "avis": "essayer", "forme": "ressource", "prio": 3}], CLE="astuces-design-v1", etat={};
+  try{etat=JSON.parse(localStorage.getItem(CLE)||"{}")}catch(e){etat={}}
+  function garder(){try{localStorage.setItem(CLE,JSON.stringify(etat))}catch(e){}}
+  var cartes=[].slice.call(document.querySelectorAll(".c"));
+  function compter(){
+    var n=cartes.filter(function(c){var d=etat[c.dataset.n];return d&&d.v}).length;
+    document.getElementById("cpt").textContent=n+" / "+cartes.length+" tranchées";
+  }
+  cartes.forEach(function(c){
+    var n=c.dataset.n, d=etat[n]||{}, bs=[].slice.call(c.querySelectorAll(".dec button")), note=c.querySelector(".note");
+    function peindre(){bs.forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.v===(etat[n]||{}).v))});
+      c.classList.toggle("fait",!!(etat[n]||{}).v)}
+    note.value=d.note||"";
+    bs.forEach(function(b){b.addEventListener("click",function(){
+      var e=etat[n]||{}; e.v=(e.v===b.dataset.v)?"":b.dataset.v; etat[n]=e; garder(); peindre(); compter();})});
+    note.addEventListener("input",function(){var e=etat[n]||{}; e.note=note.value; etat[n]=e; garder();});
+    peindre();
+  });
+  [].slice.call(document.querySelectorAll(".barre [data-f]")).forEach(function(b,_,tous){
+    b.addEventListener("click",function(){
+      tous.forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});
+      var f=b.dataset.f;
+      cartes.forEach(function(c){c.hidden=!(f==="tout"||c.dataset.avis===f||c.dataset.forme===f)});
+    });
+  });
+  document.getElementById("exp").addEventListener("click",function(){
+    var out={page:"astuces-design",date:new Date().toISOString().slice(0,10),decisions:DATA.map(function(a){
+      var d=etat[a.n]||{}; return {n:a.n,titre:a.titre,avis:a.avis,forme:a.forme,decision:d.v||"",note:d.note||""}})};
+    var txt=JSON.stringify(out,null,2), blob=new Blob([txt],{type:"application/json"}), a=document.createElement("a");
+    a.href=URL.createObjectURL(blob); a.download="astuces-design-decisions.json"; a.click();
+    if(navigator.clipboard){navigator.clipboard.writeText(txt).catch(function(){})}
+  });
+  compter();
+})();
+</script>
+</body></html>
