@@ -83,7 +83,7 @@ LEXIQUE = [
     ("housekeeping", "hotel", "housekeeping", "le service d'entretien des chambres", "", ""),
     ("late_checkout", "hotel", "a late checkout", "un départ tardif", "", ""),
     ("luggage", "hotel", "luggage, bags", "les bagages", "croquis", ""),
-    ("floor", "hotel", "the third floor", "le troisième étage", "", "PIÈGE : au Canada, le « first floor » est le rez-de-chaussée."),
+    ("floor", "hotel", "the third floor", "le 3e étage (deux étages au-dessus de la rue)", "", "PIÈGE : au Canada, le « first floor » est le rez-de-chaussée."),
 
     # --- Le café --------------------------------------------------------------
     ("coffee", "cafe", "a coffee", "un café", "croquis", ""),
@@ -459,7 +459,7 @@ PIEGES = {
     # avait toujours tort, « éviter la ressemblance » réussissait sans comprendre. La série en tire
     # toujours au moins un.
     'souvenir': ('The gift shop sells souvenirs.',
-             'La boutique vend des souvenirs (des objets du voyage).',
+             'La boutique vend des souvenirs.',
              'La boutique vend des cartes de la ville.',
              'La boutique vend des cadeaux de mariage.',
              'Ici, le mot qui ressemble dit vrai : un souvenir est un objet rapporté du voyage.',

@@ -28,7 +28,7 @@ import toronto_commun as C  # noqa: E402
 
 SORTIE = RACINE / "modules-autonomes" / "toronto" / "index.html"
 MEDIA = RACINE / "assets" / "interactive" / "toronto"
-MEDIA_V = "4"  # 4 : exercices refaits au tour 1 (numéros décalés, même nom, autre son) ; 3 : test 0-5 refait (fin coupée) ; 2 : cinq extraits refaits après le tour 3 (même nom, autre son) ; 1 : première production
+MEDIA_V = "5"  # 5 : tour 2 des exercices (totaux et allergie refaits, mêmes noms) ; 4 : exercices refaits au tour 1 (numéros décalés, même nom, autre son) ; 3 : test 0-5 refait (fin coupée) ; 2 : cinq extraits refaits après le tour 3 (même nom, autre son) ; 1 : première production
 
 
 def plan_ville():
@@ -68,8 +68,8 @@ def donnees():
     EX = C.charger("exercices"); EX.verifier({l[0] for l in SE.LIEUX} | {"magasin"}, PS.VOIX, {g[0] for g in SE.GENS})
     nom_lieu = {l[0]: l[3] for l in SE.LIEUX} | {"magasin": "Un magasin"}
     totaux = []
-    for (l, q, ctx, en, prix, mal, pb, mot) in EX.TOTAL:
-        ch, calcul = EX.total(prix, mal, pb, mot)
+    for (l, q, ctx, en, prix, mal, pb, mot, inclus) in EX.TOTAL:
+        ch, calcul = EX.total(prix, mal, pb, mot, inclus)
         totaux.append({"lieu": nom_lieu[l], "qui": q, "ctx": ctx, "en": en, "calcul": calcul,
                        "choix": [[f"{v:.2f} $".replace(".", ","), r] for v, r in ch]})
     exos = {"reponses": [{"lieu": nom_lieu[l], "qui": q, "ctx": ctx, "en": en, "choix": ch} for l, q, ctx, en, ch in EX.REPONSES],
@@ -87,7 +87,7 @@ def donnees():
             "prep": {"seances": PR.SEANCES, "test": PR.TEST, "objectifs": PR.OBJECTIFS, "seuil": PR.SEUIL,
                      "conseils": PR.CONSEILS, "fin": PR.FIN, "lieu": PR.LIEU, "solide": PR.SEUIL_SOLIDE},
             # Les réponses témoins des clés, rejouées dans le moteur de la page (audit tour 5) : `window.__toronto`.
-            "controle": {"refus": PR.REFUS, "accepte": PR.ACCEPTE}}, len(sons), len(noms)
+            "controle": {"refus": PR.REFUS + EX.REFUS, "accepte": PR.ACCEPTE + EX.ACCEPTE}}, len(sons), len(noms)
 
 
 def main():
@@ -825,14 +825,16 @@ function vuePlanche(k){
 /* La série des faux amis : chaque piège dans sa phrase de voyage (règle de l'hôtel : jamais montré seul).
    La place de la bonne lecture est tirée au hasard (leçon de la boucle de l'étape 1). */
 function vuePieges(){
-  // Au moins un vrai ami par série (tour 1 des exercices) : éviter la ressemblance ne suffit plus.
+  // Un à trois vrais amis par série, tirés (tour 2 : un seul, annoncé, et tous les autres étaient faux).
   const vrais = melange(D.pieges.filter(x => x.vrai)), faux = melange(D.pieges.filter(x => !x.vrai));
-  const items = melange([vrais[0], ...faux.slice(0, 9)]);
+  const nv = 1 + Math.floor(Math.random() * Math.min(3, vrais.length));
+  const items = melange([...vrais.slice(0, nv), ...faux.slice(0, 10 - nv)]);
   let n = 0, premiers = 0;
   function tour(){
     if (n >= items.length) {
+      if (!S.exos) S.exos = {}; S.exos.pieges = `${premiers} sur ${items.length}`; sauver();
       app.innerHTML = `${retour('mots', 'Les planches')}<h1>Les faux amis</h1><div class="retro ok">✓ ${items.length} pièges, dont ${premiers} déjoués du premier coup.</div>
-        <p class="muted">La série tire dix mots sur ${D.pieges.length}, dont au moins un « vrai ami » : refaites-la, ce ne seront pas les mêmes.</p>
+        <p class="muted">La série tire dix mots sur ${D.pieges.length}, dont quelques « vrais amis » : refaites-la, ce ne seront pas les mêmes.</p>
         <button class="btn btn--pri btn--large" onclick="rendre()">Une autre série</button>
         <button class="btn btn--large" style="margin-top:8px" onclick="aller('mots')">Les planches</button>`; return; }
     const it = items[n], ch = [[it.bonne, null], [it.fausse, it.expl], [it.seconde, it.expl2]];
@@ -1180,9 +1182,13 @@ function itemsDe(fam){
   if (fam === 'totaux') return melange(X.totaux.map((it, k) => ({k, it}))).map(({k, it}) => ({
     son: `exos/tot-${k}.mp3`, haut: `<p class="consigne"><b>${E(it.lieu)}.</b> ${E(it.ctx)}</p>`, q: 'Combien payez-vous en tout ?',
     en: it.en, apresTexte: it.calcul, choix: it.choix}));
-  if (fam === 'allergie') return X.allergie.items.map((it, k) => ({k, it})).sort(() => Math.random() - .5).map(({k, it}) => ({
+  // Tour 2 : trois réponses tirées sur les six du saumon (les quatre cases y sont), plus le marché ;
+  // la série change à chaque fois, et la dernière ne se déduit plus des deux autres.
+  if (fam === 'allergie') { const tous = X.allergie.items.map((it, k) => ({k, it}));
+    const saumon = melange(tous.filter(x => x.it.qui === 'ada')).slice(0, 3), autres = tous.filter(x => x.it.qui !== 'ada');
+    return melange([...saumon, ...autres]).map(({k, it}) => ({
     son: `exos/all-${k}.mp3`, qui: D.gens[it.qui], haut: `<p class="consigne">${E(it.ctx)}</p>`, q: 'Que vous répond-on ?',
-    en: it.en, apresTexte: it.apres, choix: it.choix}));
+    en: it.en, apresTexte: it.apres, choix: it.choix})); }
   if (fam === 'chemins') return melange(X.chemins.map((it, k) => ({k, it}))).map(({k, it}) => {
     // Les quatre points du carré (2 ou 3 coins de rue) × (gauche ou droite) ; les lettres tirées au hasard.
     const pts = [[it.blocs, it.tourner], [it.blocs, it.tourner === 'gauche' ? 'droite' : 'gauche'],
@@ -1193,7 +1199,8 @@ function itemsDe(fam){
       choix: pts.map((p, i) => [`Le point ${lettres[i]}`, i ? retro[i] : null])};
   });
   const hors = new Set(D.exos.horsSerie), proche = (a, b) => D.exos.proches.some(g => g.includes(a) && g.includes(b));
-  const ids = Object.keys(D.mots).filter(id => !/[?!]/.test(D.mots[id].en) && !hors.has(id));
+  // Tour 2 : un faux ami ne se montre jamais seul (règle de l'hôtel) — il vit dans sa phrase, série des faux amis.
+  const ids = Object.keys(D.mots).filter(id => !/[?!]/.test(D.mots[id].en) && !hors.has(id) && !String(D.mots[id].note).startsWith('PIÈGE'));
   if (fam === 'entendre' || fam === 'souvenir') return melange(ids).slice(0, 8).map(id => {
     const m = D.mots[id], voisins = melange(ids.filter(x => x !== id && D.mots[x].p === m.p && !proche(x, id))).slice(0, 3);
     const lib = x => fam === 'entendre' ? D.mots[x].fr : D.mots[x].en;
@@ -1220,7 +1227,7 @@ function vueFamille(fam){
   if (fam === 'allergie' && !vueFamille.regleVue) {
     app.innerHTML = `${retour('exos', 'Les exercices')}<p class="surtitre">L'allergie</p><h1>Avant de commencer</h1>
       <div class="regle"><b>La règle.</b> ${E(D.exos.allergie.regle)}</div>
-      <p>Quatre réponses de serveuse ou de marchand. Comprenez ce qu'on vous dit, et ce que vous faites ensuite : commander, attendre, ou prendre autre chose.</p>
+      <p>Quatre réponses de serveuse ou de marchand. Comprenez ce qu'on vous dit ; la décision s'affiche ensuite. Au marché, c'est vous qui décidez.</p>
       <button class="btn btn--pri btn--large" id="go">Commencer</button>`;
     $('#go').onclick = () => { vueFamille.regleVue = true; vueFamille(fam); vueFamille.regleVue = false; }; return;
   }
