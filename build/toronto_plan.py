@@ -261,7 +261,7 @@ PLAN
 <section>
   <h2>Volet 5 &mdash; la poche</h2>
   <p>Gardés dans le téléphone, sans réseau : les phrases de chaque lieu avec leur son, l'aide-mémoire « ce que
-  ça coûte vraiment » (le prix affiché, plus 13 % de taxe, plus le pourboire de 15 à 20 % au restaurant), et
+  ça coûte vraiment » (le prix affiché, plus 13 % de taxe, plus le pourboire de 18 à 20 % au restaurant), et
   l'écran « Dites-le plus lentement » en anglais. Le jeu de rôle, lui, a besoin du réseau.</p>
 </section>
 
