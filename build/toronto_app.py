@@ -651,8 +651,9 @@ function seanceDire(x){
         const manque = cles.filter(c => !trouve(final, c));
         if (!manque.length) { if (essais <= 2 && !modeleVu) comprises++;
           poserR(`<div class="retro ok">✓ Well done! On vous a compris.</div>`); essaye(); setTimeout(montrer, 600); return; }
-        if (manque.some(c => trouve('', c))) { poserR(`<div class="retro no">Votre phrase dit le contraire de ce qu’il faut. ${essais < 2 && !modeleVu ? 'Réessayez.' : 'Comparez avec le modèle.'}</div>`); return; }
-        const presque = manque.length <= cles.length / 2;
+        if (manque.some(c => trouve('', c))) { poserR(`<div class="retro no">Votre phrase dit le contraire de ce qu’il faut. ${essais < 2 && !modeleVu ? 'Réessayez.' : 'Comparez avec le modèle.'}</div>`);
+          essaye(); if (essais >= 2) montrer(); else $('#modele').disabled = false; return; }
+        const presque = manque.length <= cles.filter(c => !trouve('', c)).length / 2;   // hors gardes (tour 5)
         poserR(`<div class="retro no">${presque ? `Presque. Il manque : <b lang="en">${manque.map(c => E(motDuModele(en, c))).join(', ')}</b>. ` : 'Je n’ai pas reconnu la phrase. '}${essais < 2 && !modeleVu ? 'Réessayez, sans regarder le modèle.' : 'Comparez avec le modèle.'}</div>`);
         essaye();
         if (essais >= 2) montrer(); else $('#modele').disabled = false;
@@ -1344,9 +1345,10 @@ function serieDire(){
         if (!final) { poserR(`<div class="retro info">${rienEntendu('Je n’ai rien entendu. Vérifiez que le micro est permis, ou dites-le et touchez « C’est dit ! ».')}</div>`); return; }
         essais++; const manque = it.cles.filter(c => !trouve(final, c));
         // Une garde ratée (clé vraie sur la phrase vide) : le geste est faux — jamais « Presque », jamais un mot du modèle.
-        if (manque.some(c => trouve('', c))) { poserR(`<div class="retro no">${E(it.garde || 'Votre phrase dit le contraire de ce qu’il faut.')} ${essais < 2 && !modeleVu ? 'Réessayez.' : 'Comparez avec le modèle.'}</div>`); return; }
+        if (manque.some(c => trouve('', c))) { poserR(`<div class="retro no">${E(it.garde || 'Votre phrase dit le contraire de ce qu’il faut.')} ${essais < 2 && !modeleVu ? 'Réessayez.' : 'Comparez avec le modèle.'}</div>`);
+          essaye(); if (essais >= 2) montrer(); else $('#modele').disabled = false; return; }
         if (!manque.length) { if (essais <= 2 && !modeleVu) comprises++; poserR(`<div class="retro ok">✓ Well done! On vous a compris.</div>`); essaye(); setTimeout(montrer, 600); return; }
-        poserR(`<div class="retro no">${manque.length <= it.cles.length / 2 ? `Presque. Il manque : <b lang="en">${manque.map(c => E(motDuModele(it.en, c))).join(', ')}</b>. ` : 'Je n’ai pas reconnu la phrase. '}${essais < 2 && !modeleVu ? 'Réessayez, sans regarder le modèle.' : 'Comparez avec le modèle.'}</div>`);
+        poserR(`<div class="retro no">${manque.length <= it.cles.filter(c => !trouve('', c)).length / 2 ? `Presque. Il manque : <b lang="en">${manque.map(c => E(motDuModele(it.en, c))).join(', ')}</b>. ` : 'Je n’ai pas reconnu la phrase. '}${essais < 2 && !modeleVu ? 'Réessayez, sans regarder le modèle.' : 'Comparez avec le modèle.'}</div>`);
         essaye(); if (essais >= 2) montrer(); else $('#modele').disabled = false;
       });
     };
