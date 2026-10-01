@@ -44,7 +44,12 @@ def donnees():
         img = "croquis" if dessin == "croquis" and (MEDIA / "croquis" / f"{i}.jpg").exists() else ""
         mots[i] = {"p": pl, "en": en, "fr": fr, "img": img, "note": note}
     perso = {k: {"nom": v[0], "qui": v[4]} for k, v in PS.VOIX.items()}
-    return {"v": MEDIA_V, "mots": mots, "perso": perso, "sons": sons,
+    for i, pl, en, fr, dessin, note in LX.LEXIQUE:
+        if dessin.startswith("picto:"):
+            mots[i]["img"] = dessin
+    # La série des pièges : (id, phrase, bonne, fausse lecture, second choix, explication).
+    pieges = [{"id": i, "en": t[0], "bonne": t[1], "fausse": t[2], "seconde": t[3], "expl": t[4]} for i, t in LX.PIEGES.items()]
+    return {"v": MEDIA_V, "mots": mots, "perso": perso, "sons": sons, "planches": LX.PLANCHES, "pieges": pieges,
             "prep": {"seances": PR.SEANCES, "test": PR.TEST, "objectifs": PR.OBJECTIFS, "seuil": PR.SEUIL,
                      "conseils": PR.CONSEILS, "fin": PR.FIN, "lieu": PR.LIEU, "solide": PR.SEUIL_SOLIDE},
             # Les réponses témoins des clés, rejouées dans le moteur de la page (audit tour 5) : `window.__toronto`.
@@ -189,6 +194,18 @@ button{font:inherit}
 .pied{max-width:720px;margin:24px auto 0;padding:14px 16px 28px;text-align:center;font-size:13.5px;color:var(--text-muted)}
 .pied a{color:var(--text-muted)}
 .avis-local{font-size:13px;color:var(--text-muted)}
+/* Étape 2 : les planches */
+.pl-liste{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.pl-liste button{display:flex;flex-direction:column;gap:2px;text-align:left;background:#fff;border:1px solid var(--line-200);border-left:4px solid var(--carte);
+  border-radius:14px;padding:12px;cursor:pointer;min-height:72px;font:inherit;color:var(--text-body)}
+.pl-liste b{font-size:16px;color:var(--text-strong)}.pl-liste span{font-size:13px;color:var(--text-muted)}
+.mot .vis{aspect-ratio:1;border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.mot .vis img{width:100%;height:100%;object-fit:contain}
+.mot .vis svg{width:62%;height:62%}
+.mot .vis.vide{background:var(--carte-bg);color:#D7BFAE}.mot .vis.vide svg{width:36%;height:36%}
+.mot .note{font-size:12.5px;line-height:1.35;color:var(--text-muted)}
+.mot.piege-m{border-color:var(--warn-line)}
+.bascule-sens{margin:0 0 12px}
 </style>
 </head>
 <body>
@@ -317,6 +334,8 @@ function rendre(){
   const p = (location.hash.slice(1) || 'accueil').split('/');
   if (p[0] === 'prep') return p[1] === 'test' ? vuePrepTest() : p[1] ? vueSeance(p[1], p[2]) : vuePrep();
   if (p[0] === 'reglages') return vueReglages();
+  if (p[0] === 'mots') return p[1] ? vuePlanche(p[1]) : vueMots();
+  if (p[0] === 'pieges') return vuePieges();
   return vueAccueil();
 }
 window.addEventListener('hashchange', rendre);
@@ -342,6 +361,13 @@ function vueAccueil(){
       <p>${D.prep.test[0].length} questions, un quart d'heure, avec le son et le micro. Le test vous situe ; « Solide » partout, et vous pouvez
       sauter les séances.${t.dernier ? ' Dernier passage : ' + E(t.dernier) + '.' : ''}</p>
       <button class="btn btn--large" onclick="aller('prep/test')">${ICO.test} Faire le test</button>
+    </section>
+    <section class="acc">
+      <p class="surtitre">Les mots</p><h2>Douze planches</h2>
+      <p>Près de deux cents mots du voyage, avec leur voix : se déplacer, l'hôtel, le café, le restaurant, payer, visiter… et les
+      faux amis qui trompent un francophone.</p>
+      <div class="rangee"><button class="btn btn--pri" style="flex:1" onclick="aller('mots')">Les planches</button>
+      <button class="btn" style="flex:1" onclick="aller('pieges')">Les faux amis</button></div>
     </section>
     <section class="acc">
       <p class="surtitre">2 · La semaine</p><h2>Dix lieux, dix cartes postales</h2>
@@ -652,6 +678,90 @@ function vuePrepTest(){
       <button class="btn btn--pri btn--large" onclick="aller('prep')">${tous ? 'Ma valise' : 'Aux séances'}</button>`;
   }
   intro();
+}
+
+/* ---------- étape 2 : les planches et les faux amis ---------- */
+const PICTO = {
+  gauche:'<svg viewBox="0 0 64 64"><path d="M50 32H16M28 18 14 32l14 14" fill="none" stroke="#7A3B1D" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  droite:'<svg viewBox="0 0 64 64"><path d="M14 32h34M36 18l14 14-14 14" fill="none" stroke="#7A3B1D" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  droit:'<svg viewBox="0 0 64 64"><path d="M32 52V14M18 26l14-14 14 14" fill="none" stroke="#7A3B1D" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  blocs:'<svg viewBox="0 0 64 64"><rect x="6" y="6" width="22" height="22" rx="2" fill="#E9DCD2"/><rect x="36" y="6" width="22" height="22" rx="2" fill="#E9DCD2"/><rect x="6" y="36" width="22" height="22" rx="2" fill="#E9DCD2"/><rect x="36" y="36" width="22" height="22" rx="2" fill="#E9DCD2"/><path d="M32 60V32H58" fill="none" stroke="#7A3B1D" stroke-width="4" stroke-linecap="round" stroke-dasharray="1 7"/><circle cx="32" cy="60" r="4" fill="#7A3B1D"/></svg>',
+  carrefour:'<svg viewBox="0 0 64 64"><rect x="26" y="2" width="12" height="60" fill="#D8D3CC"/><rect x="2" y="26" width="60" height="12" fill="#D8D3CC"/><circle cx="32" cy="32" r="6" fill="#C8102E"/></svg>',
+  huard:'<svg viewBox="0 0 64 64"><polygon points="32,6 54,17 54,47 32,58 10,47 10,17" fill="#D4A62A" stroke="#7A5A10" stroke-width="2"/><path d="M20 38c6-8 16-8 24-2" fill="none" stroke="#7A5A10" stroke-width="3" stroke-linecap="round"/><circle cx="40" cy="30" r="2.5" fill="#7A5A10"/></svg>',
+  deux:'<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="27" fill="#C9CDD2" stroke="#5F656C" stroke-width="2"/><circle cx="32" cy="32" r="17" fill="#D4A62A" stroke="#7A5A10" stroke-width="2"/></svg>',
+  '25':'<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="22" fill="#C9CDD2" stroke="#5F656C" stroke-width="2"/><path d="M22 40c4-10 14-14 20-10" fill="none" stroke="#5F656C" stroke-width="3" stroke-linecap="round"/></svg>',
+  thermo:'<svg viewBox="0 0 64 64"><rect x="26" y="6" width="12" height="40" rx="6" fill="#fff" stroke="#333" stroke-width="2.5"/><rect x="29" y="20" width="6" height="28" fill="#C8102E"/><circle cx="32" cy="50" r="9" fill="#C8102E" stroke="#333" stroke-width="2.5"/></svg>'
+};
+function boussole(dir){ const ang = {nord:0, est:90, sud:180, ouest:270}[dir];
+  return `<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="27" fill="#fff" stroke="#333" stroke-width="2.5"/><g transform="rotate(${ang} 32 32)"><polygon points="32,9 39,34 32,29 25,34" fill="#C8102E"/></g><circle cx="32" cy="32" r="3" fill="#333"/></svg>`; }
+function horloge(h, m){
+  const a = (h % 12) * 30 + m / 2, b = m * 6, rad = x => (x - 90) * Math.PI / 180;
+  const pt = (ang, L) => [32 + L * Math.cos(rad(ang)), 32 + L * Math.sin(rad(ang))];
+  let t = ''; for (let i = 0; i < 12; i++) { const [x1, y1] = pt(i * 30, 24), [x2, y2] = pt(i * 30, 27); t += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#333" stroke-width="2"/>`; }
+  const [ax, ay] = pt(a, 15), [bx, by] = pt(b, 23);
+  return `<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="29" fill="#fff" stroke="#333" stroke-width="3"/>${t}<line x1="32" y1="32" x2="${ax}" y2="${ay}" stroke="#111" stroke-width="4" stroke-linecap="round"/><line x1="32" y1="32" x2="${bx}" y2="${by}" stroke="#111" stroke-width="2.5" stroke-linecap="round"/><circle cx="32" cy="32" r="2.5" fill="#111"/></svg>`;
+}
+function picto(nom){
+  if (PICTO[nom]) return PICTO[nom];
+  if (['nord', 'sud', 'est', 'ouest'].includes(nom)) return boussole(nom);
+  const m = /^h(\d{2})(\d{2})?$/.exec(nom); if (m) return horloge(+m[1], m[2] ? +m[2] : 0);
+  return '';
+}
+function visuel(m, id){
+  if (m.img === 'croquis') return `<span class="vis"><img src="${BASE}croquis/${id}.jpg?v=${D.v}" alt="" loading="lazy"></span>`;
+  if (m.img && m.img.startsWith('picto:')) return `<span class="vis">${picto(m.img.slice(6))}</span>`;
+  return `<span class="vis vide" aria-hidden="true">${ICO.son}</span>`;
+}
+function vueMots(){
+  const n = p => D.planches.length && Object.values(D.mots).filter(m => m.p === p).length;
+  app.innerHTML = `${retour('accueil', 'Accueil')}<p class="surtitre">Les mots</p><h1>Douze planches</h1>
+    <p>Touchez un mot : vous l'entendez, et son sens en français apparaît. Répétez-le à voix haute. Les <b>faux amis</b> sont marqués : ils ont
+    leur série à part.</p>
+    <div class="pl-liste">${D.planches.map(([k, fr, en]) => `<button onclick="aller('mots/${k}')"><b>${E(fr)}</b><span lang="en">${E(en)} · ${n(k)} mots</span></button>`).join('')}</div>
+    <button class="btn btn--large" style="margin-top:14px" onclick="aller('pieges')">Les faux amis : la série</button>`;
+}
+function vuePlanche(k){
+  const pl = D.planches.find(x => x[0] === k); if (!pl) return vueMots();
+  const i = D.planches.indexOf(pl), suiv = D.planches[i + 1];
+  const ids = Object.keys(D.mots).filter(id => D.mots[id].p === k);
+  app.innerHTML = `${retour('mots', 'Les planches')}<p class="surtitre">Planche ${i + 1} sur ${D.planches.length}</p><h1>${E(pl[1])}</h1>
+    <label class="aide-bascule bascule-sens"><input type="checkbox" id="sens" ${S.aide ? 'checked' : ''}> Montrer le sens en français</label>
+    <div class="grille">${ids.map(id => { const m = D.mots[id], pg = m.note.startsWith('PIÈGE');
+      return `<button class="mot${pg ? ' piege-m' : ''}" data-id="${id}" aria-label="Écouter : ${E(m.en)}">${visuel(m, id)}
+        <span class="en" lang="en">${E(m.en)}</span><span class="fr" ${S.aide ? '' : 'hidden'}>${E(m.fr)}</span>
+        ${pg ? '<span class="piege">Faux ami</span>' : ''}${m.note && !pg ? `<span class="note" ${S.aide ? '' : 'hidden'}>${E(m.note)}</span>` : ''}</button>`; }).join('')}</div>
+    ${suiv ? `<button class="btn btn--pri btn--large" style="margin-top:14px" onclick="aller('mots/${suiv[0]}')">Planche suivante : ${E(suiv[1])}</button>` : ''}`;
+  app.querySelectorAll('.mot').forEach(b => b.onclick = () => { jouer('mots/' + b.dataset.id + '.mp3'); b.querySelectorAll('.fr,.note').forEach(x => x.hidden = false); });
+  $('#sens').onchange = e => { S.aide = e.target.checked; sauver(); app.querySelectorAll('.mot .fr,.mot .note').forEach(x => x.hidden = !S.aide); };
+}
+/* La série des faux amis : chaque piège dans sa phrase de voyage (règle de l'hôtel : jamais montré seul).
+   La place de la bonne lecture est tirée au hasard (leçon de la boucle de l'étape 1). */
+function vuePieges(){
+  const items = [...D.pieges].sort(() => Math.random() - .5).slice(0, 10);
+  let n = 0, premiers = 0;
+  function tour(){
+    if (n >= items.length) {
+      app.innerHTML = `${retour('mots', 'Les planches')}<h1>Les faux amis</h1><div class="retro ok">✓ ${items.length} pièges, dont ${premiers} déjoués du premier coup.</div>
+        <p class="muted">La série tire dix pièges sur ${D.pieges.length} : refaites-la, ce ne seront pas les mêmes.</p>
+        <button class="btn btn--pri btn--large" onclick="rendre()">Une autre série</button>
+        <button class="btn btn--large" style="margin-top:8px" onclick="aller('mots')">Les planches</button>`; return; }
+    const it = items[n], ch = [[it.bonne, null], [it.fausse, it.expl], [it.seconde, it.expl]];
+    const o = ordre(3, Math.floor(Math.random() * 9973)); let erreurs = 0, fini = false;
+    app.innerHTML = `${retour('mots', 'Les planches')}<p class="surtitre">Faux ami ${n + 1} sur ${items.length}</p>
+      <div class="progres"><i style="width:${100 * n / items.length}%"></i></div><h2>Que veut dire la phrase ?</h2>
+      <div class="gros-son"><button class="btn btn--son" aria-label="Écouter" id="rejouer">${ICO.son}</button></div>
+      <p class="phrase-en" lang="en" style="text-align:center">${E(it.en)}</p>
+      <div class="choix">${o.map(i => `<button data-i="${i}">${E(ch[i][0])}</button>`).join('')}</div><div id="r" aria-live="polite"></div>`;
+    const f = 'pieges/' + it.id + '.mp3'; $('#rejouer').onclick = () => jouer(f); setTimeout(() => jouer(f), 250);
+    app.querySelectorAll('.choix button').forEach(b => b.onclick = () => {
+      if (fini || b.disabled) return; const i = +b.dataset.i;
+      if (i === 0) { fini = true; if (!erreurs) premiers++; b.classList.add('juste');
+        $('#r').innerHTML = `<div class="retro ok">✓ ${E(it.expl)}</div>`;
+        const s2 = document.createElement('button'); s2.className = 'btn btn--pri btn--large'; s2.textContent = 'Suivant'; s2.onclick = () => { n++; tour(); }; $('#r').appendChild(s2);
+      } else { erreurs++; b.classList.add('faux'); b.disabled = true; $('#r').innerHTML = `<div class="retro no">${i === 1 ? 'C’est le piège. ' : ''}${E(ch[i][1])} Essayez encore.</div>`; }
+    });
+  }
+  tour();
 }
 
 /* ---------- réglages ---------- */

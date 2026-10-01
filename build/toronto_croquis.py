@@ -21,7 +21,12 @@ DEST = RACINE / "assets" / "interactive" / "toronto" / "croquis"
 
 
 def cibles():
-    pre = {"objet": FC.PREAMBULES["objet"]}
+    pre = {"objet": FC.PREAMBULES["objet"], "scene": SJ.SCENE, "corps": SJ.CORPS, "geste": SJ.GESTE}
+    # Chaque croquis du lexique doit avoir son sujet (et aucun sujet ne doit être orphelin).
+    sp2 = importlib.util.spec_from_file_location("toronto_lexique", RACINE / "build/contenu/toronto/lexique.py")
+    LX = importlib.util.module_from_spec(sp2); sp2.loader.exec_module(LX)
+    voulus = {e[0] for e in LX.LEXIQUE if e[4] == "croquis"}
+    assert voulus == set(SJ.SUJETS), ("croquis sans sujet", voulus - set(SJ.SUJETS), "sujets orphelins", set(SJ.SUJETS) - voulus)
     return {("mot", k): (pre[f] + q, "1:1", DEST, 800) for k, (f, q) in SJ.SUJETS.items()}
 
 

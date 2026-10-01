@@ -5,7 +5,7 @@ temps par programme a trouvé un son « undefined » qu'aucune relecture n'aurai
 vu). La page ne joue que ce que cette liste nomme ; le générateur ne produit que
 ce qu'elle nomme. Les noms de fichiers sont ceux que la page fabrique.
 """
-import importlib.util, pathlib
+import importlib.util, pathlib, re
 
 RACINE = pathlib.Path(__file__).resolve().parent.parent
 CONTENU = RACINE / "build" / "contenu" / "toronto"
@@ -44,10 +44,12 @@ def extraits():
                 out.append({"fichier": f"prep/test/{f}-{k}-c0.mp3", "texte": it["choix"][0][0], "voix": n})
             else:
                 out.append({"fichier": f"prep/test/{f}-{k}.mp3", "texte": it["en"], "voix": it.get("qui", n)})
-    mots = {m for s in PR.SEANCES for m in s["mots"]}
+    # Étape 2 (1er oct. 2026) : tous les mots des douze planches, et la phrase de voyage de chaque piège.
     for e in LX.LEXIQUE:
-        if e[0] in mots:
-            out.append({"fichier": f"mots/{e[0]}.mp3", "texte": e[2], "voix": n})
+        # Ce qui est entre parenthèses est une glose, pas un texte à dire (règle du lexique).
+        out.append({"fichier": f"mots/{e[0]}.mp3", "texte": re.sub(r"\s*\([^)]*\)", "", e[2]).strip(), "voix": n})
+    for i, t in LX.PIEGES.items():
+        out.append({"fichier": f"pieges/{i}.mp3", "texte": t[0], "voix": "liam"})
     return out
 
 
