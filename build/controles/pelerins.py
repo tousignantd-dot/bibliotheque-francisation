@@ -27,7 +27,7 @@ def ok(cond, quoi):
 
 
 # -- un faux Stripe ----------------------------------------------------------
-SESSIONS, APPELS = {}, []
+SESSIONS, APPELS, CHARGES = {}, [], {}
 
 
 def faux_stripe(methode, chemin, donnees=None, cle=None):
@@ -41,9 +41,13 @@ def faux_stripe(methode, chemin, donnees=None, cle=None):
     if methode == "GET" and chemin.startswith("/checkout/sessions/"):
         s = SESSIONS.get(chemin.rsplit("/", 1)[1])
         return (s, None) if s else (None, "Stripe 404 : No such session")
+    if methode == "GET" and chemin.startswith("/charges/"):
+        c = CHARGES.get(chemin.rsplit("/", 1)[1])
+        return (c, None) if c else (None, "Stripe 404 : No such charge")
     return None, "inattendu"
 
 
+VRAI_STRIPE = P._stripe
 P._stripe = faux_stripe
 MEMOIRE = []
 R = P.Registre(lambda: json.loads(json.dumps(MEMOIRE)),
@@ -216,6 +220,47 @@ for tr in P.TROUSSES:
     ok(R.refus(pt, P.SCENARIO, 0, True)[1] == 403 and R.voix_permise(pt), f"un code {tr} n'ouvre pas Compostelle, mais lit les voix")
 ok(not R.voix_permise(pe), "un code de Compostelle ne lit pas les voix des trousses")
 ok(R.trouver("PCZZZZZZ") is None or "PCZZZZZZ" in P.CODES_ESSAI, "un code inventé n'ouvre rien")
+
+print("La contestation d'un paiement (correctif du 1er oct. 2026)")
+achat, _ = R.commencer_achat("https://portail.edufrancis.ca", produit="toronto")
+cc = APPELS[-1][2]["metadata"]["code"]; SESSIONS[achat["session"]]["payment_status"] = "paid"; R.depuis_retour(achat["session"])
+CHARGES["ch_litige"] = {"id": "ch_litige", "description": f"Votre code d'accès : {cc}", "metadata": {}}
+ev = json.dumps({"type": "charge.dispute.created", "data": {"object": {"id": "dp_1", "charge": "ch_litige"}}}).encode()
+t = int(time.time()); sg = hmac.new(b"whsec_faux", f"{t}.".encode() + ev, hashlib.sha256).hexdigest()
+ok(R.webhook(ev, f"t={t},v1={sg}")[0] == 200 and R.trouver(cc)["etat"] == "conteste", "un litige suspend le code")
+ok(R.refus(R.trouver(cc), "toronto-en", 0, True)[1] == 402, "un code suspendu ne joue plus")
+R.webhook(ev, f"t={t},v1={sg}")
+ok(R.trouver(cc)["litiges"] == ["dp_1"], "le même litige reçu deux fois ne compte qu'une fois")
+ok(R.contester({"id": "dp_2", "charge": "ch_inconnue"}) is None, "une charge introuvable ne casse rien")
+
+print("Les appels à Stripe : version, idempotence, nouvel essai")
+import urllib.error, urllib.request
+VUS, PANNES = [], [True]
+class Rep:
+    def __init__(s): pass
+    def read(s): return b'{"id": "cs_ok"}'
+    def __enter__(s): return s
+    def __exit__(s, *a): return False
+def faux_urlopen(req, timeout=0):
+    VUS.append(dict(req.header_items()))
+    if PANNES and PANNES.pop():
+        raise urllib.error.URLError("coupure")
+    return Rep()
+vrai_urlopen, vrai_sleep = urllib.request.urlopen, time.sleep
+urllib.request.urlopen, P.time.sleep = faux_urlopen, (lambda s: None)
+os.environ["STRIPE_SECRET_KEY"] = "sk_test_faux"
+rep_, err_ = VRAI_STRIPE("POST", "/checkout/sessions", {"mode": "payment"})
+ok(err_ is None and rep_["id"] == "cs_ok" and len(VUS) == 2, "une coupure réseau : un nouvel essai, qui réussit")
+cles = [h.get("Idempotency-key") for h in VUS]
+ok(cles[0] and cles[0] == cles[1], "le nouvel essai porte la MÊME clé d'idempotence")
+ok(all(h.get("Stripe-version") == P.VERSION for h in VUS) and P.VERSION.endswith(".dahlia"), f"la version est fixée ({P.VERSION})")
+VUS.clear(); VRAI_STRIPE("GET", "/checkout/sessions/cs_x")
+ok("Idempotency-key" not in VUS[0], "un GET ne porte pas de clé d'idempotence")
+def refus_400(req, timeout=0):
+    VUS.append(1); raise urllib.error.HTTPError(req.full_url, 400, "Bad", {}, None)
+VUS.clear(); urllib.request.urlopen = refus_400
+ok(VRAI_STRIPE("POST", "/checkout/sessions", {})[1].startswith("Stripe 400") and len(VUS) == 1, "un refus (400) ne se réessaie pas")
+urllib.request.urlopen, P.time.sleep = vrai_urlopen, vrai_sleep
 
 print("Les codes")
 ok(not P.est_code("ABC123") and not P.est_code("S" + "X" * 16), "un code d'élève ou un jeton de séance n'est pas un code de pèlerin")

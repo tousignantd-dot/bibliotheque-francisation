@@ -100,6 +100,14 @@ PRODUITS = {
 # Réglable pour les essais seulement (un faux Stripe local) ; jamais en production.
 API = os.environ.get("STRIPE_API", "https://api.stripe.com/v1")
 CONSENTEMENT = os.environ.get("STRIPE_CONSENTEMENT", "1") != "0"
+# La version de l'API, fixée (correctif du 1er oct. 2026) : sans elle, les réponses suivent la version
+# par défaut du compte, et un changement fait dans le tableau de bord modifierait en silence ce que lit
+# ce module. Le point de webhook doit être créé avec la MÊME version. Réglable sans déployer.
+VERSION = os.environ.get("STRIPE_VERSION", "2026-08-26.dahlia")
+# La clé (STRIPE_SECRET_KEY) devrait être une clé RESTREINTE (rk_…), avec seulement :
+#   Checkout Sessions : écriture (créer) et lecture (le retour de l'acheteur) ;
+#   Charges : lecture (retrouver le code d'un paiement contesté).
+# Le webhook n'a besoin d'aucune permission : il est authentifié par STRIPE_WEBHOOK_SECRET.
 TOLERANCE_S = 300                              # âge maximal d'une signature de webhook
 
 
@@ -192,27 +200,43 @@ def _aplatir(d, prefixe=""):
 
 
 def _stripe(methode, chemin, donnees=None, cle=None):
-    """Un appel à l'API de Stripe. Rend (réponse, None) ou (None, message)."""
+    """Un appel à l'API de Stripe. Rend (réponse, None) ou (None, message).
+
+    Un POST porte une clé d'idempotence (correctif du 1er oct. 2026) : si le réseau coupe
+    APRÈS que Stripe a créé la session, le second essai, avec la même clé, rend la même
+    session au lieu d'en créer une deuxième. Un seul nouvel essai, sur une panne réseau
+    ou une erreur 5xx/429 seulement — jamais sur un refus (4xx)."""
     cle = cle or os.environ.get("STRIPE_SECRET_KEY", "")
     corps = urllib.parse.urlencode(_aplatir(donnees)).encode() if donnees else None
-    req = urllib.request.Request(API + chemin, data=corps, method=methode, headers={
+    entetes = {
         "Authorization": "Basic " + base64.b64encode((cle + ":").encode()).decode(),
         "Content-Type": "application/x-www-form-urlencoded",
+        "Stripe-Version": VERSION,
         # Même leçon que Resend : sans User-Agent, certains pare-feu refusent
         # « Python-urllib » avant même de lire la clé.
         "User-Agent": "francis-compostelle/1.0",
-    })
-    try:
-        with urllib.request.urlopen(req, timeout=20) as r:
-            return json.loads(r.read()), None
-    except urllib.error.HTTPError as e:
+    }
+    if methode == "POST":
+        entetes["Idempotency-Key"] = secrets.token_hex(16)
+    erreur = None
+    for essai in range(2):
+        req = urllib.request.Request(API + chemin, data=corps, method=methode, headers=entetes)
         try:
-            msg = json.loads(e.read()).get("error", {}).get("message", "")
-        except Exception:
-            msg = ""
-        return None, f"Stripe {e.code} : {msg or e.reason}"
-    except Exception as e:  # réseau
-        return None, f"Stripe injoignable : {e}"
+            with urllib.request.urlopen(req, timeout=20) as r:
+                return json.loads(r.read()), None
+        except urllib.error.HTTPError as e:
+            try:
+                msg = json.loads(e.read()).get("error", {}).get("message", "")
+            except Exception:
+                msg = ""
+            erreur = f"Stripe {e.code} : {msg or e.reason}"
+            if e.code < 500 and e.code != 429:
+                return None, erreur
+        except Exception as e:  # réseau
+            erreur = f"Stripe injoignable : {e}"
+        if essai == 0:
+            time.sleep(1)
+    return None, erreur
 
 
 def signature_valide(charge_utile, entete, secret, maintenant=None):
@@ -484,7 +508,34 @@ class Registre:
             self.crediter(ev.get("data", {}).get("object", {}))
         elif ev.get("type") == "charge.refunded":
             self.rembourser(ev.get("data", {}).get("object", {}))
+        elif ev.get("type") == "charge.dispute.created":
+            self.contester(ev.get("data", {}).get("object", {}))
         return 200, "ok"
+
+    def contester(self, litige):
+        """Une contestation de paiement (rétrofacturation) SUSPEND le code, ou tout le lot
+        (correctif du 1er oct. 2026 : le code restait actif pendant que la banque reprenait
+        l'argent). L'objet reçu est le litige ; le code se lit sur la charge qu'il vise, comme
+        pour un remboursement. Idempotent par identifiant de litige. Rien ne se rallume tout
+        seul : si le litige est gagné, le code se réactive à la main."""
+        if not litige or not litige.get("charge"):
+            return None
+        cid = litige["charge"] if isinstance(litige["charge"], str) else litige["charge"].get("id", "")
+        charge, err = _stripe("GET", "/charges/" + urllib.parse.quote(cid))
+        if err or not charge:
+            print(f"[WARN] litige {litige.get('id')} : charge illisible ({err})", flush=True)
+            return None
+        codes = _codes_dans(charge.get("description")) or [(charge.get("metadata") or {}).get("code") or ""]
+        with self.verrou:
+            tous = self.charger()
+            vises = [x for x in tous if x.get("code") in codes]
+            for p in vises:
+                if litige.get("id") not in p.get("litiges", []):
+                    p.setdefault("litiges", []).append(litige.get("id"))
+                    if p.get("etat") == "actif":
+                        p["etat"] = "conteste"
+            self.sauver(tous)
+            return vises[0] if vises else None
 
     def rembourser(self, charge):
         """Un remboursement COMPLET (fait dans le tableau de bord de Stripe) éteint le
@@ -537,6 +588,8 @@ class Registre:
         if scenario not in permis:
             return ("Ce code n'ouvre pas ce jeu de rôle." if p.get("trousse")
                     else "Ce code n'ouvre que « Parler librement » d'En route vers Compostelle.", 403)
+        if p.get("etat") == "conteste":
+            return ("Ce code est suspendu : son paiement fait l'objet d'une contestation. Écrivez à support@edufrancis.ca.", 402)
         if p.get("etat") == "rembourse":
             return ("Ce code a été remboursé : il n'ouvre plus rien.", 402)
         if p.get("etat") != "actif":
