@@ -65,6 +65,22 @@
     max-width:600px; margin:0}
 
   /* ---------- barre de tri ---------- */
+  .tri-corps{display:contents}
+  .filtres-bouton{display:none}
+  @media (max-width:640px){
+    .tri{padding:var(--sp-2) 0}
+    .filtres-bouton{display:flex; align-items:center; gap:var(--sp-2); width:100%; min-height:var(--tap-min);
+      appearance:none; font:inherit; font-size:var(--fs-ui-sm); font-weight:800; text-align:left;
+      padding:0 var(--sp-4); border-radius:var(--r-pill); border:1px solid var(--border-firm);
+      background:var(--surface-card); color:var(--ink-900); cursor:pointer}
+    .filtres-resume{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+      font-weight:700; color:var(--ink-500)}
+    .filtres-chevron{transition:transform var(--dur) var(--ease)}
+    .filtres-bouton[aria-expanded="true"] .filtres-chevron{transform:rotate(180deg)}
+    .tri-corps{display:none}
+    .tri.ouvert .tri-corps{display:flex; flex-wrap:wrap; align-items:center; gap:var(--sp-3); width:100%;
+      max-height:70vh; overflow:auto; padding-top:var(--sp-3)}
+  }
   .tri{position:sticky; top:0; z-index:5; background:var(--surface-page);
     border-bottom:1px solid var(--border); padding:var(--sp-4) 0}
   .tri .conteneur{display:flex; flex-wrap:wrap; align-items:center; gap:var(--sp-3)}
@@ -461,6 +477,7 @@
 
 
 
+
 /*<<DERNIERE-CSS>>*/
   .derniere{display:flex;flex-wrap:wrap;align-items:baseline;gap:.5rem;
     margin:.9rem 0 0;padding:.55rem .8rem;border:1px solid var(--line);
@@ -511,6 +528,12 @@
 
 <nav class="tri" aria-label="Filtrer les documents">
   <div class="conteneur">
+    <!-- Sur téléphone, la barre collée prenait les cinq sixièmes de l'écran (1er oct. 2026) :
+         elle se replie en un bouton qui résume le choix en cours. Sur ordinateur, ce bouton
+         n'existe pas et le corps de la barre se range comme avant (display:contents). -->
+    <button type="button" class="filtres-bouton" id="filtresBouton" aria-expanded="false" aria-controls="triCorps">
+      <span class="filtres-titre">Filtres</span><span class="filtres-resume" id="filtresResume"></span><span class="filtres-chevron" aria-hidden="true">▾</span></button>
+    <div class="tri-corps" id="triCorps">
     <!-- Deux niveaux : l'étagère, puis le chantier. Les boutons de chantier et
          tous les nombres sont posés au chargement, lus dans la page : un
          compteur écrit à la main est faux à la fiche suivante, et il l'était. -->
@@ -530,6 +553,7 @@
     <div class="sous-barre">
       <div class="sous-onglets" id="sous" role="group" aria-label="Choisir un chantier" hidden></div>
       <label class="travail-bascule"><input type="checkbox" id="montrerTravail"> Montrer le travail <span class="n" id="nTravail"></span></label>
+    </div>
     </div>
   </div>
 </nav>
@@ -6956,5 +6980,29 @@
 })();
 </script>
 
+<script>
+/* Les filtres repliés sur téléphone : le bouton ouvre et ferme ; le résumé dit l'étagère, le chantier
+   et la recherche en cours ; un choix de chantier referme la barre (on veut voir le résultat) ; une étagère, non : ses chantiers viennent de paraître. */
+(function(){
+  var nav = document.querySelector('nav.tri'), b = document.getElementById('filtresBouton'), r = document.getElementById('filtresResume');
+  if (!nav || !b || !r) return;
+  function texte(el){ if (!el) return ''; var c = el.cloneNode(true); var n = c.querySelector('.n'); if (n) n.remove(); return c.textContent.trim(); }
+  function resume(){
+    var et = texte(nav.querySelector('.onglet[aria-pressed="true"]'));
+    var ch = texte(nav.querySelector('#sous:not([hidden]) [aria-pressed="true"]'));
+    var q = (document.getElementById('q') || {}).value || '';
+    r.textContent = [et, ch && ch !== et ? ch : '', q ? '« ' + q + ' »' : ''].filter(Boolean).join(' · ');
+  }
+  function ouvrir(o){ nav.classList.toggle('ouvert', o); b.setAttribute('aria-expanded', o ? 'true' : 'false'); }
+  b.addEventListener('click', function(){ ouvrir(!nav.classList.contains('ouvert')); });
+  nav.addEventListener('click', function(e){
+    setTimeout(resume, 0);
+    if (e.target.closest('#sous button') && window.matchMedia('(max-width:640px)').matches) setTimeout(function(){ ouvrir(false); }, 150);
+  }, true);   // en capture : le chantier choisi redessine ses boutons, et la cible serait déjà détachée
+  var q = document.getElementById('q'); if (q) q.addEventListener('input', resume);
+  window.addEventListener('hashchange', function(){ setTimeout(resume, 0); });
+  setTimeout(resume, 0); setTimeout(resume, 600);
+})();
+</script>
 </body>
 </html>
