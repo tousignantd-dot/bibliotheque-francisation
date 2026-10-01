@@ -6,11 +6,10 @@ plancher des suivants ; le droit de réutilisation du matériel est conservé.
 Montants de la Maison Francœur : comme elle, la restauration a UNE langue apprise
 et UN groupe pilote (l'hôtel en avait deux, d'où son pilote relevé).
 
-À CONFIRMER par Daniel : CONFIRME vaut None tant qu'il ne l'a pas fait, et la page
-le dit.
+CONFIRMÉS par Daniel le 30 septembre 2026 (« garde les prix de Francœur »).
 """
 
-CONFIRME = None
+CONFIRME = "30 septembre 2026"
 
 # (titre, montant affiché, unité, pour qui, ce qui est compris)
 FORMULES = [
