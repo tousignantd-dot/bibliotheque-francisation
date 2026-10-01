@@ -30,6 +30,7 @@ autre chose.
 
 | Session | Ouverte | Ce que je tiens | Jusqu'à |
 |---|---|---|---|
+| toronto (classeur mobile) | 1er oct. 2026 | presentations.html (barre des filtres repliée sur téléphone) | fin du correctif |
 
 Le nom de session est celui que donne `ListAgents` (`claude-38`, `claude-71`…).
 Il ne survit pas à la fermeture, et c'est voulu : une ligne dont le nom ne
