@@ -30,6 +30,7 @@ autre chose.
 
 | Session | Ouverte | Ce que je tiens | Jusqu'à |
 |---|---|---|---|
+| Design document review [e4d085] | 1 oct. 2026 | `eleve.html`, `js/appui.js`, `assets/design-system/styles.bundle.css` (neuf), `build/styles_bundle.py` (neuf) — corrections de l'audit impeccable | fin de la journée |
 
 Le nom de session est celui que donne `ListAgents` (`claude-38`, `claude-71`…).
 Il ne survit pas à la fermeture, et c'est voulu : une ligne dont le nom ne
