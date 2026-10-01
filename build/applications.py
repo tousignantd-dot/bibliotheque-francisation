@@ -54,7 +54,7 @@ APPLICATIONS = [
         ("Une semaine à Toronto", "modules-autonomes/toronto/",
          "L'anglais du touriste francophone : huit séances, le test, les mots, les "
          "exercices, la semaine jouée avec l'assistance (dix lieux et Maya, ouverte "
-         "par un code) et la poche hors ligne.", "toronto"),
+         "par un code) et la trousse hors ligne.", "toronto"),
         ("Montréal en poche", "modules-autonomes/montreal/",
          "Le guide touristique de Montréal pour le téléphone, en trois "
          "langues. Tout est ouvert, aucun code.", None),

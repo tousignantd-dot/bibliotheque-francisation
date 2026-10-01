@@ -47,7 +47,7 @@ Ce qui m'aiderait (environ 45 minutes, en deux fois si tu veux) :
 - le test « Prêt à partir ? » (un quart d'heure) ;
 - une série d'exercices, par exemple « Le total à payer » ou « L'allergie » ;
 - deux situations de « La semaine » : le café, puis le restaurant (il faut un code, plus bas) ;
-- un coup d'œil à « Ma poche ».
+- un coup d'œil à « Ma trousse ».
 
 Pour donner ton avis : « Donner mon avis », au bas de chaque écran (un courriel déjà préparé s'ouvre).
 
@@ -66,9 +66,9 @@ Before launch, I'd love a Canadian English speaker to check it. It opens in the 
 The menus are in French, but everything you hear and say is in English. What helps me most:
 - Is each English sentence correct and natural in Toronto? Would a Torontonian say it that way?
 - Do the voices sound right? Any odd word, accent or price?
-- Note the sentence and the screen (« Les exercices », « La semaine », « Ma poche »...).
+- Note the sentence and the screen (« Les exercices », « La semaine », « Ma trousse »...).
 
-Good places to look: « Les mots » (12 boards), « Les exercices » (« Ce qu'on me répond », « Les prix et les heures »), and « Ma poche ».
+Good places to look: « Les mots » (12 boards), « Les exercices » (« Ce qu'on me répond », « Les prix et les heures »), and « Ma trousse ».
 
 To try the role-play with the AI playing people in Toronto (« La semaine », then a place, then « Jouer la situation »), here is your code: {{CODE}} — {n_conv} conversations, valid until {pelerins.ESSAI_FIN}.
 
@@ -123,7 +123,7 @@ sont gratuits. Un bouton <strong>« Donner mon avis »</strong> est au bas de ch
   <div class="liens">
     <a class="lien" href="{APP}" target="_blank" rel="noopener"><b>L'application</b><span>Le lien à envoyer.</span><code>{APP}</code></a>
     <a class="lien" href="{APP}#semaine" target="_blank" rel="noopener"><b>La semaine jouée</b><span>L'album, les dix lieux et Maya ; le code s'entre dans chaque situation.</span><code>{APP}#semaine</code></a>
-    <a class="lien" href="{APP}#poche" target="_blank" rel="noopener"><b>Ma poche</b><span>Les phrases hors ligne, les urgences, le total à payer.</span><code>{APP}#poche</code></a>
+    <a class="lien" href="{APP}#poche" target="_blank" rel="noopener"><b>Ma trousse</b><span>Les phrases hors ligne, les urgences, le total à payer.</span><code>{APP}#poche</code></a>
   </div>
 </section>
 
@@ -135,7 +135,7 @@ sont gratuits. Un bouton <strong>« Donner mon avis »</strong> est au bas de ch
       Cinq suffisent pour voir la plupart des défauts d'usage ; au-delà, on revoit les mêmes.</li>
     <li><b>Un relecteur anglophone canadien</b> (le message en anglais plus bas). La boucle didactique juge la didactique, pas l'anglais :
       c'est lui qui dit si une phrase « ne se dit pas à Toronto ».</li>
-    <li><b>Quelqu'un qui part pour vrai.</b> Avant le départ : les séances et la semaine jouée ; sur place : la poche. Au retour, une seule
+    <li><b>Quelqu'un qui part pour vrai.</b> Avant le départ : les séances et la semaine jouée ; sur place : la trousse. Au retour, une seule
       question : « Qu'est-ce qui vous a servi, et qu'est-ce qui vous a manqué ? »</li>
   </ol>
 </section>

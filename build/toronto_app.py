@@ -529,10 +529,10 @@ function vueAccueil(){
       <button class="btn btn--pri btn--large" onclick="aller('semaine')">Jouer la semaine</button>
     </section>
     <section class="acc">
-      <p class="surtitre">3 · Sur place</p><h2>Ma poche</h2>
+      <p class="surtitre">3 · Sur place</p><h2>Ma trousse</h2>
       <p>Les phrases de chaque lieu avec leur voix, même sans réseau ; les urgences ; « plus lentement, s'il vous plaît » à
       montrer en grand ; et ce que ça coûte vraiment, taxe et pourboire compris.</p>
-      <button class="btn btn--large" onclick="aller('poche')">Ouvrir ma poche</button>
+      <button class="btn btn--large" onclick="aller('poche')">Ouvrir ma trousse</button>
     </section>`;
 }
 
@@ -1471,7 +1471,7 @@ const POCHE_IDX = {};
 function vuePoche(){
   const P = D.poche; let k = 0;
   const idx = x => { const i = 'p' + (k++); POCHE_IDX[i] = x; return i; };
-  app.innerHTML = `${retour('accueil', 'Accueil')}<p class="surtitre">Sur place · même sans réseau</p><h1>Ma poche</h1>
+  app.innerHTML = `${retour('accueil', 'Accueil')}<p class="surtitre">Sur place · même sans réseau</p><h1>Ma trousse</h1>
     <p class="muted">Les phrases de chaque lieu, avec leur voix. « Montrer » affiche la phrase en grand, pour la tendre à quelqu'un.</p>
     <div class="carte" style="margin:12px 0"><b>Pas de réseau dans le métro ?</b>
       <p class="muted" style="font-size:15px;margin:4px 0 10px">Une fois, avec du wifi : mettez tous les sons dans ce téléphone (environ ${D.poids} Mo).</p>
