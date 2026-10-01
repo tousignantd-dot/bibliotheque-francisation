@@ -22,6 +22,8 @@ catalogue.
 import html, importlib.util, json, pathlib, re, subprocess
 
 RACINE = pathlib.Path(__file__).resolve().parent.parent
+import sys; sys.path.insert(0, str(RACINE / "build"))
+import restauration_pierre as PIERRE  # noqa: E402  (la palette choisie le 30 sept. 2026)
 CONTENU = RACINE / "build" / "contenu" / "entreprise-restaurant"
 PRES = RACINE / "assets" / "presentations" / "restauration"
 GUIDE = PRES / "restauration-guide-formateur.html"
@@ -66,7 +68,7 @@ def chiffres():
 def tete(titre):
     t = (RACINE / "assets" / "presentations" / "magasin-vetements-plan.html").read_text(encoding="utf-8")
     t = t[:t.index("<body")]
-    return re.sub(r"<title>.*?</title>", f"<title>{E(titre)}</title>", t).replace("</style>", HE.CSS + "\n/* (audit de design, majeur) l'en-tête recopié pose table{min-width:640px} : au téléphone, toute la page dézoomait. */\ntable.cmp{display:block;max-width:100%;min-width:0;overflow-x:auto}\n" + "</style>", 1)
+    return re.sub(r"<title>.*?</title>", f"<title>{E(titre)}</title>", t).replace("</style>", HE.CSS + PIERRE.CSS + "\n/* (audit de design, majeur) l'en-tête recopié pose table{min-width:640px} : au téléphone, toute la page dézoomait. */\ntable.cmp{display:block;max-width:100%;min-width:0;overflow-x:auto}\n" + "</style>", 1)
 
 
 NIV = {"debutant": "débutant", "fonctionnel": "fonctionnel", "aise": "à l'aise"}
@@ -234,7 +236,7 @@ CAPTURES = [
     ("allergie", "L'allergie, éliminatoire", "La règle en trois gestes, lue à voix haute, avant chaque série."),
     ("service", "Le service joué", "Le chef en cuisine, les clients en salle, une vraie conversation, un bilan par geste."),
 ]
-CAPTURES_V = "1"   # refaites par `node build/restauration_captures.mjs` ; monter ce numéro après
+CAPTURES_V = "2"   # refaites par `node build/restauration_captures.mjs` ; monter ce numéro après
 
 
 def demo(c):

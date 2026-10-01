@@ -37,6 +37,7 @@ import test as TE  # noqa: E402
 import situations as SI  # noqa: E402
 sys.path.insert(0, str(RACINE / "build"))
 from restaurant_traductions import INTERFACE  # noqa: E402  (le français de l'écran : une seule source)
+import restauration_pierre as PIERRE  # noqa: E402  (la palette choisie)
 
 CROQUIS = RACINE / "assets" / "interactive" / "restaurant" / "croquis"
 SONS = RACINE / "assets" / "interactive" / "restaurant" / "sons"
@@ -227,14 +228,8 @@ GABARIT = r"""<!DOCTYPE html>
 <style>
 /* Page produite par build/restaurant_planches.py — ne pas l'éditer. */
 :root{
-  /* Palette PROVISOIRE « brique » (30 sept. 2026, à faire trancher comme
-     Francœur l'a fait sur sa page de couleurs) : pas le mauve de francis.
-     Brique pour l'action et l'enseigne, orange pour les pièges, fond crème.
-     Brique sur blanc ≈ 9:1 ; texte discret ≥ 4,5:1 sur le fond. */
-  --surface-page:#F5F0EA;--surface-card:#FFFFFF;--text-strong:#241A14;--text-body:#241A14;
-  --line-200:#E4DAD0;--line-300:#CDBFB2;--accent:#8A2E1C;--text-muted:#5E5046;
-  --warn-bg:#FBE9DC;--warn-line:#C8692A;--warn-ink:#8A3F0F;
-  --rj-teinte:#8A2E1C;--rj-fond:#F3E3DC}
+  /* Palette « brique sur pierre », choisie par Daniel le 30 sept. 2026 :
+     les jetons vivent dans build/restauration_pierre.py (ECRAN). */%%PALETTE%%}
 .fr-barre .fr-desc{color:var(--rj-teinte)}
 body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:Nunito,system-ui,sans-serif}
 .rj{max-width:1080px;margin:0 auto;padding:18px 16px 60px}
@@ -438,7 +433,7 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .n{font-size:14px;color:var(--text-muted)}
 .oral{display:flex;flex-direction:column;align-items:center;gap:10px;margin:14px 0}
 .oral .etat{font-weight:700;min-height:1.4em}
-.rec{background:#8A2E1C;border-color:#8A2E1C;color:#fff}.rec .appui{color:#fff}
+.rec{background:var(--accent);border-color:var(--accent);color:#fff}.rec .appui{color:#fff}
 .rec.en-cours{background:#B3261E;border-color:#B3261E}
 .code-f{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .code-f input{font:inherit;font-size:20px;width:8ch;padding:8px 10px;border-radius:10px;border:1px solid var(--line-300)}
@@ -1607,6 +1602,8 @@ else accueil();
 </body>
 </html>
 """
+PIERRE.verifier()
+GABARIT = GABARIT.replace("%%PALETTE%%", PIERRE.ECRAN)
 GABARIT = GABARIT.replace("%%NOM_JS%%", json.dumps(IDE.NOM, ensure_ascii=False))
 
 if __name__ == "__main__":
