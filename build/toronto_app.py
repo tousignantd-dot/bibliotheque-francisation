@@ -970,10 +970,28 @@ const ACCORDE = /vous vous êtes (\S+ )?\S*(é|i|u|is)(?=[\s.,;:!?»]|$)|vous ê
 // Tour 3 : deviner une question à sa forme comptait « thank you » et ratait « you like poutine ».
 // Le bilan CITE les questions du touriste ; la page vérifie la provenance et écarte les demandes
 // de clarification et les formules de politesse, puis compte.
-const CLARIF = /^(sorry|pardon|what|excuse me|huh|again|repeat|can you repeat|could you repeat|say that again|slowly|more slowly|what do you mean|what does .* mean|[a-z]+)$/;
-const POLI = /(thank you|thanks|see you|nice to meet you|nice meeting you|bye)$/;
-const questionsVraies = (citees, dits) => [...new Set((citees || []).map(q => plat(q)).filter(q => q && dits.some(d => d.includes(q))
-  && !CLARIF.test(q) && !POLI.test(q) && !/(^| )(repeat|slowly|again)( |$)/.test(q)))];
+// Un mot seul (« Hockey? ») n'est pas une relance — sauf « you » et « yourself » (tour 4).
+const CLARIF = /^(sorry|pardon|what|excuse me|huh|again|repeat|can you repeat|could you repeat|say that again|slowly|more slowly|what do you mean|what does .* mean|(?!you$|yourself$)[a-z]+)$/;
+const POLI = /^(ok |okay |yes |no )?(thank you|thanks|see you( [a-z]+)?|nice to meet you|nice meeting you|bye|good bye|goodbye)( bye)?$/;
+const sansMerci = q => q.replace(/ (thank you|thanks)$/, '');
+const estRelance = q => q && !CLARIF.test(q) && !POLI.test(q) && !/(^| )(repeat|slowly|again)( |$)/.test(q);
+// Tour 4 (bloquant) : compter les RÉPLIQUES qui portent une question vérifiée — « And you? » dit deux fois
+// compte deux fois ; deux morceaux d'une même réplique comptent une fois. Provenance au mot près.
+// Une citation courte (« you », « and you ») ne vaut que si la réplique FINIT par elle, jamais « thank you ».
+const contient = (d, q) => q.split(' ').length <= 2 ? (d === q || (d.endsWith(' ' + q) && !/(thank|see|meet) you$/.test(d))) : (' ' + d + ' ').includes(' ' + q + ' ');
+const repliquesRelancees = (citees, dits) => { const qs = (citees || []).map(q => sansMerci(plat(q))).filter(estRelance);
+  return dits.filter(d => qs.some(q => contient(d, q))).length; };
+// A-t-il RÉPONDU à Maya ? Une réplique anglaise qui n'est ni une clarification, ni une politesse seule, ni une
+// question citée (tour 4 : « Sorry? » et des questions sans aucune réponse passaient pour un succès).
+const NON_REPONSE = /(^| )(repeat|sorry|pardon|slowly|again|excuse me)( |$)|^(what|hello|hi|hey|ok|okay|yes|no)( [a-z]+)?$/;
+const aRepondu = (citees, dits) => { const qs = (citees || []).map(q => plat(q)).filter(Boolean);
+  return dits.some(d => { if (CLARIF.test(d) || POLI.test(d) || NON_REPONSE.test(d)) return false;
+    let r = ' ' + d + ' '; qs.forEach(q => { r = r.split(' ' + q + ' ').join(' '); });
+    r = r.replace(/ (and you|what about you|how about you|and yourself|you|thank you|thanks|bye)(?= )/g, ' ');
+    return r.trim().split(' ').some(w => w && !VIDES.has(w)); }); };
+// Ce qui COMPTE les questions est retiré, phrase par phrase ; parler des questions de Maya reste permis.
+const COMPTE_Q = /(\d+|une|deux|trois|aucune|plusieurs|pas assez de|assez de|toutes? (ses|les|vos)|une seule) questions?/i;
+const sansCompte = t => String(t || '').split(/(?<=[.!?])\s+/).filter(x => !COMPTE_Q.test(x)).join(' ');
 // Une correction garde le sens : on compare les mots PLEINS (contractions dépliées, radical de 5 lettres) ;
 // rejetée si elle en ajoute plus qu'elle n'en garde, plus un (tour 3 : « allergy at the peanuts → allergic
 // to peanuts » était jeté ; « OK bye → I haven't eaten yet, bye » reste rejeté).
@@ -987,7 +1005,8 @@ const fideleA = (dit, mieux) => { const d = new Set(pleins(dit)), m = pleins(mie
 const FRANCAIS = { test: t => /(^| )(je|j|tu|toi|vous|nous|ca va|hein|pis|merci|bonjour|oui)( |$)/.test(t)
   || (t.match(/(^| )(est|et|le|la|les|des|ou|aussi|comment|quoi|avec|pour|dans)(?= |$)/g) || []).length >= 2 };
 // Ce qui touche le produit dangereux, dans un lieu à éliminatoire : on ne le peaufine jamais.
-const DANGER = /(salmon|pecan|almond|tart|ice cream|walnut|hazelnut|cookie|cookies|biscuit|peanut)/;
+// Tour 4 : mots entiers, et seulement une COMMANDE du produit (« start » contenait « tart »).
+const DANGER = /(^| )(i ll|i will|i want|i d like|i would like|i take|i ll take|i ll have|give me|can i (have|get)|one|two|a|some)( [a-z]+){0,3} (salmon|pecans?|almonds?|tart|ice cream|walnuts?|hazelnuts?|cookies?|biscuits?|peanuts?)( |$)/;
 const PALIERS = [['lent', 'Lentement'], ['normal', 'Normalement'], ['rapide', 'Vite, comme à Toronto']];
 const estCode = c => /^PC[A-Z2-9]{6}$/.test(c || '');
 const lireCode = () => { try { return localStorage.getItem(CLE_CODE) || ''; } catch(e) { return ''; } };
@@ -1109,11 +1128,13 @@ function vueJouer(cas){
         const gagne = !c.maya && b.reussi === true && gestesOk;
         // Maya : les relances se comptent ici, pas par le modèle (tour 2 : deux relances jugées « pas réussi »).
         const repliques = hist.slice(1).filter(m => m.role === 'user').map(m => plat(m.contenu)).filter(t => !FRANCAIS.test(t));
-        const relances = questionsVraies(b.questions, repliques).length;
+        const relances = repliquesRelancees(b.questions, repliques);
         // Maya : « reussi » absent → a-t-il répondu en anglais ? ; et deux questions vérifiées.
-        if (c.maya) b.reussi = (b.reussi === undefined ? repliques.length > 0 : b.reussi === true) && relances >= 2;
-        if (c.maya) { const q = /question/i; b.compris = (b.compris || []).filter(x => !q.test(x));
-          if (q.test(b.conseil || '')) b.conseil = ''; if (q.test(b.resume || '')) b.resume = ''; }
+        // Maya se juge dans la page : a répondu en anglais ET deux répliques relancent (le « reussi » du modèle
+        // était absent 3 fois sur 9 et vrai sans réponse).
+        const repondu = aRepondu(b.questions, repliques);
+        if (c.maya) { b.reussi = repondu && relances >= 2;
+          b.compris = (b.compris || []).filter(x => !COMPTE_Q.test(x)); b.conseil = sansCompte(b.conseil); b.resume = sansCompte(b.resume); }
         // « dit » doit venir d'une réplique du touriste : sinon le bilan corrige ce qu'il n'a pas dit.
         const dits = hist.filter(m => m.role === 'user').map(m => plat(m.contenu)).join(' | ');
         b.phrases = (b.phrases || []).filter(x => x && x.dit && x.mieux && dits.includes(plat(x.dit)) && plat(x.dit) !== plat(x.mieux) && fideleA(x.dit, x.mieux)
@@ -1126,7 +1147,7 @@ function vueJouer(cas){
           ${att.length ? `<h3>Les gestes</h3>${att.map((g, i) => { const f = !!(b.gestes && b.gestes[i] && b.gestes[i].fait === true);
             return `<div class="geste"><b>${f ? '✓' : '—'}</b><span>${E(g)}${f ? '' : ' <span class="muted">(pas encore)</span>'}</span></div>`; }).join('')}` : ''}
           ${c.maya ? (b.reussi === true ? `<div class="retro ok">✓ Vous avez répondu et posé ${relances} questions à Maya.</div>`
-                                        : `<div class="retro no">— Pas encore : ${relances >= 2 ? 'répondez-lui en anglais' : `vous lui avez posé ${relances} question${relances > 1 ? 's' : ''} ; il en faut au moins deux (And you? What about you?)`}.</div>`) : ''}
+                                        : `<div class="retro no">— Pas encore : ${!repondu ? 'répondez à ses questions en anglais, même brièvement' + (relances < 2 ? `, et posez-lui au moins deux questions (${relances} pour l’instant)` : '') : relances >= 2 ? 'répondez-lui en anglais' : `vous lui avez posé ${relances} question${relances > 1 ? 's' : ''} ; il en faut au moins deux (And you? What about you?)`}.</div>`) : ''}
           ${!c.maya && !gagne && D.jeu.elim.includes(c.cas) && att.some((g, i) => /allerg|arachide|noix/i.test(g) && !(b.gestes && b.gestes[i] && b.gestes[i].fait === true))
             ? `<div class="retro no"><b>Éliminatoire :</b> ${E(D.jeu.regle[c.cas])}</div>` : ''}
           ${(b.compris || []).length ? `<h3>Ce que vous avez obtenu</h3><ul>${b.compris.map(x => `<li>${E(x)}</li>`).join('')}</ul>` : ''}
