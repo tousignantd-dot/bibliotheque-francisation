@@ -39,12 +39,12 @@ OBJECTIFS = {
     "P5": "Comprendre une réponse courte",
 }
 
-ORIGINE = "~(^| )(i m|i am|im|we re|we are) from [a-z]+|(^| )(from|live in|living in) (quebec|montreal|canada|france)"
-SEJOUR = "~(^| )(for|until|till|leave|leaving|stay|staying)( [a-z]+){0,3} (week|weeks|weekend|day|days|night|nights|month|monday|tuesday|wednesday|thursday|friday|saturday|sunday)( |$)"
+ORIGINE = "~(^| )(i m|i am|im|we re|we are|i come|we come|i live|we live|living|coming) (from|in) [a-z]+|(^| )(from|live in|living in) (quebec|montreal|canada|france)"
+SEJOUR = "~(^| )(for|until|till|leave|leaving|stay|staying|here)( [a-z]+){0,3} (week|weeks|weekend|day|days|night|nights|month|monday|tuesday|wednesday|thursday|friday|saturday|sunday)( |$)"
 RELANCE = "~(^| )(and you|and yourself|how about you|how about yourself|what about you|what about yourself|how are you|are you from)( |$)"
 # Les clés partagées (audit tour 1, M7) : une demande, dite de toutes les façons naturelles.
-DEMANDE = "~(can i (get|have)|could i (get|have)|may i (get|have)|i d like|id like|i would like|i ll (have|take|get)|please)"
-REPETER = "~(say (that|it) again|repeat|pardon|sorry|come again|one more time|(don t|didn t|do not|did not) (understand|get it|get that))"
+DEMANDE = "~(^| )(can|could|may) (i|we)( please)? (get|have)|(can|could) you( please)? (give|get) (me|us)|(i|we) d like|(i|we)d like|(i|we) would like|(i|we) ll (have|take|get|go with)|(i|we) want|(^| )please( |$)"
+REPETER = "~(say (that|it) again|repeat|pardon|sorry|excuse me|come again|again|one more time|(don t|didn t|do not|did not) (understand|get it|get that))"
 
 FIN = {
     "P1": "À la fin, vous direz ces formules au micro, sans les lire, et on vous comprendra du premier ou du deuxième coup — même quand un son raté changerait le mot (three, tree).",
@@ -121,7 +121,7 @@ SEANCES = [
    "intro": "Un café, un billet, un sandwich : tout a un prix, il se dit vite, et la taxe s'ajoute à la caisse. On apprend les nombres dont on a besoin, et surtout ceux qui se ressemblent à l'oreille.",
    "meca": [
      "<b>Les prix se disent en deux nombres</b> : 4,99 $ = <i>four ninety-nine</i> ; 12,50 $ = <i>twelve fifty</i>. Le mot « dollars » tombe souvent.",
-     "<b>Les paires qui trompent</b> : <i>thirteen</i> (13) / <i>thirty</i> (30) · <i>fifteen</i> (15) / <i>fifty</i> (50). Écoutez la fin : -teen finit long, sur un « n » (thir-tiiin) ; -ty finit court, et au Canada le t s'adoucit presque en d (thir-di, fif-di). Seul, 13 appuie sur la fin ; devant un autre nombre, l'accent peut remonter : fiez-vous au « n ».",
+     "<b>Les paires qui trompent</b> : <i>thirteen</i> (13) / <i>thirty</i> (30) · <i>fifteen</i> (15) / <i>fifty</i> (50). Écoutez la fin : -teen finit long, sur un « n » (thir-tiiin) ; -ty finit court, et au Canada le t s'adoucit presque en d après une voyelle ou un r (thir-di, for-di) ; fifty garde son t, mais finit court. Seul, 13 appuie sur la fin ; devant un autre nombre, l'accent peut remonter : fiez-vous au « n ».",
      "<b>La taxe</b> (13 % en Ontario) s'ajoute à la caisse : <i>plus tax</i>. Le prix affiché n'est presque jamais le prix payé.",
      "<b>Pour payer</b> : <i>Cash or card?</i> · <i>Debit or credit?</i> · <i>Tap or insert?</i> (touchez ou insérez la carte)."],
    "ecoute": [("thirteen, thirty", "13, 30 — le « n » de thirteen"), ("fifteen, fifty", "15, 50 — le « n » de fifteen"),
@@ -166,15 +166,15 @@ SEANCES = [
       "choix": [("Le dernier traversier part à 22 h 45.", None), ("Le dernier traversier part à 23 h 15.", "Quarter past, ce serait et quart. Quarter TO : moins quart — 22 h 45."), ("Le dernier traversier part à 23 h 45.", "Quarter to eleven, c'est onze heures moins quart : 22 h 45.")]},
      {"type": "rep", "qui": "liam", "en": "Your tour starts at quarter past two.",
       "choix": [("La visite commence à 14 h 15.", None), ("La visite commence à 13 h 45.", "Quarter to, ce serait moins quart. Quarter PAST : et quart — 14 h 15."), ("La visite commence à 14 h 45.", "Quarter past two, c'est deux heures et quart : 14 h 15.")]},
-     {"type": "rep", "qui": "andrew", "en": "We're open until six.",
-      "choix": [("C'est ouvert jusqu'à 18 h.", None), ("Ça ouvre à 18 h.", "Until, c'est « jusqu'à » : on ferme à six heures."), ("C'est ouvert dès 6 h.", "Until : jusqu'à. On ferme à 18 h.")]},
      {"type": "rep", "qui": "harper", "en": "Breakfast is from seven thirty to ten.",
       "choix": [("Le déjeuner est servi de 7 h 30 à 10 h.", None), ("Le déjeuner est servi de 7 h à 10 h 30.", "Le thirty va avec seven : de 7 h 30 à 10 h."), ("Le dîner est servi de 7 h 30 à 10 h.", "Breakfast, c'est notre déjeuner, le repas du matin."), ("Le dîner est servi de 7 h à 10 h 30.", "Breakfast, c'est le déjeuner ; et le thirty va avec seven.")]},
+     {"type": "rep", "qui": "andrew", "en": "We're open until six.",
+      "choix": [("C'est ouvert jusqu'à 18 h.", None), ("Ça ouvre à 18 h.", "Until, c'est « jusqu'à » : on ferme à six heures."), ("C'est ouvert dès 6 h.", "Until : jusqu'à. On ferme à 18 h.")]},
      {"type": "dire", "fr": "Demandez à quelle heure ferme le musée.",
       "choix": [("What time does the museum close?", None), ("What time does the museum closes?", "Après does, close reste sans s."), ("What time the museum closes?", "Il manque does : « What time does the museum close? ».")]},
    ],
-   "dire": [("Demandez à quelle heure ça ouvre.", "What time does it open?", ["what time|when", "open|opens"]),
-            ("Demandez l'heure.", "What time is it?", ["what time"]),
+   "dire": [("Demandez à quelle heure ça ouvre.", "What time does it open?", ["what time|when", "open|opens|opening"]),
+            ("Demandez l'heure.", "What time is it?", ["what time|the time"]),
             ("Dites « à dix heures et demie ».", "At ten thirty.", ["ten|10", "thirty|30|half"]),
             ("Dites « demain matin ».", "Tomorrow morning.", ["tomorrow", "morning"])]},
 
@@ -190,23 +190,23 @@ SEANCES = [
               ("Do you have a map?", "Avez-vous une carte (de la ville) ?"), ("Do you have a room for tonight?", "Avez-vous une chambre pour ce soir ?"),
               ("I need a pharmacy.", "J'ai besoin d'une pharmacie."), ("I need help.", "J'ai besoin d'aide."),
               ("I have a headache.", "J'ai mal à la tête."), ("My foot hurts.", "J'ai mal au pied.")],
-   "mots": ["coffee", "the_bill", "room", "pharmacy", "help", "headache", "blister", "sunburn", "water", "towel"],
+   "mots": ["coffee", "the_bill", "room", "pharmacy", "help", "headache", "fever", "blister", "sunburn", "water", "towel"],
    "quiz": [
      {"type": "dire", "fr": "Au café, commandez un grand café.",
       "choix": [("Can I get a large coffee, please?", None), ("Can I get a coffee large, please?", "L'adjectif se place avant : a large coffee."), ("Can you get a large coffee, please?", "Can YOU : vous lui demanderiez d'aller en acheter un. Pour commander : Can I get…")]},
      {"type": "dire", "fr": "À la réception, demandez s'il reste une chambre pour ce soir.",
-      "choix": [("Do you have a room for tonight?", None), ("I have a room for tonight.", "I have, c'est « j'ai » : vous affirmez avoir une chambre. Demandez : « Do you have…? »."), ("You have a room for tonight?", "Sans do, la question passe mal à l'écrit et sonne brusque : « Do you have…? ».")]},
+      "choix": [("Do you have a room for tonight?", None), ("I have a room for tonight.", "I have, c'est « j'ai » : vous affirmez avoir une chambre. Demandez : « Do you have…? »."), ("Do you have a room for this night?", "This night calque « cette nuit » ; pour ce soir, on dit « for tonight ».")]},
      {"type": "dire", "fr": "À la pharmacie, dites que vous avez mal à la tête.",
       "choix": [("I have a headache.", None), ("I am a headache.", "I am, c'est « je suis » : vous seriez un mal de tête ! On dit « I have a headache »."), ("My head is hurting me very.", "« Hurting me very » calque le français ; on dit « My head hurts » ou « I have a headache ».")]},
      {"type": "rep", "qui": "rosa", "en": "Do you need a bag?",
       "choix": [("Voulez-vous un sac ?", None), ("Avez-vous un sac ?", "Do you HAVE, ce serait « avez-vous ». Need : en avez-vous besoin ?"), ("Il vous faut payer le sac.", "Elle demande seulement : do you need a bag ?")]},
      {"type": "dire", "fr": "Au restaurant, demandez l'addition.",
-      "choix": [("Could I have the bill, please?", None), ("Could I have the note?", "The note n'est pas l'addition au restaurant : « the bill »."), ("I need the money.", "Ce serait « j'ai besoin d'argent » : demandez « the bill ».")]},
+      "choix": [("Could I have the bill, please?", None), ("Could I have the note?", "The note n'est pas l'addition au restaurant : « the bill »."), ("Could I have the addition, please?", "Addition, en anglais, c'est une somme ; l'addition du resto : « the bill ».")]},
      {"type": "dire", "fr": "Vous avez une ampoule au pied. Dites que votre pied vous fait mal.",
-      "choix": [("My foot hurts.", None), ("My foot is hurt you.", "La formule : « My foot hurts » (mon pied fait mal)."), ("I hurt your foot.", "Ce serait « je vous ai fait mal au pied » ! On dit « My foot hurts ».")]},
+      "choix": [("My foot hurts.", None), ("My foot makes me hurt.", "C'est le calque de « mon pied me fait mal » : on dit « My foot hurts »."), ("I have hurt at the foot.", "C'est le calque de « j'ai mal au pied » : « My foot hurts ».")]},
    ],
    "dire": [("Commandez un café moyen.", "Can I get a medium coffee, please?", [DEMANDE, "coffee"]),
-            ("Demandez s'ils ont une carte de la ville.", "Do you have a map?", ["~(do you have|have you got|can i (get|have)|could i (get|have))", "map"]),
+            ("Demandez s'ils ont une carte de la ville.", "Do you have a map?", ["~(do you have|have you got|can i (get|have)|could i (get|have)|is there)", "map"]),
             ("Dites que vous avez besoin d'une pharmacie.", "I need a pharmacy.", ["need", "pharmacy|drugstore"]),
             ("Dites que vous avez mal à la tête.", "I have a headache.", ["~(headache|head hurts|head is hurting)"])]},
 
@@ -225,20 +225,20 @@ SEANCES = [
    "mots": ["subway", "streetcar", "ticket", "pharmacy", "tower", "market", "ferry", "breakfast_incl", "exit", "bus_stop"],
    "quiz": [
      {"type": "dire", "fr": "Demandez où sont les toilettes.",
-      "choix": [("Where are the washrooms?", None), ("Where is the toilet paper?", "Ce serait le papier de toilette ! « Where are the washrooms? » — au Canada, washroom."), ("What are the washrooms?", "What, c'est « quoi ». Où : where.")]},
+      "choix": [("Where are the washrooms?", None), ("Where is the toilets?", "Toilets est au pluriel : where ARE ; et au Canada, on dit washrooms."), ("What are the washrooms?", "What, c'est « quoi ». Où : where.")]},
      {"type": "dire", "fr": "Demandez s'il y a une pharmacie près d'ici.",
       "choix": [("Is there a pharmacy near here?", None), ("Is it a pharmacy near here?", "Ce serait « est-ce une pharmacie ? ». Pour « y a-t-il » : Is there…?"), ("Is there a pharmacy near of here?", "Near, sans of : near here.")]},
      {"type": "dire", "fr": "Au tramway, demandez s'il va à Kensington.",
-      "choix": [("Does this streetcar go to Kensington?", None), ("Does this streetcar goes to Kensington?", "Après does, le verbe reste go."), ("This streetcar go to Kensington?", "Il manque does, et go change : « Does this streetcar go to…? ».")]},
+      "choix": [("Does this streetcar go to Kensington?", None), ("Does this streetcar goes to Kensington?", "Après does, le verbe reste go."), ("Is this streetcar go to Kensington?", "Is ne va pas avec go : « Does this streetcar go to Kensington? ».")]},
      {"type": "dire", "fr": "Demandez combien coûte un billet.",
       "choix": [("How much is a ticket?", None), ("How many is a ticket?", "How many compte des choses ; pour un prix : how much."), ("How is a ticket?", "Ce serait « comment va le billet ? » : how MUCH.")]},
      {"type": "dire", "fr": "Au café, vous voulez savoir si vous pouvez utiliser les toilettes.",
-      "choix": [("Is there a washroom I could use?", None), ("Is there a bathroom to rent?", "To rent, c'est louer ! « a washroom I could use »."), ("Is there a washer I could use?", "A washer est une laveuse. Les toilettes, au Canada : a washroom.")]},
+      "choix": [("Is there a washroom I could use?", None), ("Is it possible to use the washer?", "A washer est une laveuse ; les toilettes : a washroom."), ("Is there a washer I could use?", "A washer est une laveuse. Les toilettes, au Canada : a washroom.")]},
      {"type": "dire", "fr": "Demandez comment vous rendre à la tour CN.",
       "choix": [("How do I get to the CN Tower?", None), ("How do I get the CN Tower?", "Sans « to », ce serait « comment j'obtiens la tour » ! « How do I get TO the CN Tower? »."), ("Where do I go CN Tower?", "Il manque des mots : « How do I get to the CN Tower? ».")]},
    ],
    "dire": [("Demandez où est le métro.", "Where is the subway?", ["where", "subway|ttc|metro|station"]),
-            ("Demandez s'il y a une pharmacie près d'ici.", "Is there a pharmacy near here?", ["is there", "pharmacy|drugstore"]),
+            ("Demandez s'il y a une pharmacie près d'ici.", "Is there a pharmacy near here?", ["is there|where", "pharmacy|drugstore|drug store"]),
             ("Demandez combien coûte un billet.", "How much is a ticket?", ["how much", "ticket"]),
             ("Demandez si le déjeuner est inclus.", "Is breakfast included?", ["breakfast", "~(includ|come with|comes with)"])]},
 
@@ -257,7 +257,7 @@ SEANCES = [
    "mots": ["where_from", "from_quebec", "how_long", "first_time", "what_do_you_do", "and_you", "nice_to_meet"],
    "quiz": [
      {"type": "rep", "qui": "harper", "en": "So, where are you from?", "q": "Que répondez-vous ?",
-      "choix": [("I'm from Quebec. How about you?", None), ("I'm Quebec.", "Ce serait « je suis le Québec » : I'm FROM Quebec."), ("Yes, I'm from.", "Il manque le lieu : I'm from Quebec — et la relance.")]},
+      "choix": [("I'm from Quebec. How about you?", None), ("I'm Quebec. How about you?", "Ce serait « je suis le Québec » : I'm FROM Quebec."), ("Yes, I'm from. And you?", "Il manque le lieu : I'm from Quebec.")]},
      {"type": "rep", "qui": "harper", "en": "How long are you here for?",
       "choix": [("Combien de temps restez-vous ?", None), ("Depuis quand êtes-vous ici ?", "Depuis quand, ce serait « How long have you been here? ». Ici : combien de temps vous restez."), ("Êtes-vous ici pour longtemps, au travail ?", "Rien sur le travail : how long, combien de temps.")]},
      {"type": "dire", "fr": "On vous demande ce que vous faites dans la vie. Vous êtes à la retraite.",
@@ -319,57 +319,57 @@ _P4_PARTIES = ["d'où vous venez (I'm from…)", "combien de temps vous restez (
 TEST = [
   [
     {"obj": "P1", "type": "oral", "fr": "Une passante vous tient la porte : remerciez-la.", "cles": ["thank|thanks"], "modele": "Thank you!"},
-    {"obj": "P1", "type": "oral", "fr": "Au guichet, demandez trois billets.", "cles": ["three", "ticket|tickets"], "modele": "Three tickets, please."},
+    {"obj": "P1", "type": "oral", "fr": "Le caissier demande combien de billets. Répondez d'un seul mot : trois.", "cles": ["three|3"], "modele": "Three."},
     {"obj": "P1", "type": "oral", "fr": "Dites que vous ne comprenez pas.", "cles": ["~(do not|dont|don t|did not|didnt|didn t) (understand|get it|get that)"], "modele": "Sorry, I don't understand."},
     {"obj": "P2", "type": "rep", "qui": "liam", "en": "That's thirty forty.",
-     "choix": [("30,40 $", None), ("13,40 $", "Thirteen finirait sur un « n ». Ici, thirty finit court : 30."), ("13,14 $", "Ni treize ni quatorze : thirty forty, 30,40 $.")]},
+     "choix": [("30,40 $", None), ("13,40 $", "Thirteen finirait sur un « n ». Ici, thirty finit court : 30."), ("13,14 $", "Ni treize ni quatorze : thirty forty, 30,40 $."), ("30,14 $", "Thirty, oui ; mais forty finit court : 40, pas 14.")]},
     {"obj": "P2", "type": "rep", "qui": "harper", "en": "The museum closes at quarter to six.",
-     "choix": [("Le musée ferme à 17 h 45.", None), ("Le musée ferme à 18 h 15.", "Quarter past serait et quart. Quarter TO : moins quart, 17 h 45."), ("Le musée ouvre à 18 h 15.", "Closes : ferme ; et quarter to six, 17 h 45.")]},
+     "choix": [("Le musée ferme à 17 h 45.", None), ("Le musée ferme à 18 h 15.", "Quarter past serait et quart. Quarter TO : moins quart, 17 h 45."), ("Le musée ouvre à 18 h 15.", "Closes : ferme ; et quarter to six, 17 h 45."), ("Le musée ouvre à 17 h 45.", "Closes : il ferme ; l'heure, elle, est juste.")]},
     {"obj": "P2", "type": "rep", "qui": "andrew", "en": "That'll be fifteen fifty, plus tax.",
-     "choix": [("15,50 $, plus les taxes", None), ("50,15 $, plus les taxes", "Les deux nombres sont inversés : fifteen d'abord, puis fifty."), ("50,50 $, plus les taxes", "Fifteen finit sur un « n » : 15, puis fifty, 50.")]},
+     "choix": [("15,50 $, plus les taxes", None), ("50,15 $, plus les taxes", "Les deux nombres sont inversés : fifteen d'abord, puis fifty."), ("50,50 $, plus les taxes", "Fifteen finit sur un « n » : 15, puis fifty, 50."), ("15,15 $, plus les taxes", "Fifteen d'abord, oui ; puis fifty, qui finit court : 50.")]},
     {"obj": "P2", "type": "rep", "qui": "rosa", "en": "Check-out is at eleven a.m.",
-     "choix": [("Départ à 11 h du matin.", None), ("Départ à 11 h du soir.", "A.m. : le matin. Le soir, ce serait p.m."), ("Arrivée à 11 h du soir.", "Check-out, c'est le départ ; et a.m., le matin.")]},
+     "choix": [("Départ à 11 h du matin.", None), ("Départ à 11 h du soir.", "A.m. : le matin. Le soir, ce serait p.m."), ("Arrivée à 11 h du soir.", "Check-out, c'est le départ ; et a.m., le matin."), ("Arrivée à 11 h du matin.", "A.m., oui ; mais check-out, c'est le départ.")]},
     {"obj": "P3", "type": "oral", "fr": "Au café, commandez un thé.", "cles": [DEMANDE, "tea"], "modele": "Can I get a tea, please?"},
     {"obj": "P3", "type": "oral", "fr": "Demandez où est l'arrêt d'autobus.", "cles": ["~(where|is there)", "bus"], "modele": "Where is the bus stop?"},
-    {"obj": "P3", "type": "oral", "fr": "Vous avez un coup de soleil : dites-le au pharmacien.", "cles": ["sunburn|sunburned|sunburnt|burn"], "modele": "I have a sunburn."},
+    {"obj": "P3", "type": "oral", "fr": "Vous avez un coup de soleil : dites-le au pharmacien.", "cles": ["~(i have|i ve got|i got|i think i have|something for)", "sunburn|sunburned|sunburnt|burn|burned"], "modele": "I have a sunburn."},
     {"obj": "P4", "type": "oral", "fr": "Une Torontoise vous demande qui vous êtes. Répondez : d'où vous venez, combien de temps vous restez, et relancez.",
      "cles": [ORIGINE, SEJOUR, RELANCE], "parties": _P4_PARTIES,
      "modele": "I'm from Quebec. I'm here for a week. How about you?"},
     {"obj": "P5", "type": "rep", "qui": "aarti", "en": "Sorry, the tower is closed today because of the wind.",
-     "choix": [("La tour est fermée aujourd'hui à cause du vent.", None), ("La tour est ouverte aujourd'hui, malgré le vent.", "Sorry, au début, annonçait un non : closed, fermée."), ("La tour est ouverte, mais l'ascenseur est fermé à cause du vent.", "Closed porte sur la tour elle-même.")]},
+     "choix": [("La tour est fermée aujourd'hui à cause du vent.", None), ("La tour est ouverte, malgré le vent.", "Sorry, au début, annonçait un non : closed, fermée."), ("La tour est ouverte, mais l'ascenseur est fermé à cause du vent.", "Closed porte sur la tour elle-même."), ("La tour est fermée aujourd'hui à cause de la pluie.", "Closed, oui ; mais because of the WIND : le vent.")]},
     {"obj": "P5", "type": "rep", "qui": "sam", "en": "Take the second right, then it's straight ahead.",
-     "choix": [("Deuxième rue à droite, puis tout droit.", None), ("Deuxième rue à gauche, puis tout droit.", "Right : à droite."), ("Deuxième rue à gauche, puis c'est juste là.", "Right : à droite ; et straight ahead, tout droit.")]},
+     "choix": [("Deuxième rue à droite, puis tout droit.", None), ("Deuxième rue à gauche, puis tout droit.", "Right : à droite."), ("Deuxième rue à gauche, puis c'est juste là.", "Right : à droite ; et straight ahead, tout droit."), ("Deuxième rue à droite, puis c'est juste là.", "À droite, oui ; mais straight ahead : tout droit.")]},
     {"obj": "P5", "type": "rep", "qui": "ezinne", "en": "We're out of the fish tonight, but the chicken is great.",
-     "choix": [("Plus de poisson ce soir ; le poulet est très bon.", None), ("Plus de poulet ce soir ; le poisson est très bon.", "C'est l'inverse : out of the FISH."), ("Plus de poulet ce soir ; prenez plutôt le poisson.", "Out of the fish : c'est le poisson qui manque.")]},
+     "choix": [("Plus de poisson ce soir ; le poulet est très bon.", None), ("Plus de poulet ce soir ; le poisson est très bon.", "C'est l'inverse : out of the FISH."), ("Plus de poulet ce soir ; prenez plutôt le poisson.", "Out of the fish : c'est le poisson qui manque."), ("Plus de poisson ce soir ; le poulet aussi est fini.", "Le poisson manque, oui ; mais the chicken is great : le poulet est très bon.")]},
     {"obj": "P5", "type": "rep", "qui": "liam", "en": "Breakfast isn't included with this rate.",
-     "choix": [("Le déjeuner n'est pas compris dans ce tarif.", None), ("Le déjeuner est bien compris dans ce tarif.", "Isn't : n'est pas."), ("Le déjeuner est compris, mais pas le café.", "Isn't included : le déjeuner lui-même n'est pas compris.")]},
+     "choix": [("Le déjeuner n'est pas compris dans ce tarif.", None), ("Le déjeuner est bien compris dans le prix de la chambre.", "Isn't : n'est pas."), ("Le déjeuner est compris, mais pas le café.", "Isn't included : le déjeuner lui-même n'est pas compris."), ("Le déjeuner n'est pas compris, ni le café.", "Rien n'est dit du café : seulement le déjeuner, qui n'est pas compris.")]},
   ],
   [
     {"obj": "P1", "type": "oral", "fr": "Au comptoir, le serveur a parlé trop bas : faites-le répéter.", "cles": [REPETER], "modele": "Sorry, could you say that again?"},
-    {"obj": "P1", "type": "oral", "fr": "Saluez en entrant au café, et demandez comment ça va.", "cles": ["hi|hello|hey|good morning", "how are you|how s it going|how is it going"], "modele": "Hi! How are you?"},
-    {"obj": "P1", "type": "oral", "fr": "Dites que vous partez demain.", "cles": ["leaving|leave", "tomorrow"], "modele": "I'm leaving tomorrow."},
+    {"obj": "P1", "type": "oral", "fr": "Saluez en entrant au café, et demandez comment ça va.", "cles": ["hi|hello|hey|good morning|good afternoon|good evening|morning", "how are you|how s it going|how is it going"], "modele": "Hi! How are you?"},
+    {"obj": "P1", "type": "oral", "fr": "Au restaurant, dites que vous voulez partir.", "cles": ["leave"], "modele": "I want to leave."},
     {"obj": "P2", "type": "rep", "qui": "andrew", "en": "It's forty-three fifteen.",
-     "choix": [("43,15 $", None), ("43,50 $", "Fifty finirait court ; ici, on entend le « n » de fifteen : 15."), ("33,50 $", "Ni trente-trois ni cinquante : forty-three fifteen, 43,15 $.")]},
+     "choix": [("43,15 $", None), ("43,50 $", "Fifty finirait court ; ici, on entend le « n » de fifteen : 15."), ("33,50 $", "Ni trente-trois ni cinquante : forty-three fifteen, 43,15 $."), ("33,15 $", "Fifteen, oui ; mais forty-three : 43.")]},
     {"obj": "P2", "type": "rep", "qui": "liam", "en": "The next train is at quarter past eight.",
-     "choix": [("Le prochain train est à 8 h 15.", None), ("Le prochain train est à 7 h 45.", "Quarter to serait moins quart. Quarter PAST : et quart, 8 h 15."), ("Le prochain train est à 8 h 45.", "Quarter past eight, c'est huit heures et quart : 8 h 15.")]},
+     "choix": [("Le prochain train est à 8 h 15.", None), ("Le prochain train est à 7 h 45.", "Quarter to serait moins quart. Quarter PAST : et quart, 8 h 15."), ("Le prochain train est à 8 h 45.", "Quarter past eight, c'est huit heures et quart : 8 h 15."), ("Le prochain train est à 7 h 15.", "Quarter PAST eight : huit heures et quart, 8 h 15.")]},
     {"obj": "P2", "type": "rep", "qui": "harper", "en": "Tickets are thirteen dollars.",
      "choix": [("13 $", None), ("30 $", "Ici, on entend le « n » de thirteen : 13."), ("3 $", "Three serait 3. Ici : thirteen, 13.")]},
     {"obj": "P2", "type": "rep", "qui": "rosa", "en": "Last entry is at eight p.m.",
-     "choix": [("Dernière entrée à 20 h.", None), ("Dernière entrée à 8 h du matin.", "P.m. : le soir. Le matin, ce serait a.m."), ("Première entrée à 8 h du matin.", "Last : la dernière ; et p.m., le soir.")]},
-    {"obj": "P3", "type": "oral", "fr": "À la réception, demandez le mot de passe du wifi.", "cles": ["wifi|wi fi|wireless|internet", "password|code", "~(can i (get|have)|could i (get|have)|what is|what s|do you have|please)"], "modele": "Can I get the Wi-Fi password?"},
+     "choix": [("Dernière entrée à 8 h du soir.", None), ("Dernière entrée à 8 h du matin.", "P.m. : le soir. Le matin, ce serait a.m."), ("Première entrée à 8 h du matin.", "Last : la dernière ; et p.m., le soir."), ("Première entrée à 8 h du soir.", "Le soir, oui ; mais last, c'est la dernière.")]},
+    {"obj": "P3", "type": "oral", "fr": "À la réception, demandez le mot de passe du wifi.", "cles": ["wifi|wi fi|wireless|internet", "password|code"], "modele": "Can I get the Wi-Fi password?"},
     {"obj": "P3", "type": "oral", "fr": "À l'hôtel, demandez où est l'ascenseur.", "cles": ["~(where|is there)", "elevator|lift"], "modele": "Where is the elevator?"},
-    {"obj": "P3", "type": "oral", "fr": "Vous avez de la fièvre : dites-le au pharmacien.", "cles": ["fever|temperature"], "modele": "I have a fever."},
+    {"obj": "P3", "type": "oral", "fr": "Vous avez de la fièvre : dites-le au pharmacien.", "cles": ["~(i have|i ve got|i got|i think i have|something for)", "fever|temperature"], "modele": "I have a fever."},
     {"obj": "P4", "type": "oral", "fr": "Au marché, un vendeur vous demande d'où vous êtes. Répondez : d'où vous venez, combien de temps vous restez, et relancez.",
      "cles": [ORIGINE, SEJOUR, RELANCE], "parties": _P4_PARTIES,
      "modele": "I'm from Montreal. I'm here for the weekend. And you? Are you from here?"},
     {"obj": "P5", "type": "rep", "qui": "liam", "en": "The washrooms are right there, on your left.",
-     "choix": [("Les toilettes sont juste là, à votre gauche.", None), ("Les toilettes sont juste là, à votre droite.", "Right there veut dire juste là ; la direction, c'est on your LEFT."), ("Les toilettes sont plus loin, à votre droite.", "Right there : juste là ; et à gauche, on your left.")]},
+     "choix": [("Les toilettes sont juste là, à votre gauche.", None), ("Les toilettes sont juste là, à votre droite.", "Right there veut dire juste là ; la direction, c'est on your LEFT."), ("Les toilettes sont plus loin, à votre droite.", "Right there : juste là ; et à gauche, on your left."), ("Les toilettes sont plus loin, à votre gauche.", "À gauche, oui ; mais right there : juste là.")]},
     {"obj": "P5", "type": "rep", "qui": "sam", "en": "Your card didn't go through. Do you want to try again?",
-     "choix": [("Carte refusée ; voulez-vous réessayer ?", None), ("Carte acceptée ; voulez-vous le reçu ?", "Didn't go through : elle n'est pas passée."), ("Carte acceptée ; voulez-vous un sac ?", "Didn't go through : refusée ; on vous propose de réessayer.")]},
+     "choix": [("Carte refusée ; voulez-vous réessayer ?", None), ("Carte acceptée ; voulez-vous le reçu ?", "Didn't go through : elle n'est pas passée."), ("Carte acceptée ; voulez-vous un sac ?", "Didn't go through : refusée ; on vous propose de réessayer."), ("Carte refusée ; voulez-vous payer comptant ?", "Refusée, oui ; mais try again : on vous propose de réessayer.")]},
     {"obj": "P5", "type": "rep", "qui": "arjun", "en": "The kitchen closes at ten, so this is your last chance to order.",
-     "choix": [("La cuisine ferme à 22 h ; c'est le moment de commander.", None), ("La cuisine ouvre à 22 h ; vous pourrez commander plus tard.", "Closes : ferme."), ("La cuisine ouvre à 22 h ; c'est le moment de réserver.", "Closes : ferme ; et order, c'est commander.")]},
+     "choix": [("La cuisine ferme à 22 h ; c'est le moment de commander.", None), ("La cuisine ouvre à 22 h ; vous pourrez commander plus tard.", "Closes : ferme."), ("La cuisine ouvre à 22 h ; c'est le moment de réserver.", "Closes : ferme ; et order, c'est commander."), ("La cuisine ferme à 22 h ; c'est le moment de réserver.", "Ferme, oui ; mais order, c'est commander.")]},
     {"obj": "P5", "type": "rep", "qui": "ezinne", "en": "The tip isn't included. It's up to you.",
-     "choix": [("Pourboire non compris ; vous choisissez le montant.", None), ("Pourboire compris ; vous n'avez rien à ajouter.", "Isn't included : n'est pas compris."), ("Pourboire compris ; ajoutez-en si vous voulez.", "Isn't included : il n'est pas compris ; c'est à vous de choisir.")]},
+     "choix": [("Pourboire non compris ; c'est à vous de voir.", None), ("Pourboire compris ; vous n'avez rien à ajouter.", "Isn't included : n'est pas compris."), ("Pourboire compris ; ajoutez-en si vous voulez.", "Isn't included : il n'est pas compris ; c'est à vous de choisir."), ("Non compris ; le pourboire est fixé à 15 %.", "Non compris, oui ; mais it's up to you : c'est vous qui choisissez le montant.")]},
   ],
 ]
 PAR_OBJECTIF = {"P1": 3, "P2": 4, "P3": 3, "P4": 1, "P5": 4}
@@ -378,7 +378,7 @@ PAR_OBJECTIF = {"P1": 3, "P2": 4, "P3": 3, "P4": 1, "P5": 4}
 # la page l'applique à 75 % ; la présentation (P4) se compte par parties.
 SEUIL = ("Solide : 3 sur 3 au micro, au moins 3 sur 4 à l'écoute, et les trois parties de la présentation ; En route : "
          "au moins la moitié ; À reprendre : moins de la moitié. Au micro, deux essais au plus ; les phrases entendues ne "
-         "s'écoutent qu'une fois. « Solide » partout : vous pouvez sauter les séances.")
+         "s'écoutent qu'une fois. Une question passée sans micro empêche « Solide ». « Solide » partout : vous pouvez sauter les séances.")
 SEUIL_SOLIDE = 0.75
 CONSEILS = {"P1": "Reprenez les séances 1 et 2, au micro.", "P2": "Reprenez les séances 3 et 4, voix plus lentes d'abord.",
             "P3": "Reprenez les séances 5 et 6.", "P4": "Reprenez la séance 7, et préparez vos trois phrases.",
@@ -434,7 +434,10 @@ def verifier(lexique_ids=None, personnages=None):
             else:
                 _item(it, f"test{f}", personnages)
                 bonne, autres = len(it["choix"][0][0]), [len(c) for c, _ in it["choix"][1:]]
-                assert bonne <= max(autres) * 1.1, ("au test, la bonne réponse est la plus longue", f, it["en"])
+                assert bonne <= max(autres), ("au test, la bonne réponse est seule la plus longue", f, it["en"])
+                # Tour 2 (bloquant) : à trois choix, le leurre sur deux choix laisse la bonne seule — l'exception
+                # la trahit. Un item à deux traits prend le carré complet : chaque valeur deux fois.
+                assert len(it["choix"]) == 4 or len(_nombres(it["choix"][0][0])) == 1, ("au test, quatre choix", f, it["en"])
     return True
 
 

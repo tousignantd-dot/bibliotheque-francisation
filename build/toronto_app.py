@@ -303,7 +303,8 @@ const plat = t => enLettres(String(t).replace(/['’]/g, ' ')).toLowerCase().nor
 // Une clé qui commence par « ~ » est une expression régulière sur le texte aplati.
 const trouve = (t, cle) => cle.startsWith('~') ? new RegExp(cle.slice(1)).test(plat(t)) : cle.split('|').some(a => new RegExp('(^| )' + plat(a).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(s|es)?( |$)').test(plat(t)));
 /* ---------- ordre des choix : jamais la bonne toujours au même rang ---------- */
-function ordre(n, graine){ const o = [...Array(n).keys()]; const d = graine % n; return o.slice(d).concat(o.slice(0, d)); }
+// Audit tour 2 : une rotation garde l'ordre cyclique (la bonne précède toujours le leurre). Mélange à graine stable.
+function ordre(n, g){ const o = [...Array(n).keys()]; g = g + 1; for (let i = n - 1; i > 0; i--) { g = (g * 16807) % 2147483647; const j = g % (i + 1); [o[i], o[j]] = [o[j], o[i]]; } return o; }
 
 /* ---------- navigation ---------- */
 const app = $('#app');
@@ -438,7 +439,7 @@ function seanceEcoute(x){
 /* Une question à choix, jouée jusqu'à la bonne réponse : chaque mauvais choix
    dit pourquoi, et la place de la bonne tourne. */
 function questionPrep(it, fichier, graine, surFin, rappel, une){
-  const p = it.qui ? D.perso[it.qui] : null, estEn = it.type !== 'rep';
+  const p = it.qui ? D.perso[it.qui] : null, estEn = it.type !== 'rep' || !!it.q;
   const o = ordre(it.choix.length, graine);
   let fini = false, erreurs = 0;
   const titre = it.q || (it.type === 'rep' ? 'Que veut dire la phrase ?' : it.type === 'mot' ? 'Quel mot entendez-vous ?' : 'Que dites-vous ?');
@@ -471,7 +472,7 @@ function seanceQuiz(x){
   const tires = []; while (vues.length && tires.length < 2) tires.push(vues.splice(Math.floor(Math.random() * vues.length), 1)[0]);
   // Aux séances 3, 4 et 8, les deux dernières questions ne s'écoutent qu'une fois, comme au comptoir.
   const unefois = ['p3', 'p4', 'p8'].includes(x.id);
-  const items = [...tires, ...x.quiz.map((it, k) => ({it, sid:x.id, k, une: unefois && k >= x.quiz.length - 2}))];
+  const items = [...tires, ...x.quiz.map((it, k) => ({it, sid:x.id, k, une: unefois && it.type !== 'dire' && k >= x.quiz.length - 2}))];
   let n = 0, erreurs = 0;
   function tour(){
     if (n >= items.length) {
@@ -622,10 +623,11 @@ function vuePrepTest(){
     const lignes = Object.keys(D.prep.objectifs).map(o => {
       const [ok, tot] = res[o] || [0, 0], nv = nonVerif[o] || 0, lieu = LIEUX[D.prep.lieu[o]];
       if (!tot) return `<div class="carte" style="margin:8px 0"><b>${E(D.prep.objectifs[o])}</b><div class="retro info" style="margin:6px 0">Non vérifié au micro : refaites ces questions avec le micro.</div><p class="muted" style="margin:0;font-size:15px">${E(D.prep.conseils[o])}</p></div>`;
-      const r = ok / tot; if (r >= D.prep.solide) solides++;
-      const etat = r >= D.prep.solide ? ['ok', '✓ Solide'] : r >= .5 ? ['info', '→ En route'] : ['no', '— À reprendre'];
+      // Audit tour 2 : une question passée sans micro empêche « Solide » (sinon on saute l'item difficile).
+      const r = ok / tot, solideIci = r >= D.prep.solide && !nv; if (solideIci) solides++;
+      const etat = solideIci ? ['ok', '✓ Solide'] : r >= .5 ? ['info', '→ En route'] : ['no', '— À reprendre'];
       return `<div class="carte" style="margin:8px 0"><b>${E(D.prep.objectifs[o])}</b><div class="retro ${etat[0]}" style="margin:6px 0">${etat[1]} — ${ok} sur ${tot}${nv ? ` (et ${nv} non vérifiée${nv > 1 ? 's' : ''} au micro)` : ''}</div>
-        ${r < D.prep.solide ? `<p class="muted" style="margin:0;font-size:15px">${E(D.prep.conseils[o])}</p>` : ''}
+        ${!solideIci ? `<p class="muted" style="margin:0;font-size:15px">${E(D.prep.conseils[o])}</p>` : ''}
         ${(manquees[o] || []).length ? `<p class="muted" style="margin:4px 0 0;font-size:14px">À revoir : ${manquees[o].map(t => '<i lang="en">' + E(t) + '</i>').join(' · ')}</p>` : ''}
         ${lieu ? `<p class="muted" style="margin:4px 0 0;font-size:14px">Vous en aurez besoin ${E(lieu)}.</p>` : ''}</div>`;
     }).join('');
