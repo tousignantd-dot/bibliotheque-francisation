@@ -44,8 +44,8 @@ REPONSES = [
       ("Achetez une carte au guichet ; prenez aussi un billet.", "Tap your credit card, no need : rien à acheter.")]),
     ("hotel", "marcus", "Vous arrivez à l'hôtel à 13 h.",
      "Your room won't be ready until three, but we can keep your bags.",
-     [("Chambre prête à 15 h ; on peut garder vos bagages.", None),
-      ("Chambre prête à 15 h ; gardez vos bagages avec vous.", "We can keep your bags : on vous les garde."),
+     [("Chambre prête seulement à 15 h ; on peut garder vos bagages.", None),
+      ("Chambre prête seulement à 15 h ; gardez vos bagages avec vous.", "We can keep your bags : on vous les garde."),
       ("Chambre prête tout de suite ; on peut garder vos bagages.", "Won't be ready until three : pas avant 15 h."),
       ("Chambre prête tout de suite ; gardez vos bagages avec vous.", "Not until three : pas avant 15 h ; et on vous garde vos bagages.")]),
     ("hotel", "marcus", "Vous demandez où se prend le déjeuner.",
@@ -92,9 +92,9 @@ REPONSES = [
       ("Une livre et demie ; ça fait 6,18 $.", "Half a pound : une demi-livre ; et six eighty, 6,80 $.")]),
     ("marche", "wei", "Vous demandez si vous pouvez payer par carte.",
      "Cash only at this counter, but there's a machine by the door.",
-     [("Comptant seulement ; un guichet près de la porte.", None),
+     [("Comptant seulement ; un guichet juste à côté de la porte.", None),
       ("Comptant seulement ; un guichet au fond du marché.", "By the door : près de la porte."),
-      ("La carte est acceptée ; un guichet près de la porte.", "Cash only : comptant seulement."),
+      ("La carte est acceptée ; un guichet juste à côté de la porte.", "Cash only : comptant seulement."),
       ("La carte est acceptée ; un guichet au fond du marché.", "Cash only : comptant ; et la machine est by the door.")]),
     ("kensington", "raj", "Vous cherchez le tramway de Spadina.",
      "Walk over to Spadina — it's two blocks east — and take it southbound.",
@@ -104,9 +104,9 @@ REPONSES = [
       ("Deux coins de rue vers l'ouest ; le prendre en direction nord.", "Two blocks EAST, southbound : à l'est, vers le sud.")]),
     ("kensington", "raj", "Vous demandez si c'est loin.",
      "Not at all, it's a five-minute walk. You can't miss it.",
-     [("Pas loin : cinq minutes à pied, impossible à manquer.", None),
+     [("Pas loin : cinq petites minutes à pied, impossible à manquer.", None),
       ("Pas loin : quinze minutes à pied, impossible à manquer.", "Five : cinq. Quinze, ce serait fifteen."),
-      ("Pas loin : cinq minutes en autobus, impossible à manquer.", "A five-minute WALK : à pied."),
+      ("Pas loin : cinq petites minutes en autobus, impossible à manquer.", "A five-minute WALK : à pied."),
       ("Pas loin : quinze minutes en autobus, impossible à manquer.", "A five-minute walk : cinq minutes, à pied.")]),
     ("iles", "kevin", "Vous voulez louer un vélo sur l'île.",
      "Bikes are fifteen dollars an hour, and we need a piece of ID.",
@@ -117,15 +117,15 @@ REPONSES = [
     ("iles", "kevin", "Vous demandez l'heure du dernier traversier.",
      "The last ferry back to the city is at eleven forty-five tonight.",
      [("Le dernier retour vers la ville : 23 h 45.", None),
-      ("Le dernier retour vers la ville : 11 h 45 du matin.", "Tonight : ce soir, donc 23 h 45."),
+      ("Le dernier retour vers la ville : 23 h 15.", "Forty-five, pas fifteen : 23 h 45."),
       ("Le dernier départ vers l'île : 23 h 45.", "Back to the city : le retour vers la ville."),
-      ("Le dernier départ vers l'île : 11 h 45 du matin.", "Back to the city, tonight : le retour, à 23 h 45.")]),
+      ("Le dernier départ vers l'île : 23 h 15.", "Back to the city, at eleven forty-five : le retour, à 23 h 45.")]),
     ("pharmacie", "tom", "Vous montrez votre coup de soleil.",
      "Put this cream on twice a day, and stay out of the sun for a couple of days.",
      [("La crème deux fois par jour ; évitez le soleil quelques jours.", None),
-      ("La crème trois fois par jour ; évitez le soleil quelques jours.", "Twice : deux fois."),
+      ("La crème une fois par jour ; évitez le soleil quelques jours.", "Twice : deux fois."),
       ("La crème deux fois par jour ; de l'écran solaire avant de sortir.", "Stay out of the sun : évitez le soleil."),
-      ("La crème trois fois par jour ; de l'écran solaire avant de sortir.", "Twice a day, stay out of the sun : deux fois, et pas de soleil.")]),
+      ("La crème une fois par jour ; de l'écran solaire avant de sortir.", "Twice a day, stay out of the sun : deux fois, et pas de soleil.")]),
     ("pharmacie", "tom", "Vous demandez s'il faut une ordonnance.",
      "You don't need a prescription for this, but don't take it with alcohol.",
      [("Sans ordonnance ; pas d'alcool avec ce médicament.", None),
@@ -148,8 +148,8 @@ REPONSES = [
      "You're right, the minibar charge is a mistake. I'll take it off.",
      [("C'est une erreur, vous avez raison ; il l'enlève tout de suite.", None),
       ("C'est une erreur, vous avez raison ; on vous remboursera plus tard.", "I'll take it off : il l'enlève maintenant."),
-      ("Ce n'est pas une erreur ; il l'enlève tout de suite.", "You're right, a mistake : c'est bien une erreur."),
-      ("Ce n'est pas une erreur ; on vous remboursera plus tard.", "You're right, I'll take it off : erreur reconnue, enlevée.")]),
+      ("Il doit d'abord vérifier ; il l'enlève tout de suite.", "You're right, a mistake : il reconnaît l'erreur, sans vérifier."),
+      ("Il doit d'abord vérifier ; on vous remboursera plus tard.", "You're right, I'll take it off : erreur reconnue, enlevée.")]),
     ("depart", "marcus", "Vous demandez où prendre l'UP Express.",
      "Go back to Union. It's on the upper level, and trains leave every fifteen minutes.",
      [("À Union, au niveau du haut ; un train aux 15 minutes.", None),
@@ -163,15 +163,15 @@ NOMBRES = [
     ("liam", "That's fourteen fifty.", [("14,50 $", None), ("40,50 $", "Fourteen finit sur un « n » : 14."), ("14,15 $", "Fifty finit court : 50 cents."), ("40,15 $", "Fourteen fifty : 14,50 $.")]),
     ("rosa", "Your total is sixteen thirty.", [("16,30 $", None), ("60,30 $", "Sixteen finit sur un « n » : 16."), ("16,13 $", "Thirty finit court : 30 cents."), ("60,13 $", "Sixteen thirty : 16,30 $.")]),
     ("sam", "That comes to nineteen ninety.", [("19,90 $", None), ("90,90 $", "Nineteen finit sur un « n » : 19."), ("19,19 $", "Ninety finit court : 90 cents."), ("90,19 $", "Nineteen ninety : 19,90 $.")]),
-    ("andrew", "It's seventy-five forty.", [("75,40 $", None), ("75,14 $", "Forty finit court : 40 cents."), ("17,40 $", "Seventy finit court : 70."), ("17,14 $", "Seventy-five forty : 75,40 $.")]),
-    ("ezinne", "The bill is eighty-two thirteen.", [("82,13 $", None), ("82,30 $", "Thirteen finit sur un « n » : 13 cents."), ("18,13 $", "Eighty finit court : 80."), ("18,30 $", "Eighty-two thirteen : 82,13 $.")]),
-    ("aarti", "It's thirty-three seventeen, with tax.", [("33,17 $", None), ("33,70 $", "Seventeen finit sur un « n » : 17 cents."), ("13,17 $", "Thirty finit court : 30."), ("13,70 $", "Thirty-three seventeen : 33,17 $.")]),
+    ("andrew", "It's seventy forty.", [("70,40 $", None), ("70,14 $", "Forty finit court : 40 cents."), ("17,40 $", "Seventy finit court : 70."), ("17,14 $", "Seventy forty : 70,40 $.")]),
+    ("ezinne", "The bill is eighty thirteen.", [("80,13 $", None), ("80,30 $", "Thirteen finit sur un « n » : 13 cents."), ("18,13 $", "Eighty finit court : 80."), ("18,30 $", "Eighty thirteen : 80,13 $.")]),
+    ("aarti", "It's thirty seventeen, with tax.", [("30,17 $", None), ("30,70 $", "Seventeen finit sur un « n » : 17 cents."), ("13,17 $", "Thirty finit court : 30."), ("13,70 $", "Thirty seventeen : 30,17 $.")]),
     ("harper", "The tour starts at quarter to seven, p.m.", [("18 h 45", None), ("19 h 15", "Quarter TO : moins quart."), ("6 h 45", "P.m. : le soir."), ("7 h 15", "Quarter to seven, p.m. : 18 h 45.")]),
     ("liam", "The gates open at quarter past nine, a.m.", [("9 h 15", None), ("8 h 45", "Quarter PAST : et quart."), ("21 h 15", "A.m. : le matin."), ("20 h 45", "Quarter past nine, a.m. : 9 h 15.")]),
     ("andrew", "Check-out is at half past eleven.", [("11 h 30", None), ("11 h 50", "Half n'est pas fifty : half past, et demie."), ("11 h 15", "Half past : et demie, pas et quart."), ("11 h 45", "Half past eleven : 11 h 30.")]),
     ("sam", "We close at twenty to ten tonight.", [("21 h 40", None), ("22 h 20", "Twenty TO ten : dix heures moins vingt."), ("9 h 40", "Tonight : ce soir."), ("10 h 20", "Twenty to ten, tonight : 21 h 40.")]),
     ("rosa", "The kitchen closes at nine fifteen, and the bar at eleven.", [("Cuisine 21 h 15, bar 23 h", None), ("Cuisine 21 h 50, bar 23 h", "Fifteen finit sur un « n » : 15."), ("Cuisine 21 h 15, bar 1 h", "Eleven : onze, donc 23 h."), ("Cuisine 21 h 50, bar 1 h", "Nine fifteen, eleven : 21 h 15 et 23 h.")]),
-    ("arjun", "Platform eighteen, in about forty minutes.", [("Quai 18, dans environ 40 minutes", None), ("Quai 80, dans environ 40 minutes", "Eighteen finit sur un « n » : 18."), ("Quai 18, dans environ 14 minutes", "Forty finit court : 40."), ("Quai 80, dans environ 14 minutes", "Eighteen, forty : quai 18, 40 minutes.")]),
+    ("arjun", "Gate eighteen, boarding in about forty minutes.", [("Porte 18, embarquement dans environ 40 minutes", None), ("Porte 80, embarquement dans environ 40 minutes", "Eighteen finit sur un « n » : 18."), ("Porte 18, embarquement dans environ 14 minutes", "Forty finit court : 40."), ("Porte 80, embarquement dans environ 14 minutes", "Eighteen, forty : porte 18, 40 minutes.")]),
 ]
 
 # ── Le total à payer : (lieu, qui, contexte, en, prix entendu, prix mal entendu, pourboire %, mot du prix, inclus).
@@ -182,12 +182,12 @@ NOMBRES = [
 # maintenant vraisemblables, et deux items disent ce qui est DÉJÀ compris (« included », « no tax ») :
 # la règle tenue n'ajoute rien, l'erreur ajoute deux fois.
 TOTAL = [
-    ("magasin", "rosa", "Au magasin, une tuque.", "That's fourteen, plus tax.", 14.00, 40.00, 0, "fourteen", ""),
-    ("magasin", "priya", "Au magasin, un chandail.", "That's ninety, plus tax.", 90.00, 19.00, 0, "ninety", ""),
-    ("resto", "ada", "Au restaurant. Vous laissez 18 % du prix avant taxe.", "Your bill is fifty, before tax.", 50.00, 15.00, 18, "fifty", ""),
-    ("resto", "ada", "Au restaurant. Vous laissez 20 % du prix avant taxe.", "That's sixteen, before tax.", 16.00, 60.00, 20, "sixteen", ""),
-    ("marche", "wei", "Au marché, un plateau de fromages pour la soirée.", "That's eighteen. No tax on cheese.", 18.00, 80.00, 0, "eighteen", "taxe"),
-    ("resto", "ada", "Au restaurant, en groupe. Vous laissez d'habitude 18 % du prix avant taxe.", "That's seventy, tip included, plus tax.", 70.00, 17.00, 18, "seventy", "pourboire"),
+    ("magasin", "rosa", "Une tuque.", "That's fourteen, plus tax.", 14.00, 40.00, 0, "fourteen", ""),
+    ("magasin", "priya", "Un chandail.", "That's ninety, plus tax.", 90.00, 19.00, 0, "ninety", ""),
+    ("resto", "ada", "Vous laissez 18 % du prix avant taxe.", "Your bill is fifty, before tax.", 50.00, 15.00, 18, "fifty", ""),
+    ("resto", "ada", "Vous laissez 20 % du prix avant taxe.", "That's sixteen, before tax.", 16.00, 60.00, 20, "sixteen", ""),
+    ("marche", "wei", "Du fromage au poids, pour une fête.", "That's eighteen. No tax on cheese.", 18.00, 80.00, 0, "eighteen", "taxe"),
+    ("resto", "ada", "En groupe. Vous laissez 18 % du prix avant taxe.", "That's one-forty, tip included, plus tax.", 140.00, 114.00, 18, "forty", "pourboire"),
 ]
 TAXE = 0.13
 # Un seul texte pour teen/ty, le même que les pièges du lexique (mineur du tour 2 : deux indices différents).
@@ -233,15 +233,18 @@ REGLE_ALLERGIE = ("Une allergie se dit avant de commander. On commande seulement
                   "d'allergène. S'il y en a, s'il peut y en avoir des traces, ou si la personne n'est pas sûre : on "
                   "attend la vérification, ou on prend autre chose.")
 # Les deux moitiés de même longueur dans chaque colonne : aucune ne se trahit par la taille.
-_SAUMON = ["Saumon sans noix ; elle en est certaine.", "Saumon sans noix ; elle va vérifier en cuisine.",
-           "Saumon avec noix ; elle en est certaine.", "Saumon avec noix ; elle va vérifier en cuisine."]
+_SAUMON = ["Saumon sans noix ; elle en est tout à fait certaine.", "Saumon sans noix ; elle va vérifier en cuisine.",
+           "Saumon avec noix ; elle en est tout à fait certaine.", "Saumon avec noix ; elle va vérifier en cuisine."]
+# Le marché : un carré (traces ou non) × (on en prend ou non), les mêmes quatre choix pour les deux items.
+_MARCHE = ["Faits là où il y a des arachides : on n'en prend pas.", "Faits là où il y a des arachides : on peut en prendre.",
+           "Sans aucune arachide : on n'en prend pas.", "Sans aucune arachide : on peut en prendre."]
 ALLERGIE = [
     ("ada", "Vous êtes allergique aux noix. Vous demandez si le saumon en contient.",
      "The salmon is fine, there are no nuts in it.", 0, "Elle en est sûre : ici, vous pouvez commander le saumon.",
      {1: "No nuts : aucune ; et elle n'a pas à vérifier, elle le sait.", 2: "There are NO nuts : il n'y en a pas.",
       3: "The salmon is fine : pas de noix, et elle en est sûre."}),
     ("ada", "Vous êtes allergique aux noix. Vous demandez si le saumon en contient.",
-     "I don't think there are nuts in the salmon, but let me check with the kitchen.", 1,
+     "I don't think there are pecans in the salmon, but let me check with the kitchen.", 1,
      "Elle n'en est pas sûre : on attend la réponse de la cuisine, ou on prend autre chose.",
      {0: "I don't THINK, let me check : elle croit, mais elle va vérifier.", 2: "No nuts, I think : elle croit qu'il n'y en a pas.",
       3: "I don't think there are nuts : elle croit qu'il n'y en a PAS."}),
@@ -257,19 +260,39 @@ ALLERGIE = [
      {0: "I think the sauce HAS pecans : elle croit qu'il y en a.", 1: "Has pecans : elle croit qu'il y a des noix, pas l'inverse.",
       2: "I think, let me check : elle n'en est pas sûre, elle va vérifier."}),
     ("ada", "Vous êtes allergique aux noix. Vous demandez si le saumon en contient.",
-     "No nuts at all in the salmon. The chef just told me.", 0, "Elle en est sûre, le chef vient de le lui dire : vous pouvez le commander.",
-     {1: "The chef just told me : elle n'a plus à vérifier, elle le sait.", 2: "No nuts AT ALL : aucune noix.",
-      3: "No nuts, the chef told me : aucune, et c'est certain."}),
+     "No almonds, no pecans in the salmon. The chef just told me.", 0, "Elle en est sûre, le chef vient de le lui dire : vous pouvez le commander.",
+     {1: "The chef just told me : elle n'a plus à vérifier, elle le sait.", 2: "No almonds, no pecans : aucune noix.",
+      3: "No pecans, the chef told me : aucune, et c'est certain."}),
     ("ada", "Vous êtes allergique aux noix. Vous demandez si le saumon en contient.",
      "Yes, the salmon comes with sliced almonds on top.", 2, "Des amandes, ce sont des noix : on ne le commande pas.",
      {0: "Sliced almonds : des amandes tranchées, ce sont des noix.", 1: "Yes, it comes with almonds : elle en est sûre.",
       3: "Elle n'a rien à vérifier : les amandes sont sur le saumon."}),
     ("wei", "Au marché, vous êtes allergique aux arachides. Vous demandez pour les biscuits.",
-     "These cookies are made in a bakery that uses peanuts.", None, "Faits là où il y a des arachides : on n'en prend pas.",
-     [("Faits là où il y a des arachides : on n'en prend pas.", None),
-      ("Faits là où il y a des arachides : on peut en prendre.", "A bakery that USES peanuts : il peut y en avoir des traces."),
-      ("Sans aucune arachide : on n'en prend pas.", "That uses peanuts : la boulangerie en utilise ; les biscuits peuvent en contenir des traces."),
-      ("Sans aucune arachide : on peut en prendre sans risque.", "Uses peanuts : il y en a là où on les fait.")]),
+     "These cookies are made in a bakery that uses peanuts.", None,
+     "Uses peanuts : des traces sont possibles. La règle : un doute ou des traces, on n'en prend pas.",
+     [(_MARCHE[0], None),
+      (_MARCHE[1], "A bakery that USES peanuts : il peut y en avoir des traces."),
+      (_MARCHE[2], "That uses peanuts : la boulangerie en utilise ; les biscuits peuvent en contenir des traces."),
+      (_MARCHE[3], "Uses peanuts : il y en a là où on les fait.")]),
+    # Tour 3 (majeur) : le marché était toujours « on n'en prend pas » — seul le geste prudent. Un second
+    # marché où l'on PEUT en prendre ; la page tire un des deux par série. Deux saumons de plus : deux par case.
+    ("ada", "Vous êtes allergique aux noix. Vous demandez si le saumon en contient.",
+     "There shouldn't be any pecans in the salmon, but I'll ask the chef to be sure.", 1,
+     "Elle n'en est pas sûre : on attend la réponse du chef, ou on prend autre chose.",
+     {0: "Shouldn't be, I'll ask : elle croit, mais elle va demander.", 2: "There SHOULDN'T be any : elle croit qu'il n'y en a pas.",
+      3: "Shouldn't be any pecans : elle croit qu'il n'y en a PAS."}),
+    ("ada", "Vous êtes allergique aux noix. Vous demandez si le saumon en contient.",
+     "I think the glaze has pecans on it, but I'll ask the chef.", 3,
+     "Elle croit qu'il y en a, et va demander : on ne le commande pas pour l'instant.",
+     {0: "I think the glaze HAS pecans : elle croit qu'il y en a.", 1: "Has pecans : elle croit qu'il y a des noix, pas l'inverse.",
+      2: "I think, I'll ask : elle n'en est pas sûre, elle va demander."}),
+    ("wei", "Au marché, vous êtes allergique aux arachides. Vous demandez pour les biscuits.",
+     "These come from our peanut-free bakery. No peanuts ever go in there.", None,
+     "Peanut-free : sans arachides, ni traces. Vous pouvez en prendre.",
+     [(_MARCHE[3], None),
+      (_MARCHE[2], "Peanut-free, no peanuts ever : aucune arachide, rien n'empêche d'en prendre."),
+      (_MARCHE[1], "Peanut-free : la boulangerie n'en utilise jamais."),
+      (_MARCHE[0], "No peanuts EVER : aucune arachide, aucune trace.")]),
 ]
 
 
@@ -302,7 +325,7 @@ DIRE = [
     ("hotel", "Dites que vous avez une réservation au nom de Tremblay.", "I have a reservation under Tremblay.", ["~(^| )(reservation|booking|booked|reserved)( |$)", "~(^| )(trembl|trambl|tremble)[a-z]*( |$)", "~^(?!.*(^| )do you have a reservation)"]),
     ("hotel", "Demandez à quelle heure est le déjeuner.", "What time is breakfast?", ["what time|when", "breakfast"]),
     ("cafe", "Commandez un grand café pour emporter.", "Can I get a large coffee to go?", [DEMANDE, "large", "coffee", "~(to go|takeout|take out)"]),
-    ("cafe", "On vous demande « Anything else? ». Répondez que c'est tout.", "That's it, thanks!", ["~^(?!.*(^| )but( |$))(?!.*(muffin|cookie|bagel|donut|croissant|sandwich|tea|coffee|water)).*(that s it|that s all|that s everything|that is it|that is all|that is everything|that ll be all|that will be all|nothing else|(^| )nothing( |$)|no thanks|no thank you|i m good|im good|all good|i m fine|just that)"]),
+    ("cafe", "On vous demande « Anything else? ». Répondez que c'est tout.", "That's it, thanks!", ['~^(?!.*(^| )but( |$))(?!.*(^| )(yes|yeah|also|plus|and (a|an|one|two|some|the)|can i (get|have)|i ll (have|take)|i d like)( |$))(?!.*(^| )(a|an|one|two|some) ([a-z]+ )?(muffin|cookie|bagel|donut|croissant|sandwich|tea|coffee|water|juice|scone|lemonade|cake|pastry)).*(that s it|that s all|that s everything|that is it|that is all|that is everything|that ll be all|that will be all|that ll do|that s fine|it s fine|nothing else|(^| )nothing( |$)|no thanks|no thank you|(i m|im|we re) (good|ok|okay|fine|all set)|all good|all set|just (the|my|this|that)( [a-z]+){0,2}( thanks| thank you| please)?$|^no (thanks )?just (the|my|this|that)|just that)']),
     ("cafe", "Maya vous demande « Where are you from? ». Répondez, puis relancez.", "I'm from Quebec. And you?", [ORIGINE, RELANCE]),
     ("tour", "Demandez deux billets pour adultes.", "Two adult tickets, please.", ["two|2", "adult|adults"]),
     ("tour", "Demandez s'il y a un rabais pour les aînés.", "Is there a discount for seniors?", ["discount|reduced|cheaper|deal|price|rate|special", "senior|seniors|older"]),
@@ -315,9 +338,9 @@ DIRE = [
     ("iles", "Demandez à quelle heure est le dernier traversier.", "What time is the last ferry?", ["what time|when", "last", "ferry|boat"]),
     ("pharmacie", "Dites que vous avez un coup de soleil.", "I have a sunburn.", [MAL, "~(^| )(sunburn|sunburns|sunburned|sunburnt|burn|burned|burnt)( |$)"]),
     ("pharmacie", "Demandez combien de fois par jour mettre la crème.", "How many times a day?", ["~(how many times|how often)"]),
-    ("resto", "Dites que vous êtes allergique aux noix.", "I'm allergic to nuts.", ["allergic|allergy|allergies", "~^(?!.*(^| )(not|n t) allergic)", "nuts|nut|peanut|almond|walnut|cashew|pecan|hazelnut|pistachio"]),
-    ("resto", "Demandez s'il y a des noix dans ce plat.", "Does this have any nuts in it?", ["~^(?!.*(^| )(do you|you) like( |$))(?=.*(^| )(does|do|is there|are there|any|contain|contains|has|have)( |$))", "nuts|nut|peanut|almond|walnut|cashew|pecan|hazelnut|pistachio"]),
-    ("resto", "La serveuse n'est pas sûre pour le saumon. Dites que vous prendrez autre chose.", "I'll have something else, then.", ["~(something else|something different|(^| )instead( |$)|(^| )other( |$)|skip (it|that)|i ll pass|(not|don t|do not) (take|have|order|get|want) (it|that|the salmon)|no (thanks|thank you)|never mind|(^| )(the|a) (?!salmon( |$))[a-z]+ (instead|then|please)( |$)|(^| )(i ll|i will) (have|take|get) (the|a) (?!salmon( |$))[a-z]+)"]),
+    ("resto", "Dites que vous êtes allergique aux noix.", "I'm allergic to nuts.", ["allergic|allergy|allergies", '~^(?!.*(^| )(not|n t|no|don t have|do not have|never)( (a|an|any))?( [a-z]+)? (allergic|allergy|allergies)( |$))', 'nuts|nut|tree nut|almond|walnut|cashew|pecan|hazelnut|pistachio']),
+    ("resto", "Demandez s'il y a des noix dans ce plat.", "Does this have any nuts in it?", ['~^(?!.*(^| )(i|we|my [a-z]+) (have|has|m|am|re|are|got)( |$))(?!.*(^| )(do you|you) (like|sell)( |$))(?=.*(^| )(does|do|is|are|any|contain|contains|safe)( |$))', 'nuts|nut|tree nut|almond|walnut|cashew|pecan|hazelnut|pistachio']),
+    ("resto", "La serveuse n'est pas sûre pour le saumon. Dites que vous prendrez autre chose.", "I'll have something else, then.", ['~(something else|something different|(^| )instead( |$)|(^| )other( |$)|skip (it|that)|i ll pass|(not|don t|do not) (take|have|order|get|want) (it|that|the salmon)|no (thanks|thank you)|never mind|(^| )(the|a) (?!salmon( |$))[a-z]+ (instead|then|please)( |$)|(^| )((i ll|i will) (have|take|get|go with)|i d like|i would like|can i (get|have)|could i (get|have)) (the|a) (?!salmon( |$))[a-z]+|skip the salmon|no salmon)', '~^(?!.*(^| )(salmon|fish)( |$))|(^| )(no|not|don t|do not|skip|without)( [a-z]+){0,2} (the )?(salmon|fish)( |$)']),
     ("resto", "Demandez des additions séparées.", "Can we get separate bills?", ["separate|split|separately", "~(bill|check|pay)"]),
     ("depart", "Dites poliment qu'il y a une erreur sur la facture.", "Sorry, I think there's a mistake on my bill.", ["mistake|error|wrong", "bill|invoice|charge"]),
     ("depart", "Demandez où prendre le train pour l'aéroport.", "Where can I take the train to the airport?", ["~(^| )(where|which way|how (do|can) (i|we) get)", "airport|up express|train|pearson"]),
@@ -345,6 +368,20 @@ REFUS = [
     (_cle("La serveuse n'est pas sûre", 0), "I'll have the salmon, please."),
     (_cle("On vous demande « Anything", 0), "Nothing, but a muffin please"),
     (_cle("Demandez s'il y a des noix", 0), "Do you like nuts?"),
+    # Tour 3 : le saumon avec un adjectif, l'arachide prise pour la noix, les négations, les affirmations.
+    (_cle("La serveuse n'est pas sûre", 1), "Never mind, I'll take the salmon."),
+    (_cle("La serveuse n'est pas sûre", 1), "I'll have the grilled salmon, please."),
+    (_cle("La serveuse n'est pas sûre", 1), "No thanks, I'll have the salmon."),
+    (_cle("La serveuse n'est pas sûre", 1), "I'll have the smoked salmon."),
+    (_cle("La serveuse n'est pas sûre", 1), "I'll have the salmon instead"),
+    (_cle("Dites que vous êtes allergique", 2), "I'm allergic to peanuts."),
+    (_cle("Dites que vous êtes allergique", 1), "I don't have a nut allergy."),
+    (_cle("Dites que vous êtes allergique", 1), "I have no nut allergy."),
+    (_cle("Demandez s'il y a des noix", 0), "I have a nut allergy."),
+    (_cle("Demandez s'il y a des noix", 0), "Do you sell nuts?"),
+    (_cle("Demandez s'il y a des noix", 1), "Are there any peanuts in it?"),
+    (_cle("On vous demande « Anything", 0), "An orange juice, and that's all."),
+    (_cle("On vous demande « Anything", 0), "Yes please, a lemonade, that's it."),
 ]
 ACCEPTE = [
     (_cle("On vous demande « Anything", 0), "No thanks, that's all"),
@@ -358,11 +395,19 @@ ACCEPTE = [
     (_cle("Demandez s'il y a un rabais", 0), "Senior price?"),
     (_cle("Demandez à louer un vélo", 0), "I want a bike for two hours"),
     (_cle("Demandez où prendre le train", 1), "How can we get to Pearson?"),
-    (_cle("Demandez s'il y a des noix", 0), "Are there any peanuts in it?"),
+    (_cle("Demandez s'il y a des noix", 0), "Are there any almonds in it?"),
+    (_cle("Demandez s'il y a des noix", 0), "Is it nut-free?"),
+    (_cle("Demandez s'il y a des noix", 0), "Is it safe for a nut allergy?"),
     (_cle("La serveuse n'est pas sûre", 0), "I'll have something else"),
     (_cle("La serveuse n'est pas sûre", 0), "I don't want it"),
     (_cle("La serveuse n'est pas sûre", 0), "Never mind, I'll have the pasta"),
     (_cle("On vous demande « Anything", 0), "That's everything"),
+    (_cle("On vous demande « Anything", 0), "I'm all set."),
+    (_cle("On vous demande « Anything", 0), "Just the coffee, thanks."),
+    (_cle("On vous demande « Anything", 0), "No, that's fine."),
+    (_cle("La serveuse n'est pas sûre", 0), "I'd like the pasta."),
+    (_cle("La serveuse n'est pas sûre", 0), "I'll skip the salmon."),
+    (_cle("La serveuse n'est pas sûre", 1), "No salmon for me, then."),
 ]
 # Les voisins trop proches, exclus des familles « entendre » et « souvenir » : deux choix vrais à la fois
 # (bloc et coin, médicament et comprimé), ou un choix qui se trouve sans comprendre (le nom propre, le prix).
@@ -392,7 +437,12 @@ def verifier(lieux, voix, gens):
     assert len(set(rangs)) > 1, ("la bonne est toujours au même rang de grandeur", rangs)
     # Tour 2 : la règle tenue n'ajoute pas toujours — la bonne n'est pas toujours la plus grande de sa paire.
     assert any(total(*it[4:])[0][0][0] < total(*it[4:])[0][2][0] for it in TOTAL), "la bonne est toujours la plus grande de sa paire"
-    assert {it[3] for it in ALLERGIE} == {0, 1, 2, 3, None}, "le saumon : les quatre cases — et le marché"
+    from collections import Counter as _C
+    assert _C(it[3] for it in ALLERGIE if it[0] == "ada") == {0: 2, 1: 2, 2: 2, 3: 2}, "deux saumons par case"
+    marches = [choix_allergie(it) for it in ALLERGIE if it[0] == "wei"]
+    assert len(marches) == 2 and {m[0][0] for m in marches} == {_MARCHE[0], _MARCHE[3]}, "un marché pour chaque geste"
+    for m in marches:
+        assert sorted(c for c, _ in m) == sorted(_MARCHE), "les mêmes quatre choix au marché"
     longs = [len(ch[0][0]) < min(len(c) for c, _ in ch[1:]) for _, _, _, _, ch in REPONSES]
     assert sum(longs) <= len(REPONSES) // 4, ("la bonne est trop souvent la plus courte", sum(longs))
     for it in ALLERGIE:

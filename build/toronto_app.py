@@ -28,7 +28,7 @@ import toronto_commun as C  # noqa: E402
 
 SORTIE = RACINE / "modules-autonomes" / "toronto" / "index.html"
 MEDIA = RACINE / "assets" / "interactive" / "toronto"
-MEDIA_V = "5"  # 5 : tour 2 des exercices (totaux et allergie refaits, mêmes noms) ; 4 : exercices refaits au tour 1 (numéros décalés, même nom, autre son) ; 3 : test 0-5 refait (fin coupée) ; 2 : cinq extraits refaits après le tour 3 (même nom, autre son) ; 1 : première production
+MEDIA_V = "6"  # 6 : tour 3 des exercices (allergie, nombres, totaux refaits, mêmes noms) ; 5 : tour 2 des exercices (totaux et allergie refaits, mêmes noms) ; 4 : exercices refaits au tour 1 (numéros décalés, même nom, autre son) ; 3 : test 0-5 refait (fin coupée) ; 2 : cinq extraits refaits après le tour 3 (même nom, autre son) ; 1 : première production
 
 
 def plan_ville():
@@ -1195,7 +1195,7 @@ function itemsDe(fam){
   // Tour 2 : trois réponses tirées sur les six du saumon (les quatre cases y sont), plus le marché ;
   // la série change à chaque fois, et la dernière ne se déduit plus des deux autres.
   if (fam === 'allergie') { const tous = X.allergie.items.map((it, k) => ({k, it}));
-    const saumon = melange(tous.filter(x => x.it.qui === 'ada')).slice(0, 3), autres = tous.filter(x => x.it.qui !== 'ada');
+    const saumon = melange(tous.filter(x => x.it.qui === 'ada')).slice(0, 3), autres = melange(tous.filter(x => x.it.qui !== 'ada')).slice(0, 1);
     return melange([...saumon, ...autres]).map(({k, it}) => ({
     son: `exos/all-${k}.mp3`, qui: D.gens[it.qui], haut: `<p class="consigne">${E(it.ctx)}</p>`, q: 'Que vous répond-on ?',
     en: it.en, apresTexte: it.apres, choix: it.choix})); }
