@@ -140,7 +140,8 @@ def imprimer(html_path):
 
 def main():
     args = sys.argv[1:]
-    voulues = [a for a in args if not a.startswith("--")] or ["fr"] + list(ID.LANGUES_APPUI)
+    # Seulement les langues TRADUITES : sinon une fiche « ukrainien » sortait en français seul.
+    voulues = [a for a in args if not a.startswith("--")] or ["fr"] + [l for l in ID.LANGUES_APPUI if l in TRAD]
     DEST.mkdir(parents=True, exist_ok=True)
     ecarts = 0
     for L in voulues:
