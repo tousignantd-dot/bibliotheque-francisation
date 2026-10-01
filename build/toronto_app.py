@@ -344,7 +344,7 @@ details.rub{margin:8px 0}details.rub summary span{color:var(--text-muted);font-w
   <span class="secteur"><small>Voyage · anglais</small><b>Une semaine à Toronto</b></span>
 </div></div>
 <main id="app"></main>
-<footer class="pied"><a href="#reglages">Réglages</a> · <a href="/confidentialite.html">Confidentialité</a></footer>
+<footer class="pied"><a href="#avis">Donner mon avis</a> · <a href="#reglages">Réglages</a> · <a href="/confidentialite.html">Confidentialité</a></footer>
 <audio id="lecteur" preload="none"></audio>
 <script>
 const D = %%DONNEES%%;
@@ -462,6 +462,8 @@ function retour(h, t){ return `<button class="retour" onclick="aller('${h}')">${
 function rendre(){
   window.scrollTo(0, 0); arreterMicro(); lecteur.pause(); voixEnCours = null; try { speechSynthesis.cancel(); } catch(e) {}
   const p = (location.hash.slice(1) || 'accueil').split('/');
+  if (p[0] !== 'avis') { try { sessionStorage.setItem('toronto:vu', location.hash); } catch(e) {} }
+  if (p[0] === 'avis') return vueAvis();
   if (p[0] === 'prep') return p[1] === 'test' ? vuePrepTest() : p[1] ? vueSeance(p[1], p[2]) : vuePrep();
   if (p[0] === 'reglages') return vueReglages();
   if (p[0] === 'mots') return p[1] ? vuePlanche(p[1]) : vueMots();
@@ -1491,6 +1493,33 @@ async function preparer(){
   txt.innerHTML = echec ? `${echec} fichiers n'ont pas pu être pris. Réessayez avec un meilleur réseau.` :
     (controle ? '✓ Tout est dans le téléphone. Bon voyage !' : '✓ Téléchargé. Rouvrez la page une fois, avec du réseau, pour que le téléphone la garde aussi.');
   bouton.disabled = false;
+}
+
+/* ---------- étape 7 : le pilote — « Donner mon avis » ---------- */
+/* L'avis part par courriel : rien n'est gardé dans l'application (même formule que Compostelle). */
+const AVIS_COURRIEL = 'support@edufrancis.ca';
+function vueAvis(){
+  let ici = 'accueil'; try { ici = decodeURIComponent((sessionStorage.getItem('toronto:vu') || '').replace(/^#/, '')) || 'accueil'; } catch(e) {}
+  const corps = `Écran où j'étais : ${ici}\nNavigateur : ${navigator.userAgent.slice(0, 120)}\n\n`
+    + `1. Ce qui est clair :\n\n2. Ce qui est confus ou bloque :\n\n3. L'anglais (une phrase, un mot, une voix qui sonne faux) :\n\n4. Ce qui manque pour un vrai voyage à Toronto :\n\n5. Combien de temps a pris une séance, une série, une situation ?\n`;
+  const sujet = 'Toronto — mon avis';
+  app.innerHTML = `${retour('accueil', 'Accueil')}<p class="surtitre">Essai avant le lancement</p><h1>Donner mon avis</h1>
+    <p>Merci d'essayer « Une semaine à Toronto ». Tout nous aide : une consigne confuse, une phrase anglaise qui ne se dit pas au Canada,
+    une voix qui sonne faux, un bouton qui ne répond pas, un bilan injuste.</p>
+    <div class="carte"><h3 style="margin-top:0">Ce qui nous aide le plus</h3><ul style="margin:0;padding-left:20px">
+      <li><b>Si vous partez</b> : les situations ressemblent-elles à ce que vous avez vécu ? Qu'est-ce qui vous a servi, ou manqué ?</li>
+      <li><b>Si l'anglais est votre langue</b> : les phrases sont-elles justes et naturelles au Canada ? Notez la phrase et l'écran.</li>
+      <li><b>Tous</b> : où avez-vous hésité ? Le bilan de la semaine jouée était-il juste ?</li></ul></div>
+    <a class="btn btn--pri btn--large" href="mailto:${AVIS_COURRIEL}?subject=${encodeURIComponent(sujet)}&body=${encodeURIComponent(corps)}">Écrire mon avis (logiciel de courriel)</a>
+    <a class="btn btn--large" style="margin-top:8px" target="_blank" rel="noopener"
+       href="https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(AVIS_COURRIEL)}&su=${encodeURIComponent(sujet)}&body=${encodeURIComponent(corps)}">Écrire mon avis dans Gmail</a>
+    <details class="rub" style="margin-top:10px"><summary>Rien ne s'ouvre ? Copiez le texte <span>à coller</span></summary>
+      <div style="padding:0 14px 14px"><textarea id="avisTexte" readonly class="carte-postale-txt" style="min-height:220px;font-size:14px">${E(corps)}</textarea>
+      <button class="btn" id="avisCopier" style="margin-top:8px">Copier le texte</button>
+      <p class="muted" style="font-size:14px;margin:8px 0 0">Puis envoyez-le à <b>${AVIS_COURRIEL}</b>, avec l'objet « ${sujet} ».</p></div></details>`;
+  $('#avisCopier').onclick = () => { const t = $('#avisTexte'); t.select();
+    (navigator.clipboard ? navigator.clipboard.writeText(t.value) : Promise.reject()).catch(() => document.execCommand('copy'))
+      .finally(() => { $('#avisCopier').textContent = 'Copié ✓'; }); };
 }
 
 /* ---------- réglages ---------- */
