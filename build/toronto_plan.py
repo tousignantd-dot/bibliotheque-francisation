@@ -31,9 +31,9 @@ CARTES = [
     (4, "La tour CN", 330, 448, "end", -18, 5),
     (5, "Le marché St. Lawrence", 650, 410, "start", 16, 5),
     (6, "Kensington et le quartier chinois", 255, 300, "end", -16, 5),
-    (7, "Le restaurant, Little Italy", 255, 215, "end", -16, 5),
+    (9, "Le restaurant, Little Italy", 255, 215, "end", -16, 5),
     (8, "La pharmacie, Yonge", 560, 200, "start", 18, 5),
-    (9, "Les îles de Toronto", 560, 505, "start", 16, 5),
+    (7, "Les îles de Toronto", 560, 505, "start", 16, 5),
     (10, "Le départ, Pearson", 75, 352, "middle", 0, 32),
 ]
 STATIONS_L1_OUEST = [("St George", 120), ("Museum", 170), ("Queen's Park", 215),
@@ -244,9 +244,9 @@ PLAN
     <tr><td><span class="cp">4</span>La tour CN</td><td>Les billets</td><td>acheter deux billets à heure fixe, comprendre l'heure de montée et le tarif</td></tr>
     <tr><td><span class="cp">5</span>Le marché St. Lawrence</td><td>Au comptoir</td><td>commander au poids, comprendre le total <b>taxe comprise</b></td></tr>
     <tr><td><span class="cp">6</span>Kensington</td><td>Perdu dans les quartiers</td><td>demander son chemin à quelqu'un qui répond vite, avec un accent, et le suivre en coins de rue</td></tr>
-    <tr><td><span class="cp">7</span>Le restaurant</td><td>Le souper</td><td>avoir une table, commander, <b>dire une allergie</b> et comprendre la réponse, payer séparément, laisser le pourboire</td></tr>
-    <tr><td><span class="cp">8</span>La pharmacie</td><td>Un coup de soleil et une migraine</td><td>décrire, comprendre la posologie</td></tr>
-    <tr><td><span class="cp">9</span>Les îles</td><td>Le traversier et le vélo</td><td>acheter le passage, louer un vélo, comprendre l'heure du dernier bateau</td></tr>
+    <tr><td><span class="cp">7</span>Les îles</td><td>Le traversier et le vélo</td><td>acheter le passage, louer un vélo, comprendre l'heure du dernier bateau</td></tr>
+    <tr><td><span class="cp">8</span>La pharmacie</td><td>Un coup de soleil, au lendemain des îles</td><td>décrire, comprendre la posologie</td></tr>
+    <tr><td><span class="cp">9</span>Le restaurant</td><td>Le souper</td><td>avoir une table, commander, <b>dire une allergie</b> et comprendre la réponse, payer séparément, laisser le pourboire</td></tr>
     <tr><td><span class="cp">10</span>Le départ</td><td>Une erreur sur la facture</td><td><b>contester poliment</b> un montant, comprendre la solution, demander le chemin de l'UP Express</td></tr>
   </tbody></table>
   <p><b>Une connaissance de la ville.</b> Entre les situations, une même Torontoise, croisée au café le

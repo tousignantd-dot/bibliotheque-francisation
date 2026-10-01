@@ -20,7 +20,7 @@ d'abord si l'on veut, et « Solide » partout dit qu'on peut sauter les séances
 RIEN NE PART : l'état vit dans le localStorage du téléphone. La reconnaissance
 vocale est celle du navigateur, annoncée avant le premier usage.
 """
-import json, pathlib, sys
+import json, pathlib, re, sys
 
 RACINE = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RACINE / "build"))
@@ -31,8 +31,17 @@ MEDIA = RACINE / "assets" / "interactive" / "toronto"
 MEDIA_V = "3"  # 3 : test 0-5 refait (fin coupée) ; 2 : cinq extraits refaits après le tour 3 (même nom, autre son) ; 1 : première production
 
 
+def plan_ville():
+    """Le plan du métro de la page du plan (build/toronto_plan.py) : un seul dessin de la ville."""
+    import toronto_plan as TP
+    style = re.search(r"<style>(.*?)</style>", TP.STYLE, re.S).group(1)
+    regles = "\n".join(l for l in style.splitlines() if l.startswith(".plan") or l.startswith(".defile"))
+    return TP.plan_metro(), regles
+
+
 def donnees():
     PR, LX, PS = C.charger("preparation"), C.charger("lexique"), C.charger("personnages")
+    SE = C.charger("semaine"); SE.verifier(PS.VOIX)
     LX.verifier()
     PR.verifier({e[0] for e in LX.LEXIQUE}, PS.VOIX)
     tous = C.extraits()
@@ -49,7 +58,11 @@ def donnees():
             mots[i]["img"] = dessin
     # La série des pièges : (id, phrase, bonne, fausse lecture, second choix, explication).
     pieges = [{"id": i, "en": t[0], "bonne": t[1], "fausse": t[2], "seconde": t[3], "expl": t[4]} for i, t in LX.PIEGES.items()]
+    gens = {g[0]: {"nom": g[1], "role": g[3]} for g in SE.GENS}
+    semaine = [{"id": l[0], "n": l[1], "jour": l[2], "lieu": l[3], "situation": l[4], "geste": l[5], "qui": l[6],
+                "carte": (MEDIA / "cartes" / f"{l[0]}.jpg").exists()} for l in SE.LIEUX]
     return {"v": MEDIA_V, "mots": mots, "perso": perso, "sons": sons, "planches": LX.PLANCHES, "pieges": pieges,
+            "semaine": semaine, "gens": gens,
             "prep": {"seances": PR.SEANCES, "test": PR.TEST, "objectifs": PR.OBJECTIFS, "seuil": PR.SEUIL,
                      "conseils": PR.CONSEILS, "fin": PR.FIN, "lieu": PR.LIEU, "solide": PR.SEUIL_SOLIDE},
             # Les réponses témoins des clés, rejouées dans le moteur de la page (audit tour 5) : `window.__toronto`.
@@ -58,7 +71,9 @@ def donnees():
 
 def main():
     D, n, total = donnees()
-    page = GABARIT.replace("%%DONNEES%%", json.dumps(D, ensure_ascii=False, separators=(",", ":")))
+    svg, regles = plan_ville()
+    page = (GABARIT.replace("%%DONNEES%%", json.dumps(D, ensure_ascii=False, separators=(",", ":")))
+            .replace("%%PLAN%%", svg).replace("/*%%PLAN_CSS%%*/", regles))
     SORTIE.parent.mkdir(parents=True, exist_ok=True)
     SORTIE.write_text(page, encoding="utf-8")
     print(f"{SORTIE.relative_to(RACINE)}  {len(page)//1024} Ko — sons {n}/{total}")
@@ -206,6 +221,20 @@ button{font:inherit}
 .mot .note{font-size:12.5px;line-height:1.35;color:var(--text-muted)}
 .mot.piege-m{border-color:var(--warn-line)}
 .bascule-sens{margin:0 0 12px}
+/* Étape 3 : le plan de la ville et l'album des cartes postales */
+/*%%PLAN_CSS%%*/
+.album{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.cp-carte{background:#fff;border:1px solid #E7D3C3;border-radius:6px;padding:6px;box-shadow:0 2px 0 #E7D3C3;font:inherit;text-align:left;cursor:pointer;color:inherit;display:block;width:100%}
+.cp-recto{aspect-ratio:3/2;border-radius:3px;overflow:hidden;display:flex;align-items:flex-end;position:relative;background:linear-gradient(160deg,#F4E6D9,#E7CDB8)}
+.cp-recto img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+.cp-recto b{position:relative;margin:6px 8px;font-size:15px;color:#4A2412;background:rgba(255,255,255,.85);border-radius:4px;padding:1px 6px}
+.cp-carte.a-gagner .cp-recto{filter:grayscale(1);opacity:.55}
+.cp-carte small{display:block;font-size:12.5px;color:var(--text-muted);margin:6px 2px 0}
+.cp-n{position:absolute;top:6px;left:6px;width:24px;height:24px;border-radius:3px;background:#fff;border:1.5px solid var(--carte);color:var(--carte);font-size:12px;font-weight:900;display:grid;place-items:center}
+.verso{background:#FFFDF8;border:1px solid #E7D3C3;border-radius:6px;padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:14px;min-height:180px;margin-top:12px}
+.verso .msg{border-right:1px solid #E7D3C3;padding-right:12px;font-size:15px;color:var(--text-muted)}
+.verso .timbre{justify-self:end;width:54px;height:64px;border:2px dashed #C8102E;border-radius:3px;display:grid;place-items:center;color:#C8102E;font-size:11px;font-weight:900;text-align:center}
+.verso .lignes{border-bottom:1px solid #D7BFAE;height:26px}
 </style>
 </head>
 <body>
@@ -336,6 +365,7 @@ function rendre(){
   if (p[0] === 'reglages') return vueReglages();
   if (p[0] === 'mots') return p[1] ? vuePlanche(p[1]) : vueMots();
   if (p[0] === 'pieges') return vuePieges();
+  if (p[0] === 'semaine') return p[1] ? vueCarte(p[1]) : vueSemaine();
   return vueAccueil();
 }
 window.addEventListener('hashchange', rendre);
@@ -371,8 +401,9 @@ function vueAccueil(){
     </section>
     <section class="acc">
       <p class="surtitre">2 · La semaine</p><h2>Dix lieux, dix cartes postales</h2>
-      <p class="muted">Union Station, l'hôtel, le café, la tour CN, le marché St. Lawrence, Kensington, le restaurant, la pharmacie,
-      les îles, le départ. En préparation.</p>
+      <p class="muted">Union Station, l'hôtel, le café, la tour CN, le marché St. Lawrence, Kensington, les îles, la pharmacie,
+      le restaurant, le départ. Les situations jouées sont en préparation ; le plan et l'album sont déjà là.</p>
+      <button class="btn btn--large" onclick="aller('semaine')">Le plan et l'album des cartes postales</button>
     </section>`;
 }
 
@@ -762,6 +793,34 @@ function vuePieges(){
     });
   }
   tour();
+}
+
+/* ---------- étape 3 : la semaine, le plan et l'album ---------- */
+/* Une carte postale se gagne à l'étape 5, en réussissant la situation jouée du lieu ; d'ici là,
+   l'album montre les dix cartes à gagner. Le recto est le dessin du lieu (cartes/<id>.jpg) ;
+   tant qu'il n'est pas dessiné, un recto composé en HTML le remplace. */
+function carteGagnee(id){ return !!((S.cartes || {})[id]); }
+function vueSemaine(){
+  const n = D.semaine.filter(l => carteGagnee(l.id)).length;
+  app.innerHTML = `${retour('accueil', 'Accueil')}<p class="surtitre">2 · La semaine</p><h1>Dix lieux, dix cartes postales</h1>
+    <p>On arrive à Union Station, on loge au centre-ville, et la semaine rayonne le long du métro, du tramway et du traversier.
+    Chaque situation réussie vous donne la carte postale du lieu, que vous écrirez vous-même en deux lignes d'anglais.</p>
+    <div class="defile">%%PLAN%%</div>
+    <h2>L'album · ${n} sur ${D.semaine.length}</h2>
+    <div class="album">${D.semaine.map(l => `<button class="cp-carte${carteGagnee(l.id) ? '' : ' a-gagner'}" onclick="aller('semaine/${l.id}')">
+      <span class="cp-recto">${l.carte ? `<img src="${BASE}cartes/${l.id}.jpg?v=${D.v}" alt="" loading="lazy">` : ''}<span class="cp-n">${l.n}</span><b>${E(l.lieu)}</b></span>
+      <small>${E(l.jour)} · ${E(l.situation)}${carteGagnee(l.id) ? ' · ✓ gagnée' : ''}</small></button>`).join('')}</div>`;
+}
+function vueCarte(id){
+  const l = D.semaine.find(x => x.id === id); if (!l) return vueSemaine();
+  const g = D.gens[l.qui], gagne = carteGagnee(l.id);
+  app.innerHTML = `${retour('semaine', "L'album")}<p class="surtitre">${E(l.jour)} · carte ${l.n} sur ${D.semaine.length}</p><h1>${E(l.lieu)}</h1>
+    <div class="cp-carte${gagne ? '' : ' a-gagner'}" style="cursor:default"><span class="cp-recto">${l.carte ? `<img src="${BASE}cartes/${l.id}.jpg?v=${D.v}" alt="">` : ''}<span class="cp-n">${l.n}</span><b>${E(l.lieu)}</b></span></div>
+    <div class="verso" aria-label="Le dos de la carte"><div class="msg">${gagne ? '' : 'Ici, vous écrirez deux lignes en anglais, une fois la carte gagnée.'}<div class="lignes"></div><div class="lignes"></div><div class="lignes"></div></div>
+      <div><div class="timbre">TIMBRE</div><div class="lignes" style="margin-top:28px"></div><div class="lignes"></div></div></div>
+    <div class="objectif" style="margin-top:14px"><b>${E(l.situation)}</b> — avec ${E(g.nom)}, ${E(g.role.charAt(0).toLowerCase() + g.role.slice(1))}.
+      Le geste qui compte : ${E(l.geste)}.</div>
+    <p class="muted">${gagne ? '✓ Carte gagnée.' : 'La situation jouée de ce lieu arrive bientôt : la carte se gagne en la réussissant.'}</p>`;
 }
 
 /* ---------- réglages ---------- */
