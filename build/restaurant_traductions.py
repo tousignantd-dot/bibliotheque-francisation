@@ -215,6 +215,25 @@ INTERFACE.update({
     "reessayer": "Réessayer",
 })
 import situations as _SI  # noqa: E402
+# Étape 6 : la fiche de poche (restauration_fiche.py) — ses textes, et la
+# phrase de chaque geste, traduite en appui.
+INTERFACE.update({
+    "fiche_titre": "Les phrases du service",
+    "fiche_cuisine": "En cuisine, avec le chef",
+    "fiche_salle": "En salle, avec le client",
+    "fiche_regle": "L'allergie — la règle",
+    "fiche_cris": "Ce qu'on crie en cuisine",
+    "fiche_pieges": "Les mots d'ici qui piègent",
+    "fiche_defi": "Cette semaine : redites chaque consigne au chef (« Oui, chef : … ») et chaque commande au client (« …, c'est bien ça ? »).",
+    "fiche_fait": "Je l'ai fait",
+    "fiche_vu": "Vu par le formateur",
+    "fiche_date": "Date",
+    "fiche_note": "Les phrases se disent en français ; votre langue, dessous, aide à comprendre.",
+    "fiche_non_relu": "La traduction n'a pas encore été relue par une personne.",
+    "fiche_hygiene": "Cette fiche ne remplace pas la formation en hygiène et salubrité.",
+})
+for g in _SI.GESTES:
+    INTERFACE["gp_" + g["id"]] = g["phrase"]
 for i, txt in _SI.REPONSES_CUISINE.items():
     INTERFACE["rc_" + i] = txt
 # Étape 4 : le service joué (situations.py)

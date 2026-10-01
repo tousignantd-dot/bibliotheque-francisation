@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chez Jocelyne — la langue de la cuisine et de la salle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   UN MODULE POUR LA VENTE DE CHAUSSURES — LE CADRAGE
+   Chantier « formation en entreprise », second secteur :
+   le commerce de détail. Écrite à la main, comme
+   analyse-marche.html — ses chiffres viennent d'ailleurs et
+   doivent vieillir visiblement.
+
+   Vert : ce que le tour de main actuel produit déjà.
+   Ambre : ce qui attend votre décision.
+   Rouge : l'argument de vente qui tient à une obligation légale.
+   L'acier ne fait que la structure.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+
+  --fait:#0A8F5B;    --fait-bg:#E6F5EE;
+  --decid:#C07A08;   --decid-bg:#FBF2E2;
+  --loi:#C7302B;     --loi-bg:#FBEDEC;
+  --acier:#1D6B8F;   --acier-bg:#E7F0F6;
+
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --fait:#4BC48D; --fait-bg:#12291F;
+    --decid:#E0A63F; --decid-bg:#2C2213;
+    --loi:#EE7A73; --loi-bg:#2E1917;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --loi:#EE7A73; --loi-bg:#2E1917;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+em.art{font-style:normal;font-family:var(--mono);font-size:.82em;color:var(--muted);
+  white-space:nowrap}
+
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+
+/* ── Les décisions ─────────────────────────────────────── */
+.decisions{display:flex;flex-direction:column;gap:2px;counter-reset:d}
+.dec{counter-increment:d;background:var(--card);border:1px solid var(--line);
+  border-left:5px solid var(--decid);border-radius:3px;padding:19px 22px 19px 60px;
+  position:relative;display:flex;flex-direction:column;gap:8px}
+.dec.ok{border-left-color:var(--fait)}
+.dec::before{content:counter(d);position:absolute;left:24px;top:18px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+.dec .ligne{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  justify-content:space-between}
+.dec p{font-size:15.5px}
+.dec .defaut{font-size:13.5px;color:var(--muted);font-style:italic}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-fait{background:var(--fait-bg);color:var(--fait)}
+.b-dec{background:var(--decid-bg);color:var(--decid)}
+.b-loi{background:var(--loi-bg);color:var(--loi)}
+.b-n{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+
+/* ── Tableaux ──────────────────────────────────────────── */
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:640px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:3px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tr.l td:first-child{border-left-color:var(--loi)}
+tr.d td:first-child{border-left-color:var(--decid)}
+tr.f td:first-child{border-left-color:var(--fait)}
+
+/* ── Chiffres ──────────────────────────────────────────── */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--acier);padding:15px 16px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;margin-top:7px}
+
+/* ── Marche à suivre ───────────────────────────────────── */
+ol.actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;
+  counter-reset:a}
+ol.actions li{counter-increment:a;background:var(--card);border:1px solid var(--line);
+  border-radius:3px;padding:18px 22px 18px 62px;position:relative;display:flex;
+  flex-direction:column;gap:6px}
+ol.actions li::before{content:counter(a);position:absolute;left:22px;top:17px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+ol.actions li p{font-size:15.5px}
+.qui{font-size:13px;color:var(--muted);font-style:italic}
+
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.avert{background:var(--loi-bg);border:1px solid var(--loi);border-radius:3px;
+  padding:20px 24px;display:flex;flex-direction:column;gap:9px}
+.avert strong{color:var(--ink)}
+.avert p{font-size:15.5px;color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} }
+
+/* ── décisions à boutons (plan magasin de vêtements) ── */
+.dec2{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0}
+.dq{margin:0 0 10px;font-weight:700;color:var(--ink)}
+.dn{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--decid-bg);color:var(--decid);font-size:13px;margin-right:8px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{font:inherit;font-size:15px;text-align:left;cursor:pointer;background:var(--sunken);color:var(--body);border:1px solid var(--line-fort);border-radius:10px;padding:8px 12px}
+.opt:hover{border-color:var(--acier)}
+.opt[aria-pressed="true"]{background:var(--fait-bg);border-color:var(--fait);color:var(--ink);font-weight:700}
+.opt .tag{font-size:12px;color:var(--decid);font-weight:700;margin-left:4px}
+.dw{margin:10px 0 0;font-size:15px;color:var(--muted)}
+.btn-export{font:inherit;font-weight:700;cursor:pointer;background:var(--acier);color:#fff;border:0;border-radius:10px;padding:10px 16px}
+.etat{margin-left:12px;color:var(--muted);font-size:15px}
+table{display:block;overflow-x:auto}
+
+.captures{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;margin:14px 0}
+.captures figure{margin:0}
+.captures img{width:100%;border-radius:14px;border:1px solid var(--line);display:block;background:#fff}
+.captures figcaption{font-size:14px;margin-top:6px;color:var(--body)}
+.captures figcaption b{display:block;color:var(--ink);font-size:15px}
+.liens{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.liens a{font-size:14px;border:1px solid var(--line-fort);border-radius:8px;padding:5px 9px;text-decoration:none;color:var(--ink);background:var(--card)}
+.formules{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:14px 0}
+.formule{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:6px}
+.formule.entree{border:2px solid var(--acier)}
+.formule h3{margin:0;font-size:18px;color:var(--ink)}
+.formule .montant{font-size:26px;font-weight:800;color:var(--ink);margin:4px 0 0;line-height:1.1}
+.formule .unite{font-size:14px;color:var(--muted);font-weight:700}
+.formule p{margin:0;font-size:15px}
+.formule ul{margin:6px 0 0;padding-left:18px;font-size:14.5px}
+.formule li{margin:3px 0}
+.notes-prix{font-size:14.5px;color:var(--muted)}
+.faq dt{font-weight:800;color:var(--ink);margin-top:12px}
+.faq dd{margin:4px 0 0}
+@media print{
+  .retour,.liens{display:none}
+  body{background:#fff;color:#000;font-size:11pt;border-top:0}
+  section{break-inside:avoid-page}
+}
+</style>
+<style>
+  .doc{padding-top:26px}
+  .retour{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+    color:var(--muted);text-decoration:none;margin-bottom:34px}
+  .retour:hover{color:var(--acier)}
+  table.cmp{width:100%;border-collapse:collapse;font-size:15px;background:var(--card);
+    border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  table.cmp th,table.cmp td{padding:13px 15px;text-align:left;vertical-align:top;
+    border-bottom:1px solid var(--line)}
+  table.cmp thead th{background:var(--sunken);font-size:12px;font-weight:800;
+    letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  table.cmp tbody tr:last-child td{border-bottom:0}
+  table.cmp td:first-child{font-weight:700;color:var(--ink)}
+  .roule{overflow-x:auto}
+  .voie{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:24px 26px;display:flex;flex-direction:column;gap:11px}
+  .voie.oui{border-color:var(--fait);border-width:2px;padding:23px 25px}
+  .voie.non{border-left:5px solid var(--loi)}
+  .voie h3{font-size:19px;font-family:Newsreader,Georgia,serif;font-weight:600;margin:0}
+  .voie .cout{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .verdict{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 10px;border-radius:99px;align-self:flex-start}
+  .v-oui{background:var(--fait-bg);color:var(--fait)}
+  .v-peut{background:var(--decid-bg);color:var(--decid)}
+  .v-non{background:var(--loi-bg);color:var(--loi)}
+  .mes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;
+    background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .mes div{background:var(--card);padding:16px 18px}
+  .mes b{display:block;font-family:Newsreader,Georgia,serif;font-size:27px;font-weight:500;
+    color:var(--ink);line-height:1.1}
+  .mes span{font-size:13px;color:var(--muted)}
+  .planche{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .planche figure{margin:0;background:var(--card);border:1px solid var(--line);
+    border-radius:3px;overflow:hidden;display:flex;flex-direction:column}
+  .planche figure.large{grid-column:1 / -1}
+  .planche img{display:block;width:100%;height:auto;background:var(--sunken)}
+  .planche figcaption{padding:13px 16px 15px;font-size:14px;line-height:1.5;color:var(--muted);
+    border-top:1px solid var(--line)}
+  .planche figcaption b{display:block;color:var(--ink);font-size:14.5px;margin-bottom:2px}
+  @media (max-width:620px){ .planche{grid-template-columns:1fr} }
+  .doc p a,.doc li a,.doc td a{color:var(--acier);text-decoration:underline;
+    text-underline-offset:2px;text-decoration-thickness:1px}
+  ul.src{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px;font-size:14.5px}
+  ul.src li{color:var(--muted)} ul.src .d{font-family:var(--mono);font-size:12.5px}
+  h3.sous{font-family:Newsreader,Georgia,serif;font-size:21px;font-weight:600;
+    letter-spacing:-.01em;color:var(--ink);margin:14px 0 0}
+  @media (max-width:640px){ .doc{padding-left:18px;padding-right:18px} }
+</style>
+</head>
+<body><div class="doc">
+<a class="retour" href="/presentations.html#restauration"><span aria-hidden="true">&#8592;</span> Le classeur</a>
+<p class="eyebrow">Formation au poste &middot; restauration</p>
+<h1>Chez Jocelyne : la langue de la cuisine et de la salle</h1>
+<p class="chapeau">Vos nouveaux employés comprennent le français de la classe. Ce qui fait rater un service, c'est
+autre chose : une consigne du chef criée dans le bruit, une commande qui se reprend (« une poutine… non, des frites »),
+et surtout une allergie mal entendue ou rassurée trop vite. <strong>Cette trousse leur apprend les mots du poste, à
+entendre le chef et le client à vitesse réelle, à redire avant d'agir — et à traiter une allergie sans jamais
+affirmer ce qu'ils n'ont pas vérifié.</strong></p>
+
+<section class="premier">
+  <h2>Ce que l'employé voit, sur son téléphone</h2>
+  <div class="captures"><figure><img src="captures/accueil.png?v=1" alt="Quatre portes" loading="lazy"><figcaption><b>Quatre portes</b>Apprendre les mots, s&#x27;exercer, mon niveau, le service.</figcaption></figure><figure><img src="captures/poste.png?v=1" alt="Le poste de cuisine" loading="lazy"><figcaption><b>Le poste de cuisine</b>Vu de la place du commis : on touche la ligne, le passe, la plonge pour entendre leur nom.</figcaption></figure><figure><img src="captures/planche.png?v=1" alt="Un mot, ses pièges" loading="lazy"><figcaption><b>Un mot, ses pièges</b>« La poêle » n&#x27;est pas « le poêle » : le mot d&#x27;ici, sa voix, sa langue cachée dessous.</figcaption></figure><figure><img src="captures/chef.png?v=1" alt="La consigne du chef" loading="lazy"><figcaption><b>La consigne du chef</b>Dite au débit réel, dans le bruit de cuisine réglable : où vont les assiettes sales ?</figcaption></figure><figure><img src="captures/allergie.png?v=1" alt="L&#x27;allergie, éliminatoire" loading="lazy"><figcaption><b>L&#x27;allergie, éliminatoire</b>La règle en trois gestes, lue à voix haute, avant chaque série.</figcaption></figure><figure><img src="captures/service.png?v=1" alt="Le service joué" loading="lazy"><figcaption><b>Le service joué</b>Le chef en cuisine, les clients en salle, une vraie conversation, un bilan par geste.</figcaption></figure></div>
+  <p>Essayer, sans compte :</p><div class="liens"><a href="/modules-autonomes/restaurant-planches/index.html?langue=es&planche=poste" target="_blank" rel="noopener">Le poste de cuisine</a><a href="/modules-autonomes/restaurant-planches/index.html?langue=en&ex=pieges" target="_blank" rel="noopener">Les mots d&#x27;ici qui piègent</a><a href="/modules-autonomes/restaurant-planches/index.html?langue=es&ex=chef" target="_blank" rel="noopener">La consigne du chef</a><a href="/modules-autonomes/restaurant-planches/index.html?langue=en&ex=allergie" target="_blank" rel="noopener">L&#x27;allergie</a><a href="/modules-autonomes/restaurant-planches/index.html?langue=es&ecran=service" target="_blank" rel="noopener">Le service (demande un code)</a></div>
+</section>
+
+<section>
+  <h2>Ce qu'il y a dedans</h2>
+  <div class="chiffres">
+    <div class="ch"><span class="n">186</span><span class="q">mots de la cuisine et de la salle, en 12 planches et un poste dessiné</span></div>
+    <div class="ch"><span class="n">429</span><span class="q">extraits de voix, Azure HD</span></div>
+    <div class="ch"><span class="n">8</span><span class="q">situations jouées : le chef en cuisine, les clients en salle</span></div>
+    <div class="ch"><span class="n">3</span><span class="q">langues d'appui : français seulement, espagnol, anglais</span></div>
+  </div>
+  <table class="cmp"><tbody>
+    <tr><td><b>Apprendre les mots</b></td><td>111 croquis, dont un poste de cuisine vu de la place du commis ; 20 mots d'ici qui piègent (le poêle et la poêle, une liqueur, le dîner…).</td></tr>
+    <tr><td><b>S'exercer</b></td><td>Huit exercices : la consigne du chef dans un bruit de cuisine réglable, la commande modifiée, l'allergie et sa règle, redire à voix haute.</td></tr>
+    <tr><td><b>Mesurer</b></td><td>Un test d'une douzaine de minutes, en deux formes, qui propose un niveau ; le formateur écoute l'oral et confirme. Repassé à la fin : « avant → maintenant ».</td></tr>
+    <tr><td><b>Pratiquer</b></td><td>Un jeu de rôle à voix haute : le chef ou le client réagit ; le bilan dit quels gestes ont été faits, et relève à part toute erreur grave à l'allergie.</td></tr>
+    <tr><td><b>Garder en poche</b></td><td>Une fiche imprimable par langue d'appui : les phrases de la cuisine et de la salle, la règle d'allergie, ce qu'on crie, les pièges.</td></tr>
+  </tbody></table>
+</section>
+
+<section>
+  <h2>Comment ça se déploie</h2>
+  <ol class="actions">
+    <li><p><b>Sur le téléphone de l'employé</b>, par un carré QR : aucun compte à créer, aucune application à installer.</p></li>
+    <li><p><b>Avec un formateur</b>, qui a son guide : deux à quatre séances de 90 minutes, puis en libre-service.</p></li>
+    <li><p><b>Sans données personnelles</b> : aucun nom, l'oral du test reste sur l'appareil. Ce qui remonte est un
+      constat sur le matériel ou sur le groupe, jamais sur une personne (Loi 25).</p></li>
+    <li><p><b>Elle ne remplace pas</b> la formation en hygiène et salubrité exigée : elle donne la langue pour la suivre.</p></li>
+  </ol>
+</section>
+
+<section>
+  <h2>Les prix</h2>
+  <div class="reserve"><p><strong>Prix à confirmer.</strong> Ces montants reprennent ceux de la Maison Francœur (une langue apprise, un groupe pilote) ; ils ne sont pas encore confirmés pour la restauration.</p></div>
+  <div class="formules"><div class="formule entree"><h3>Le pilote dans votre restaurant</h3><p class="montant">3 000 à 6 000 $</p><span class="unite">prix fixe</span><p>Pour commencer : un restaurant, un petit groupe d&#x27;employés de cuisine et de salle.</p><ul><li>la trousse ajustée à votre restaurant : votre menu, vos plats, vos allergènes, votre cuisine</li><li>le pilote : deux séances avec un groupe de quatre à huit employés, et votre formateur</li><li>le diagnostic : ce que le matériel a fait rater, et sa révision</li><li>les fiches de poche et le guide du formateur</li></ul></div><div class="formule"><h3>La trousse à votre métier</h3><p class="montant">12 000 à 25 000 $</p><span class="unite">prix fixe</span><p>Pour un autre poste : boulangerie, épicerie, cafétéria, entretien, entrepôt…</p><ul><li>un lexique neuf, son décor, ses voix et ses langues d&#x27;appui</li><li>les exercices, le test de niveau et les situations jouées, écrits pour ce poste</li><li>le pilote et la révision</li><li>les fiches de poche et le guide du formateur</li></ul></div><div class="formule"><h3>La licence annuelle</h3><p class="montant">2 000 à 5 000 $</p><span class="unite">par année</span><p>Pour une chaîne, une bannière ou un partenaire qui la déploie lui-même.</p><ul><li>l&#x27;usage de la trousse par vos groupes, sans limite d&#x27;employés</li><li>l&#x27;hébergement, les voix et les situations jouées</li><li>les corrections et les mises à jour de l&#x27;année</li></ul></div></div>
+  <ul class="simple notes-prix"><li>Des prix fixes, jamais à l&#x27;heure. La fourchette dépend de la portée : le nombre de situations et de langues d&#x27;appui.</li><li>Montants avant taxes.</li><li>Le matériel reste notre propriété ; vous en avez l&#x27;usage.</li><li>La trousse ne remplace pas la formation en hygiène et salubrité exigée des restaurants.</li><li>Ces montants paient du développement de matériel de formation, une dépense que certains programmes publics financent — admissibilité à vérifier avec votre conseiller.</li></ul>
+</section>
+
+<section>
+  <h2>Où nous en sommes</h2>
+  <div class="reserve"><p><strong>La trousse est construite et jouable</strong>, et ses exercices, son test et son service
+  sont passés par la boucle didactique jusqu'à zéro défaut majeur. Il lui reste : un pilote avec un groupe de vrais employés de cuisine et de salle ; la relecture de l&#x27;espagnol et de l&#x27;anglais par un locuteur de chaque langue ; les portraits du chef et des clients (la scène montre le décor en attendant) ; la vérification de deux normes d&#x27;hygiène citées (MAPAQ). Le premier
+  contrat se construit donc avec vous, dans votre restaurant.</p></div>
+</section>
+
+<div class="pied"><p>Page produite par <code>build/restauration_emballage.py</code> — chaque chiffre est lu dans le contenu.</p></div>
+</div></body></html>
