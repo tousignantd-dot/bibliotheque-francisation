@@ -175,7 +175,7 @@ TOTAL = [
     ("resto", "ada", "Au restaurant. Vous laissez 20 % de pourboire, calculé avant la taxe.", "That's sixty, before tax.", 60.00, True, 20),
     ("tour", "priya", "Au guichet de la tour : deux billets. Pas de pourboire.", "Two tickets, that's ninety-four, plus tax.", 94.00, True, 0),
     ("cafe", "rosa", "Au café, vous laissez 15 % au terminal, calculé avant la taxe.", "That's twelve, plus tax.", 12.00, True, 15),
-    ("marche", "wei", "Au marché, un sandwich. Pas de pourboire au comptoir.", "Ten even, plus tax.", 10.00, True, 0),
+    ("marche", "wei", "Au marché, un sandwich. Pas de pourboire au comptoir.", "That's ten even, plus tax.", 10.00, True, 0),
 ]
 TAXE = 0.13
 
