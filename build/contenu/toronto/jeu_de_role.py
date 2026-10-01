@@ -104,7 +104,7 @@ CONSIGNE = {
     "cafe": "C'est le matin, au café. Commandez à boire (et à manger si vous voulez), puis payez.",
     "tour": "Au guichet de la tour CN. Achetez deux billets pour cet après-midi.",
     "marche": "Au marché St. Lawrence, au comptoir. Vous êtes allergique aux arachides. Commandez un sandwich, voyez si les biscuits près de la caisse sont sans danger, et payez.",
-    "kensington": "Vous êtes perdu dans Kensington. Demandez comment rejoindre le tramway de Spadina pour rentrer au centre-ville.",
+    "kensington": "Vous ne trouvez plus votre chemin dans Kensington. Demandez comment rejoindre le tramway de Spadina pour rentrer au centre-ville.",
     "iles": "Au quai du traversier. Vous voulez aller sur les îles, et louer un vélo là-bas.",
     "pharmacie": "Lendemain des îles : un coup de soleil sur les épaules, et un mal de tête. Allez à la pharmacie.",
     "resto": "Au restaurant, le soir. Vous êtes allergique aux noix. Commandez votre souper.",
@@ -200,6 +200,8 @@ BILAN = (
     "Un geste ne compte que si le TOURISTE l'a fait LUI-MÊME, en anglais, dans ses répliques ; ce que la PERSONNE a dit "
     "ou fait à sa place ne compte pas. « Comprendre » se prouve : le touriste reformule, confirme (« 3 p.m.? ») ou agit "
     "en conséquence ; un « OK » seul ne suffit pas. « compris » ne contredit jamais « gestes ».\n"
+    "Les répliques du TOURISTE viennent souvent d'un micro qui ne ponctue pas : ne corrige jamais la ponctuation ni "
+    "les majuscules, et n'en parle jamais.\n"
     "Vouvoie dans TOUS les champs, jamais de tutoiement. Aucun verbe pronominal accordé : « Vous avez corrigé "
     "l'erreur », jamais « Vous vous êtes rattrapé ». Quand tu parles de l'anglais, dis « le passé (I went) », jamais "
     "« passé simple ».\n"
@@ -245,10 +247,13 @@ def _bilan(cas_id):
         return (BILAN + "La PERSONNE est Maya, une femme. C'est une conversation libre : « reussi » vaut true si le "
                 "touriste a répondu EN ANGLAIS à au moins une question de Maya. Ne compte PAS ses questions (la page "
                 "les compte) et ne lui reproche jamais de ne pas avoir répondu à TOUTES les questions : Maya en pose à "
-                "chaque tour. Une question redondante compte quand même. Ne parle du nombre de questions posées ni "
-                "dans « resume » ni dans « conseil ». Écris toujours « reussi », true ou false.\n"
+                "chaque tour. Une question redondante compte quand même. Ne parle des questions (posées ou "
+                "reçues) ni dans « compris », ni dans « resume », ni dans « conseil ». Écris toujours « reussi », true ou false.\n"
+                "« questions » : cite MOT POUR MOT chaque réplique (ou partie de réplique) du TOURISTE qui est une vraie question "
+                "posée à Maya sur elle ou sa vie, même sans point d'interrogation (« you like poutine », « and you »). N'y mets "
+                "jamais une demande de répéter ou d'expliquer (« Sorry? », « What? », « Can you repeat? ») ni une politesse.\n"
                 "Réponds UNIQUEMENT en JSON : {\"compris\": [\"…\"], \"phrases\": [{\"dit\": \"…\", \"mieux\": \"…\"}], "
-                "\"conseil\": \"…\", \"resume\": \"…\", \"reussi\": true}.")
+                "\"questions\": [\"…\"], \"conseil\": \"…\", \"resume\": \"…\", \"reussi\": true}.")
     l = LIEUX[cas_id]; g = GENS[l[6]]
     gestes = GESTES[cas_id]
     elim = ELIMINATOIRE.get(cas_id)

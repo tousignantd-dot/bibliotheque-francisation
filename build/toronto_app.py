@@ -900,15 +900,29 @@ function vueCarte(id){
    ensuite en deux lignes, relues par l'assistance. Un code ouvre l'assistance. */
 const CLE_CODE = 'toronto:code';
 // Un accord au masculin quand aucun genre n'est choisi (« vous vous êtes débrouillé », « vous êtes allé »).
-const ACCORDE = /vous vous êtes (\S+ )?\S*(é|i|u)(?=[\s.,;:!?»]|$)|vous êtes (allé|arrivé|venu|prêt|enseignant|perdu|resté|parti)(?=[\s.,;:!?»]|$)/i;
+const ACCORDE = /vous vous êtes (\S+ )?\S*(é|i|u|is)(?=[\s.,;:!?»]|$)|vous êtes (\S+ )?(allé|arrivé|venu|prêt|enseignant|perdu|resté|parti|parvenu)(?=[\s.,;:!?»]|$)|vous avez été (\S+ )?(clair|précis|poli|prudent)(?=[\s.,;:!?»]|$)/i;
 // Une question se reconnaît au « ? », ou à sa forme : le micro du navigateur ne ponctue souvent pas.
-const estQuestion = t => /\?\s*$/.test(t) || /(^| )(and you|about you|and yourself)$|(^| )(what|where|how|do|does|did|are|is|have|has|can|could|who|why|when|which|would|will) [a-z]/.test(plat(t).split(' ').slice(-8).join(' ')) && /(^| )(you|your|yours|yourself)( |$)/.test(plat(t));
-// Une correction garde le sens : plus de mots neufs que de mots gardés, ou une formule de deux mots
-// (« OK bye »), c'est une phrase réécrite, pas corrigée (tour 2 : « OK bye » → « I haven't eaten yet… »).
-const fideleA = (dit, mieux) => { const d = new Set(plat(dit).split(' ')), m = plat(mieux).split(' ');
-  return d.size > 2 && m.filter(w => !d.has(w)).length * 2 <= m.length; };
-// Une relance en français ne compte pas.
-const FRANCAIS = /(^| )(je|vous|est|et|oui|merci|bonjour|vous|toi|tu|quoi|comment|ou|aussi|le|la|les|des)( |$)/;
+// Tour 3 : deviner une question à sa forme comptait « thank you » et ratait « you like poutine ».
+// Le bilan CITE les questions du touriste ; la page vérifie la provenance et écarte les demandes
+// de clarification et les formules de politesse, puis compte.
+const CLARIF = /^(sorry|pardon|what|excuse me|huh|again|repeat|can you repeat|could you repeat|say that again|slowly|more slowly|what do you mean|what does .* mean|[a-z]+)$/;
+const POLI = /(thank you|thanks|see you|nice to meet you|nice meeting you|bye)$/;
+const questionsVraies = (citees, dits) => [...new Set((citees || []).map(q => plat(q)).filter(q => q && dits.some(d => d.includes(q))
+  && !CLARIF.test(q) && !POLI.test(q) && !/(^| )(repeat|slowly|again)( |$)/.test(q)))];
+// Une correction garde le sens : on compare les mots PLEINS (contractions dépliées, radical de 5 lettres) ;
+// rejetée si elle en ajoute plus qu'elle n'en garde, plus un (tour 3 : « allergy at the peanuts → allergic
+// to peanuts » était jeté ; « OK bye → I haven't eaten yet, bye » reste rejeté).
+const VIDES = new Set('a an the to please do does did is are am was were will would it i you me my we us of at in on for and so ok okay yes no not be have has had can could i m s ll d re ve t'.split(' '));
+const deplie = t => plat(t).replace(/\bi m\b/g, 'i am').replace(/\b(\w+) t\b/g, '$1 not').replace(/\b(\w+) ll\b/g, '$1 will').replace(/\b(\w+) re\b/g, '$1 are');
+const pleins = t => deplie(t).split(' ').filter(w => w && !VIDES.has(w)).map(w => w.slice(0, 5));
+const fideleA = (dit, mieux) => { const d = new Set(pleins(dit)), m = pleins(mieux);
+  const ajoutes = m.filter(w => !d.has(w)).length, gardes = m.filter(w => d.has(w)).length;
+  return ajoutes <= gardes + 1; };
+// Une réplique en français : un pronom, ou deux marqueurs (« Do you like Les Misérables? » reste anglaise).
+const FRANCAIS = { test: t => /(^| )(je|j|tu|toi|vous|nous|ca va|hein|pis|merci|bonjour|oui)( |$)/.test(t)
+  || (t.match(/(^| )(est|et|le|la|les|des|ou|aussi|comment|quoi|avec|pour|dans)(?= |$)/g) || []).length >= 2 };
+// Ce qui touche le produit dangereux, dans un lieu à éliminatoire : on ne le peaufine jamais.
+const DANGER = /(salmon|pecan|almond|tart|ice cream|walnut|hazelnut|cookie|cookies|biscuit|peanut)/;
 const PALIERS = [['lent', 'Lentement'], ['normal', 'Normalement'], ['rapide', 'Vite, comme à Toronto']];
 const estCode = c => /^PC[A-Z2-9]{6}$/.test(c || '');
 const lireCode = () => { try { return localStorage.getItem(CLE_CODE) || ''; } catch(e) { return ''; } };
@@ -1029,11 +1043,16 @@ function vueJouer(cas){
         const gestesOk = Array.isArray(b.gestes) && b.gestes.length === att.length && b.gestes.every(x => x && x.fait === true);
         const gagne = !c.maya && b.reussi === true && gestesOk;
         // Maya : les relances se comptent ici, pas par le modèle (tour 2 : deux relances jugées « pas réussi »).
-        const relances = hist.slice(1).filter(m => m.role === 'user' && estQuestion(m.contenu) && !FRANCAIS.test(plat(m.contenu))).length;
-        if (c.maya) b.reussi = b.reussi === true && relances >= 2;
+        const repliques = hist.slice(1).filter(m => m.role === 'user').map(m => plat(m.contenu)).filter(t => !FRANCAIS.test(t));
+        const relances = questionsVraies(b.questions, repliques).length;
+        // Maya : « reussi » absent → a-t-il répondu en anglais ? ; et deux questions vérifiées.
+        if (c.maya) b.reussi = (b.reussi === undefined ? repliques.length > 0 : b.reussi === true) && relances >= 2;
+        if (c.maya) { const q = /question/i; b.compris = (b.compris || []).filter(x => !q.test(x));
+          if (q.test(b.conseil || '')) b.conseil = ''; if (q.test(b.resume || '')) b.resume = ''; }
         // « dit » doit venir d'une réplique du touriste : sinon le bilan corrige ce qu'il n'a pas dit.
         const dits = hist.filter(m => m.role === 'user').map(m => plat(m.contenu)).join(' | ');
-        b.phrases = (b.phrases || []).filter(x => x && x.dit && x.mieux && dits.includes(plat(x.dit)) && plat(x.dit) !== plat(x.mieux) && fideleA(x.dit, x.mieux));
+        b.phrases = (b.phrases || []).filter(x => x && x.dit && x.mieux && dits.includes(plat(x.dit)) && plat(x.dit) !== plat(x.mieux) && fideleA(x.dit, x.mieux)
+          && !(D.jeu.elim.includes(c.cas) && !gagne && DANGER.test(plat(x.dit)) && !/allerg/i.test(x.mieux)));
         if (gagne) { S.cartes = S.cartes || {}; if (!S.cartes[c.cas]) S.cartes[c.cas] = aujourdhui(); }
         if (c.maya && b.reussi === true) { S.maya = S.maya || {}; S.maya[c.cas] = aujourdhui(); }
         sauver();
@@ -1043,7 +1062,8 @@ function vueJouer(cas){
             return `<div class="geste"><b>${f ? '✓' : '—'}</b><span>${E(g)}${f ? '' : ' <span class="muted">(pas encore)</span>'}</span></div>`; }).join('')}` : ''}
           ${c.maya ? (b.reussi === true ? `<div class="retro ok">✓ Vous avez répondu et posé ${relances} questions à Maya.</div>`
                                         : `<div class="retro no">— Pas encore : ${relances >= 2 ? 'répondez-lui en anglais' : `vous lui avez posé ${relances} question${relances > 1 ? 's' : ''} ; il en faut au moins deux (And you? What about you?)`}.</div>`) : ''}
-          ${!c.maya && !gagne && D.jeu.elim.includes(c.cas) ? `<div class="retro no"><b>Éliminatoire :</b> ${E(D.jeu.regle[c.cas])}</div>` : ''}
+          ${!c.maya && !gagne && D.jeu.elim.includes(c.cas) && att.some((g, i) => /allerg|arachide|noix/i.test(g) && !(b.gestes && b.gestes[i] && b.gestes[i].fait === true))
+            ? `<div class="retro no"><b>Éliminatoire :</b> ${E(D.jeu.regle[c.cas])}</div>` : ''}
           ${(b.compris || []).length ? `<h3>Ce que vous avez obtenu</h3><ul>${b.compris.map(x => `<li>${E(x)}</li>`).join('')}</ul>` : ''}
           ${(b.phrases || []).length ? `<h3>À dire autrement</h3>${b.phrases.map(x => `<div class="carte" style="margin:6px 0"><div class="muted">${E(x.dit)}</div><div style="font-size:18px;font-weight:800;color:var(--text-strong)">${E(x.mieux)}</div></div>`).join('')}` : ''}
           ${b.conseil ? `<div class="retro info">${E(b.conseil)}</div>` : ''}
