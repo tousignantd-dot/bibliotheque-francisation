@@ -28,7 +28,9 @@ E = html.escape
 # (texte d'appui), action (bouton principal), sur_action (son texte), marque
 # (le point du « i », le filet de la barre, l'enseigne), halo (fond d'un bloc
 # mis en avant : le piège, l'avant-d'entrer), ligne (bordures), ok, non.
-PALETTES = [
+# ── Tour 1 (30 sept. 2026) : cinq palettes. Daniel : « brique » à retravailler (« je changerais le
+# fond de la page »), les quatre autres non. Gardé pour mémoire.
+PALETTES_TOUR_1 = [
     ("brique", "Brique (l'actuelle)",
      "Celle posée à l'étape 1 : fond crème, action et enseigne brique, orange pour les pièges. Chaude, mais le "
      "bouton principal est proche du rouge de l'erreur.",
@@ -59,6 +61,27 @@ PALETTES = [
      dict(fond="#F2EFE8", surface="#FFFFFF", encre="#221A22", discret="#5A4F58",
           action="#5A2E4F", sur_action="#FFFFFF", marque="#B07D05", titre="#5A2E4F", halo="#FBEFC9",
           ligne="#DDD7CB", ok="#1F7A4D", non="#B42318")),
+]
+
+# ── Tour 2 : la BRIQUE, sur quatre fonds. Deux corrections communes, tirées de la mesure et de
+# l'audit de design : le rouge de l'erreur passe au cramoisi #D12F4B (la brique et l'ancien rouge
+# étaient trop proches : 6° de teinte, 7 points de clarté) ; les bordures sont plus marquées (les
+# cartes blanches se détachaient mal du fond, 1,13:1).
+_BRIQUE = dict(surface="#FFFFFF", encre="#241A14", discret="#5E5046", action="#8A2E1C", sur_action="#FFFFFF",
+               marque="#C8692A", titre="#8A2E1C", halo="#FBE9DC", ok="#1F7A4D", non="#D12F4B")
+PALETTES = [
+    ("pierre", "Brique sur pierre",
+     "Un gris chaud, neutre, comme un comptoir de béton poli. Le crème disparaît ; la brique ressort mieux.",
+     dict(_BRIQUE, fond="#EEEDEA", ligne="#D4D0C8")),
+    ("sable", "Brique sur sable",
+     "Un beige plus soutenu que l'actuel : plus chaud, et les cartes blanches s'en détachent le mieux.",
+     dict(_BRIQUE, fond="#EFE8DD", ligne="#D8CCBB")),
+    ("papier", "Brique sur papier",
+     "Presque blanc, un peu froid : l'écran le plus clair et le plus net ; les cartes tiennent par leur bordure.",
+     dict(_BRIQUE, fond="#F7F7F5", ligne="#D9D6D0")),
+    ("sauge", "Brique sur sauge",
+     "Un gris légèrement vert, comme un mur de cuisine : la brique et l'orange y sont complémentaires.",
+     dict(_BRIQUE, fond="#ECEFEA", ligne="#CFD5CC")),
 ]
 ROLES = [("fond", "Le fond de la page"), ("surface", "Les cartes"), ("encre", "Le texte"),
          ("discret", "Le texte d'appui"), ("action", "Le bouton principal"),
@@ -160,12 +183,10 @@ def page():
     corps = f"""<body><div class="doc">
 <a class="retour" href="/presentations.html#restauration"><span aria-hidden="true">&#8592;</span> Le classeur</a>
 <p class="eyebrow">Chez Jocelyne &middot; les couleurs</p>
-<h1>Les couleurs de Chez Jocelyne</h1>
-<p class="chapeau">La palette « brique » a été posée à l'étape 1 comme provisoire. Comme pour Francœur (Denim),
-la trousse prend sa propre palette : <strong>pas le mauve de francis</strong>. Le point du « i », le filet de la
-barre et l'enseigne prennent la couleur de la palette ; le nom, la police Nunito, et le vert et le rouge de la
-rétroaction restent. Cinq palettes, chacune sur un vrai écran de la trousse au format téléphone ; chaque contraste
-est mesuré, et l'<b>écart entre le bouton principal et le rouge de l'erreur</b> aussi.</p>
+<h1>La brique, deuxième tour : le fond</h1>
+<p class="chapeau"><b>Au premier tour, vous avez gardé la brique, avec un autre fond.</b> La voici sur quatre fonds.
+Deux corrections communes : le rouge de l'erreur devient un <b>cramoisi</b> (l'ancien se confondait avec la brique
+du bouton), et les bordures sont un peu plus marquées pour que les cartes se détachent. </p>
 {''.join(blocs)}
 <section class="decision">
   <h2>Ce que vous voulez</h2>
@@ -176,7 +197,7 @@ est mesuré, et l'<b>écart entre le bouton principal et le rouge de l'erreur</b
 <div class="pied"><p>Page produite par <code>build/restauration_couleurs.py</code> — ne pas l'éditer.</p></div>
 </div>
 <script>
-const CLE = 'restauration-couleurs';
+const CLE = 'restauration-couleurs-tour2';
 const lire = () => {{ try {{ return JSON.parse(localStorage.getItem(CLE) || '{{}}'); }} catch (e) {{ return {{}}; }} }};
 const garder = o => {{ try {{ localStorage.setItem(CLE, JSON.stringify(o)); }} catch (e) {{}} }};
 const etat = lire();
@@ -189,7 +210,7 @@ document.querySelectorAll('.choix-pal').forEach(f => {{
 const g = document.getElementById('general'); g.value = etat._general || '';
 g.oninput = () => {{ const s = lire(); s._general = g.value; garder(s); }};
 document.getElementById('exporter').onclick = async () => {{
-  const txt = JSON.stringify({{page: 'restauration-couleurs', choix: lire()}}, null, 1);
+  const txt = JSON.stringify({{page: 'restauration-couleurs', tour: 2, choix: lire()}}, null, 1);
   const pre = document.getElementById('sortie'); pre.textContent = txt; pre.hidden = false;
   try {{ await navigator.clipboard.writeText(txt); document.getElementById('copie').textContent = 'Copié : recollez-le dans la conversation.'; }}
   catch (e) {{ document.getElementById('copie').textContent = 'Copiez le texte ci-dessous.'; }}
