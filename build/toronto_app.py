@@ -59,10 +59,21 @@ def donnees():
     # La série des pièges : (id, phrase, bonne, fausse lecture, second choix, explication).
     pieges = [{"id": i, "en": t[0], "bonne": t[1], "fausse": t[2], "seconde": t[3], "expl": t[4]} for i, t in LX.PIEGES.items()]
     gens = {g[0]: {"nom": g[1], "role": g[3]} for g in SE.GENS}
+    EX = C.charger("exercices"); EX.verifier({l[0] for l in SE.LIEUX} | {"magasin"}, PS.VOIX, {g[0] for g in SE.GENS})
+    nom_lieu = {l[0]: l[3] for l in SE.LIEUX} | {"magasin": "Un magasin"}
+    totaux = []
+    for (l, q, ctx, en, prix, taxe, pb) in EX.TOTAL:
+        vals, bon = EX.total(prix, taxe, pb)
+        totaux.append({"lieu": nom_lieu[l], "qui": q, "ctx": ctx, "en": en, "vals": vals, "bon": bon, "pb": pb})
+    exos = {"reponses": [{"lieu": nom_lieu[l], "qui": q, "ctx": ctx, "en": en, "choix": ch} for l, q, ctx, en, ch in EX.REPONSES],
+            "nombres": [{"qui": q, "en": en, "choix": ch} for q, en, ch in EX.NOMBRES],
+            "totaux": totaux,
+            "chemins": [{"qui": q, "en": en, "blocs": b, "tourner": t} for q, en, b, t in EX.CHEMIN],
+            "dire": [{"lieu": nom_lieu[l], "fr": fr, "en": en, "cles": cles} for l, fr, en, cles in EX.DIRE]}
     semaine = [{"id": l[0], "n": l[1], "jour": l[2], "lieu": l[3], "situation": l[4], "geste": l[5], "qui": l[6],
                 "carte": (MEDIA / "cartes" / f"{l[0]}.jpg").exists()} for l in SE.LIEUX]
     return {"v": MEDIA_V, "mots": mots, "perso": perso, "sons": sons, "planches": LX.PLANCHES, "pieges": pieges,
-            "semaine": semaine, "gens": gens,
+            "semaine": semaine, "gens": gens, "exos": exos,
             "prep": {"seances": PR.SEANCES, "test": PR.TEST, "objectifs": PR.OBJECTIFS, "seuil": PR.SEUIL,
                      "conseils": PR.CONSEILS, "fin": PR.FIN, "lieu": PR.LIEU, "solide": PR.SEUIL_SOLIDE},
             # Les réponses témoins des clés, rejouées dans le moteur de la page (audit tour 5) : `window.__toronto`.
@@ -221,6 +232,10 @@ button{font:inherit}
 .mot .note{font-size:12.5px;line-height:1.35;color:var(--text-muted)}
 .mot.piege-m{border-color:var(--warn-line)}
 .bascule-sens{margin:0 0 12px}
+.mini-plan{width:100%;max-width:360px;display:block;margin:6px auto 4px}
+.mini-plan .rue-g{stroke:#D8D3CC;stroke-width:9;stroke-linecap:round}
+.mini-plan .lettre{font:900 14px Nunito,system-ui,sans-serif;fill:#7A3B1D}
+.mini-plan .nord{font:800 12px Nunito,system-ui,sans-serif;fill:var(--text-muted)}
 /* Étape 3 : le plan de la ville et l'album des cartes postales */
 /*%%PLAN_CSS%%*/
 .album{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
@@ -366,6 +381,7 @@ function rendre(){
   if (p[0] === 'mots') return p[1] ? vuePlanche(p[1]) : vueMots();
   if (p[0] === 'pieges') return vuePieges();
   if (p[0] === 'semaine') return p[1] ? vueCarte(p[1]) : vueSemaine();
+  if (p[0] === 'exos') return p[1] ? vueFamille(p[1]) : vueExos();
   return vueAccueil();
 }
 window.addEventListener('hashchange', rendre);
@@ -391,6 +407,12 @@ function vueAccueil(){
       <p>${D.prep.test[0].length} questions, un quart d'heure, avec le son et le micro. Le test vous situe ; « Solide » partout, et vous pouvez
       sauter les séances.${t.dernier ? ' Dernier passage : ' + E(t.dernier) + '.' : ''}</p>
       <button class="btn btn--large" onclick="aller('prep/test')">${ICO.test} Faire le test</button>
+    </section>
+    <section class="acc">
+      <p class="surtitre">S'exercer</p><h2>Les exercices de la semaine</h2>
+      <p>Comprendre la réponse, les prix et les heures, le total à payer, suivre un chemin, le dire au micro : par séries courtes, dans
+      les lieux de la semaine.</p>
+      <button class="btn btn--pri btn--large" onclick="aller('exos')">Les exercices</button>
     </section>
     <section class="acc">
       <p class="surtitre">Les mots</p><h2>Douze planches</h2>
@@ -823,6 +845,147 @@ function vueCarte(id){
     <p class="muted">${gagne ? '✓ Carte gagnée.' : 'La situation jouée de ce lieu arrive bientôt : la carte se gagne en la réussissant.'}</p>`;
 }
 
+/* ---------- étape 4 : les exercices ---------- */
+/* Un seul moteur pour les familles à choix : une série de questions, jouées jusqu'à la bonne ;
+   chaque mauvais choix dit pourquoi ; la place de la bonne est tirée au hasard (leçon de la
+   boucle de l'étape 1). Le contenu : build/contenu/toronto/exercices.py. */
+const FAMILLES = [
+  ['reponses', 'Ce qu’on me répond', 'Une vraie réponse, dite vite : que veut-elle dire ?'],
+  ['nombres', 'Les prix et les heures', 'Fourteen ou forty ? Quarter past ou quarter to ?'],
+  ['totaux', 'Le total à payer', 'Le prix entendu, la taxe, le pourboire : combien, vraiment ?'],
+  ['chemins', 'Où je vais', 'Suivez les indications sur le plan'],
+  ['entendre', 'Je l’entends, je le trouve', 'Un mot entendu : son sens'],
+  ['souvenir', 'Je me souviens', 'Le sens en français : le mot anglais'],
+  ['pieges', 'Les faux amis', 'Le piège, dans sa phrase'],
+  ['dire', 'Je le dis', 'La situation en français ; vous le dites en anglais'],
+];
+const melange = a => { const b = [...a]; for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+const dollars = v => v.toFixed(2).replace('.', ',') + ' $';
+function vueExos(){
+  const ex = S.exos || {};
+  app.innerHTML = `${retour('accueil', 'Accueil')}<p class="surtitre">S'exercer</p><h1>Les exercices</h1>
+    <p>Des séries courtes, à reprendre autant de fois qu'il faut : chaque série tire d'autres questions.</p>
+    <ul class="etapes-j">${FAMILLES.map(([k, t, d], i) => `<li class="${ex[k] ? 'fait' : ''}"><button onclick="aller(${k === 'pieges' ? "'pieges'" : `'exos/${k}'`})">
+      <span class="num">${ex[k] ? '✓' : i + 1}</span><span><b>${E(t)}</b><span class="d">${E(d)}</span></span>${ex[k] ? `<span class="etat">${E(ex[k])}</span>` : ''}</button></li>`).join('')}</ul>`;
+}
+function itemsDe(fam){
+  const X = D.exos;
+  if (fam === 'reponses') return melange(X.reponses.map((it, k) => ({k, it}))).slice(0, 8).map(({k, it}) => ({
+    son: `exos/rep-${k}.mp3`, qui: D.gens[it.qui], haut: `<p class="consigne"><b>${E(it.lieu)}.</b> ${E(it.ctx)}</p>`, q: 'Que vous répond-on ?', en: it.en, choix: it.choix}));
+  if (fam === 'nombres') return melange(X.nombres.map((it, k) => ({k, it}))).slice(0, 8).map(({k, it}) => ({
+    son: `exos/nb-${k}.mp3`, q: 'Qu’entendez-vous ?', en: it.en, choix: it.choix}));
+  if (fam === 'totaux') return melange(X.totaux.map((it, k) => ({k, it}))).map(({k, it}) => {
+    const v = it.vals, pb = it.pb || 18;
+    const retro = [`Il manque la taxe : 13 % s'ajoute à la caisse${it.pb ? ', et le pourboire' : ''}.`,
+      it.pb ? `La taxe, oui ; mais au restaurant on ajoute aussi le pourboire (${pb} %).` : null,
+      it.pb ? `Le pourboire, oui ; mais la taxe de 13 % s'ajoute aussi.` : `Pas de pourboire ici : seulement la taxe de 13 %.`,
+      it.pb ? null : `Pas de pourboire ici : seulement la taxe de 13 %.`];
+    return {son: `exos/tot-${k}.mp3`, haut: `<p class="consigne"><b>${E(it.lieu)}.</b> ${E(it.ctx)}</p>`, q: 'Combien payez-vous en tout ?', en: it.en,
+      choix: [[dollars(v[it.bon]), null], ...[0, 1, 2, 3].filter(i => i !== it.bon).map(i => [dollars(v[i]), retro[i]])]};
+  });
+  if (fam === 'chemins') return melange(X.chemins.map((it, k) => ({k, it}))).map(({k, it}) => {
+    // Les quatre points du carré (2 ou 3 coins de rue) × (gauche ou droite) ; les lettres tirées au hasard.
+    const pts = [[it.blocs, it.tourner], [it.blocs, it.tourner === 'gauche' ? 'droite' : 'gauche'],
+                 [5 - it.blocs, it.tourner], [5 - it.blocs, it.tourner === 'gauche' ? 'droite' : 'gauche']];
+    const lettres = melange(['A', 'B', 'C', 'D']);
+    const retro = ['', `${it.blocs} coins de rue, oui ; mais on tourne à ${it.tourner}.`, `On tourne bien à ${it.tourner} ; mais après ${it.blocs} coins de rue.`, `${it.blocs} coins de rue, puis à ${it.tourner}.`];
+    return {son: `exos/ch-${k}.mp3`, plan: pts.map((p, i) => [...p, lettres[i]]), q: 'Où arrivez-vous ?', en: it.en,
+      choix: pts.map((p, i) => [`Le point ${lettres[i]}`, i ? retro[i] : null])};
+  });
+  const ids = Object.keys(D.mots).filter(id => !/[?!]/.test(D.mots[id].en));
+  if (fam === 'entendre' || fam === 'souvenir') return melange(ids).slice(0, 8).map(id => {
+    const m = D.mots[id], voisins = melange(ids.filter(x => x !== id && D.mots[x].p === m.p)).slice(0, 3);
+    const lib = x => fam === 'entendre' ? D.mots[x].fr : D.mots[x].en;
+    return {son: 'mots/' + id + '.mp3', q: fam === 'entendre' ? 'Que veut dire le mot ?' : 'Comment le dit-on en anglais ?', apres: fam === 'souvenir',
+      haut: fam === 'souvenir' ? `<div class="carte"><p style="font-size:19px;font-weight:800;margin:0">${E(m.fr)}</p></div>` : '',
+      en: m.en, enChoix: fam === 'souvenir',
+      choix: [[lib(id), null], ...voisins.map(x => [lib(x), fam === 'entendre' ? `« ${D.mots[x].en} » : ${D.mots[x].fr}.` : `${D.mots[x].en} veut dire : ${D.mots[x].fr}.`])]};
+  });
+  return [];
+}
+function planChemin(pts){
+  // Le petit plan : une grille de rues ; l'étoile au départ, face au nord ; quatre points lettrés.
+  const X = c => 30 + c * 40, Y = l => 20 + l * 40, x0 = 3, y0 = 5;
+  let rues = ''; for (let i = 0; i <= 6; i++) rues += `<line x1="${X(i)}" y1="${Y(0)}" x2="${X(i)}" y2="${Y(5)}" class="rue-g"/><line x1="${X(0)}" y1="${Y(i < 6 ? i : 5)}" x2="${X(6)}" y2="${Y(i < 6 ? i : 5)}" class="rue-g"/>`;
+  const marques = pts.map(([b, t, L]) => { const x = X(x0 + (t === 'gauche' ? -1 : 1)), y = Y(y0 - b);
+    return `<g><circle cx="${x}" cy="${y}" r="13" fill="#fff" stroke="#7A3B1D" stroke-width="2.5"/><text x="${x}" y="${y + 5}" text-anchor="middle" class="lettre">${L}</text></g>`; }).join('');
+  return `<svg class="mini-plan" viewBox="0 0 300 240" role="img" aria-label="Petit plan : vous êtes à l'étoile, face au nord ; quatre points A, B, C, D">${rues}
+    <text x="${X(x0)}" y="14" text-anchor="middle" class="nord">N ↑</text>${marques}
+    <polygon points="${X(x0)},${Y(y0) - 12} ${X(x0) + 4},${Y(y0) - 3} ${X(x0) + 12},${Y(y0) - 3} ${X(x0) + 6},${Y(y0) + 3} ${X(x0) + 8},${Y(y0) + 12} ${X(x0)},${Y(y0) + 7} ${X(x0) - 8},${Y(y0) + 12} ${X(x0) - 6},${Y(y0) + 3} ${X(x0) - 12},${Y(y0) - 3} ${X(x0) - 4},${Y(y0) - 3}" fill="#C8102E"/></svg>`;
+}
+function vueFamille(fam){
+  const nom = (FAMILLES.find(f => f[0] === fam) || [])[1]; if (!nom) return vueExos();
+  if (fam === 'dire') return serieDire();
+  const items = itemsDe(fam); let n = 0, premiers = 0;
+  function tour(){
+    if (n >= items.length) {
+      if (!S.exos) S.exos = {}; S.exos[fam] = `${premiers} sur ${items.length}`; sauver();
+      app.innerHTML = `${retour('exos', 'Les exercices')}<h1>${E(nom)}</h1><div class="retro ok">✓ ${items.length} questions, ${premiers} du premier coup.</div>
+        <button class="btn btn--pri btn--large" onclick="rendre()">Une autre série</button>
+        <button class="btn btn--large" style="margin-top:8px" onclick="aller('exos')">Les exercices</button>`; return; }
+    const it = items[n], o = ordre(it.choix.length, Math.floor(Math.random() * 9973)).filter(i => i !== 0);
+    o.splice(Math.floor(Math.random() * it.choix.length), 0, 0);
+    let erreurs = 0, fini = false;
+    app.innerHTML = `${retour('exos', 'Les exercices')}<p class="surtitre">${E(nom)} · ${n + 1} sur ${items.length}</p>
+      <div class="progres"><i style="width:${100 * n / items.length}%"></i></div>${it.haut || ''}
+      ${it.qui ? `<div class="scene-tete"><div><b>${E(it.qui.nom)}</b><div class="muted" style="font-size:14px">${E(it.qui.role)}</div></div></div>` : ''}
+      ${it.plan ? planChemin(it.plan) : ''}
+      <h2 style="margin-top:6px">${E(it.q)}</h2>
+      ${it.apres ? '' : `<div class="gros-son"><button class="btn btn--son" aria-label="Écouter" id="rejouer">${ICO.son}</button></div>`}
+      <div class="choix">${o.map(i => `<button data-i="${i}" ${it.enChoix ? 'lang="en"' : ''}>${E(it.choix[i][0])}</button>`).join('')}</div><div id="r" aria-live="polite"></div>`;
+    if ($('#rejouer')) { $('#rejouer').onclick = () => jouer(it.son); setTimeout(() => jouer(it.son), 250); }
+    app.querySelectorAll('.choix button').forEach(b => b.onclick = () => {
+      if (fini || b.disabled) return; const i = +b.dataset.i;
+      if (i === 0) { fini = true; if (!erreurs) premiers++; b.classList.add('juste');
+        $('#r').innerHTML = `<div class="retro ok">✓ « ${E(it.en)} »</div>`; if (it.apres || it.plan) jouer(it.son);
+        const s2 = document.createElement('button'); s2.className = 'btn btn--pri btn--large'; s2.textContent = 'Suivant'; s2.onclick = () => { n++; tour(); }; $('#r').appendChild(s2);
+      } else { erreurs++; b.classList.add('faux'); b.disabled = true; $('#r').innerHTML = `<div class="retro no">${E(it.choix[i][1])} Essayez encore.</div>`; }
+    });
+  }
+  tour();
+}
+function serieDire(){
+  const items = melange(D.exos.dire.map((it, k) => ({...it, son: `exos/dire-${k}.mp3`}))).slice(0, 6);
+  let n = 0, dites = 0, comprises = 0;
+  function tour(){
+    if (n >= items.length) {
+      if (!S.exos) S.exos = {}; S.exos.dire = `${dites} sur ${items.length}`; sauver();
+      app.innerHTML = `${retour('exos', 'Les exercices')}<h1>Je le dis</h1><div class="retro ok">✓ ${dites} phrase${dites > 1 ? 's' : ''} dite${dites > 1 ? 's' : ''} sur ${items.length}${Reco ? `, dont ${comprises} comprise${comprises > 1 ? 's' : ''} au micro` : ''}.</div>
+        <button class="btn btn--pri btn--large" onclick="rendre()">Une autre série</button>
+        <button class="btn btn--large" style="margin-top:8px" onclick="aller('exos')">Les exercices</button>`; return; }
+    const it = items[n]; let tente = false, essais = 0, modeleVu = false;
+    app.innerHTML = `${retour('exos', 'Les exercices')}<p class="surtitre">Je le dis · ${n + 1} sur ${items.length}</p><div class="progres"><i style="width:${100 * n / items.length}%"></i></div>
+      <div class="carte"><p class="surtitre">${E(it.lieu)}</p><p style="font-size:19px;font-weight:800;color:var(--text-strong);margin:4px 0 0">${E(it.fr)}</p></div>
+      ${Reco ? `<div class="micro"><button class="btn-micro" id="mic" aria-label="Parler">${ICO.micro}</button>
+        <div class="muted" id="micEtat" style="font-size:14px">Touchez le micro, dites-le en anglais.</div><div class="entendu" id="entendu"></div></div>` : ''}
+      <button class="btn btn--large" id="dit" style="margin:6px 0">C'est dit !</button><div id="r" aria-live="polite"></div>
+      <div class="rangee" style="margin-top:10px"><button class="btn" id="modele" disabled>${ICO.son} Le modèle</button>
+       <button class="btn btn--pri" id="suite" style="flex:1" disabled>Suivant</button></div>`;
+    const zone = $('#r');
+    const poserR = h => { zone.querySelectorAll(':scope > :not(.modele-carte)').forEach(y => y.remove()); zone.insertAdjacentHTML('afterbegin', h); };
+    const montrer = () => { if (!document.body.contains(zone)) return;
+      if (!modeleVu) { modeleVu = true; $('#dit').disabled = true;
+        zone.insertAdjacentHTML('beforeend', `<div class="retro info modele-carte"><span class="surtitre">Le modèle</span><div class="phrase-en" lang="en">${E(it.en)}</div></div>`); }
+      $('#modele').disabled = false; jouer(it.son); };
+    const essaye = () => { if (!tente) { tente = true; dites++; } $('#modele').disabled = false; $('#suite').disabled = false; };
+    $('#modele').onclick = montrer; $('#suite').onclick = () => { n++; tour(); };
+    $('#dit').onclick = () => { essaye(); montrer(); };
+    if (Reco) $('#mic').onclick = () => {
+      const mic = $('#mic'); if (recoActive) { arreterMicro(); return; }
+      mic.classList.add('ecoute'); mic.innerHTML = ICO.stop; $('#micEtat').textContent = 'Je vous écoute… touchez pour arrêter.';
+      ecouterMicro(t => { $('#entendu').textContent = '« ' + t + ' »'; }, final => {
+        mic.classList.remove('ecoute'); mic.innerHTML = ICO.micro; $('#micEtat').textContent = 'Touchez le micro pour réessayer.';
+        if (!final) { poserR(`<div class="retro info">${rienEntendu('Je n’ai rien entendu. Vérifiez que le micro est permis, ou dites-le et touchez « C’est dit ! ».')}</div>`); return; }
+        essais++; const manque = it.cles.filter(c => !trouve(final, c));
+        if (!manque.length) { if (essais <= 2 && !modeleVu) comprises++; poserR(`<div class="retro ok">✓ Well done! On vous a compris.</div>`); essaye(); setTimeout(montrer, 600); return; }
+        poserR(`<div class="retro no">${manque.length <= it.cles.length / 2 ? `Presque. Il manque : <b lang="en">${manque.map(c => E(motDuModele(it.en, c))).join(', ')}</b>. ` : 'Je n’ai pas reconnu la phrase. '}${essais < 2 && !modeleVu ? 'Réessayez, sans regarder le modèle.' : 'Comparez avec le modèle.'}</div>`);
+        essaye(); if (essais >= 2) montrer(); else $('#modele').disabled = false;
+      });
+    };
+  }
+  tour();
+}
+
 /* ---------- réglages ---------- */
 function vueReglages(){
   app.innerHTML = `${retour('accueil', 'Accueil')}<h1>Réglages</h1>
@@ -836,7 +999,7 @@ function vueReglages(){
 }
 
 // Le contrôle par programme (leçon de Compostelle : jouer chaque temps trouve ce qu'aucune relecture ne voit).
-window.__toronto = {D, S: () => S, trouve, plat, extraits: () => D.sons,
+window.__toronto = {D, S: () => S, trouve, plat, extraits: () => D.sons, itemsDe,
   controle: () => [...D.controle.refus.filter(([c, t]) => trouve(t, c)).map(([, t]) => 'accepte à tort : ' + t),
                    ...D.controle.accepte.filter(([c, t]) => !trouve(t, c)).map(([, t]) => 'refuse à tort : ' + t)]};
 rendre();

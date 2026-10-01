@@ -50,6 +50,19 @@ def extraits():
         out.append({"fichier": f"mots/{e[0]}.mp3", "texte": re.sub(r"\s*\([^)]*\)", "", e[2]).strip(), "voix": n})
     for i, t in LX.PIEGES.items():
         out.append({"fichier": f"pieges/{i}.mp3", "texte": t[0], "voix": "liam"})
+    # Étape 4 : les exercices. REPONSES et TOTAL nomment des personnes (semaine.py), dont on prend la voix.
+    EX, SE = charger("exercices"), charger("semaine")
+    voix_de = {g[0]: g[2] for g in SE.GENS}
+    for k, (l, q, ctx, en, ch) in enumerate(EX.REPONSES):
+        out.append({"fichier": f"exos/rep-{k}.mp3", "texte": en, "voix": voix_de[q]})
+    for k, (q, en, ch) in enumerate(EX.NOMBRES):
+        out.append({"fichier": f"exos/nb-{k}.mp3", "texte": en, "voix": q})
+    for k, it in enumerate(EX.TOTAL):
+        out.append({"fichier": f"exos/tot-{k}.mp3", "texte": it[3], "voix": voix_de[it[1]]})
+    for k, (q, en, b, t) in enumerate(EX.CHEMIN):
+        out.append({"fichier": f"exos/ch-{k}.mp3", "texte": en, "voix": q})
+    for k, (l, fr, en, cles) in enumerate(EX.DIRE):
+        out.append({"fichier": f"exos/dire-{k}.mp3", "texte": en, "voix": n})
     return out
 
 
