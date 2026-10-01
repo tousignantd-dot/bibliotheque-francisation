@@ -222,7 +222,7 @@ mark.trou{background:var(--decid-bg);color:var(--decid);border:1px dashed var(--
 </head>""")
     corps = f"""<body><div class="doc">
 <a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
-<p class="eyebrow">Vente au public &middot; Compostelle, Maison Francœur, Hôtel Rive-Claire</p>
+<p class="eyebrow">Vente au public &middot; Compostelle, Maison Francœur, Hôtel Rive-Claire, Toronto</p>
 <h1>Vendre au public sans s'exposer</h1>
 <div class="these"><p class="cle">Ce qui protège le plus une personne qui vend seule, c'est l'assurance, un contenu vérifié et des
 conditions de vente claires. Une société protège des dettes, pas de sa propre faute ; elle viendra plus tard.</p></div>
@@ -368,7 +368,7 @@ juridique.</b> Les règles de la vente à distance viennent des pages de l'Offic
 .page{{max-width:760px;margin:0 auto;padding:22px 18px 60px}} h1{{font-size:32px;margin:18px 0 4px}} h2{{font-size:19px;margin:26px 0 6px}}
 p{{margin:0 0 10px}} .maj{{color:#5f5f5a;font-size:14.5px}} .avenir{{color:#8a5a00;font-style:italic}}</style></head>
 <body><div class="fr-barre"><div class="fr-barre__in"><span class="fr-lockup"><span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span></span></div></div>
-<div class="page"><h1>Conditions de vente</h1><p class="maj">Les jeux de rôle de francis : Compostelle, Maison Francœur, Hôtel Rive-Claire — version du 30 septembre 2026.</p>
+<div class="page"><h1>Conditions de vente</h1><p class="maj">Les jeux de rôle de francis : Compostelle, Maison Francœur, Hôtel Rive-Claire, Une semaine à Toronto — version du 1er octobre 2026.</p>
 {pub_sections}
 <p class="maj" style="margin-top:24px">Questions : <a href="mailto:{E(v['courriel'])}">{E(v['courriel'])}</a></p></div></body></html>
 """, encoding="utf-8")

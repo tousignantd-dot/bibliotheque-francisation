@@ -4,7 +4,8 @@ Demande de Daniel, 28 sept. 2026, avant d'ouvrir le compte Stripe : « est-ce qu
 y a des chances que je puisse avoir des poursuites contre moi ? » Ce texte est un
 point de départ pour l'avocat, pas un avis juridique. Il couvre les trois produits
 vendus de la même façon (pelerins.PRODUITS) : « Parler librement » de Compostelle,
-le magasin joué de la Maison Francœur et le comptoir joué de l'Hôtel Rive-Claire.
+le magasin joué de la Maison Francœur, le comptoir joué de l'Hôtel Rive-Claire et
+la semaine jouée d'Une semaine à Toronto (ajoutée le 1er oct. 2026).
 
 Sources consultées (28 sept. 2026) : les pages de l'Office de la protection du
 consommateur sur les contrats conclus à distance (renseignements avant le contrat,
@@ -39,7 +40,9 @@ SECTIONS = [
         "Un code d'accès personnel à UN des produits suivants, selon la page où vous l'achetez :",
         "• « Parler librement », dans En route vers Compostelle : des conversations en espagnol avec les personnages du chemin ;",
         "• le magasin joué, dans la Maison Francœur : des clients à servir en français ;",
-        "• le comptoir joué, dans l'Hôtel Rive-Claire : des clients à accueillir en français, en anglais ou en espagnol.",
+        "• le comptoir joué, dans l'Hôtel Rive-Claire : des clients à accueillir en français, en anglais ou en espagnol ;",
+        "• la semaine jouée, dans Une semaine à Toronto : des gens de Toronto à qui parler en anglais, et la relecture "
+        "des cartes postales que vous écrivez.",
         "Le code donne droit à {conversations} conversations pendant {mois} mois à compter du paiement. Une conversation "
         "compte au plus {tours} échanges ; on peut en commencer au plus {parjour} par jour. Tout le reste de chaque "
         "application (mots, exercices, tests, fiches) est gratuit et ne demande aucun code.",

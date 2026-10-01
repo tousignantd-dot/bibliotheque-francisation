@@ -66,6 +66,9 @@ def donnees():
     # L'étape 6 : la poche — urgences et phrases à montrer (poche.py), puis, par lieu, les phrases
     # « Je le dis » et ce qu'on peut vous répondre, avec les sons des exercices.
     PO, EXP = C.charger("poche"), C.charger("exercices"); PO.verifier()
+    CF = C.charger("confidentialite"); CF.verifier()
+    confid = {"responsable": CF.RESPONSABLE, "courriel": CF.COURRIEL, "maj": CF.MISE_A_JOUR, "bref": CF.EN_BREF,
+              "donnees": CF.DONNEES, "hors": CF.HORS_QUEBEC, "nefait": CF.NE_FAIT_PAS}
     sons_ok = set(sons)
     def s_(f): return f if f in sons_ok else ""
     poche = {"urgences": [{"en": en, "fr": fr, "son": s_(f"poche/{i}.mp3")} for i, en, fr in PO.URGENCES],
@@ -96,7 +99,7 @@ def donnees():
     semaine = [{"id": l[0], "n": l[1], "jour": l[2], "lieu": l[3], "situation": l[4], "geste": l[5], "qui": l[6],
                 "carte": (MEDIA / "cartes" / f"{l[0]}.jpg").exists()} for l in SE.LIEUX]
     return {"v": MEDIA_V, "mots": mots, "perso": perso, "sons": sons, "planches": LX.PLANCHES, "pieges": pieges,
-            "semaine": semaine, "gens": gens, "exos": exos, "jeu": jeu, "poche": poche, "poids": poids,
+            "semaine": semaine, "gens": gens, "exos": exos, "jeu": jeu, "poche": poche, "poids": poids, "confid": confid,
             "prep": {"seances": PR.SEANCES, "test": PR.TEST, "objectifs": PR.OBJECTIFS, "seuil": PR.SEUIL,
                      "conseils": PR.CONSEILS, "fin": PR.FIN, "lieu": PR.LIEU, "solide": PR.SEUIL_SOLIDE},
             # Les réponses témoins des clés, rejouées dans le moteur de la page (audit tour 5) : `window.__toronto`.
@@ -335,6 +338,10 @@ details.rub{margin:8px 0}details.rub summary span{color:var(--text-muted);font-w
 .montrer .fermer{position:absolute;top:14px;right:14px}
 .montrer .grand{font-size:clamp(30px,8vw,52px);font-weight:900;line-height:1.15;color:var(--text-strong)}
 .montrer .petit{font-size:18px;color:var(--text-muted);margin-top:16px}
+.cf-bref ul{margin:0;padding-left:20px}.cf-bref li{margin:6px 0}
+.cf-ligne{margin:8px 0}.cf-ligne dl{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:8px 0 0;font-size:15px}
+.cf-ligne dt{color:var(--text-muted);font-weight:700}.cf-ligne dd{margin:0}.cf-hors{margin:6px 0}
+@media (max-width:420px){.cf-ligne dl{grid-template-columns:1fr}.cf-ligne dt{margin-top:4px}}
 .maya-jours{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
 </style>
 </head>
@@ -344,7 +351,7 @@ details.rub{margin:8px 0}details.rub summary span{color:var(--text-muted);font-w
   <span class="secteur"><small>Voyage · anglais</small><b>Une semaine à Toronto</b></span>
 </div></div>
 <main id="app"></main>
-<footer class="pied"><a href="#avis">Donner mon avis</a> · <a href="#reglages">Réglages</a> · <a href="/confidentialite.html">Confidentialité</a></footer>
+<footer class="pied"><a href="/modules-autonomes/toronto/presentation.html">Comment ça marche ?</a> · <a href="#avis">Donner mon avis</a> · <a href="#reglages">Réglages</a> · <a href="#confidentialite">Confidentialité</a></footer>
 <audio id="lecteur" preload="none"></audio>
 <script>
 const D = %%DONNEES%%;
@@ -464,6 +471,7 @@ function rendre(){
   const p = (location.hash.slice(1) || 'accueil').split('/');
   if (p[0] !== 'avis') { try { sessionStorage.setItem('toronto:vu', location.hash); } catch(e) {} }
   if (p[0] === 'avis') return vueAvis();
+  if (p[0] === 'confidentialite') return vueConfidentialite();
   if (p[0] === 'prep') return p[1] === 'test' ? vuePrepTest() : p[1] ? vueSeance(p[1], p[2]) : vuePrep();
   if (p[0] === 'reglages') return vueReglages();
   if (p[0] === 'mots') return p[1] ? vuePlanche(p[1]) : vueMots();
@@ -1548,6 +1556,37 @@ function vueAvis(){
   $('#avisCopier').onclick = () => { const t = $('#avisTexte'); t.select();
     (navigator.clipboard ? navigator.clipboard.writeText(t.value) : Promise.reject()).catch(() => document.execCommand('copy'))
       .finally(() => { $('#avisCopier').textContent = 'Copié ✓'; }); };
+}
+
+/* ---------- étape 8 : vos renseignements personnels (Loi 25) ---------- */
+/* Texte : build/contenu/toronto/confidentialite.py. La durée de conservation des codes se relit au
+   serveur (/api/pelerins/offre) : la page ne promet que ce qui a lieu. */
+function vueConfidentialite(){
+  const C = D.confid;
+  const resp = [C.responsable[0], C.responsable[1]].filter(Boolean).map(E).join(', ');
+  const rendu = cons => {
+    const duree = `effacés ${cons} jours après la fin de votre accès (et un code jamais payé, après 7 jours)`;
+    app.innerHTML = `${retour('accueil', 'Accueil')}
+    <p class="surtitre">Loi 25 · mise à jour le ${E(C.maj)}</p><h1>Vos renseignements personnels</h1>
+    <div class="carte cf-bref"><h3 style="margin-top:0">En bref</h3><ul>${C.bref.map(t => `<li>${t}</li>`).join('')}</ul></div>
+    <h2>Ce que nous savons de vous, et où c'est</h2>
+    ${C.donnees.map(([q, ou, qui, dur]) => `<div class="carte cf-ligne"><b>${E(q)}</b>
+      <dl><dt>Où</dt><dd>${E(ou)}</dd><dt>Qui le voit</dt><dd>${E(qui)}</dd><dt>Combien de temps</dt><dd>${E(dur).replace('{conservation}', duree)}</dd></dl></div>`).join('')}
+    <h2>Ce qui sort du Québec</h2>
+    <p>Certains services sont situés à l'extérieur du Québec. Voici lesquels, et ce qu'ils reçoivent :</p>
+    <div class="carte">${C.hors.map(([qui, quoi, ou]) => `<p class="cf-hors"><b>${E(qui)}</b> — ${E(quoi)} <span class="muted">(${E(ou)})</span></p>`).join('')}</div>
+    <p>Vous pouvez éviter l'envoi de votre voix : n'ouvrez pas le micro ; dites les phrases à voix haute et touchez « C'est dit ! », ou écrivez-les. Vous pouvez éviter l'envoi à Anthropic et à Azure : ne jouez pas la semaine avec l'assistance. Tout le reste de l'application fonctionne sans.</p>
+    <h2>Ce que nous ne faisons pas</h2><ul>${C.nefait.map(t => `<li>${E(t)}</li>`).join('')}</ul>
+    <h2>Vos droits</h2>
+    <p>Vous pouvez demander à savoir ce que nous détenons à votre sujet, le faire corriger ou effacer. Comme nous ne savons pas qui vous êtes, donnez-nous votre <b>code d'accès</b> : c'est tout ce que nous avons.
+    Ce qui est dans votre téléphone, vous l'effacez vous-même : <a href="#reglages">Réglages</a> → tout recommencer, ou vider les données du navigateur.</p>
+    <p>Pour toute question ou demande : <a href="mailto:${E(C.courriel)}">${E(C.courriel)}</a>. Responsable de la protection des renseignements personnels : ${resp}.</p>
+    <p class="muted" style="font-size:14px">Si notre réponse ne vous satisfait pas, vous pouvez vous adresser à la Commission d'accès à l'information du Québec.</p>
+    <h2>En cas d'incident</h2>
+    <p>Si un incident touchait des renseignements que nous détenons (vos codes), nous le consignerions et avertirions la Commission d'accès à l'information et les personnes concernées lorsque la loi l'exige.</p>
+    <p class="muted" style="font-size:14px">Conditions de vente : <a href="/conditions-de-vente.html" target="_blank" rel="noopener">conditions-de-vente.html</a>.</p>`;
+  };
+  rendu('365'); offreServeur().then(o => { if (o && o.conservation && location.hash === '#confidentialite') rendu(String(o.conservation)); });
 }
 
 /* ---------- réglages ---------- */

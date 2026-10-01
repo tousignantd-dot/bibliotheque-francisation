@@ -1,0 +1,244 @@
+#!/usr/bin/env python3
+"""Le dépliant public d'« Une semaine à Toronto » : comment l'outil fonctionne.
+
+    node build/toronto_captures.mjs [port]   # d'abord, si l'application a changé
+    python3 build/toronto_depliant.py        # → modules-autonomes/toronto/presentation.html
+
+Étape 8 (1er oct. 2026), même formule que celui de Compostelle
+(build/compostelle_depliant.py) : le public est le voyageur qui hésite, pas l'équipe
+— aucune donnée interne (coûts, audits) ; des captures réelles de l'application au
+format téléphone (modules-autonomes/toronto/depliant/*.jpg, prises par
+build/toronto_captures.mjs, la semaine jouée sur un faux serveur) ; et tout ce qui est
+compté (séances, mots, lieux, voix, prix) relu dans le contenu et dans pelerins.py,
+jamais écrit à la main. `noindex` pendant le pilote, comme l'application.
+"""
+import html, pathlib, sys
+
+RACINE = pathlib.Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(RACINE / "build"))
+sys.path.insert(0, str(RACINE))
+import toronto_commun as C  # noqa: E402
+import pelerins  # noqa: E402
+
+SORTIE = RACINE / "modules-autonomes" / "toronto" / "presentation.html"
+CAP = "depliant/"
+APP = "/modules-autonomes/toronto/"
+E = html.escape
+MOIS = "janvier février mars avril mai juin juillet août septembre octobre novembre décembre".split()
+
+
+def date_fr(iso):
+    a, m, j = (int(x) for x in iso.split("-"))
+    return f"{'1er' if j == 1 else j} {MOIS[m - 1]} {a}"
+
+
+def prix(c):
+    return f"{c / 100:.2f}".replace(".", ",") + " $"
+
+
+def tel(nom, alt, classe=""):
+    return f'<div class="tel {classe}"><img src="{CAP}{nom}.jpg" alt="{E(alt)}" loading="lazy"></div>'
+
+
+def main():
+    PR, LX, SE, EX, PO = (C.charger(n) for n in ("preparation", "lexique", "semaine", "exercices", "poche"))
+    n_seances, n_mots, n_planches = len(PR.SEANCES), len(LX.LEXIQUE), len(LX.PLANCHES)
+    n_lieux, n_pieges = len(SE.LIEUX), len(LX.PIEGES)
+    n_voix = sum(1 for x in C.extraits() if (C.SONS / x["fichier"]).exists())
+    for f in ("accueil", "semaine", "situation", "conversation", "bilan", "carte", "exercice", "poche"):
+        assert (SORTIE.parent / CAP / f"{f}.jpg").exists(), f"capture manquante : {f} (node build/toronto_captures.mjs)"
+    o = pelerins.offre()
+    promo = o["promo"] and o["prixRegulier"] > o["prix"]
+    prix_html = (f'<s>{prix(o["prixRegulier"])}</s> <b>{prix(o["prix"])}</b>' if promo else f'<b>{prix(o["prix"])}</b>')
+    lieux = "".join(f'<li><span class="n">{l[1]}</span><b>{E(l[3])}</b><em>{E(l[4])}</em></li>' for l in SE.LIEUX)
+    seances = "".join(f"<li>{E(s['titre'])}</li>" for s in PR.SEANCES)
+
+    page = f"""<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Une semaine à Toronto — comment ça marche</title>
+<meta name="description" content="L'anglais du touriste francophone, pour une semaine à Toronto, dans votre téléphone.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="/assets/design-system/styles.css">
+<link rel="stylesheet" href="/assets/design-system/marque-francis.css">
+<link rel="icon" href="/assets/design-system/marque-francis-favicon.svg">
+<style>
+/* Page produite par build/toronto_depliant.py — ne pas l'éditer. Le rouge de la ville marque Toronto ;
+   le brun d'encre, la carte postale ; l'action reste le vert de francis. */
+:root{{--ville:#C8102E;--ville-f:#7E0A1D;--encre:#7A3B1D;--papier:#FBF7F1;--carte:#FFFFFF;--texte:#2B2A26;--doux:#6B665C;--filet:#E7D9CC}}
+*{{box-sizing:border-box}}
+body{{margin:0;background:var(--papier);color:var(--texte);font:17px/1.5 Nunito,system-ui,sans-serif}}
+.cadre{{max-width:1040px;margin:0 auto;padding:0 20px}}
+a{{color:var(--ville-f)}}
+.fr-barre{{background:#fff;border-bottom:3px solid var(--ville)}}
+.fr-barre__in{{max-width:1040px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}}
+.secteur{{text-align:right;line-height:1.2}}
+.secteur small{{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--doux);font-weight:800}}
+.secteur b{{color:var(--ville);font-size:17px}}
+.une{{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center;padding:34px 0 10px}}
+.sur{{font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:900;color:var(--ville);margin:0 0 8px}}
+h1{{font-size:clamp(34px,5.4vw,56px);line-height:1.02;margin:0 0 14px;color:#1d1b18;position:relative;padding-top:18px}}
+h1::before{{content:'';position:absolute;left:0;top:0;width:64px;height:6px;border-radius:3px;background:var(--ville)}}
+.chapeau{{font-size:20px;line-height:1.45;margin:0 0 18px;color:#3A372F}}
+.cta{{display:inline-block;background:var(--accent,#0A8F5B);color:#fff;font-weight:900;text-decoration:none;padding:13px 22px;border-radius:12px;font-size:17px}}
+.visuel{{position:relative;min-height:420px}}
+.tel{{width:100%;max-width:240px;border-radius:30px;background:#111;padding:9px;box-shadow:0 18px 40px rgba(60,20,10,.22)}}
+.tel img{{display:block;width:100%;border-radius:22px;aspect-ratio:390/760;object-fit:cover;object-position:top}}
+.visuel .tel{{position:absolute;max-width:224px}}
+.visuel .a{{left:0;top:0;transform:rotate(-4deg)}} .visuel .b{{right:0;top:40px;transform:rotate(4deg)}}
+.chiffres{{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:34px 0 8px}}
+.chiffres div{{background:var(--carte);border:1px solid var(--filet);border-radius:14px;padding:14px 16px}}
+.chiffres b{{display:block;font-size:34px;line-height:1;color:var(--ville);font-weight:900}}
+.chiffres span{{font-size:14.5px;color:var(--doux)}}
+section{{margin-top:58px}}
+h2{{font-size:clamp(26px,3.6vw,36px);line-height:1.1;margin:0 0 8px;color:#1d1b18}}
+.intro{{font-size:18px;color:#3A372F;max-width:720px;margin:0 0 22px}}
+.temps{{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}}
+.temps article{{background:var(--carte);border:1px solid var(--filet);border-radius:18px;padding:18px}}
+.temps .quand{{font-size:13px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;color:var(--ville);margin:0 0 6px}}
+.temps h3{{margin:0 0 6px;font-size:21px}} .temps p{{margin:0;font-size:15.5px}}
+.temps ul{{margin:10px 0 0;padding-left:18px;font-size:14.5px;color:#4A463D}}
+.trois{{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:start}}
+.ecran{{text-align:center}} .ecran .tel{{margin:0 auto 14px;max-width:236px}}
+.ecran h3{{margin:2px 0 4px;font-size:19px}} .ecran p{{margin:0 auto;font-size:15px;max-width:290px;color:#4A463D}}
+.etiq{{display:inline-block;font-size:12.5px;font-weight:900;letter-spacing:.1em;text-transform:uppercase;border-radius:99px;padding:4px 11px;margin-bottom:6px;background:#F7E1E4;color:var(--ville-f)}}
+.duo{{display:grid;grid-template-columns:auto 1fr;gap:30px;align-items:center}}
+.duo .tel{{max-width:250px}}
+.lieux{{list-style:none;padding:0;margin:18px 0 0;display:grid;grid-template-columns:repeat(2,1fr);gap:8px}}
+.lieux li{{background:var(--carte);border:1px solid var(--filet);border-radius:12px;padding:8px 12px;display:grid;grid-template-columns:auto 1fr;gap:0 10px;font-size:15px}}
+.lieux .n{{grid-row:span 2;display:grid;place-items:center;width:30px;height:30px;border-radius:6px;border:2px solid var(--encre);color:var(--encre);font-weight:900}}
+.lieux em{{font-style:normal;color:var(--doux);font-size:14px}}
+.garde{{background:#FFF4E5;border:1px solid #E8C48E;border-radius:14px;padding:14px 16px;margin-top:16px;font-size:16px}}
+.prix{{background:#1d1b18;color:#F2ECE4;border-radius:24px;padding:30px;display:grid;grid-template-columns:1fr 1fr;gap:24px}}
+.prix h2{{color:#fff}} .prix .gros{{font-size:44px;line-height:1;font-weight:900;color:#fff;margin:6px 0}}
+.prix s{{color:#B9AFA4;font-size:26px;font-weight:700}} .prix ul{{margin:8px 0 0;padding-left:18px}} .prix a{{color:#F6C9CF}}
+.faq details{{background:var(--carte);border:1px solid var(--filet);border-radius:12px;padding:12px 16px;margin:8px 0}}
+.faq summary{{font-weight:800;cursor:pointer}} .faq p{{margin:8px 0 0}}
+.pied{{margin:60px 0 40px;font-size:14px;color:var(--doux);text-align:center}}
+@media (max-width:760px){{
+ .une,.temps,.trois,.duo,.prix{{grid-template-columns:1fr}} .chiffres{{grid-template-columns:repeat(2,1fr)}}
+ .visuel{{min-height:360px}} .visuel .tel{{max-width:180px}} .lieux{{grid-template-columns:1fr}}
+ .duo .tel{{margin:0 auto}} .secteur small{{display:none}} }}
+@media print{{ .cta{{display:none}} section{{break-inside:avoid}} body{{background:#fff}} }}
+</style>
+</head>
+<body>
+<div class="fr-barre"><div class="fr-barre__in"><span class="fr-lockup"><span class="fr-nom" role="img" aria-label="francis">franc<span class="fr-i" aria-hidden="true">ı<span class="fr-point"></span></span>s</span></span>
+ <div class="secteur"><small>Voyage · anglais</small><b>Une semaine à Toronto</b></div></div></div>
+<div class="cadre">
+
+<div class="une">
+  <div>
+    <p class="sur">L'anglais du voyage, dans votre téléphone</p>
+    <h1>Une semaine à Toronto</h1>
+    <p class="chapeau">Arriver à Union Station, prendre le métro, s'installer à l'hôtel, commander un café, manger au restaurant
+    avec une allergie, trouver une pharmacie, bavarder avec les gens : l'anglais qu'il faut à un francophone pour une semaine
+    à Toronto. Quinze minutes à la fois, à préparer chez vous, puis dans la poche une fois sur place.</p>
+    <a class="cta" href="{APP}">Ouvrir l'application</a>
+    <p style="font-size:14.5px;color:var(--doux);margin-top:10px">Dans le navigateur du téléphone, sans compte ni mot de passe.</p>
+  </div>
+  <div class="visuel">{tel("accueil", "L'accueil de l'application", "a")}{tel("conversation", "Une conversation au restaurant", "b")}</div>
+</div>
+
+<div class="chiffres">
+  <div><b>{n_seances}</b><span>séances de 15 minutes avant de partir</span></div>
+  <div><b>{n_mots}</b><span>mots du voyage, en {n_planches} planches</span></div>
+  <div><b>{n_lieux}</b><span>lieux de Toronto où jouer la situation</span></div>
+  <div><b>{n_voix}</b><span>phrases dites par de vraies voix, avec les accents de Toronto</span></div>
+</div>
+
+<section>
+  <h2>Trois temps</h2>
+  <p class="intro">Rien n'est verrouillé : si vous avez déjà de l'anglais, le test vous dit ce que vous pouvez sauter.</p>
+  <div class="temps">
+    <article><p class="quand">Avant de partir</p><h3>Faire sa valise</h3>
+      <p>{n_seances} séances de quinze minutes, chacune en trois temps : j'écoute, je reconnais, je le dis au micro.</p>
+      <ul>{seances}</ul></article>
+    <article><p class="quand">Pendant la préparation</p><h3>La semaine jouée</h3>
+      <p>Dix lieux, de l'arrivée au départ. La personne du lieu vous répond vraiment, en anglais ; le bilan, en français,
+      vous dit ce que vous avez réussi. Chaque situation réussie vous donne la carte postale du lieu.</p></article>
+    <article><p class="quand">Sur place</p><h3>Ma poche</h3>
+      <p>Même sans réseau, dans le métro : les phrases de chaque lieu avec leur voix, les urgences, « plus lentement, s'il vous
+      plaît » à montrer en grand, et ce que ça coûte vraiment, taxe et pourboire compris.</p></article>
+  </div>
+</section>
+
+<section>
+  <h2>La semaine jouée</h2>
+  <p class="intro">Vous choisissez un lieu et un rythme (lentement, normalement, ou vite, comme à Toronto). La personne vous parle ;
+  vous répondez au micro ou au clavier. À la fin, le bilan coche les gestes accomplis et reprend jusqu'à trois phrases.</p>
+  <div class="trois">
+    <div class="ecran">{tel("situation", "La situation du restaurant")}<span class="etiq">1 · La situation</span>
+      <h3>Ce qu'il faut réussir</h3><p>La consigne en français, les gestes qui font gagner la carte, et la règle de l'allergie.</p></div>
+    <div class="ecran">{tel("conversation", "La conversation avec la serveuse")}<span class="etiq">2 · En anglais</span>
+      <h3>On vous répond vraiment</h3><p>Ada, la serveuse, ne parle pas français : si vous changez de langue, elle vous le dit gentiment.</p></div>
+    <div class="ecran">{tel("bilan", "Le bilan en français")}<span class="etiq">3 · Le bilan</span>
+      <h3>En français, geste par geste</h3><p>Ce que vous avez obtenu, ce qui manque, et la phrase à dire autrement.</p></div>
+  </div>
+  <div class="garde"><b>L'allergie ne se rate pas.</b> Au restaurant et au marché, dire son allergie en anglais avant de
+  commander, et ne rien prendre dont on n'est pas sûr, sont éliminatoires : la carte ne se gagne pas autrement. C'est ce qu'on
+  pratique le plus, parce que c'est ce qui compte le plus.</div>
+  <ul class="lieux">{lieux}</ul>
+</section>
+
+<section>
+  <div class="duo">{tel("carte", "Une carte postale gagnée et écrite")}
+    <div><h2>Une carte postale à gagner, et à écrire</h2>
+    <p class="intro">Chaque situation réussie ajoute la carte postale du lieu à votre album. Au dos, vous écrivez deux lignes
+    en anglais à quelqu'un de chez vous ; l'assistance les relit et vous propose la tournure juste, sans réécrire votre carte.</p>
+    <p>Et chaque jour, vous croisez Maya, une Torontoise : six petites conversations pour apprendre à répondre, puis à relancer
+    (« And you? »).</p></div></div>
+</section>
+
+<section>
+  <div class="duo">{tel("exercice", "Un exercice : le total à payer")}
+    <div><h2>S'exercer, autant qu'il faut</h2>
+    <p class="intro">Neuf familles d'exercices, en séries courtes qui changent à chaque fois : ce qu'on me répond, l'allergie,
+    les prix et les heures (fourteen ou forty ?), le total à payer, suivre un chemin sur le plan, les mots entendus, les mots
+    retrouvés, les {n_pieges} faux amis qui trompent un francophone, et « je le dis » au micro.</p>
+    <p>Chaque mauvais choix dit pourquoi ; la bonne réponse change de place à chaque fois.</p></div></div>
+</section>
+
+<section>
+  <div class="duo">{tel("poche", "Ma poche, avec le total à payer")}
+    <div><h2>Dans la poche, même sans réseau</h2>
+    <p class="intro">Une fois, avec du wifi, « Préparer pour le voyage » met tous les sons dans le téléphone. Sur place : les
+    phrases de chaque lieu, {len(PO.URGENCES)} phrases d'urgence, {len(PO.A_MONTRER)} phrases à montrer en grand, et la
+    calculette du total : en Ontario, la taxe de 13 % s'ajoute à la caisse, et le pourboire se calcule avant la taxe.</p>
+    <p>L'application s'installe sur l'écran d'accueil du téléphone, comme une autre.</p></div></div>
+</section>
+
+<section class="prix">
+  <div><h2>Ce qui est gratuit</h2>
+    <ul><li>les {n_seances} séances et le test « Prêt à partir ? » ;</li><li>les {n_mots} mots et les faux amis ;</li>
+    <li>tous les exercices ;</li><li>la poche hors ligne.</li></ul></div>
+  <div><h2>La semaine jouée</h2>
+    <p class="gros">{prix_html}</p>
+    <p>{o['conversations']} conversations pendant {round(o['jours'] / 30.4)} mois, avec les gens de Toronto et Maya, la relecture
+    des cartes postales comprise.{' Prix de lancement jusqu’au ' + date_fr(o['promoFin']) + ' inclusivement.' if promo and o.get('promoFin') else ''}
+    Paiement par carte chez Stripe ; le code s'affiche tout de suite. Remboursable dans les 14 jours si 3 conversations au plus ont servi.</p>
+    <p style="font-size:14.5px"><a href="/conditions-de-vente.html">Conditions de vente</a> · <a href="{APP}#confidentialite">Vos renseignements personnels</a></p></div>
+</section>
+
+<section class="faq">
+  <h2>Questions</h2>
+  <details><summary>Faut-il un compte ?</summary><p>Non. Pas de compte, pas de courriel, pas de mot de passe. Votre progression reste dans votre téléphone.</p></details>
+  <details><summary>Je n'ai jamais fait d'anglais. Est-ce pour moi ?</summary><p>L'application vise le « faux débutant » : quelqu'un qui a un peu d'anglais d'école, mais qui fige quand on lui répond vite. Les séances reprennent tout depuis les sons.</p></details>
+  <details><summary>Et le micro ?</summary><p>Il passe par la reconnaissance vocale de votre navigateur, annoncée avant le premier usage. Tout se fait aussi sans micro : on dit la phrase à voix haute, ou on l'écrit.</p></details>
+  <details><summary>Qui me répond dans la semaine jouée ?</summary><p>Un modèle d'intelligence artificielle, qui joue la personne du lieu. Il peut se tromper : il sert à pratiquer l'anglais, pas à renseigner. Les prix et les horaires de l'application ont été relevés en octobre 2026 et peuvent changer ; vérifiez-les sur place.</p></details>
+  <details><summary>Est-ce que ça marche sans réseau ?</summary><p>Oui pour la poche, une fois « Préparer pour le voyage » fait avec du wifi. La semaine jouée, elle, a besoin du réseau.</p></details>
+</section>
+
+<p class="pied">francis · <a href="{APP}">Ouvrir l'application</a> · support@edufrancis.ca</p>
+</div>
+</body>
+</html>
+"""
+    SORTIE.write_text(page, encoding="utf-8")
+    print(f"{SORTIE.relative_to(RACINE)} — {n_seances} séances, {n_mots} mots, {n_lieux} lieux, {n_voix} voix, {prix(o['prix'])}")
+
+
+if __name__ == "__main__":
+    main()
