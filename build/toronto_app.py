@@ -28,7 +28,7 @@ import toronto_commun as C  # noqa: E402
 
 SORTIE = RACINE / "modules-autonomes" / "toronto" / "index.html"
 MEDIA = RACINE / "assets" / "interactive" / "toronto"
-MEDIA_V = "2"  # 2 : cinq extraits refaits après le tour 3 (même nom, autre son) ; 1 : première production
+MEDIA_V = "3"  # 3 : test 0-5 refait (fin coupée) ; 2 : cinq extraits refaits après le tour 3 (même nom, autre son) ; 1 : première production
 
 
 def donnees():
@@ -304,8 +304,6 @@ const plat = t => enLettres(String(t).replace(/['’]/g, ' ')).toLowerCase().nor
 const trouve = (t, cle) => cle.startsWith('~') ? new RegExp(cle.slice(1)).test(plat(t)) : cle.split('|').some(a => new RegExp('(^| )' + plat(a).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(s|es)?( |$)').test(plat(t)));
 /* ---------- ordre des choix : jamais la bonne toujours au même rang ---------- */
 // Audit tour 2 : une rotation garde l'ordre cyclique (la bonne précède toujours le leurre). Mélange à graine stable.
-// La graine d'une question de séance : son identité, pas son rang dans la série (audit tour 3).
-function graineDe(t){ let h = 7; for (const c of t) h = (h * 31 + c.charCodeAt(0)) % 2147483647; return h % 9973; }
 function ordre(n, g){ const o = [...Array(n).keys()]; g = g + 1; for (let i = n - 1; i > 0; i--) { g = (g * 16807) % 2147483647; const j = g % (i + 1); [o[i], o[j]] = [o[j], o[i]]; } return o; }
 
 /* ---------- navigation ---------- */
@@ -482,7 +480,8 @@ function seanceQuiz(x){
         <div style="margin-top:12px">${finTemps(x, 'quiz')}</div>`; return; }
     const {it, sid, k, rappel, une} = items[n];
     const fichier = `prep/${sid}/q${k}` + (it.type === 'dire' ? '-c0' : '') + '.mp3';
-    const [html, brancher] = questionPrep(it, fichier, graineDe(sid + ':' + k), e => {
+    // Tour 4 : au hasard à chaque affichage — un rappel refait de mémoire de bouton ne prouve rien.
+    const [html, brancher] = questionPrep(it, fichier, Math.floor(Math.random() * 9973), e => {
       erreurs += e; const b = document.createElement('button'); b.className = 'btn btn--pri btn--large'; b.textContent = 'Suivant';
       b.onclick = () => { n++; tour(); }; $('#r').appendChild(b); }, rappel, une);
     app.innerHTML = `${teteSeance(x, 'quiz')}<div class="progres"><i style="width:${100 * n / items.length}%"></i></div>${html}`;
@@ -601,10 +600,10 @@ function vuePrepTest(){
     // Au test, le premier choix compte. P2 et P5 : une seule écoute, au débit naturel.
     const fichier = `prep/test/${f}-${k}` + (it.type === 'dire' ? '-c0' : '') + '.mp3';
     const unefois = it.obj === 'P2' || it.obj === 'P5';
-    // Tour 3 (bloquant) : la place de la bonne réponse est posée dans les données (`place`, une permutation par
-    // objectif et par forme), décalée à chaque passage ; les mauvais choix se mélangent autour.
-    const pa = T.passages || 0, o = ordre(it.choix.length, ((k + 1) * 7919 + f * 104729 + pa) % 97).filter(i => i !== 0);
-    o.splice(((it.place || 0) + pa) % it.choix.length, 0, 0);
+    // Tour 4 : un tirage indépendant à chaque affichage. Une graine fixe mettait la bonne au même bouton
+    // (tour 3) ; une permutation posée dans les données se déduisait des places déjà montrées (tour 4).
+    const o = ordre(it.choix.length, Math.floor(Math.random() * 9973)).filter(i => i !== 0);
+    o.splice(Math.floor(Math.random() * it.choix.length), 0, 0);
     const estEn = it.type !== 'rep', p = it.qui ? D.perso[it.qui] : null;
     const titre = it.type === 'rep' ? 'Que veut dire la phrase ?' : it.type === 'mot' ? 'Quel mot entendez-vous ?' : 'Que dites-vous ?';
     app.innerHTML = `${tete2}<h1>${titre}</h1>
@@ -628,6 +627,8 @@ function vuePrepTest(){
     });
   }
   function bilan(){
+    // Tour 4 : deux formes seulement ; dès le 3e passage, on a déjà vu les réponses de la forme.
+    const revu = (T.passages || 0) >= 2;
     let solides = 0;
     const lignes = Object.keys(D.prep.objectifs).map(o => {
       const [ok, tot] = res[o] || [0, 0], nv = nonVerif[o] || 0, lieu = LIEUX[D.prep.lieu[o]];
@@ -644,7 +645,7 @@ function vuePrepTest(){
     const tous = solides === Object.keys(D.prep.objectifs).length;
     app.innerHTML = `${retour('accueil', 'Accueil')}<h1>Où vous en êtes</h1>
       <p>Un repère sur un échantillon, pas une note. La prochaine fois — la veille du départ, par exemple — ce sera l'autre forme.</p>
-      ${tous ? '<div class="retro ok">✓ Solide partout : vous pouvez sauter les séances, ou n’y revenir que pour vous rafraîchir la mémoire.</div>' : ''}${lignes}
+      ${tous ? (revu ? '<div class="retro info">Vous connaissiez déjà ces questions : ce résultat dit surtout que vous vous en souvenez. Pour vous situer pour vrai, faites une séance que vous n’avez pas faite.</div>' : '<div class="retro ok">✓ Solide partout : vous pouvez sauter les séances, ou n’y revenir que pour vous rafraîchir la mémoire.</div>') : ''}${lignes}
       <button class="btn btn--pri btn--large" onclick="aller('prep')">${tous ? 'Ma valise' : 'Aux séances'}</button>`;
   }
   intro();
