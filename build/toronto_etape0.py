@@ -39,7 +39,7 @@ OBJECTIFS = [
      "toutes — une seule erreur fait échouer (éliminatoire, dit d'avance)"),
     ("O4", "Tenir deux minutes de bavardage",
      "avec la Torontoise qui revient : répondre à « Where are you from? », « What have you seen? », et relancer",
-     "au moins deux relances (« And you? ») par conversation, 5 conversations sur 7"),
+     "au moins deux relances (« And you? ») par conversation, 4 conversations sur 6"),
 ]
 ALIGNEMENT = [
     ("O1", "Ce qu'on me répond · Les nombres, les prix, les heures · Le total à payer",

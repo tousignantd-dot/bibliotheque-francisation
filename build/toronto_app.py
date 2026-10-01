@@ -311,7 +311,7 @@ const CLE = 'toronto:v1';
 let S = {lent:false, aide:false, prep:{}};
 try { Object.assign(S, JSON.parse(localStorage.getItem(CLE) || '{}')); } catch(e) {}
 function sauver(){ try { localStorage.setItem(CLE, JSON.stringify(S)); } catch(e) {} }
-const aujourdhui = () => new Date().toLocaleDateString('fr-CA', {day:'numeric', month:'short', year:'numeric'});
+const aujourdhui = () => new Date().toLocaleDateString('fr-CA', {day:'numeric', month:'short', year:'numeric'}).replace(/^1 /, '1er ');
 
 /* ---------- le son ---------- */
 const lecteur = $('#lecteur');
@@ -883,7 +883,7 @@ function vueCarte(id){
     <div class="verso" aria-label="Le dos de la carte"><div class="msg">${gagne && (S.ecrits || {})[l.id] ? `<div class="ecrit">${E(S.ecrits[l.id])}</div>` : `${gagne ? 'Votre carte attend ses deux lignes.' : 'Ici, vous écrirez deux lignes en anglais, une fois la carte gagnée.'}<div class="lignes"></div><div class="lignes"></div><div class="lignes"></div>`}</div>
       <div><div class="timbre">TIMBRE</div><div class="lignes" style="margin-top:28px"></div><div class="lignes"></div></div></div>
     <div class="objectif" style="margin-top:14px"><b>${E(l.situation)}</b> — avec ${E(g.nom)}, ${E(g.role.charAt(0).toLowerCase() + g.role.slice(1))}.
-      Le geste qui compte : ${E(l.geste)}.</div>
+      Pour gagner la carte : ${D.jeu.gestes[l.id].map(E).join(' · ')}.</div>
     ${gagne ? `<div class="retro ok">✓ Carte gagnée le ${E(S.cartes[l.id])}.</div>
       <button class="btn btn--pri btn--large" onclick="aller('semaine/${l.id}/ecrire')">${(S.ecrits || {})[l.id] ? 'Récrire la carte' : 'Écrire la carte'}</button>
       <button class="btn btn--large" style="margin-top:8px" onclick="aller('semaine/${l.id}/jouer')">Rejouer la situation</button>`
@@ -1009,13 +1009,22 @@ function vueJouer(cas){
           body: JSON.stringify({code, scenario:'toronto-en', cas:c.cas, role:'touriste', bilan:true, genre:S.genre || null, historique:hist.slice(1)})});
         const d = await r.json().catch(() => ({})), b = d.bilan;
         if (!r.ok || !b) { $('#saisie').innerHTML = `<div class="retro no">${E(d.error || 'Pas de bilan cette fois.')}</div>`; return; }
-        const gagne = !c.maya && b.reussi === true;
+        // Audit étape 5 : la carte ne tient pas au seul « reussi » du modèle — chaque geste attendu doit être coché.
+        const att = c.maya ? [] : (D.jeu.gestes[c.cas] || []);
+        const gestesOk = Array.isArray(b.gestes) && b.gestes.length === att.length && b.gestes.every(x => x && x.fait === true);
+        const gagne = !c.maya && b.reussi === true && gestesOk;
+        // « dit » doit venir d'une réplique du touriste : sinon le bilan corrige ce qu'il n'a pas dit.
+        const dits = hist.filter(m => m.role === 'user').map(m => plat(m.contenu)).join(' | ');
+        b.phrases = (b.phrases || []).filter(x => x && x.dit && dits.includes(plat(x.dit)));
         if (gagne) { S.cartes = S.cartes || {}; if (!S.cartes[c.cas]) S.cartes[c.cas] = aujourdhui(); }
         if (c.maya && b.reussi === true) { S.maya = S.maya || {}; S.maya[c.cas] = aujourdhui(); }
         sauver();
         $('#saisie').innerHTML = `<h2>Le bilan</h2>
           ${b.resume ? `<div class="retro info">${E(b.resume)}</div>` : ''}
-          ${(b.gestes || []).length ? `<h3>Les gestes</h3>${b.gestes.map(x => `<div class="geste"><b>${x.fait ? '✓' : '—'}</b><span>${E(x.geste)}${x.fait ? '' : ' <span class="muted">(pas encore)</span>'}</span></div>`).join('')}` : ''}
+          ${att.length ? `<h3>Les gestes</h3>${att.map((g, i) => { const f = !!(b.gestes && b.gestes[i] && b.gestes[i].fait === true);
+            return `<div class="geste"><b>${f ? '✓' : '—'}</b><span>${E(g)}${f ? '' : ' <span class="muted">(pas encore)</span>'}</span></div>`; }).join('')}` : ''}
+          ${c.maya ? (b.reussi === true ? '<div class="retro ok">✓ Vous avez répondu et relancé la conversation.</div>'
+                                        : '<div class="retro no">— Pas encore : répondez-lui en anglais, et posez-lui au moins deux questions.</div>') : ''}
           ${(b.compris || []).length ? `<h3>Ce que vous avez obtenu</h3><ul>${b.compris.map(x => `<li>${E(x)}</li>`).join('')}</ul>` : ''}
           ${(b.phrases || []).length ? `<h3>À dire autrement</h3>${b.phrases.map(x => `<div class="carte" style="margin:6px 0"><div class="muted">${E(x.dit)}</div><div style="font-size:18px;font-weight:800;color:var(--text-strong)">${E(x.mieux)}</div></div>`).join('')}` : ''}
           ${b.conseil ? `<div class="retro info">${E(b.conseil)}</div>` : ''}
@@ -1024,6 +1033,7 @@ function vueJouer(cas){
             : `<div class="retro no">— Pas encore la carte : rejouez la situation en visant les gestes qui manquent.</div>`}
           <button class="btn btn--large" style="margin-top:8px" onclick="rendre()">Rejouer</button>
           <button class="btn btn--large" style="margin-top:8px" onclick="aller('${c.retour}')">${c.maya ? "Retour à l'album" : 'Retour à la carte'}</button>`;
+        $('#saisie').scrollIntoView({behavior:'smooth', block:'start'});
       } catch(e) { $('#saisie').innerHTML = `<div class="retro no">Pas de réseau pour le bilan.</div>`; }
     }
     tour('');
