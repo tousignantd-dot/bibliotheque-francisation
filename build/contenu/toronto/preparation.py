@@ -39,14 +39,14 @@ OBJECTIFS = {
     "P5": "Comprendre une réponse courte",
 }
 
-ORIGINE = "~(^| )(i m|i am|im|we re|we are|i come|we come|i m coming|we re coming|coming) from [a-z]+|(^| )(i|we) live in (?!toronto)[a-z]+|(^| )from (quebec|montreal|canada|france)"
-SEJOUR = "~(^| )(for|until|till|leave|leaving|stay|staying|here|just|only|one|two|three|four|five|six|seven|ten)( (?!since|ago)[a-z]+){0,3} (week|weeks|weekend|day|days|night|nights|month|monday|tuesday|wednesday|thursday|friday|saturday|sunday)(?! ago)( |$)|(^| )a (week|weekend|few days)( |$)"
-RELANCE = "~(^| )(and you|and yourself|how about you|how about yourself|what about you|what about yourself|how are you|are you from|do you (live|work|like)|have you (ever )?been|what do you do|where do you live)( |$)"
+ORIGINE = "~(^| )(i m|i am|im|we re|we are|i come|we come|i m coming|we re coming|coming) from [a-z]+|(^| )(i|we) live in (?!toronto)[a-z]+|(^| )from (quebec|montreal|canada|france)|(^| )i m (quebecois|quebecoise|french canadian)( |$)"
+SEJOUR = "~^(?!.*(^| )(since|ago|depuis)( |$))(?!.*(^| )(i|we) (ve|have) been (here|in [a-z]+) (for|since)( |$)).*?(?:(^| )(for|until|till|leave|leaving|stay|staying|here|just|only|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fourteen|couple)( (?!since|ago)[a-z]+){0,3} (week|weeks|weekend|day|days|night|nights|month|monday|tuesday|wednesday|thursday|friday|saturday|sunday)(?! ago)( |$)|(^| )a (week|weekend|few days)( |$))"
+RELANCE = "~(^| )(and you|and yourself|how about you|how about yourself|what about you|what about yourself|how are you|are you from|do you (live|work|like)|have you (ever )?been|what do you do|where do you live|what s your name)( |$)|^you$| you$"
 # Les clés partagées (audit tour 1, M7) : une demande, dite de toutes les façons naturelles.
-DEMANDE = "~(^| )(a|one) [a-z ]{0,12}(tea|coffee)( |$)|give me|(^| )(can|could|may) (i|we)( please)? (get|have)|(can|could) you( please)? (give|get) (me|us)|(i|we) d like|(i|we)d like|(i|we) would like|(i|we) ll (have|take|get|go with)|(i|we) want|(^| )please( |$)"
+DEMANDE = "~^((hi|hello|hey|excuse me|good morning|yes|um|uh|okay|ok|so) )*(just )?(a|one) [a-z ]{0,12}(tea|coffee)( |$)|give me|(^| )(can|could|may) (i|we)( please)? (get|have)|(can|could) you( please)? (give|get) (me|us)|(i|we) d like|(i|we)d like|(i|we) would like|(i|we) ll (have|take|get|go with)|(i|we) want|do you have|(^| )please( |$)"
 # Tour 3 : le cadre d'une plainte, dit de toutes les façons (I'm sunburned, my husband has a fever…).
-MAL = "~(^| )(i|we|he|she|my [a-z]+) (have|ve got|got|has|need)( a| an| some)? (?!no )[a-z]+|(^| )(i|we|he|she) (m|am|re|are|is|feel|feels) (sunburned|sunburnt|burned|burnt|feverish|sick|hot)( |$)|(^| )(i m|i am|we re|he s|she s) running a|(^| )my [a-z]+ (is|are) (burned|burnt|sunburned|red)( |$)|something for"
-REPETER = "~(say (that|it) again|repeat|pardon|sorry|excuse me|come again|again|one more time|(don t|didn t|do not|did not) (understand|get it|get that))"
+MAL = "~(^| )(i|we|he|she|my [a-z]+) (have|ve got|got|has|need|had|ve had)( a| an| some)? (?!no )[a-z]+|(^| )(i|we|he|she) (m|am|re|are|is|s|feel|feels|m feeling|am feeling|re feeling)( (really|very|so|a bit|a little|all|badly|pretty|quite|kind of))? (sunburned|sunburnt|burned|burnt|feverish|sick|hot)( |$)|(^| )(i m|i am|we re|he s|she s) running a|(^| )my [a-z]+ (is|are)( (really|very|so|all|badly|pretty|quite))? (burned|burnt|sunburned|red)( |$)|something for|(^| )(i|we) (burned|burnt) (myself|ourselves|my [a-z]+)( |$)"
+REPETER = "~(say (that|it) again|repeat|pardon|sorry|excuse me|come again|again|one more time|speak up|louder|(don t|didn t|do not|did not) (understand|get it|get that))"
 
 FIN = {
     "P1": "À la fin, vous direz ces formules au micro, sans les lire, et on vous comprendra du premier ou du deuxième coup — même quand un son raté changerait le mot (three, tree).",
@@ -239,7 +239,7 @@ SEANCES = [
      {"type": "dire", "fr": "Demandez comment vous rendre à la tour CN.",
       "choix": [("How do I get to the CN Tower?", None), ("How do I get the CN Tower?", "Sans « to », ce serait « comment j'obtiens la tour » ! « How do I get TO the CN Tower? »."), ("Where do I go CN Tower?", "Il manque des mots : « How do I get to the CN Tower? ».")]},
    ],
-   "dire": [("Demandez où est le métro.", "Where is the subway?", ["where", "subway|ttc|metro|station"]),
+   "dire": [("Demandez où est le métro.", "Where is the subway?", ["~(where|is there|how (do|can) (i|we) get to)", "subway|ttc|metro|station"]),
             ("Demandez s'il y a une pharmacie près d'ici.", "Is there a pharmacy near here?", ["is there|where", "pharmacy|drugstore|drug store"]),
             ("Demandez combien coûte un billet.", "How much is a ticket?", ["how much", "ticket"]),
             ("Demandez si le déjeuner est inclus.", "Is breakfast included?", ["breakfast", "~(includ|come with|comes with)"])]},
@@ -330,7 +330,7 @@ TEST = [
   [
     {"obj": "P1", "type": "oral", "fr": "Une passante vous tient la porte : remerciez-la.", "cles": ["thank|thanks"], "modele": "Thank you!"},
     {"obj": "P1", "type": "oral", "fr": "Le caissier demande combien de billets. Répondez d'un seul mot : trois.", "cles": ["three|3"], "modele": "Three."},
-    {"obj": "P1", "type": "oral", "fr": "Dites que vous ne comprenez pas.", "cles": ["~(do not|dont|don t|did not|didnt|didn t) (understand|get it|get that)"], "modele": "Sorry, I don't understand."},
+    {"obj": "P1", "type": "oral", "fr": "Dites que vous ne comprenez pas.", "cles": ["~(do not|dont|don t|did not|didnt|didn t|can t|cannot|can not) (understand|get it|get that|catch that)"], "modele": "Sorry, I don't understand."},
     {"obj": "P2", "type": "rep", "qui": "liam", "en": "That's thirty forty.",
      "choix": [("30,40 $", None), ("13,40 $", "Thirteen finirait sur un « n ». Ici, thirty finit court : 30."), ("13,14 $", "Ni treize ni quatorze : thirty forty, 30,40 $."), ("30,14 $", "Thirty, oui ; mais forty finit court : 40, pas 14.")]},
     {"obj": "P2", "type": "rep", "qui": "harper", "en": "The museum closes at quarter to six.",
@@ -340,7 +340,7 @@ TEST = [
     {"obj": "P2", "type": "rep", "qui": "rosa", "en": "Check-out is at eleven a.m.",
      "choix": [("Départ à 11 h du matin.", None), ("Départ à 11 h du soir.", "A.m. : le matin. Le soir, ce serait p.m."), ("Arrivée à 11 h du soir.", "Check-out, c'est le départ ; et a.m., le matin."), ("Arrivée à 11 h du matin.", "A.m., oui ; mais check-out, c'est le départ.")]},
     {"obj": "P3", "type": "oral", "fr": "Au café, commandez un thé.", "cles": [DEMANDE, "tea"], "modele": "Can I get a tea, please?"},
-    {"obj": "P3", "type": "oral", "fr": "Demandez où est l'arrêt d'autobus.", "cles": ["~(where|is there)", "bus"], "modele": "Where is the bus stop?"},
+    {"obj": "P3", "type": "oral", "fr": "Demandez où est l'arrêt d'autobus.", "cles": ["~(where|is there|how (do|can) (i|we) get to|looking for|which way)", "bus"], "modele": "Where is the bus stop?"},
     {"obj": "P3", "type": "oral", "fr": "Vous avez un coup de soleil : dites-le au pharmacien.", "cles": [MAL, "~(^| )(sunburn|sunburns|sunburned|sunburnt|burn|burned|burnt)( |$)"], "modele": "I have a sunburn."},
     {"obj": "P4", "type": "oral", "fr": "Une Torontoise vous demande qui vous êtes. Répondez : d'où vous venez, combien de temps vous restez, et relancez.",
      "cles": [ORIGINE, SEJOUR, RELANCE], "parties": _P4_PARTIES,
@@ -367,7 +367,7 @@ TEST = [
     {"obj": "P2", "type": "rep", "qui": "rosa", "en": "Last entry is at eight p.m.",
      "choix": [("Dernière entrée à 8 h du soir.", None), ("Dernière entrée à 8 h du matin.", "P.m. : le soir. Le matin, ce serait a.m."), ("Première entrée à 8 h du matin.", "Last : la dernière ; et p.m., le soir."), ("Première entrée à 8 h du soir.", "Le soir, oui ; mais last, c'est la dernière.")]},
     {"obj": "P3", "type": "oral", "fr": "À la réception, demandez le mot de passe du wifi.", "cles": ["wifi|wi fi|wireless|internet", "password|code"], "modele": "Can I get the Wi-Fi password?"},
-    {"obj": "P3", "type": "oral", "fr": "À l'hôtel, demandez où est l'ascenseur.", "cles": ["~(where|is there)", "elevator|lift"], "modele": "Where is the elevator?"},
+    {"obj": "P3", "type": "oral", "fr": "À l'hôtel, demandez où est l'ascenseur.", "cles": ["~(where|is there|do you have|how (do|can) (i|we) get to|looking for|which way)", "elevator|lift"], "modele": "Where is the elevator?"},
     {"obj": "P3", "type": "oral", "fr": "Vous avez de la fièvre : dites-le au pharmacien.", "cles": [MAL, "~(^| )(fever|feverish|temperature)( |$)"], "modele": "I have a fever."},
     {"obj": "P4", "type": "oral", "fr": "Au marché, un vendeur vous demande d'où vous êtes. Répondez : d'où vous venez, combien de temps vous restez, et relancez.",
      "cles": [ORIGINE, SEJOUR, RELANCE], "parties": _P4_PARTIES,
@@ -459,15 +459,22 @@ def aplatir(t):
     """Comme la page aplatira la transcription : minuscules, sans ponctuation, chiffres en lettres."""
     import unicodedata
     t = "".join(c for c in unicodedata.normalize("NFD", t) if unicodedata.category(c) != "Mn")
-    unites = "zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen".split()
-    t = re.sub(r"\b(\d{1,2})\b", lambda m: unites[int(m.group(1))] if int(m.group(1)) < 16 else m.group(1), t.lower())
+    un = ("zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen "
+          "seventeen eighteen nineteen").split()
+    diz = {2: "twenty", 3: "thirty", 4: "forty", 5: "fifty", 6: "sixty", 7: "seventy", 8: "eighty", 9: "ninety"}
+    nb = lambda n: un[n] if n < 20 else (diz[n // 10] + (" " + un[n % 10] if n % 10 else "")) if n < 100 else str(n)
+    # Comme la page (plat/enLettres) : « 10:30 », « $13.50 », puis tout nombre en lettres.
+    t = re.sub(r"(\d{1,2}):(\d{2})", lambda m: nb(int(m.group(1))) + (" " + nb(int(m.group(2))) if int(m.group(2)) else ""), t)
+    t = re.sub(r"\$\s*(\d+)\.(\d{2})", lambda m: nb(int(m.group(1))) + " " + nb(int(m.group(2))), t)
+    t = re.sub(r"\d+", lambda m: " " + nb(int(m.group(0))) + " ", t.lower())
     return re.sub(r"\s+", " ", re.sub(r"[^a-z0-9 ]", " ", t.replace("'", " "))).strip()
 
 
 def cle_ok(cle, t):
     if cle.startswith("~"):
         return re.search(cle[1:], t) is not None
-    return any(re.search(r"(^| )" + re.escape(a) + r"( |$)", t) for a in cle.split("|"))
+    # Comme la page : une clé simple tolère le pluriel (s|es).
+    return any(re.search(r"(^| )" + re.escape(aplatir(a)) + r"(s|es)?( |$)", t) for a in cle.split("|"))
 
 
 # Ce que les clés de la présentation doivent REFUSER (tour 4 : elles créditaient le lieu où l'on est,
@@ -475,10 +482,14 @@ def cle_ok(cle, t):
 REFUS = [(ORIGINE, "I'm in Toronto for a week. And you?"), (ORIGINE, "I live in Toronto for a week. How about you?"),
          (SEJOUR, "I'm from Quebec. I arrived two days ago. And you?"), (SEJOUR, "I'm from Quebec. I'm here since Monday. And you?"),
          (SEJOUR, "Have a nice day"), (MAL, "I am a sunburn"), (MAL, "I'm fever"), (MAL, "I have no fever"),
-         (MAL, "My name is sunburn")]
+         (MAL, "My name is sunburn"), (MAL, "I'm not sunburned"),
+         (SEJOUR, "I'm from Quebec. I'm here since two days. And you?"), (SEJOUR, "I've been here for two days"),
+         (DEMANDE, "Do you want a tea?"), (DEMANDE, "Can you get a medium coffee")]
 ACCEPTE = [(ORIGINE, "We're from Sherbrooke"), (ORIGINE, "I live in Montreal"), (SEJOUR, "One week."), (SEJOUR, "Just the weekend"),
            (MAL, "I'm sunburned"), (MAL, "My husband has a fever"), (MAL, "I'm running a fever"), (MAL, "My skin is burned"),
-           (DEMANDE, "A tea, please"), (DEMANDE, "Give me a tea")]
+           (DEMANDE, "A tea, please"), (DEMANDE, "Give me a tea"), (DEMANDE, "Do you have tea?"),
+           (MAL, "I'm really sunburned"), (MAL, "I've had a fever since yesterday"), (MAL, "I'm feeling feverish"),
+           (ORIGINE, "I'm Québécois"), (RELANCE, "What's your name?"), (REPETER, "Could you speak up?")]
 
 
 def _cles(cles, modele, ou):

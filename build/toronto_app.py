@@ -46,7 +46,9 @@ def donnees():
     perso = {k: {"nom": v[0], "qui": v[4]} for k, v in PS.VOIX.items()}
     return {"v": MEDIA_V, "mots": mots, "perso": perso, "sons": sons,
             "prep": {"seances": PR.SEANCES, "test": PR.TEST, "objectifs": PR.OBJECTIFS, "seuil": PR.SEUIL,
-                     "conseils": PR.CONSEILS, "fin": PR.FIN, "lieu": PR.LIEU, "solide": PR.SEUIL_SOLIDE}}, len(sons), len(noms)
+                     "conseils": PR.CONSEILS, "fin": PR.FIN, "lieu": PR.LIEU, "solide": PR.SEUIL_SOLIDE},
+            # Les réponses témoins des clés, rejouées dans le moteur de la page (audit tour 5) : `window.__toronto`.
+            "controle": {"refus": PR.REFUS, "accepte": PR.ACCEPTE}}, len(sons), len(noms)
 
 
 def main():
@@ -557,7 +559,8 @@ function vuePrepTest(){
       ${Reco ? '' : '<div class="sans-son">Ce navigateur ne reconnaît pas la voix : ouvrez la page dans Chrome ou Safari pour mesurer l’oral. Sans cela, les questions au micro ne compteront pas.</div>'}
       <button class="btn btn--pri btn--large" id="go">Commencer</button>`;
     // Tour 3 : la forme suivante est fixée dès le départ — un test abandonné ne retombe pas sur la même.
-    $('#go').onclick = () => { T.prochaine = 1 - f; sauver(); tour(); };
+    // Tour 5 : une forme vue, même abandonnée, est « revue » au passage suivant.
+    $('#go').onclick = () => { T.prochaine = 1 - f; T.vues = T.vues || {}; T.revu = !!T.vues[f]; T.vues[f] = true; sauver(); tour(); };
   }
   function tour(){
     if (k >= items.length) return bilan();
@@ -628,7 +631,7 @@ function vuePrepTest(){
   }
   function bilan(){
     // Tour 4 : deux formes seulement ; dès le 3e passage, on a déjà vu les réponses de la forme.
-    const revu = (T.passages || 0) >= 2;
+    const revu = !!T.revu;
     let solides = 0;
     const lignes = Object.keys(D.prep.objectifs).map(o => {
       const [ok, tot] = res[o] || [0, 0], nv = nonVerif[o] || 0, lieu = LIEUX[D.prep.lieu[o]];
@@ -664,7 +667,9 @@ function vueReglages(){
 }
 
 // Le contrôle par programme (leçon de Compostelle : jouer chaque temps trouve ce qu'aucune relecture ne voit).
-window.__toronto = {D, S: () => S, trouve, plat, extraits: () => D.sons};
+window.__toronto = {D, S: () => S, trouve, plat, extraits: () => D.sons,
+  controle: () => [...D.controle.refus.filter(([c, t]) => trouve(t, c)).map(([, t]) => 'accepte à tort : ' + t),
+                   ...D.controle.accepte.filter(([c, t]) => !trouve(t, c)).map(([, t]) => 'refuse à tort : ' + t)]};
 rendre();
 </script>
 </body>
