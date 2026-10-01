@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Audit du portail élève</title>
+<style>
+@font-face{font-family:"Nunito";src:url("../../design-system/fonts/nunito-latin.woff2") format("woff2");font-weight:200 1000;font-display:swap}
+:root{--paper:#F7F7F5;--card:#fff;--ink:#17181A;--ink-2:#4A4D52;--line:#E4E3DE;--accent:#0A8F5B;--accent-bg:#E7F4EE;
+      --rouge:#B3261E;--rouge-bg:#FFF6F5;--ambre:#9A5B00;--ambre-bg:#FBF1E0;--gris:#6B6E73;--gris-bg:#EFEFEC}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.55 "Nunito",system-ui,-apple-system,"Segoe UI",sans-serif}
+.cadre{max-width:920px;margin:0 auto;padding:32px 16px 96px}
+.sur{font-weight:800;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--gris)}
+h1{font-size:34px;line-height:1.15;margin:6px 0 12px;font-weight:900}
+.chapeau{font-size:18px;color:var(--ink-2);max-width:64ch;margin:0 0 20px}
+.scores{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin:0 0 16px}
+.scores div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.scores b{display:block;font-size:28px;font-weight:900;line-height:1}
+.scores small{font-size:14px;color:var(--gris);font-weight:800}
+.scores span{font-size:14px;color:var(--ink-2)}
+.scores .tot{background:var(--ink);color:#fff;border-color:var(--ink)}.scores .tot span,.scores .tot small{color:#ddd}
+.encart{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;padding:14px 18px;margin:0 0 16px}
+.encart p{margin:4px 0}
+.barre{position:sticky;top:0;z-index:5;background:var(--paper);padding:12px 0;border-bottom:1px solid var(--line);margin-bottom:16px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+button{font:inherit;font-size:15px;font-weight:700;min-height:44px;padding:0 16px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink);cursor:pointer}
+button[aria-pressed=true]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.fin{margin-left:auto;display:flex;gap:12px;align-items:center}
+.cpt{font-size:14px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+button:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.c{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:0 0 14px}
+.c[hidden]{display:none}.c.fait{border-color:var(--ink)}
+.tete{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.g,.cat{font-size:13px;font-weight:800;padding:3px 10px;border-radius:999px}
+.g-P0,.g-P1{color:var(--rouge);background:var(--rouge-bg)}.g-P2{color:var(--ambre);background:var(--ambre-bg)}.g-P3{color:var(--gris);background:var(--gris-bg)}
+.cat{color:var(--ink-2);border:1px solid var(--line)}
+.num{margin-left:auto;font:700 13px ui-monospace,Menlo,monospace;color:var(--gris)}
+.c h2{font-size:20px;line-height:1.3;margin:10px 0 6px;font-weight:800}
+.bloc{border-left:3px solid var(--line);padding:2px 0 2px 14px;margin:10px 0}
+.bloc b{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--gris)}
+.bloc p{margin:2px 0 0}.geste{border-left-color:var(--accent)}
+details{font-size:15px;color:var(--ink-2);margin-top:6px}
+summary{cursor:pointer;font-weight:700;color:var(--ink);min-height:36px;display:flex;align-items:center}
+.ou{font-family:ui-monospace,Menlo,monospace;font-size:13px;word-break:break-word}
+.dec{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.dec .note{flex:1 1 220px;min-height:44px;font:inherit;font-size:16px;padding:0 14px;border:1px solid var(--line);border-radius:10px;background:var(--paper);color:var(--ink)}
+.annexe{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin-top:24px}
+.annexe h2{font-size:18px;margin:0 0 8px}.annexe li{margin:6px 0}
+@media (max-width:640px){h1{font-size:28px}.scores{grid-template-columns:repeat(3,1fr)}.fin{margin-left:0;width:100%}.c{padding:16px}}
+@media print{.barre,.dec{display:none}.c{break-inside:avoid}}
+</style></head>
+<body><div class="cadre">
+<div class="sur">francis · Décider · à trancher</div>
+<h1>Audit du portail élève</h1>
+<p class="chapeau">eleve.html passé à la grille « audit » d'impeccable, sans son programme, le 2026-09-30. 13 constats, chacun vérifié dans le code. Ceux qui contredisaient le système de design sont écartés plus bas. Une décision par constat ; « Exporter » rend la liste des corrections à faire.</p>
+<div class="scores"><div><b>2<small>/4</small></b><span>Accessibilité</span></div><div><b>3<small>/4</small></b><span>Performance</span></div><div><b>3<small>/4</small></b><span>Téléphone et écrans</span></div><div><b>3<small>/4</small></b><span>Jetons et couleurs</span></div><div><b>2<small>/4</small></b><span>Fidélité au système</span></div><div class="tot"><b>13<small>/20</small></b><span>Acceptable</span></div></div>
+<div class="encart"><p><b>Ce qui a été mesuré.</b> Code lu en entier : eleve.html (791 lignes), styles.css et ses 16 @import (jetons, base, layout, buttons, forms, cards, feedback, infobulle), marque-francis.css (barre), js/appui.js, routes serveur utiles (/api/student/*, safe_filename, envois). Rendu réel : server.py lancé sur le port 5199 avec STORAGE_DIR dans le bloc-notes (copie de data/, aucun fichier du dépôt écrit), Chrome sans interface piloté par CDP (WebSocket natif de node 26, sans puppeteer), connexion avec le code de démonstration UTG9BS (Lilas : 11 modules, 32 ateliers, aucune progression). Mesuré par script dans la page à 320, 390, 640 et 1280 px : débordement horizontal (scrollWidth et boîtes), contraste calculé de chaque nœud texte contre son fond composé (opacités cumulées), cibles interactives &lt; 44 px, tailles de texte &lt; 17 px, titres, repères, id en double, alignement logotype/contenu, document.fonts.check(&#x27;17px Nunito&#x27;). Les blocs « Votre enseignant vous a envoyé » et « Documents à consulter » étant vides pour Lilas, ils ont été rendus par injection (appel des fonctions blocPointsExpress/blocDocuments de la page avec des données fictives) puis mesurés. Non mesuré : gestes tactiles réels (aucun glisser sur cette page, seulement des taps), lecteur d&#x27;écran réel (annonces déduites du balisage), réseau lent ou Google Fonts bloqué (déduit du code), états « en cours » et « fait » des tuiles (Lilas n&#x27;a aucune progression ; leur style a été lu dans le code). Serveur et Chrome arrêtés à la fin. Le binaire impeccable n&#x27;a pas été lancé : le détecteur de la dimension 5 est remplacé par une relecture manuelle contre le système.</p></div>
+<div class="encart"><p><b>Fidélité au système.</b> Réussite partielle. Le corps de la page exprime bien le système francis : jetons partout, plaque encre unique, états glyphe + mot, logotype conforme (role=img, ı U+0131), Nunito locale chargée (fonts.check vrai), aucune icône ni émoji décoratif. Mais quatre dérives vérifiées : (1) le bloc des points express, ajouté après coup, est écrit hors système (jetons inexistants --rule et --font-titre, repli en hexadécimal, rayon 5 px, corps 11-16 px, carte de la couleur du fond de page) ; (2) les tuiles de modules sont colorées par domaine de vie alors que la règle du 20 août veut la couleur du niveau — l&#x27;élève voit une tuile sarcelle et ouvre un module à en-tête or ; (3) une collision de cascade (.om-sec &gt; span écrase .score) ; (4) le logotype n&#x27;est pas aligné sur le contenu sous 900 px. CLAUDE.md affirme « aucune couleur en dur, deux seules pièces écrites à la main » : c&#x27;est devenu faux.</p></div>
+<div class="barre" role="toolbar" aria-label="Filtrer">
+  <button type="button" data-f="tout" aria-pressed="true">Tous</button><button type="button" data-f="P1" aria-pressed="false">P1 (4)</button><button type="button" data-f="P2" aria-pressed="false">P2 (7)</button><button type="button" data-f="P3" aria-pressed="false">P3 (2)</button>
+  <span class="fin"><span class="cpt" id="cpt"></span><button type="button" id="exp">Exporter</button></span>
+</div>
+<main id="liste">
+<article class="c" id="i01" data-id="i01" data-g="P1" data-cat="accessibilite">
+  <div class="tete"><span class="g g-P1">P1 · Majeur</span><span class="cat">Accessibilité</span><span class="num">i01</span></div>
+  <h2>Textes de repérage sous 4,5:1 (couleur de section verte, pastilles numérotées, lien enseignant)</h2>
+  <div class="bloc"><b>Pour l'élève</b><p>Le numéro du module (seul endroit où il figure, le titre de tuile en est retiré par titreCourt) et le domaine se lisent mal, surtout sur téléphone en plein jour ; seuil du système (≥ 4,5:1 pour tout texte, y compris les libellés secondaires) et WCAG 1.4.3 non tenus.</p></div>
+  <div class="bloc geste"><b>Correction proposée</b><p>Garder la teinte de section pour le filet de 4 px et le fond de pastille, mais écrire le texte en encre (--text-strong) ou dans un pas plus foncé déjà au système (--green-800 au lieu de --green-600 pour le repli vert). Lien enseignant : --text-body au lieu de --text-muted sur la bande. Si la correction i05 est faite (couleur du niveau), vérifier --niv-4-line sur --niv-4-bg : 4,41:1, donc texte en encre sur la pastille.</p></div>
+  <details><summary>Preuve et emplacement</summary><p>Mesuré à 390 et 1280 px : « VOCABULAIRE » (.om-bilan-sur, 13 px/800, #0A8F5B sur blanc) 4,12:1 ; .om-tuile-domaine « Vie quotidienne », « Consommation et environnement » 4,12:1 ; pastilles .om-tuile-num 15 px/900 : sarcelle sur sarcelle-100 4,46:1, ambre 4,39:1, vert 3,66:1 (modules 07 et 17) ; « Espace enseignant » #6E7175 sur bande acier #E7F0F6 4,25:1. Aucun de ces textes n&#x27;atteint le seuil « grand texte » (18,66 px gras).</p><p class="ou">eleve.html:71 (.om-bilan-sur), :94-100 (.om-tuile-num, .om-tuile-domaine), :56 (.om-prof a), :315 (repli exo--vocab) ; assets/design-system/components/layout.css (.exo--vocab = --green-600)</p></details>
+  <div class="dec" role="group" aria-label="Décision sur i01">
+    <button type="button" data-v="corriger">Corriger</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur i01">
+  </div>
+</article>
+<article class="c" id="i02" data-id="i02" data-g="P1" data-cat="integrite">
+  <div class="tete"><span class="g g-P1">P1 · Majeur</span><span class="cat">Fidélité au système</span><span class="num">i02</span></div>
+  <h2>Bloc « Votre enseignant vous a envoyé » écrit hors système : corps 11-16 px, « Fait » à 2,69:1, carte invisible</h2>
+  <div class="bloc"><b>Pour l'élève</b><p>C&#x27;est le premier bloc de la page et le seul qui attend une réponse de l&#x27;élève : il est le plus petit et le plus pâle de l&#x27;écran, et un point fait devient presque illisible. L&#x27;élève de niveau 2 reçoit un point teinté sarcelle (niveau 5).</p></div>
+  <div class="bloc geste"><b>Correction proposée</b><p>Réécrire le bloc avec les composants existants : .card.card--marked (blanc, 18 px, filet 4 px) dans une .grid-auto, titre en --fs-lead/900, état en .om-etat (déjà glyphe + mot, 15 px), méta en --fs-body-sm ; en-tête de section en .om-sec comme les autres blocs. Point terminé : retirer l&#x27;opacité, le dire par l&#x27;état « ✓ Fait » en --green-800. Couleur : --niv-N-line selon le niveau du point (ajouter `niveau` à l&#x27;envoi côté serveur, il est déjà dans points_express.json) ou neutre --niv-outil-line à défaut.</p></div>
+  <details><summary>Preuve et emplacement</summary><p>Rendu par injection à 390 px : .pe-etat 11 px, .pe-tete p et .pe-duree 12 px, .pe-mot 13 px, .pe-titre 16 px. Sur une carte terminée, opacity .66 donne « ✓ FAIT » 2,69:1 et « 10 minutes » 3,32:1. La carte prend background var(--paper-100) — la couleur du fond de page (mesuré rgb(247,247,245) sur rgb(247,247,245)) — alors que son repli #FFF montre l&#x27;intention d&#x27;une carte blanche. var(--rule) et var(--font-titre) n&#x27;existent dans aucun jeton : bordure #D0CFCA et police &#x27;Nunito&#x27;, sans-serif viennent des replis. Rayon 5 px et filet gauche 3 px hors échelle (cartes 18 px, filet de section 4 px). Couleur fixée à --niv-5-line alors que data/points_express.json compte des points des niveaux 1 à 8.</p><p class="ou">eleve.html:125-145 (.pe-*), :550-571 (blocPointsExpress)</p></details>
+  <div class="dec" role="group" aria-label="Décision sur i02">
+    <button type="button" data-v="corriger">Corriger</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur i02">
+  </div>
+</article>
+<article class="c" id="i03" data-id="i03" data-g="P1" data-cat="responsive">
+  <div class="tete"><span class="g g-P1">P1 · Majeur</span><span class="cat">Téléphone et écrans</span><span class="num">i03</span></div>
+  <h2>Sélecteur de langue d&#x27;appui : 88 × 26 px et texte 12 px (zoom de Safari au focus)</h2>
+  <div class="bloc"><b>Pour l'élève</b><p>C&#x27;est la porte d&#x27;entrée des élèves qui ont le moins de français, et elle est la plus petite cible de la page : difficile à toucher, puis la page zoome et décale tout. Seuil du système : cibles ≥ 44 px.</p></div>
+  <div class="bloc geste"><b>Correction proposée</b><p>min-height: var(--tap-min) ; font-size: 16px minimum (17 px = --fs-body-sm de .field) ; padding: 0 var(--sp-2) ; border-radius: var(--r-sm) ; filet --border. Si la barre manque de place sous 480 px, le logotype y est déjà réduit au nom seul ; mesurer à 320 px que nom + sélecteur + « Se déconnecter » tiennent avec 12 px d&#x27;écart.</p></div>
+  <details><summary>Preuve et emplacement</summary><p>Mesuré : 88 × 26 px et 12 px à 320/390/640 px, 107 × 29 px et 14 px à 1280 px. Un champ de formulaire sous 16 px fait zoomer Safari iOS au toucher (règle du skill francis).</p><p class="ou">eleve.html:186-196 (.appui-sel, max-width 96px / font-size 12px / padding 3px 2px sous 640 px) ; js/appui.js:120-150</p></details>
+  <div class="dec" role="group" aria-label="Décision sur i03">
+    <button type="button" data-v="corriger">Corriger</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur i03">
+  </div>
+</article>
+<article class="c" id="i04" data-id="i04" data-g="P1" data-cat="accessibilite">
+  <div class="tete"><span class="g g-P1">P1 · Majeur</span><span class="cat">Accessibilité</span><span class="num">i04</span></div>
+  <h2>Échec de connexion : message non annoncé et faux en cas de panne réseau</h2>
+  <div class="bloc"><b>Pour l'élève</b><p>Hors ligne ou serveur en panne, l&#x27;élève croit que son code est faux et le retape, puis demande un nouveau code à l&#x27;enseignante. Avec un lecteur d&#x27;écran, rien n&#x27;est dit. WCAG 4.1.3 (messages d&#x27;état) et 3.3.1.</p></div>
+  <div class="bloc geste"><b>Correction proposée</b><p>role=&quot;alert&quot; sur #loginError ; aria-describedby=&quot;aideCode loginError&quot; et aria-invalid sur l&#x27;input ; deux messages : 401 → « Ce code ne correspond à aucun élève. », autre → « Connexion impossible pour l&#x27;instant. Vérifiez votre réseau, puis réessayez. » ; changer l&#x27;état du bouton par disabled + aria-busy sans réécrire textContent, ou rappeler Appui.poser(btn) après.</p></div>
+  <details><summary>Preuve et emplacement</summary><p>Le paragraphe d&#x27;erreur passe de hidden à visible sans role=&quot;alert&quot; ni aria-live, l&#x27;input n&#x27;a ni aria-invalid ni aria-describedby vers l&#x27;aide (« Six caractères… ») ou l&#x27;erreur. Le catch traite pareil un 401, un 500 et un fetch qui échoue hors ligne : tous affichent « Ce code ne correspond à aucun élève. ». De plus btn.textContent = &#x27;Entrer&#x27; efface le &lt;span class=&quot;ap&quot;&gt; que Appui.poser a mis dans le bouton : après un échec, le bouton perd sa traduction d&#x27;appui.</p><p class="ou">eleve.html:245 (#loginError sans role/aria-live), :352-356 (catch unique), :339 et :355 (textContent)</p></details>
+  <div class="dec" role="group" aria-label="Décision sur i04">
+    <button type="button" data-v="corriger">Corriger</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur i04">
+  </div>
+</article>
+<article class="c" id="i05" data-id="i05" data-g="P2" data-cat="integrite">
+  <div class="tete"><span class="g g-P2">P2 · Mineur</span><span class="cat">Fidélité au système</span><span class="num">i05</span></div>
+  <h2>Tuiles colorées par domaine de vie, alors que la couleur d&#x27;un module est celle de son niveau</h2>
+  <div class="bloc"><b>Pour l'élève</b><p>Deux échelles pour une même idée : l&#x27;élève voit une tuile sarcelle et ouvre un module à en-tête or. Le vert du repli usurpe la couleur de l&#x27;action et de « juste ».</p></div>
+  <div class="bloc geste"><b>Correction proposée</b><p>Poser --sec / --sec-soft depuis nouveauDesignColor / nouveauDesignTint (ou --niv-N-line / --niv-N-bg) sur .om-tuile ; supprimer SECTIONS et le repli exo--vocab. Le domaine reste écrit en toutes lettres dans .om-tuile-domaine (texte en encre, voir i01).</p></div>
+  <details><summary>Preuve et emplacement</summary><p>L&#x27;API /api/student/activities rend nouveauDesignColor = #8C6A07 (niveau 4, or) pour les modules 1 à 10, que viewer.html applique à l&#x27;en-tête. La page, elle, peint la tuile en sarcelle (santé), acier (travail), indigo (culture), ambre (logement) ou vert (repli exo--vocab, « Vie quotidienne », « Consommation »). CLAUDE.md, section « La couleur d&#x27;un module est celle de son niveau » : « les jetons --niv-N-line / --niv-N-bg servent au catalogue, au portail et à l&#x27;en-tête du module », et la mémoire « plus aucun vert au repérage ».</p><p class="ou">eleve.html:303-309 (SECTIONS), :413-416 (sectionDe), :665 (classe exo--* sur la tuile)</p></details>
+  <div class="dec" role="group" aria-label="Décision sur i05">
+    <button type="button" data-v="corriger">Corriger</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur i05">
+  </div>
+</article>
+<article class="c" id="i06" data-id="i06" data-g="P2" data-cat="integrite">
+  <div class="tete"><span class="g g-P2">P2 · Mineur</span><span class="cat">Fidélité au système</span><span class="num">i06</span></div>
+  <h2>Collision de cascade : .om-sec &gt; span écrase la pastille .score</h2>
+  <div class="bloc"><b>Pour l'élève</b><p>Le seul compteur de progression global de la liste est en capitales espacées (le système réserve les majuscules aux sur-titres) et sous le seuil de contraste.</p></div>
+  <div class="bloc geste"><b>Correction proposée</b><p>Restreindre la règle au libellé : .om-sec &gt; .om-sec__lib (ou :first-child), comme le préconise le skill francis pour les noms qui veulent dire deux choses — renommer plutôt que monter la spécificité.</p></div>
+  <details><summary>Preuve et emplacement</summary><p>Spécificité (0,1,1) contre (0,1,0) : la pastille « 0 / 11 terminés » prend color --text-muted, text-transform uppercase et letter-spacing .1em. Mesuré : #6E7175 sur --accent-soft #E6F5EE = 4,36:1, rendu « 0 / 11 TERMINÉS ».</p><p class="ou">eleve.html:25-28 (.om-sec &gt; span) et :689 (&lt;span class=&quot;score&quot;&gt; enfant direct de .om-sec)</p></details>
+  <div class="dec" role="group" aria-label="Décision sur i06">
+    <button type="button" data-v="corriger">Corriger</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur i06">
+  </div>
+</article>
+<article class="c" id="i07" data-id="i07" data-g="P2" data-cat="accessibilite">
+  <div class="tete"><span class="g g-P2">P2 · Mineur</span><span class="cat">Accessibilité</span><span class="num">i07</span></div>
+  <h2>Aucun titre de section ni &lt;main&gt; : la page n&#x27;a qu&#x27;un h1</h2>
+  <div class="bloc"><b>Pour l'élève</b><p>Au lecteur d&#x27;écran, impossible de sauter d&#x27;une section à l&#x27;autre dans une page de 43 activités ; WCAG 1.3.1 et 2.4.1.</p></div>
+  <div class="bloc geste"><b>Correction proposée</b><p>Faire de chaque .om-sec un &lt;h2 class=&quot;om-sec&quot;&gt; (le libellé dans un span stylé comme aujourd&#x27;hui, aucun changement visuel) ; titres de tuile et de rangée en &lt;h3&gt; ; envelopper #contenu dans &lt;main&gt;.</p></div>
+  <details><summary>Preuve et emplacement</summary><p>Arbre mesuré à 390 et 1280 px : un seul titre, « H1: Bonjour Lilas ». « Votre bilan », « Les 11 modules », « Activités thématiques », « Pour vous exercer seul », « Documents à consulter » sont des &lt;span&gt;. Repères présents : header.band, footer.cf-lien ; aucun main. Seul le bloc points express porte un h2 (quand il existe).</p><p class="ou">eleve.html:542, 602, 651, 687, 713 (&lt;div class=&quot;om-sec&quot;&gt;&lt;span&gt;…), :219 et :256 (pas de &lt;main&gt;)</p></details>
+  <div class="dec" role="group" aria-label="Décision sur i07">
+    <button type="button" data-v="corriger">Corriger</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur i07">
+  </div>
+</article>
+<article class="c" id="i08" data-id="i08" data-g="P2" data-cat="accessibilite">
+  <div class="tete"><span class="g g-P2">P2 · Mineur</span><span class="cat">Accessibilité</span><span class="num">i08</span></div>
+  <h2>43 boutons au nom identique (« Ouvrir » ×32, « Commencer » ×8, « Bientôt » ×4)</h2>
+  <div class="bloc"><b>Pour l'élève</b><p>Au lecteur d&#x27;écran ou à la liste des contrôles, « Ouvrir, bouton » ×32 ne dit pas quoi ; WCAG 2.4.6.</p></div>
+  <div class="bloc geste"><b>Correction proposée</b><p>aria-describedby vers l&#x27;id du titre de la tuile/rangée (le libellé visible ne change pas), ou un &lt;span class=&quot;u-visually-hidden&quot;&gt; avec le titre court dans le bouton.</p></div>
+  <details><summary>Preuve et emplacement</summary><p>Décompte dans le DOM rendu : {Ouvrir: 32, Commencer: 8, Bientôt: 4}, sans aria-label ni aria-describedby vers le titre de l&#x27;activité.</p><p class="ou">eleve.html:723-732 (boutonOuvrir)</p></details>
+  <div class="dec" role="group" aria-label="Décision sur i08">
+    <button type="button" data-v="corriger">Corriger</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur i08">
+  </div>
+</article>
+<article class="c" id="i09" data-id="i09" data-g="P2" data-cat="responsive">
+  <div class="tete"><span class="g g-P2">P2 · Mineur</span><span class="cat">Téléphone et écrans</span><span class="num">i09</span></div>
+  <h2>Gouttière de 32 px sur téléphone et logotype décalé de 12 px du contenu</h2>
+  <div class="bloc"><b>Pour l'élève</b><p>Le décalage logotype/contenu est le défaut que le skill francis dit voir « tout de suite » ; 64 px de marges sur 390 px resserrent les tuiles et poussent les titres sur trois lignes.</p></div>
+  <div class="bloc geste"><b>Correction proposée</b><p>Dans eleve.html : @media (max-width: 640px) { .container { padding: 0 var(--sp-4); } .fr-barre .fr-barre__in { padding: 0 var(--sp-4); } } et, entre 640 et 900 px, aligner .fr-barre__in sur la gouttière du .container (ou l&#x27;inverse). Remesurer getBoundingClientRect().left à 375, ~1100 et 1600 px.</p></div>
+  <details><summary>Preuve et emplacement</summary><p>Mesuré : à 390 px, .fr-nom à left 20 px, contenu à left 32 px ; idem à 640 px. Aligné à 1280 px (172/172). Largeur utile 326 px à 390, 256 px à 320 (la .grid-auto minmax(280px) déborde alors de son conteneur de 24 px sur la gouttière, sans défilement horizontal).</p><p class="ou">assets/design-system/components/layout.css (.container padding 0 var(--gutter), sans requête de média) ; marque-francis.css:185-186 (.fr-barre__in 20 px sous 900 px) ; eleve.html (aucune surcharge)</p></details>
+  <div class="dec" role="group" aria-label="Décision sur i09">
+    <button type="button" data-v="corriger">Corriger</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur i09">
+  </div>
+</article>
+<article class="c" id="i10" data-id="i10" data-g="P2" data-cat="accessibilite">
+  <div class="tete"><span class="g g-P2">P2 · Mineur</span><span class="cat">Accessibilité</span><span class="num">i10</span></div>
+  <h2>État et progression des activités en 15 px</h2>
+  <div class="bloc"><b>Pour l'élève</b><p>« En cours », « Fait le 12 mars », « 3 exercices sur 8 » sont l&#x27;information que l&#x27;élève vient chercher ; le système dit « rien sous 17 px sauf libellés d&#x27;interface ».</p></div>
+  <div class="bloc geste"><b>Correction proposée</b><p>Passer .om-etat et .om-tuile-detail à --fs-body-sm (17 px). Les résumés de compétences peuvent rester en --fs-ui s&#x27;ils sont assumés comme libellés ; le noter dans le commentaire de tête.</p></div>
+  <details><summary>Preuve et emplacement</summary><p>Mesuré : 37 états « À faire » à 15 px, 11 détails « Écouter · Parler » / « 3 exercices sur 8 » à 15 px, 32 résumés à 15 px. --fs-ui est défini dans typography.css comme « libellé de bouton ».</p><p class="ou">eleve.html:34 (.om-etat), :102 (.om-tuile-detail), :109 (.om-rangee-resume), :75 (.om-bilan-legende) — tous var(--fs-ui)</p></details>
+  <div class="dec" role="group" aria-label="Décision sur i10">
+    <button type="button" data-v="corriger">Corriger</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur i10">
+  </div>
+</article>
+<article class="c" id="i11" data-id="i11" data-g="P2" data-cat="performance">
+  <div class="tete"><span class="g g-P2">P2 · Mineur</span><span class="cat">Performance</span><span class="num">i11</span></div>
+  <h2>Feuille de style en cascade d&#x27;@import, dont une vers Google Fonts, qui bloque le premier rendu</h2>
+  <div class="bloc"><b>Pour l'élève</b><p>Sur un téléphone en 4G faible ou un réseau de centre filtrant, la page reste blanche le temps de la chaîne ; si la requête vers Google pend au lieu d&#x27;échouer, tout le CSS attend.</p></div>
+  <div class="bloc geste"><b>Correction proposée</b><p>Sans toucher au contenu du système : produire au build un styles.css concaténé (un seul fichier) pour les pages du portail, et sortir l&#x27;@import Google de la chaîne bloquante (un &lt;link rel=&quot;stylesheet&quot; media=&quot;print&quot; onload=&quot;this.media=&#x27;all&#x27;&quot;&gt; dans les pages qui servent des langues hors latin). Nunito reste locale, conforme au système.</p></div>
+  <details><summary>Preuve et emplacement</summary><p>styles.css n&#x27;est que des @import : le navigateur ne découvre les 16 feuilles qu&#x27;après l&#x27;avoir reçue, et fonts.css n&#x27;émet sa requête vers Google qu&#x27;après avoir été reçue elle-même (trois allers-retours en série avant le premier rendu). Le commentaire de fonts.css confirme que les faces locales suffisent pour tout le latin ; l&#x27;@import externe ne sert qu&#x27;aux alphabets hors plage.</p><p class="ou">eleve.html:11 → assets/design-system/styles.css (16 @import) → tokens/fonts.css:9 (@import fonts.googleapis.com)</p></details>
+  <div class="dec" role="group" aria-label="Décision sur i11">
+    <button type="button" data-v="corriger">Corriger</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur i11">
+  </div>
+</article>
+<article class="c" id="i12" data-id="i12" data-g="P3" data-cat="accessibilite">
+  <div class="tete"><span class="g g-P3">P3 · Finition</span><span class="cat">Accessibilité</span><span class="num">i12</span></div>
+  <h2>Deux &lt;select id=&quot;appuiSel&quot;&gt; dans le même document</h2>
+  <div class="bloc"><b>Pour l'élève</b><p>Faible aujourd&#x27;hui (aucun label for ne pointe dessus), mais tout getElementById(&#x27;appuiSel&#x27;) ou label futur visera le sélecteur caché.</p></div>
+  <div class="bloc geste"><b>Correction proposée</b><p>Ne pas poser d&#x27;id dans selecteur(), ou un id suffixé par l&#x27;hôte.</p></div>
+  <details><summary>Preuve et emplacement</summary><p>Mesuré : idsDoubles = [[&quot;appuiSel&quot;, 2]] sur les deux écrans.</p><p class="ou">js/appui.js:124 (sel.id = &#x27;appuiSel&#x27;) appelé pour les deux .appui-hote (eleve.html:227 et :265, boucle :770-771)</p></details>
+  <div class="dec" role="group" aria-label="Décision sur i12">
+    <button type="button" data-v="corriger">Corriger</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur i12">
+  </div>
+</article>
+<article class="c" id="i13" data-id="i13" data-g="P3" data-cat="integrite">
+  <div class="tete"><span class="g g-P3">P3 · Finition</span><span class="cat">Fidélité au système</span><span class="num">i13</span></div>
+  <h2>Le code d&#x27;accès est affiché en sur-titre de l&#x27;accueil</h2>
+  <div class="bloc"><b>Pour l'élève</b><p>En classe, l&#x27;écran projeté ou vu par-dessus l&#x27;épaule donne l&#x27;accès complet au dossier de l&#x27;élève.</p></div>
+  <div class="bloc geste"><b>Correction proposée</b><p>Retirer le code du sur-titre (ou le masquer partiellement : « Code ••••BS ») ; le sur-titre peut porter le groupe ou rester vide.</p></div>
+  <details><summary>Preuve et emplacement</summary><p>Rendu : « CODE UTG9BS » au-dessus de « Bonjour Lilas ». CLAUDE.md (registre des appels) rappelle que le code « authentifie » et vaut un mot de passe.</p><p class="ou">eleve.html:380-381 (bandSurtitre = `Code ${session.code}`)</p></details>
+  <div class="dec" role="group" aria-label="Décision sur i13">
+    <button type="button" data-v="corriger">Corriger</button>
+    <button type="button" data-v="tard">Plus tard</button>
+    <button type="button" data-v="non">Non</button>
+    <input type="text" class="note" placeholder="Une note (facultatif)" aria-label="Note sur i13">
+  </div>
+</article>
+</main>
+<section class="annexe"><h2>Ce qui marche, à garder</h2><ul><li>Aucun débordement horizontal à 320, 390, 640 et 1280 px (scrollWidth = largeur mesurée), y compris avec les blocs injectés ; le correctif min(320px, 100%) du bloc encre tient.</li><li>Tous les boutons (Entrer, Commencer, Ouvrir, Se déconnecter, Continuer) font au moins 44 px de haut ; le champ du code est en 17 px (pas de zoom Safari) avec un vrai label for.</li><li>Chaque état porte glyphe ET mot (✓ Fait le…, → En cours, · À faire / Le 12 mars), glyphe aria-hidden : la couleur ne porte jamais seule l&#x27;information.</li><li>Une seule plaque encre (« Votre prochaine étape »), bande d&#x27;en-tête claire, jamais noire ; logotype par le balisage officiel (role=img, aria-label, ı U+0131), Nunito locale chargée (document.fonts.check vrai).</li><li>Les trois appels du chargement partent en parallèle (Promise.all), l&#x27;envoi des points express échoue en silence, le service worker n&#x27;est enregistré qu&#x27;après load ; état de chargement et état d&#x27;erreur présents.</li><li>Tout le texte dynamique passe par escHtml ; les noms de fichiers de groupe sont assainis au serveur (safe_filename + slugify), le lien Teams est posé par la propriété href après filtre http(s) côté serveur.</li><li>translate=&quot;no&quot; et la langue d&#x27;appui en couche sous le français, avec direction rtl pour l&#x27;arabe, le farsi et l&#x27;ourdou : choix pédagogique cohérent et soigné.</li><li>prefers-reduced-motion annule les durées dans les jetons ; aucune animation décorative.</li></ul></section>
+<section class="annexe"><h2>Écartés parce qu'ils contredisent le système (9)</h2><ul><li><b>Absence de mode sombre / theming clair-sombre</b> — contredit le système : fond neutre chaud et cartes blanches, aucun mode sombre défini dans tokens/colors.css ; en ajouter un créerait une palette parallèle.</li><li><b>Bannir le sur-titre au-dessus du titre (« kicker / eyebrow », craft-floor)</b> — contredit le système : .band__eyebrow et les sur-titres 13 px majuscules sont un composant officiel de la hiérarchie à quatre niveaux du README.</li><li><b>Cartes de même taille icône + titre + texte comme structure (craft-floor)</b> — contredit le système : la remise « portail élève 2a » fait foi pour eleve.html (tuiles à filet de couleur, rangées card--flush).</li><li><b>Filet gauche coloré de plus de 1 px sur les cartes (craft-floor)</b> — contredit le système : le filet gauche de 4 px est le seul usage décoratif autorisé de la couleur de section (cards.css, .card--marked). Seul le filet de 3 px du bloc points express est relevé, parce qu&#x27;il sort de l&#x27;échelle (i02).</li><li><b>Thémer barres de défilement, sélection de texte, caret (craft-floor « browser surfaces »)</b> — hors sujet pour le système : base.css règle déjà la barre de défilement et le focus ; la sélection de texte n&#x27;est pas une plaque encre au sens du système (qui vise l&#x27;élément choisi d&#x27;un exercice). Aucun gain pour l&#x27;élève.</li><li><b>Ajouter un moment d&#x27;animation « signature » (craft-floor « one authored moment »)</b> — contredit le système : transitions de 140 ms sur la couleur seulement, aucun déplacement, rien qui détourne d&#x27;une consigne.</li><li><b>Remplacer les glyphes ✓ → · par des icônes dessinées</b> — contredit le système : les glyphes ✓ ✕ sont l&#x27;exception explicite du README, toujours doublés du mot ; « → » et « · » suivent la même logique et sont aria-hidden.</li><li><b>Chiffre du bilan à 40 px hors échelle typographique</b> — écart assumé et commenté dans la page (ligne 73), issu de la remise 2a ; ni lisibilité ni contraste en cause.</li><li><b>Boutons désactivés « Bientôt » à opacité .5 sous 4,5:1</b> — WCAG exempte les composants inactifs, et le système (buttons.css) définit cet état ; le mot « Bientôt » et la date de l&#x27;état portent l&#x27;information.</li></ul></section>
+<p style="font-size:14px;color:var(--gris);margin-top:32px">Source : data/audit/impeccable-eleve.json. Page engendrée par build/audit_impeccable_page.py.</p>
+</div>
+<script>
+(function(){
+  var DATA=[{"id": "i01", "gravite": "P1", "categorie": "accessibilite", "titre": "Textes de repérage sous 4,5:1 (couleur de section verte, pastilles numérotées, lien enseignant)"}, {"id": "i02", "gravite": "P1", "categorie": "integrite", "titre": "Bloc « Votre enseignant vous a envoyé » écrit hors système : corps 11-16 px, « Fait » à 2,69:1, carte invisible"}, {"id": "i03", "gravite": "P1", "categorie": "responsive", "titre": "Sélecteur de langue d'appui : 88 × 26 px et texte 12 px (zoom de Safari au focus)"}, {"id": "i04", "gravite": "P1", "categorie": "accessibilite", "titre": "Échec de connexion : message non annoncé et faux en cas de panne réseau"}, {"id": "i05", "gravite": "P2", "categorie": "integrite", "titre": "Tuiles colorées par domaine de vie, alors que la couleur d'un module est celle de son niveau"}, {"id": "i06", "gravite": "P2", "categorie": "integrite", "titre": "Collision de cascade : .om-sec > span écrase la pastille .score"}, {"id": "i07", "gravite": "P2", "categorie": "accessibilite", "titre": "Aucun titre de section ni <main> : la page n'a qu'un h1"}, {"id": "i08", "gravite": "P2", "categorie": "accessibilite", "titre": "43 boutons au nom identique (« Ouvrir » ×32, « Commencer » ×8, « Bientôt » ×4)"}, {"id": "i09", "gravite": "P2", "categorie": "responsive", "titre": "Gouttière de 32 px sur téléphone et logotype décalé de 12 px du contenu"}, {"id": "i10", "gravite": "P2", "categorie": "accessibilite", "titre": "État et progression des activités en 15 px"}, {"id": "i11", "gravite": "P2", "categorie": "performance", "titre": "Feuille de style en cascade d'@import, dont une vers Google Fonts, qui bloque le premier rendu"}, {"id": "i12", "gravite": "P3", "categorie": "accessibilite", "titre": "Deux <select id=\"appuiSel\"> dans le même document"}, {"id": "i13", "gravite": "P3", "categorie": "integrite", "titre": "Le code d'accès est affiché en sur-titre de l'accueil"}], CLE="audit-impeccable-eleve-v1", etat={};
+  try{etat=JSON.parse(localStorage.getItem(CLE)||"{}")}catch(e){etat={}}
+  function garder(){try{localStorage.setItem(CLE,JSON.stringify(etat))}catch(e){}}
+  var cartes=[].slice.call(document.querySelectorAll(".c"));
+  function compter(){document.getElementById("cpt").textContent=cartes.filter(function(c){return (etat[c.dataset.id]||{}).v}).length+" / "+cartes.length+" tranchés"}
+  cartes.forEach(function(c){
+    var id=c.dataset.id, bs=[].slice.call(c.querySelectorAll(".dec button")), note=c.querySelector(".note");
+    function peindre(){var v=(etat[id]||{}).v; bs.forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.v===v))}); c.classList.toggle("fait",!!v)}
+    note.value=(etat[id]||{}).note||"";
+    bs.forEach(function(b){b.addEventListener("click",function(){var x=etat[id]||{}; x.v=(x.v===b.dataset.v)?"":b.dataset.v; etat[id]=x; garder(); peindre(); compter();})});
+    note.addEventListener("input",function(){var x=etat[id]||{}; x.note=note.value; etat[id]=x; garder();});
+    peindre();
+  });
+  [].slice.call(document.querySelectorAll(".barre [data-f]")).forEach(function(b,_,tous){
+    b.addEventListener("click",function(){tous.forEach(function(x){x.setAttribute("aria-pressed",String(x===b))});
+      cartes.forEach(function(c){c.hidden=!(b.dataset.f==="tout"||c.dataset.g===b.dataset.f)})});
+  });
+  document.getElementById("exp").addEventListener("click",function(){
+    var out={page:"audit-impeccable-eleve",date:new Date().toISOString().slice(0,10),decisions:DATA.map(function(c){var x=etat[c.id]||{};return {id:c.id,gravite:c.gravite,titre:c.titre,decision:x.v||"",note:x.note||""}})};
+    var txt=JSON.stringify(out,null,2), a=document.createElement("a");
+    a.href=URL.createObjectURL(new Blob([txt],{type:"application/json"})); a.download="audit-impeccable-eleve-decisions.json"; a.click();
+    if(navigator.clipboard){navigator.clipboard.writeText(txt).catch(function(){})}
+  });
+  compter();
+})();
+</script>
+</body></html>

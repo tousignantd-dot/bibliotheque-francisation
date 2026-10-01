@@ -7,8 +7,15 @@
 <!-- PAS-DE-TRADUCTION:fin -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>francis — Francisation</title>
-  <!-- Le système de design versionné, pas ds-bundle/ (ignoré par git). -->
-  <link rel="stylesheet" href="assets/design-system/styles.css" />
+  <!-- Le système de design en un seul fichier (produit par
+       build/styles_bundle.py à partir de styles.css) : la chaîne d'@import
+       coûtait trois allers-retours avant le premier affichage. Jamais
+       ds-bundle/ (ignoré par git). -->
+  <link rel="stylesheet" href="assets/design-system/styles.bundle.css" />
+  <!-- Nunito pour les alphabets hors du latin (langue d'appui en ukrainien) :
+       chargée sans bloquer. Le latin vient des faces locales du paquet. -->
+  <link rel="stylesheet" media="print" onload="this.media='all'"
+        href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,600;1,700&display=swap" />
   <link rel="stylesheet" href="assets/design-system/marque-francis.css" />
   <link rel="icon" type="image/svg+xml" href="assets/design-system/marque-francis-favicon.svg" />
     <style>
@@ -21,8 +28,10 @@
     /* En-tête teinté acier sur les deux écrans — jamais d'en-tête noir. */
     .om-portail { --surface-band: var(--acier-100); --border-tint: var(--line-100); min-height: 100vh; }
 
-    .om-sec { display: flex; align-items: center; gap: var(--sp-4); margin-bottom: var(--sp-4); }
-    .om-sec > span {
+    .om-sec { display: flex; align-items: center; gap: var(--sp-4); margin: 0 0 var(--sp-4); font: inherit; }
+    /* Le libellé a sa classe : `.om-sec > span` peignait aussi la pastille
+       .score posée dans la même rangée (capitales grises, 4,36:1). */
+    .om-sec__lib {
       font-size: var(--fs-label); font-weight: var(--fw-bold);
       letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted);
     }
@@ -31,7 +40,7 @@
     .om-bar { height: 8px; border-radius: 999px; background: var(--surface-sunken); border: 1px solid var(--border); overflow: hidden; }
     .om-bar > b { display: block; height: 100%; background: var(--sec, var(--accent)); border-radius: 999px; }
 
-    .om-etat { display: inline-flex; align-items: center; gap: 6px; font-size: var(--fs-ui); font-weight: var(--fw-bold); white-space: nowrap; }
+    .om-etat { display: inline-flex; align-items: center; gap: 6px; font-size: var(--fs-body-sm); font-weight: var(--fw-bold); white-space: nowrap; }
     .om-etat--fait { color: var(--green-800); }
     .om-etat--cours { color: var(--ink-900); }
     .om-etat--afaire { color: var(--text-muted); }
@@ -53,7 +62,7 @@
     .om-connexion input { text-transform: uppercase; }
     .om-aide { margin: var(--sp-4) 0 0; font-size: var(--fs-body-sm); font-weight: var(--fw-medium); color: var(--text-body); }
     .om-prof { margin: var(--sp-5) 0 0; font-size: var(--fs-ui); font-weight: var(--fw-semi); }
-    .om-prof a { color: var(--text-muted); text-decoration: none; border-bottom: 1px solid var(--border); }
+    .om-prof a { color: var(--text-body); text-decoration: none; border-bottom: 1px solid var(--border); }
     .om-prof a:hover { color: var(--text-accent); border-bottom-color: currentColor; }
 
     .om-erreur {
@@ -68,7 +77,7 @@
     .om-bilan { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-5); }
     .om-bilan-sur {
       font-size: var(--fs-label); font-weight: var(--fw-bold); letter-spacing: .1em;
-      text-transform: uppercase; color: var(--sec); margin-bottom: var(--sp-3);
+      text-transform: uppercase; color: var(--text-strong); margin-bottom: var(--sp-3);
     }
     /* Seule valeur hors échelle typographique du système, voulue telle quelle. */
     .om-bilan-chiffre { font-size: 40px; font-weight: var(--fw-black); line-height: 1; margin-bottom: var(--sp-3); color: var(--text-strong); }
@@ -83,7 +92,7 @@
        tôt sur un écran large) sans jamais dépasser le sien. */
     .om-encre-txt { flex: 1; min-width: min(320px, 100%); }
     .om-encre-sur { font-size: var(--fs-label); font-weight: var(--fw-bold); letter-spacing: .1em; text-transform: uppercase; opacity: .72; margin-bottom: var(--sp-2); }
-    .om-encre-titre { font-size: var(--fs-h3); font-weight: var(--fw-black); margin-bottom: var(--sp-3); }
+    .om-encre-titre { font-size: var(--fs-h3); font-weight: var(--fw-black); margin: 0 0 var(--sp-3); }
     .om-encre-meta { font-size: var(--fs-body-sm); font-weight: var(--fw-medium); opacity: .82; }
 
     .om-grille { gap: var(--sp-5); }
@@ -94,20 +103,22 @@
     .om-tuile-num {
       flex-shrink: 0; width: 36px; height: 36px; border-radius: var(--r-md);
       display: flex; align-items: center; justify-content: center;
-      background: var(--sec-soft); color: var(--sec);
+      background: var(--sec-soft); color: var(--text-strong);
       font-size: var(--fs-ui); font-weight: var(--fw-black);
     }
-    .om-tuile-domaine { font-size: var(--fs-label); font-weight: var(--fw-bold); letter-spacing: .1em; text-transform: uppercase; color: var(--sec); }
-    .om-tuile-titre { font-size: var(--fs-lead); font-weight: var(--fw-black); line-height: 1.25; }
-    .om-tuile-detail { font-size: var(--fs-ui); font-weight: var(--fw-semi); color: var(--text-muted); }
+    /* La teinte reste au filet et au fond de la pastille ; le texte est en
+       encre — aucune teinte de niveau ne tient 4,5:1 sur son propre fond. */
+    .om-tuile-domaine { font-size: var(--fs-label); font-weight: var(--fw-bold); letter-spacing: .1em; text-transform: uppercase; color: var(--text-strong); }
+    .om-tuile-titre { font-size: var(--fs-lead); font-weight: var(--fw-black); line-height: 1.25; margin: 0; }
+    .om-tuile-detail { font-size: var(--fs-body-sm); font-weight: var(--fw-semi); color: var(--text-muted); }
     .om-tuile-bas { margin-top: auto; display: flex; flex-direction: column; gap: var(--sp-3); }
     .om-tuile-pied { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-3); }
 
     .om-rangee { display: flex; align-items: center; gap: var(--sp-5); }
     .om-rangee-txt { flex: 1; min-width: 0; }
-    .om-rangee-titre { font-size: var(--fs-body-sm); font-weight: var(--fw-bold); margin-bottom: 2px; }
+    .om-rangee-titre { font-size: var(--fs-body-sm); font-weight: var(--fw-bold); margin: 0 0 2px; }
     .om-rangee-resume { font-size: var(--fs-ui); font-weight: var(--fw-semi); color: var(--text-muted); }
-    .om-rangee-etat { width: 150px; flex-shrink: 0; }
+    .om-rangee-etat { min-width: 150px; flex-shrink: 0; }
 
     .om-vide { font-size: var(--fs-body-sm); font-weight: var(--fw-semi); color: var(--text-muted); }
 
@@ -123,26 +134,14 @@
     }
   
   /* ── Les points express envoyés par l'enseignant ─────────────────────
-     Aucune couleur en dur : les jetons du système de design. L'état porte
-     toujours un glyphe ET un mot. */
-  .pe-bloc{margin-bottom:var(--sp-8)}
-  .pe-tete h2{font-family:var(--font-titre,'Nunito',sans-serif);font-size:var(--fs-h3,20px);
-    font-weight:800;color:var(--ink-900);margin:0}
-  .pe-tete p{font-size:var(--fs-meta,13px);color:var(--ink-500);margin:4px 0 0}
-  .pe-liste{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
-    gap:var(--sp-3,12px);margin-top:var(--sp-4,16px)}
-  .pe-carte{display:flex;flex-direction:column;gap:5px;padding:14px 16px;
-    background:var(--paper-100,#FFF);border:1px solid var(--rule,#D0CFCA);
-    border-left:3px solid var(--niv-5-line,#0D7A6F);border-radius:5px;
-    text-decoration:none;color:inherit}
-  .pe-carte:hover{border-color:var(--ink-900);border-left-color:var(--niv-5-line,#0D7A6F)}
-  .pe-carte--fait{opacity:.66}
-  .pe-etat{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--niv-5-line,#0D7A6F)}
-  .pe-titre{font-family:var(--font-titre,'Nunito',sans-serif);font-size:16px;font-weight:800;
-    color:var(--ink-900);line-height:1.2}
-  .pe-mot{font-size:13px;color:var(--ink-700,#3A3D40)}
-  .pe-duree{font-size:12px;color:var(--ink-500)}
+     Des cartes du système (.card--marked dans un .exo), la couleur du niveau
+     du point, l'état en .om-etat (glyphe ET mot). Un point terminé le dit par
+     son état, jamais par une opacité qui le rendait illisible. */
+  .pe-lead { margin: calc(-1 * var(--sp-2)) 0 var(--sp-4); font-size: var(--fs-body-sm); font-weight: var(--fw-medium); color: var(--text-body); }
+  a.pe-carte { display: flex; flex-direction: column; gap: var(--sp-2); height: 100%; text-decoration: none; color: inherit; }
+  a.pe-carte:hover { border-color: var(--ink-900); border-left-color: var(--sec); }
+  .pe-titre { font-size: var(--fs-lead); font-weight: var(--fw-black); line-height: 1.25; margin: 0; color: var(--text-strong); }
+  .pe-mot, .pe-duree { font-size: var(--fs-body-sm); font-weight: var(--fw-medium); color: var(--text-body); }
   /* Le pied de page légal : présent partout, discret partout. */
   .cf-lien { padding: var(--sp-6) 0 var(--sp-8); text-align: center; }
   .cf-lien a { color: var(--text-muted); font-size: var(--fs-ui-sm);
@@ -182,17 +181,25 @@
           border-left-color: rgba(255,255,255,.32); }
     .om-encre .ap:lang(ar), .om-encre .ap:lang(fa), .om-encre .ap:lang(ur) {
           border-right-color: rgba(255,255,255,.32); }
-    .om-barre-droite { display: flex; align-items: center; gap: var(--sp-2, 8px); }
-    .appui-sel { font-family: inherit; font-size: var(--fs-ui-sm);
-          color: var(--ink-500); background: transparent;
-          border: 1px solid var(--line-100); border-radius: 6px;
-          padding: 3px 6px; cursor: pointer; max-width: 132px; }
+    .om-barre-droite { display: flex; align-items: center; gap: var(--sp-3); }  /* 12 px entre deux boutons */
+    /* Un champ sous 16 px fait zoomer Safari au toucher, et 26 px de haut ne
+       se touchent pas du doigt : la cible et le corps du système. */
+    .appui-sel { font-family: inherit; font-size: 16px; font-weight: var(--fw-semi);
+          color: var(--text-body); background: var(--white);
+          border: 1px solid var(--border); border-radius: var(--r-sm);
+          min-height: var(--tap-min); padding: 0 var(--sp-2); cursor: pointer; max-width: 150px; }
     .appui-sel:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
     @media (max-width: 640px) {
-      /* La leçon déjà payée sur le gabarit des points express : une barre
-         tenue au pixel près ne supporte pas un élément de plus sans qu'on
-         la remesure. On rétrécit sans tronquer les noms de langue. */
-      .appui-sel { max-width: 96px; font-size: 12px; padding: 3px 2px; }
+      .appui-sel { max-width: 120px; }
+    }
+    /* La gouttière du système (32 px) mangeait le téléphone, et la barre de
+       marque passe à 20 px sous 900 px : le logotype se décalait du contenu.
+       Les deux colonnes prennent la même gouttière à chaque largeur. */
+    @media (max-width: 900px) {
+      .fr-barre .fr-barre__in { padding-left: var(--gutter); padding-right: var(--gutter); }
+    }
+    @media (max-width: 640px) {
+      .container, .fr-barre .fr-barre__in { padding-left: var(--sp-4); padding-right: var(--sp-4); }
     }
 </style>
 <!-- INSTALLABLE:début — greffé par build/greffe_installable.py -->
@@ -237,12 +244,13 @@
             <div class="om-connexion-champ">
               <label class="field-label" for="codeInput">Votre code d'accès</label>
               <input id="codeInput" class="field" type="text" maxlength="8" placeholder="XXXXXX"
-                     autocomplete="off" autocapitalize="characters" spellcheck="false" />
+                     autocomplete="off" autocapitalize="characters" spellcheck="false"
+                     aria-describedby="aideCode loginError" />
             </div>
             <button class="btn btn--pri" id="loginBtn">Entrer</button>
           </div>
-          <p class="om-aide">Six caractères, sans espace. Vous restez connecté sur cet appareil.</p>
-          <p class="om-erreur" id="loginError" hidden>Ce code ne correspond à aucun élève.</p>
+          <p class="om-aide" id="aideCode">Six caractères, sans espace. Vous restez connecté sur cet appareil.</p>
+          <p class="om-erreur" id="loginError" role="alert" hidden>Ce code ne correspond à aucun élève.</p>
         </div>
         <!-- La racine mène ici : l'enseignant a besoin d'un chemin visible
              vers son propre espace, sans que ce soit une invitation. -->
@@ -272,7 +280,6 @@
     <div class="container">
       <div class="om-band-haut">
         <div>
-          <div class="band__eyebrow" id="bandSurtitre"></div>
           <h1 id="bandTitre">Bonjour</h1>
         </div>
       </div>
@@ -284,11 +291,11 @@
     </div>
   </header>
 
-  <div class="container">
+  <main class="container">
     <div class="stack-l om-pile" id="contenu">
       <p class="om-vide">Chargement…</p>
     </div>
-  </div>
+  </main>
 </div>
 
 <script src="js/appui.js"></script>
@@ -300,13 +307,21 @@
   // ---- CONFIGURATION ----
   const ANNOUNCEMENT = ''; // Laisser vide pour ne rien afficher.
 
-  // Repérage par domaine de vie — couleur de section, jamais décorative.
-  const SECTIONS = [
-    [/santé|sante/i,            'exo--ecoute'],
-    [/travail/i,                'exo--orale'],
-    [/culture|média|media/i,    'exo--phonie'],
-    [/logement/i,               'exo--ecriture'],
-  ];
+  // La couleur d'une tuile est celle du NIVEAU de l'activité (la même que
+  // l'en-tête du module, `nouveauDesignColor`) — jamais celle du domaine de
+  // vie, qui reste écrit en toutes lettres. Sans couleur au catalogue : le
+  // neutre des outils.
+  function couleurDe(a) {
+    const ligne = a.nouveauDesignColor || 'var(--niv-outil-line)';
+    const fond = a.nouveauDesignTint || 'var(--niv-outil-bg)';
+    return `--sec:${ligne};--sec-soft:${fond}`;
+  }
+  // Pour un point express : le niveau donné par le serveur.
+  function couleurDuNiveau(n) {
+    return /^[1-8]$/.test(String(n || ''))
+      ? `--sec:var(--niv-${n}-line);--sec-soft:var(--niv-${n}-bg)`
+      : `--sec:var(--niv-outil-line);--sec-soft:var(--niv-outil-bg)`;
+  }
   // Les exercices libres : toujours ouverts, sans état ni date.
   const DOMAINES_LIBRES = /^(vocabulaire|grammaire transversale|pratique orale libre|graphie et sons)/i;
 
@@ -336,23 +351,43 @@
     if (!code) return;
     const btn = document.getElementById('loginBtn');
     const errEl = document.getElementById('loginError');
-    btn.disabled = true; btn.textContent = 'Vérification…';
-    errEl.hidden = true;
+    const champ = document.getElementById('codeInput');
+    // L'état du bouton passe par disabled + aria-busy : réécrire son texte
+    // effaçait la traduction d'appui posée dedans.
+    btn.disabled = true; btn.setAttribute('aria-busy', 'true');
+    errEl.hidden = true; champ.removeAttribute('aria-invalid');
+    const echec = (message, codeFautif) => {
+      errEl.textContent = message;
+      // poser() ne regarde que les descendants : on lui donne le parent.
+      if (window.Appui) Appui.poser(errEl.parentElement);
+      errEl.hidden = false;
+      if (codeFautif) champ.setAttribute('aria-invalid', 'true');
+    };
     try {
-      const res = await fetch(`${API}/api/auth`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({code}),
-      });
+      let res;
+      try {
+        res = await fetch(`${API}/api/auth`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({code}),
+        });
+      } catch (e) { res = null; }
+      // Seul un refus du serveur veut dire « mauvais code ». Une panne réseau
+      // ou une erreur du serveur ne doit pas faire douter l'élève de son code.
+      if (res && (res.status === 401 || res.status === 404)) {
+        echec('Ce code ne correspond à aucun élève.', true); return;
+      }
+      if (!res || !res.ok) {
+        echec("Connexion impossible pour l'instant. Vérifiez votre réseau, puis réessayez.", false); return;
+      }
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Erreur');
       session = {code, studentId: data.studentId, label: data.label, prenom: data.prenom || ''};
       localStorage.setItem('eleve_session', JSON.stringify(session));
       showApp();
     } catch (e) {
-      errEl.hidden = false;
+      echec("Connexion impossible pour l'instant. Vérifiez votre réseau, puis réessayez.", false);
     } finally {
-      btn.disabled = false; btn.textContent = 'Entrer';
+      btn.disabled = false; btn.removeAttribute('aria-busy');
     }
   }
 
@@ -373,12 +408,8 @@
                 || (session.label || '').trim().split(/\s+/)[0] || '';
     document.getElementById('bandTitre').textContent =
       prenom ? `Bonjour ${prenom}` : 'Bonjour';
-    // Le nom de la marque est dans le verrouillage juste au-dessus : le
-    // sur-titre n'a pas à le répéter.
-    // Pas de niveau : il était écrit « Niveau 4 » en dur, donc faux pour
-    // tout élève d'un autre niveau. Son code lui suffit à se reconnaître.
-    document.getElementById('bandSurtitre').textContent =
-      `Code ${session.code}`;
+    // Plus de sur-titre : il portait le code d'accès, qui authentifie — on
+    // n'affiche pas un mot de passe en tête d'écran, même à son titulaire.
     charger();
   }
 
@@ -410,11 +441,6 @@
   }
 
   // ---- DÉRIVÉS ----
-  function sectionDe(domaine) {
-    for (const [motif, classe] of SECTIONS) if (motif.test(domaine || '')) return classe;
-    return 'exo--vocab';
-  }
-
   function numeroDe(titre) {
     const m = /^Module\s+(\d+)/i.exec(titre || '');
     return m ? m[1].padStart(2, '0') : '';
@@ -527,19 +553,19 @@
      période de parution — le serveur ne renvoie que ceux-là. */
   function blocDocuments(documents) {
     if (!documents.length) return '';
-    const rangees = documents.map(d => {
+    const rangees = documents.map((d, i) => {
       const bouts = String(d.nom).split('.');
       const ext = bouts.length > 1 ? bouts.pop().toUpperCase() : 'FICHIER';
       const ko = Math.max(1, Math.round((d.taille || 0) / 1000));
       return `<div class="card__row om-doc">
         <span class="om-doc-ext">${escHtml(ext)}</span>
-        <span class="om-doc-nom">${escHtml(d.nom)}</span>
+        <span class="om-doc-nom" id="doc-${i}">${escHtml(d.nom)}</span>
         <span class="om-doc-poids">${ko} ko</span>
-        <a class="btn btn--ghost btn--sm" href="${escHtml(d.fichier)}" target="_blank" rel="noopener">Ouvrir</a>
+        <a class="btn btn--ghost btn--sm" href="${escHtml(d.fichier)}" target="_blank" rel="noopener" aria-describedby="doc-${i}">Ouvrir</a>
       </div>`;
     }).join('');
     return `<div>
-      <div class="om-sec"><span>Documents à consulter</span><i></i></div>
+      <h2 class="om-sec"><span class="om-sec__lib">Documents à consulter</span><i></i></h2>
       <div class="card card--flush">${rangees}</div>
     </div>`;
   }
@@ -552,21 +578,23 @@
     const carte = e => {
       const fait = e.etat === 'termine';
       const commence = e.etat === 'commence';
-      const etat = fait ? '✓ Fait' : commence ? '→ Commencé' : '· À faire';
+      const etat = fait ? {cle: 'fait', mot: 'Fait'}
+                 : commence ? {cle: 'cours', mot: 'Commencé'}
+                 : {cle: 'afaire', mot: 'À faire'};
       const url = `/${e.fichier}?code=${encodeURIComponent(session.code)}&envoi=${e.id}`;
-      return `<a class="pe-carte${fait ? ' pe-carte--fait' : ''}" href="${url}">
-        <span class="pe-etat">${etat}</span>
-        <span class="pe-titre">${escHtml(e.titre || 'Point express')}</span>
-        ${e.mot ? `<span class="pe-mot">« ${escHtml(e.mot)} »</span>` : ''}
-        <span class="pe-duree">10 minutes${fait ? '' : ' · sur votre téléphone'}</span>
-      </a>`;
+      return `<div class="exo" style="${couleurDuNiveau(e.niveau)}">
+        <a class="card card--marked pe-carte" href="${url}">
+          ${etatHtml(etat)}
+          <h3 class="pe-titre">${escHtml(e.titre || 'Point express')}</h3>
+          ${e.mot ? `<span class="pe-mot">« ${escHtml(e.mot)} »</span>` : ''}
+          <span class="pe-duree">10 minutes${fait ? '' : ' · sur votre téléphone'}</span>
+        </a>
+      </div>`;
     };
-    return `<section class="pe-bloc">
-      <div class="pe-tete">
-        <h2>Votre enseignant vous a envoyé</h2>
-        <p>Dix minutes chacun. À faire quand vous voulez — dans l'autobus, le soir.</p>
-      </div>
-      <div class="pe-liste">${envois.map(carte).join('')}</div>
+    return `<section>
+      <h2 class="om-sec"><span class="om-sec__lib">Votre enseignant vous a envoyé</span><i></i></h2>
+      <p class="pe-lead">Dix minutes chacun. À faire quand vous voulez — dans l'autobus, le soir.</p>
+      <div class="grid-auto om-grille">${envois.map(carte).join('')}</div>
     </section>`;
   }
 
@@ -599,12 +627,12 @@
       </div>`;
 
     return `<div>
-      <div class="om-sec"><span>Votre bilan</span><i></i></div>
+      <h2 class="om-sec"><span class="om-sec__lib">Votre bilan</span><i></i></h2>
       <div class="om-bilan">
         ${carte('exo--orale', 'Modules', `${termines} / ${total}`, pctModules,
                 `terminés · ${encours} commencé${encours > 1 ? 's' : ''}`,
                 "Les modules de 4 h ouverts à votre groupe. Un module compte comme terminé quand vous avez fait toutes ses sections.")}
-        ${carte('exo--vocab', 'Vocabulaire', `${v.mastered} / ${v.total}`, pctVocab,
+        ${carte('exo--ecoute', 'Vocabulaire', `${v.mastered} / ${v.total}`, pctVocab,
                 `mots maîtrisés · ${v.learning} à revoir`,
                 "Un mot est maîtrisé quand vous l'avez retrouvé juste plusieurs fois de suite, à quelques jours d'intervalle. Le total ne compte que les mots des activités déjà ouvertes.")}
         ${carte('exo--ecriture', 'Cette semaine', `${s.jours} jour${s.jours > 1 ? 's' : ''}`, pctSemaine,
@@ -638,17 +666,17 @@
       <div class="om-encre-rangee">
         <div class="om-encre-txt">
           <div class="om-encre-sur">Votre prochaine étape</div>
-          <div class="om-encre-titre">${escHtml(cible.title)}</div>
+          <h2 class="om-encre-titre" id="etape-${cible.id}">${escHtml(cible.title)}</h2>
           ${meta ? `<div class="om-encre-meta">${escHtml(meta)}</div>` : ''}
         </div>
-        ${boutonOuvrir(cible, 'ghost', encours ? libelle : 'Commencer')}
+        ${boutonOuvrir(cible, 'ghost', encours ? libelle : 'Commencer', false, false, `etape-${cible.id}`)}
       </div>
     </div>`;
   }
 
   function blocModules(modules, bilan) {
     if (!modules.length) {
-      return `<div><div class="om-sec"><span>Les modules</span><i></i></div>
+      return `<div><h2 class="om-sec"><span class="om-sec__lib">Les modules</span><i></i></h2>
         <p class="om-vide">Aucun module n'est offert pour l'instant.</p></div>`;
     }
     const termines = modules.filter(m => progressionDe(m, bilan).faite).length;
@@ -662,20 +690,20 @@
         : (prog.zones ? (prog.faite ? `${prog.zones} exercices`
                                     : `${prog.zonesDone} exercices sur ${prog.zones}`)
                       : etiquettes(m).slice(0, 2).join(' · '));
-      return `<div class="exo ${sectionDe(m.domaineDeVie)} om-tuile">
+      return `<div class="exo om-tuile" style="${couleurDe(m)}">
         <div class="card card--marked">
           <div class="om-tuile-corps">
             <div class="om-tuile-tete">
               ${num ? `<div class="om-tuile-num">${num}</div>` : ''}
               <div class="om-tuile-domaine">${escHtml(domaineCourt(m.domaineDeVie) || 'Module')}</div>
             </div>
-            <div class="om-tuile-titre">${escHtml(titreCourt(m.title))}</div>
+            <h3 class="om-tuile-titre" id="titre-${m.id}">${escHtml(titreCourt(m.title))}</h3>
             ${detail ? `<div class="om-tuile-detail">${escHtml(detail)}</div>` : ''}
             <div class="om-tuile-bas">
               <div class="om-bar"><b style="width:${prog.pct}%"></b></div>
               <div class="om-tuile-pied">
                 ${etatHtml(etat)}
-                ${boutonOuvrir(m, cta.variante, cta.libelle, cta.inactif, true)}
+                ${boutonOuvrir(m, cta.variante, cta.libelle, cta.inactif, true, `titre-${m.id}`)}
               </div>
             </div>
           </div>
@@ -684,10 +712,10 @@
     }).join('');
 
     return `<div>
-      <div class="om-sec">
-        <span>Les ${modules.length} modules</span><i></i>
+      <h2 class="om-sec">
+        <span class="om-sec__lib">Les ${modules.length} modules</span><i></i>
         <span class="score">${termines} / ${modules.length} terminés</span>
-      </div>
+      </h2>
       <div class="grid-auto om-grille">${tuiles}</div>
     </div>`;
   }
@@ -700,17 +728,17 @@
       return `<div class="card__row">
         <div class="om-rangee">
           <div class="om-rangee-txt">
-            <div class="om-rangee-titre">${escHtml(a.title)}</div>
+            <h3 class="om-rangee-titre" id="titre-${a.id}">${escHtml(a.title)}</h3>
             <div class="om-rangee-resume">${escHtml(etiquettes(a).join(' · '))}</div>
           </div>
           ${etat ? `<div class="om-rangee-etat">${etatHtml(etat)}</div>` : ''}
-          ${boutonOuvrir(a, 'ghost', a.available ? 'Ouvrir' : 'Bientôt', !a.available, true)}
+          ${boutonOuvrir(a, 'ghost', a.available ? 'Ouvrir' : 'Bientôt', !a.available, true, `titre-${a.id}`)}
         </div>
       </div>`;
     }).join('');
 
     return `<div>
-      <div class="om-sec"><span>${escHtml(titre)}</span><i></i></div>
+      <h2 class="om-sec"><span class="om-sec__lib">${escHtml(titre)}</span><i></i></h2>
       <div class="card card--flush">${rangees}</div>
     </div>`;
   }
@@ -720,15 +748,18 @@
     return `<div class="om-etat ${e.classe}"><span aria-hidden="true">${e.glyphe}</span> ${escHtml(etat.mot)}</div>`;
   }
 
-  function boutonOuvrir(a, variante, libelle, inactif, petit) {
+  // `decrit` : l'id du titre de l'activité. Trente-deux « Ouvrir » identiques
+  // ne disent rien à un lecteur d'écran ; le libellé visible ne change pas.
+  function boutonOuvrir(a, variante, libelle, inactif, petit, decrit) {
     const classes = `btn btn--${variante}${petit ? ' btn--sm' : ''}`;
     const fichier = fichierDe(a);
+    const desc = decrit ? ` aria-describedby="${decrit}"` : '';
     if (inactif || !fichier) {
-      return `<button class="${classes}" disabled>${escHtml(libelle)}</button>`;
+      return `<button class="${classes}" disabled${desc}>${escHtml(libelle)}</button>`;
     }
     // L'activité est retrouvée par son identifiant au clic : un titre comme
     // « C'est l'heure des nouvelles ? » ne tient pas dans un attribut onclick.
-    return `<button class="${classes}" data-ouvrir="${a.id}">${escHtml(libelle)}</button>`;
+    return `<button class="${classes}" data-ouvrir="${a.id}"${desc}>${escHtml(libelle)}</button>`;
   }
 
   document.getElementById('contenu').addEventListener('click', e => {

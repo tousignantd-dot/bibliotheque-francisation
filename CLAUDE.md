@@ -2730,13 +2730,31 @@ Deux pièges déjà payés, tous deux invisibles à la relecture :
   (`--surface-band: var(--acier-100)`), bilan en trois chiffres, un seul bloc
   encre (« Votre prochaine étape »), modules en tuiles à filet de couleur,
   ateliers et exercices libres en rangées d'une carte `card--flush`.
-- La page lie `assets/design-system/styles.css` — **jamais `ds-bundle/`, qui est
+- La page lie `assets/design-system/styles.bundle.css` — le système en **un
+  seul fichier**, produit par `python3 build/styles_bundle.py` à partir de
+  `styles.css` (`--verifier` sort en 1 s'il est en retard : à relancer après
+  toute modification d'une feuille du système). La chaîne d'`@import` coûtait
+  trois allers-retours avant le premier affichage (audit du 1er oct. 2026).
+  Nunito hors latin (ukrainien) vient de Google par un `<link>` qui ne bloque
+  pas. **Jamais `ds-bundle/`, qui est
   dans `.gitignore`** et n'existe donc pas en production — et n'utilise que les classes du système
   (`.band`, `.card`, `.btn--pri`, `.grid-auto`, `.exo--*`). **Aucune couleur en
   dur** : les deux seules pièces écrites à la main sont la barre de progression
   (`.om-bar`) et l'étiquette d'état (`.om-etat`), qui n'existent pas dans le
   système. L'état porte toujours un glyphe **et** un mot (`✓ → · `) — la
   couleur ne dit jamais l'information seule.
+- **La couleur d'une tuile est celle du niveau** (`nouveauDesignColor` /
+  `nouveauDesignTint` de l'activité, posés en `--sec` / `--sec-soft`), comme
+  l'en-tête du module — plus jamais celle du domaine de vie, qui reste écrit
+  en toutes lettres. Un point express prend celle de son niveau, que
+  `/api/student/envois` ajoute à la lecture depuis l'étagère. Le texte posé
+  sur une teinte est en encre : aucune teinte de niveau ne tient 4,5:1 sur
+  son propre fond. Les sections sont des `<h2 class="om-sec">` (libellé en
+  `.om-sec__lib`), le contenu est dans `<main>`, et chaque bouton « Ouvrir »
+  porte `aria-describedby` vers le titre de son activité.
+- **Le code d'accès n'est plus affiché** en tête de l'accueil : il
+  authentifie, c'est un mot de passe. Et l'échec de connexion distingue le
+  mauvais code (401) de la panne réseau, en `role="alert"`.
 - Répartition : `categorie: "cours"` → tuiles de modules ; les autres ateliers
   → « Activités thématiques », sauf les domaines transversaux (vocabulaire,
   grammaire, pratique orale libre) → « Pour vous exercer seul », sans état.

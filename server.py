@@ -20088,6 +20088,11 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                  if e.get("eleveId") == student.get("id")
                  and (e.get("etat") != "termine" or (e.get("termineLe") or "") > limite)]
         miens.sort(key=lambda e: e.get("envoyeLe", ""), reverse=True)
+        # Le niveau n'est pas écrit dans l'envoi : il se lit dans l'étagère,
+        # qui décrit le code livré. La carte de l'élève en prend la couleur
+        # (la couleur d'un point est celle de son niveau, comme un module).
+        niveaux = {p.get("slug"): p.get("niveau") for p in load_points_express()}
+        miens = [dict(e, niveau=niveaux.get(e.get("parcours"))) for e in miens]
         json_response(self, miens)
 
     @sous_verrou

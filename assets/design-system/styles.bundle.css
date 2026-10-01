@@ -1,0 +1,823 @@
+/* styles.bundle.css — PRODUIT par build/styles_bundle.py à partir de styles.css.
+   Ne pas éditer : modifier les feuilles sources, puis relancer le script. */
+/* ============================================================
+   FRANCISATION · point d'entrée CSS unique
+   Liez CE fichier seulement. Rien d'autre que des @import ici.
+   ============================================================ */
+
+/* ── tokens/fonts.css ── */
+/* ============================================================
+   FRANCISATION · POLICE
+   Nunito partout. Formes ouvertes, « a » et « g » à un étage :
+   c'est le critère de choix — lisibilité pour des adultes qui
+   apprennent à lire en français.
+   Graisses réellement utilisées : 400 · 600 · 700 · 800 · 900.
+   ============================================================ */
+/* @import externe retiré du paquet : https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,600;1,700&display=swap */
+
+/* ── Nunito, servie par le dépôt ──────────────────────────────────────
+   Le portail ne dépend plus de Google pour sa police. Les deux fichiers sont
+   déjà versionnés (`build/police_nunito.py`, 54 Ko) : Nunito est **variable**,
+   un seul `.woff2` par face couvre 400 à 900.
+
+   L'`@import` ci-dessus reste, en second : ces deux faces ne portent que le
+   sous-ensemble `latin`, et un caractère hors plage (cyrillique, vietnamien)
+   continue de venir de Google. Déclarées après lui, les faces locales gagnent
+   sur tout ce qu'elles couvrent.
+
+   **Pourquoi c'était un défaut visible.** Quand la requête vers Google ne
+   passe pas — bloqueur de traqueurs, réseau du centre — la page retombe sur
+   « Arial Rounded MT Bold », où le « ı » (U+0131) du logotype mesure 25,5 px
+   au lieu de 8,9 : le point mauve, calé sur la chasse de Nunito, se détache de
+   sa lettre et le nom devient illisible. Signalé le 2 septembre 2026 depuis
+   l'espace enseignant. Voir la garde de centrage dans `marque-francis.css`.
+
+   La plage est tenue à côté des fichiers (`fonts/nunito-latin.plage.txt`) :
+   la recopier ici la ferait vieillir sans que personne ne le voie. */
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url("fonts/nunito-latin.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: italic;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url("fonts/nunito-latin-italique.woff2") format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+:root {
+  --font-sans: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+
+/* ── tokens/colors.css ── */
+/* ============================================================
+   FRANCISATION · COULEURS
+   Fond neutre chaud, cartes blanches, une seule couleur d'accent
+   (vert). Les couleurs de section servent AU REPÉRAGE, jamais à
+   décorer. Le rouge est réservé à l'audio et à l'erreur.
+   Tout ratio annoncé est mesuré sur son fond documenté.
+   ============================================================ */
+:root {
+  /* — Neutres (chauds) — */
+  --paper-50:  #FBFBFA;   /* fond de champ, pied de carte */
+  --paper-100: #F7F7F5;   /* FOND DE PAGE */
+  --paper-200: #F0F0EE;   /* filet intérieur de liste */
+  --white:     #FFFFFF;   /* cartes */
+
+  --line-100:  #EAEAE8;   /* filet neutre */
+  --line-200:  #D8E8DF;   /* filet teinté vert (bandeaux clairs) */
+  --line-300:  #D6D6D2;   /* contour de zone de dépôt vide */
+
+  --ink-900:   #17181A;   /* encre principale */
+  --ink-700:   #3A3D40;   /* texte long, transcriptions */
+  --ink-500:   #4B4F52;   /* chapeau sur fond clair */
+  --ink-400:   #6E7175;   /* texte secondaire — 4.6:1 sur blanc ✔ AA */
+
+  /* — Accent principal : vert — */
+  --green-800: #07734A;   /* texte vert sur fond clair — 5.4:1 ✔ */
+  --green-600: #0A8F5B;   /* ACCENT · filets, focus, pastilles */
+  --green-100: #E6F5EE;   /* fond d'accent, état réussi */
+  --green-050: #EDF6F1;   /* bandeau clair pleine largeur */
+
+  /* — Accents de section (repérage seulement) —
+     Un seul par section : pastille numérotée, sur-titre, filet
+     gauche de 4 px, point de la barre de parcours. Jamais en aplat
+     derrière du texte long. */
+  --acier-600:  #1D6B8F;  --acier-100:  #E7F0F6;   /* compréhension orale */
+  --indigo-600: #3B49A0;  --indigo-100: #E8EAFA;   /* graphie-phonie */
+  --ambre-700:  #B45309;  --ambre-100:  #FBEEDC;   /* écriture */
+  --teal-700:   #0D7A6F;  --teal-100:   #DCF2EF;   /* écoute et réponds */
+  --foret-700:  #166534;  --foret-100:  #E3F1E7;   /* vocabulaire / bilan */
+
+  /* La graphie-phonie était violette. Le violet #6B4FBB est devenu la couleur
+     de la marque francis, et la remise le veut exclusive : il ne sert plus au
+     repérage. L'indigo le remplace — c'est déjà la teinte du niveau 7, les
+     deux échelles se partagent leurs hues depuis toujours (l'acier est aussi
+     le niveau 6, l'ambre le niveau 2, la sarcelle le 5, la forêt le 4).
+     --violet-600 et --violet-100 n'existent plus ici : la marque porte les
+     siens, --marque-600 et --marque-100, dans marque-francis.css. */
+
+  /* — Repérage par NIVEAU (1 à 8) —
+     Un arc-en-ciel de huit fonds pâles : tout ce qui appartient au même
+     niveau porte le même fond, dans le catalogue comme dans le portail.
+     `-bg` est un aplat de carte ; `-line` est le filet et le fond de la
+     pastille du niveau, où le texte passe en blanc. L'encre longue reste
+     l'encre principale : ces teintes ne portent jamais de texte long.
+     Framboise plutôt que rouge : le rouge reste à l'audio et à l'erreur.
+     Aucun vert : le 20 août 2026, la couleur de niveau est devenue la couleur
+     d'en-tête du module, et le vert a été retiré de l'échelle. Les quatre
+     premiers niveaux forment donc une montée chaude — framboise, brique,
+     ambre, or — et les quatre derniers une descente froide — sarcelle, acier,
+     indigo, pourpre. L'olive du niveau 3 et la forêt du niveau 4 ont disparu.
+     Pourpre plutôt que violet au niveau 8 : le violet #6B4FBB appartient à la
+     marque. Le pourpre #7E3F98 est franchement plus magenta — il se distingue
+     du logotype comme de la framboise du niveau 1, qui est plus rouge. */
+  --niv-1-line: #A5335F;  --niv-1-bg: #FCE9F0;   /* framboise */
+  --niv-2-line: #A83A22;  --niv-2-bg: #FBEAE4;   /* brique */
+  --niv-3-line: #B45309;  --niv-3-bg: #FBEEDC;   /* ambre */
+  --niv-4-line: #8C6A07;  --niv-4-bg: #F7F0DA;   /* or */
+  --niv-5-line: #0D7A6F;  --niv-5-bg: #DCF2EF;   /* sarcelle */
+  --niv-6-line: #1D6B8F;  --niv-6-bg: #E7F0F6;   /* acier */
+  --niv-7-line: #3B49A0;  --niv-7-bg: #E8EAFA;   /* indigo */
+  --niv-8-line: #7E3F98;  --niv-8-bg: #F3E8F7;   /* pourpre — voir plus bas */
+  /* Les outils ne sont d'aucun niveau : ils sortent de l'arc-en-ciel. */
+  --niv-outil-line: #4B4F52;  --niv-outil-bg: #EFEFED;
+
+  /* — Audio : le seul aplat rouge de l'interface — */
+  --audio:       #DC2626;
+  --audio-hover: #B91C1C;
+
+  /* — Rétroaction : 4 états × 3 rôles —
+     L'erreur n'a PAS d'aplat saturé : fond à peine teinté, filet et
+     texte rouges. Ainsi le seul rouge plein reste le bouton audio. */
+  --ok-bg:   #E6F5EE;  --ok-line:   #0A8F5B;  --ok-ink:   #07734A;
+  --no-bg:   #FFF6F5;  --no-line:   #DC2626;  --no-ink:   #B91C1C;
+  --warn-bg: #FEF6E7;  --warn-line: #D9880B;  --warn-ink: #8A5206;
+
+  /* — Sélection = plaque encre (jamais une teinte de plus) — */
+  --sel-bg:  #17181A;  --sel-line: #17181A;  --sel-ink: #FFFFFF;
+
+  /* — Zone de dépôt vide : neutre, pas bleue — */
+  --drop-bg: #FBFBFA;  --drop-line: #D6D6D2;
+
+  /* ==========================================================
+     ALIAS SÉMANTIQUES — c'est ce que les composants référencent
+     ========================================================== */
+  --surface-page:    var(--paper-100);
+  --surface-card:    var(--white);
+  --surface-sunken:  var(--paper-50);
+  --surface-band:    var(--green-050);   /* bandeau d'en-tête clair */
+  --surface-inverse: var(--ink-900);     /* réservé à 1 bloc par page */
+
+  --text-strong:  var(--ink-900);
+  --text-body:    var(--ink-700);
+  --text-muted:   var(--ink-400);
+  --text-inverse: var(--white);
+  --text-accent:  var(--green-800);
+
+  --border:       var(--line-100);
+  --border-tint:  var(--line-200);
+  --accent:       var(--green-600);
+  --accent-soft:  var(--green-100);
+  --accent-ink:   var(--green-800);
+
+  --focus-ring:   var(--green-600);
+  --link:         var(--green-600);
+  --link-hover:   var(--green-800);
+}
+
+
+/* ── tokens/typography.css ── */
+/* ============================================================
+   FRANCISATION · TYPOGRAPHIE
+   Quatre niveaux, écarts francs : 62 · 30 · 19 · 17.
+   Corps de texte JAMAIS sous 17 px — public en apprentissage.
+   Le sur-titre (13 px, 800, majuscules, interlettrage .12em) est
+   le seul endroit où les majuscules sont permises.
+   ============================================================ */
+:root {
+  --fs-hero:   clamp(40px, 6vw, 62px);  /* titre de page  · 900 */
+  --fs-h2:     30px;                    /* titre d'exercice · 900 */
+  --fs-h3:     24px;                    /* mot vedette, sous-bloc · 900 */
+  --fs-lead:   19px;                    /* chapeau, énoncé long · 600-700 */
+  --fs-body:   18px;                    /* énoncé courant · 600-700 */
+  --fs-body-sm:17px;                    /* consigne, définition · 600 */
+  --fs-ui:     15px;                    /* libellé de bouton · 700-800 */
+  --fs-ui-sm:  14px;                    /* bouton secondaire, score · 700-800 */
+  --fs-label:  13px;                    /* SUR-TITRE majuscules · 800 */
+  --fs-meta:   12px;                    /* méta, compteur · 800 */
+
+  --lh-hero:  1.02;
+  --lh-title: 1.2;
+  --lh-body:  1.5;
+  --lh-loose: 1.6;
+
+  --ls-hero:  -0.02em;
+  --ls-title: -0.015em;
+  --ls-label: 0.12em;   /* sur-titres en majuscules */
+
+  --fw-regular: 400;
+  --fw-medium:  600;
+  --fw-semi:    700;
+  --fw-bold:    800;
+  --fw-black:   900;
+}
+
+
+/* ── tokens/spacing.css ── */
+/* ============================================================
+   FRANCISATION · ESPACEMENT ET RAYONS
+   Une seule échelle, 6 crans utiles + 2 pour les sections.
+   N'inventez pas de valeur intermédiaire.
+   ============================================================ */
+:root {
+  --sp-1:  4px;
+  --sp-2:  8px;
+  --sp-3:  12px;
+  --sp-4:  16px;
+  --sp-5:  20px;
+  --sp-6:  24px;
+  --sp-8:  32px;   /* gouttière de page */
+  --sp-12: 48px;   /* écart entre deux exercices */
+
+  --r-sm:   10px;  /* contrôles, champs, tuiles */
+  --r-md:   14px;  /* jetons, pastille numérotée */
+  --r-lg:   18px;  /* cartes, cadres, bandeaux */
+  --r-pill: 999px; /* boutons, étiquettes, scores */
+
+  --content-max: 1000px;
+  --gutter:      var(--sp-8);
+
+  /* Cibles tactiles — plancher absolu 44 px (adultes, écrans tactiles) */
+  --tap-min:     44px;
+  --tap-comfort: 48px;
+  --tap-large:   52px;
+}
+
+
+/* ── tokens/effects.css ── */
+/* ============================================================
+   FRANCISATION · OMBRES, MOUVEMENT, FOCUS
+   Ombres presque invisibles : la structure vient des filets et de
+   l'alignement, pas de la profondeur. Aucun rebond, aucune
+   parallaxe — le mouvement ne doit jamais distraire d'une consigne.
+   ============================================================ */
+:root {
+  --sh-card:  0 1px 2px rgba(20, 20, 20, .04);
+  --sh-raise: 0 4px 20px rgba(20, 20, 20, .06);
+  --sh-modal: 0 24px 64px rgba(20, 20, 20, .28);
+
+  --dur-fast: 120ms;
+  --dur:      140ms;
+  --ease:     cubic-bezier(.2, .7, .3, 1);
+
+  --focus-width:  3px;
+  --focus-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-fast: 0ms; --dur: 0ms; }
+}
+
+
+/* ── tokens/base.css ── */
+/* ============================================================
+   FRANCISATION · SOCLE
+   Réinitialisation minimale + règles non négociables
+   d'accessibilité. À charger après les jetons.
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--surface-page);
+  color: var(--text-strong);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  text-wrap: pretty;
+}
+
+h1, h2, h3 { margin: 0; letter-spacing: var(--ls-title); line-height: var(--lh-title); }
+h1 { font-size: var(--fs-hero); font-weight: var(--fw-black); line-height: var(--lh-hero); letter-spacing: var(--ls-hero); }
+h2 { font-size: var(--fs-h2);   font-weight: var(--fw-black); }
+h3 { font-size: var(--fs-h3);   font-weight: var(--fw-black); }
+p  { margin: 0; }
+
+a { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
+a:hover { color: var(--link-hover); }
+
+/* Focus clavier visible PARTOUT. Ne jamais retirer sans remplacer. */
+:focus-visible {
+  outline: var(--focus-width) solid var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  border-radius: var(--r-sm);
+}
+
+/* Le zoom doit rester possible : jamais user-scalable=no dans le viewport. */
+
+::placeholder { color: var(--text-muted); opacity: 1; }  /* 4.6:1 ✔ AA */
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,.15); border-radius: 3px; }
+
+.u-visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+
+
+/* ── components/layout.css ── */
+/* ============================================================
+   MISE EN PAGE · bandeau, barre de parcours, en-tête d'exercice
+   La hiérarchie de la page tient à quatre niveaux :
+   1 bandeau clair  ·  2 barre de parcours  ·  3 en-tête d'exercice
+   ·  4 contenu en cartes blanches.
+   ============================================================ */
+.page      { background: var(--surface-page); color: var(--text-strong); }
+.container { max-width: var(--content-max); margin: 0 auto; padding: 0 var(--gutter); }
+
+/* — 1 · Bandeau d'en-tête (clair, pas noir) — */
+.band {
+  background: var(--surface-band);
+  border-bottom: 1px solid var(--border-tint);
+  padding: var(--sp-8) 0 var(--sp-12);
+}
+.band__eyebrow {
+  display: flex; align-items: center; gap: var(--sp-2);
+  font-size: var(--fs-label); font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-label); text-transform: uppercase;
+  color: var(--text-accent);
+}
+.band__eyebrow::before {
+  content: ""; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--accent); flex-shrink: 0;
+}
+/* Les titres sont composés en 1.02 d'interligne : la boîte de ligne est plus
+   courte que la lettre, et l'accent d'une capitale — le « É » d'« Écrire » —
+   remonte jusqu'à toucher le sur-titre. Un peu d'air, seulement quand le
+   sur-titre est là. */
+.band__eyebrow + h1, .band__eyebrow + h2 { margin-top: var(--sp-3); }
+
+.band__lead {
+  max-width: 56ch; margin-top: var(--sp-4);
+  font-size: var(--fs-lead); font-weight: var(--fw-medium);
+  color: var(--ink-500);
+}
+
+/* — 2 · Barre de parcours (collante) — */
+.steps {
+  position: sticky; top: 0; z-index: 5;
+  background: rgba(247, 247, 245, .94);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+.steps__inner {
+  max-width: var(--content-max); margin: 0 auto;
+  padding: var(--sp-3) var(--gutter);
+  display: flex; flex-wrap: wrap; gap: var(--sp-2); align-items: center;
+}
+.step {
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  min-height: var(--tap-min); padding: 0 var(--sp-4);
+  border: 1px solid var(--border); border-radius: var(--r-pill);
+  background: var(--surface-card); color: var(--text-body);
+  font-size: var(--fs-ui-sm); font-weight: var(--fw-bold);
+  text-decoration: none; white-space: nowrap;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.step__dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; background: currentColor; }
+.step:hover { background: var(--paper-50); }
+/* fait : la teinte de section apparaît — poser aussi --sec et --sec-soft */
+.step.is-done {
+  background: var(--sec-soft); border-color: var(--sec); color: var(--sec);
+}
+
+/* — 3 · En-tête d'exercice —
+   Porte la couleur de section via --sec / --sec-soft, posés sur .exo. */
+.exo { --sec: var(--accent); --sec-soft: var(--accent-soft); scroll-margin-top: 80px; }
+.exo--orale   { --sec: var(--acier-600);  --sec-soft: var(--acier-100); }
+.exo--phonie  { --sec: var(--indigo-600); --sec-soft: var(--indigo-100); }
+.exo--ecriture{ --sec: var(--ambre-700);  --sec-soft: var(--ambre-100); }
+.exo--ecoute  { --sec: var(--teal-700);   --sec-soft: var(--teal-100); }
+.exo--vocab   { --sec: var(--green-600);  --sec-soft: var(--green-100); }
+
+.exo__head { display: flex; align-items: center; gap: var(--sp-4); margin-bottom: var(--sp-1); }
+.exo__num {
+  flex-shrink: 0; width: 44px; height: 44px; border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  background: var(--sec-soft); color: var(--sec);
+  font-size: 19px; font-weight: var(--fw-black);
+}
+.exo__eyebrow {
+  font-size: var(--fs-label); font-weight: var(--fw-black);
+  letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--sec);
+}
+.exo__rule  { flex: 1; height: 1px; background: var(--border); }
+.exo__score {
+  background: var(--sec-soft); color: var(--sec);
+  padding: 6px var(--sp-3); border-radius: var(--r-pill);
+  font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); white-space: nowrap;
+}
+.exo__title { font-size: var(--fs-h2); font-weight: var(--fw-black); margin: 0 0 var(--sp-1); }
+.exo__sub   { font-size: var(--fs-body-sm); font-weight: var(--fw-medium); color: var(--text-muted); margin: 0 0 var(--sp-5); }
+
+.stack   { display: flex; flex-direction: column; gap: var(--sp-3); }
+.stack-l { display: flex; flex-direction: column; gap: var(--sp-12); }
+.grid-auto { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--sp-3); }
+
+
+/* ── components/buttons.css ── */
+/* ============================================================
+   BOUTONS
+   Toujours en pilule. Trois rôles seulement :
+   .btn--pri (encre) · .btn--ghost (blanc) · .btn--audio (rouge).
+   Le rouge est RÉSERVÉ à l'audio. Hauteur plancher 44 px.
+   ============================================================ */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2);
+  min-height: var(--tap-comfort); padding: 0 var(--sp-5);
+  border: 1px solid transparent; border-radius: var(--r-pill);
+  font-family: var(--font-sans); font-size: var(--fs-ui); font-weight: var(--fw-bold);
+  line-height: 1; white-space: nowrap; flex-shrink: 0; cursor: pointer;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease),
+              border-color var(--dur) var(--ease);
+}
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+/* Un lien qui porte la pilule est un bouton : pas de soulignement, et sa
+   couleur vient du rôle (.btn--pri, .btn--ghost), pas du bleu des liens. */
+a.btn, a.btn:hover, a.btn:visited { text-decoration: none; }
+
+.btn--pri   { background: var(--ink-900); color: var(--white); }
+.btn--pri:hover { background: var(--accent); }
+
+.btn--ghost { background: var(--surface-card); color: var(--text-strong); border-color: var(--border); }
+.btn--ghost:hover { background: var(--paper-100); }
+
+/* Le seul aplat rouge de l'interface. */
+.btn--audio { background: var(--audio); color: var(--white); }
+.btn--audio:hover { background: var(--audio-hover); }
+
+.btn--sm { min-height: var(--tap-min); padding: 0 var(--sp-4); font-size: var(--fs-ui-sm); font-weight: var(--fw-semi); }
+.btn--lg { min-height: var(--tap-large); padding: 0 var(--sp-6); font-size: 16px; }
+
+/* Bouton d'écoute rond — icône seule, jamais sous 44 px. */
+.btn-audio-round {
+  flex-shrink: 0; width: var(--tap-min); height: var(--tap-min);
+  display: inline-flex; align-items: center; justify-content: center;
+  border: none; border-radius: 50%;
+  background: var(--audio); color: var(--white); cursor: pointer;
+  transition: background var(--dur) var(--ease);
+}
+.btn-audio-round:hover { background: var(--audio-hover); }
+.btn-audio-round svg { width: 18px; height: 18px; }
+
+.btn .icon, .btn svg { width: 17px; height: 17px; flex-shrink: 0; }
+
+
+/* ── components/forms.css ── */
+/* ============================================================
+   CHAMPS
+   Fond légèrement creusé, filet neutre, focus vert.
+   Corps de saisie à 17 px minimum : la réponse doit être relisible.
+   ============================================================ */
+.field {
+  width: 100%; min-height: var(--tap-comfort); padding: 0 var(--sp-4);
+  border: 1px solid var(--border); border-radius: var(--r-sm);
+  background: var(--surface-sunken); color: var(--text-strong);
+  font-family: var(--font-sans); font-size: var(--fs-body-sm); font-weight: var(--fw-medium);
+}
+.field:focus-visible { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.field--area { min-height: 112px; padding: var(--sp-3) var(--sp-4); resize: vertical; line-height: var(--lh-body); }
+.field.is-good { border-color: var(--ok-line); background: var(--ok-bg); }
+
+.field-label {
+  display: block; margin-bottom: var(--sp-2);
+  font-size: var(--fs-label); font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-label); text-transform: uppercase; color: var(--text-muted);
+}
+.field-hint { margin-top: var(--sp-2); font-size: var(--fs-ui-sm); font-weight: var(--fw-medium); color: var(--text-muted); }
+
+
+/* ── components/cards.css ── */
+/* ============================================================
+   CARTES ET BANDEAUX
+   Blanc, filet 1 px, rayon 18 px, ombre presque nulle.
+   Le filet gauche de 4 px est le SEUL usage décoratif autorisé de
+   la couleur de section sur une carte.
+   ============================================================ */
+.card {
+  background: var(--surface-card);
+  border: 1px solid var(--border); border-radius: var(--r-lg);
+  box-shadow: var(--sh-card);
+  padding: var(--sp-5) var(--sp-6);
+}
+.card--flush  { padding: 0; overflow: hidden; }
+.card--marked { border-left: 4px solid var(--sec, var(--accent)); }
+.card--tinted { background: var(--surface-band); border-color: var(--border-tint); }
+
+.card__band {
+  background: var(--sec, var(--accent)); color: var(--white);
+  padding: var(--sp-3) var(--sp-6);
+  font-size: var(--fs-meta); font-weight: var(--fw-black);
+  letter-spacing: .14em; text-transform: uppercase;
+}
+.card__row {
+  padding: var(--sp-4) var(--sp-6);
+  border-bottom: 1px solid var(--paper-200);
+}
+.card__row:last-child { border-bottom: none; }
+.card__foot {
+  display: flex; flex-wrap: wrap; gap: var(--sp-3);
+  padding: var(--sp-5) var(--sp-6); background: var(--surface-sunken);
+}
+
+/* Encadré de savoir (grammaire, sons) : bandeau coloré + rangées. */
+.savoir { background: var(--surface-card); border: 1px solid var(--border); border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--sh-card); }
+.savoir__row {
+  display: grid; grid-template-columns: minmax(160px, 220px) minmax(0, 1fr);
+  gap: var(--sp-5); align-items: baseline;
+  padding: var(--sp-4) var(--sp-6); border-bottom: 1px solid var(--paper-200);
+}
+.savoir__row:last-child { border-bottom: none; }
+.savoir__key { font-size: var(--fs-lead); font-weight: var(--fw-black); color: var(--text-strong); }
+.savoir__val { font-size: var(--fs-body-sm); font-weight: var(--fw-medium); line-height: var(--lh-loose); color: var(--text-body); }
+@media (max-width: 640px) { .savoir__row { grid-template-columns: 1fr; gap: var(--sp-1); } }
+
+/* Réplique de dialogue / transcription. */
+.dialogue__line {
+  display: grid; grid-template-columns: 88px minmax(0, 1fr);
+  gap: var(--sp-4); align-items: baseline;
+  padding: var(--sp-4) 0; border-bottom: 1px solid var(--border);
+}
+.dialogue__who { font-size: var(--fs-label); font-weight: var(--fw-black); letter-spacing: .06em; color: var(--accent); }
+.dialogue__txt { font-size: var(--fs-body-sm); font-weight: var(--fw-medium); line-height: 1.55; color: var(--text-body); }
+
+
+/* ── components/exercises.css ── */
+/* ============================================================
+   EXERCICES · choix, jetons, zones de dépôt
+   Règle d'or : SÉLECTIONNÉ = plaque encre. Pas de bleu, pas de
+   teinte supplémentaire — la couleur reste disponible pour dire
+   « juste » ou « à revoir ».
+   ============================================================ */
+
+/* — Choix binaire (vrai/faux, [e]/[ɛ]) — */
+.choice {
+  min-width: 82px; min-height: 46px; padding: 0 var(--sp-4);
+  border: 1px solid var(--border); border-radius: var(--r-sm);
+  background: var(--surface-card); color: var(--text-body);
+  font-family: var(--font-sans); font-size: var(--fs-ui); font-weight: var(--fw-bold);
+  cursor: pointer;
+  transition: background var(--dur) var(--ease), color var(--dur) var(--ease),
+              border-color var(--dur) var(--ease);
+}
+.choice:hover { background: var(--paper-100); }
+.choice.is-selected { background: var(--sel-bg); border-color: var(--sel-line); color: var(--sel-ink); }
+.choice.is-ok       { background: var(--ok-bg); border-color: var(--ok-line); color: var(--ok-ink); }
+.choice.is-no       { background: var(--no-bg); border-color: var(--no-line); color: var(--no-ink); }
+/* bonne réponse non choisie : filet pointillé, sans aplat */
+.choice.is-answer   { background: var(--surface-card); border: 1px dashed var(--ok-line); color: var(--ok-line); }
+
+.exo-row {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--sp-5); align-items: center;
+  padding: var(--sp-4) var(--sp-6); border-bottom: 1px solid var(--paper-200);
+}
+.exo-row:last-of-type { border-bottom: none; }
+.exo-row__txt  { font-size: var(--fs-body); font-weight: var(--fw-semi); line-height: 1.45; }
+.exo-row__opts { display: flex; gap: var(--sp-2); }
+@media (max-width: 560px) { .exo-row { grid-template-columns: 1fr; gap: var(--sp-3); } }
+
+/* — Jeton d'association (mot ↔ définition) —
+   Clic-clic plutôt que glisser : atteignable au clavier.
+   Sur chaque jeton : role="button" tabindex="0" + gestion de
+   Entrée/Espace. Les paires justes se verrouillent (aria-disabled). */
+.chip {
+  text-align: left; width: 100%;
+  min-height: var(--tap-comfort); padding: var(--sp-3) var(--sp-4);
+  border: 1px solid var(--border); border-radius: var(--r-md);
+  background: var(--surface-card); color: var(--text-strong);
+  font-family: var(--font-sans); font-size: var(--fs-body-sm); font-weight: var(--fw-medium);
+  line-height: 1.45; cursor: pointer;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.chip--word   { font-size: var(--fs-body-sm); font-weight: var(--fw-bold); }
+.chip:hover   { background: var(--paper-100); }
+.chip.is-active { background: var(--sel-bg); border-color: var(--sel-line); color: var(--sel-ink); }
+.chip.is-paired { background: var(--ok-bg); border-color: var(--ok-line); color: var(--ok-ink); cursor: default; }
+.chip.is-paired::before { content: "✓ "; font-weight: var(--fw-black); }
+.chip.is-miss   { background: var(--no-bg); border-color: var(--no-line); color: var(--no-ink); }
+
+.pair-grid { display: grid; grid-template-columns: minmax(220px, 300px) minmax(0, 1fr); gap: var(--sp-4); align-items: start; }
+@media (max-width: 720px) { .pair-grid { grid-template-columns: 1fr; } }
+
+/* — Zone de dépôt / texte à trous — */
+.drop {
+  display: flex; align-items: center; justify-content: center;
+  min-height: 54px; padding: var(--sp-3) var(--sp-4);
+  border: 2px dashed var(--drop-line); border-radius: var(--r-sm);
+  background: var(--drop-bg); color: var(--text-muted);
+  font-weight: var(--fw-bold); text-align: center; cursor: pointer;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.drop.is-filled { border-style: solid; border-color: var(--sel-line); background: var(--sel-bg); color: var(--sel-ink); }
+.drop.is-over   { border-style: solid; border-color: var(--accent); background: var(--accent-soft); }
+.drop.is-ok     { border-style: solid; border-color: var(--ok-line); background: var(--ok-bg); color: var(--ok-ink); }
+.drop.is-no     { border-style: solid; border-color: var(--no-line); background: var(--no-bg); color: var(--no-ink); }
+
+.blank {
+  display: inline-block; min-width: 130px; margin: 0 3px; padding: 4px var(--sp-3);
+  border: 2px dashed var(--drop-line); border-radius: 8px;
+  background: var(--drop-bg); color: var(--text-muted);
+  font-size: var(--fs-lead); font-weight: var(--fw-bold); text-align: center;
+  vertical-align: middle; cursor: pointer;
+}
+.blank.is-filled { border-style: solid; border-color: var(--sel-line); background: var(--sel-bg); color: var(--sel-ink); }
+.blank.is-ok     { border-style: solid; border-color: var(--ok-line); background: var(--ok-bg); color: var(--ok-ink); }
+.blank.is-no     { border-style: solid; border-color: var(--no-line); background: var(--no-bg); color: var(--no-ink); }
+
+/* Phrase à compléter : les tirets de la consigne restent lisibles. */
+.gap-sentence { font-size: var(--fs-lead); font-weight: var(--fw-bold); line-height: var(--lh-loose); letter-spacing: .01em; }
+
+
+/* ── components/feedback.css ── */
+/* ============================================================
+   RÉTROACTION
+   Jamais la couleur seule : chaque état porte un glyphe (✓ / ✕ / !).
+   Conteneurs annoncés aux lecteurs d'écran (aria-live="polite").
+   L'erreur n'a pas d'aplat saturé.
+   ============================================================ */
+.fb { font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); line-height: var(--lh-body); }
+.fb--ok   { color: var(--ok-ink); }
+.fb--no   { color: var(--no-ink); }
+.fb--warn { color: var(--warn-ink); }
+.fb--ok::before   { content: "✓ "; font-weight: var(--fw-black); }
+.fb--no::before   { content: "✕ "; font-weight: var(--fw-black); }
+.fb--warn::before { content: "! "; font-weight: var(--fw-black); }
+
+/* Bloc de rétroaction détaillée (correction d'un écrit). */
+.fb-box {
+  border: 1px solid var(--ok-line); border-radius: var(--r-sm);
+  background: var(--ok-bg); color: var(--ok-ink);
+  padding: var(--sp-4); display: flex; flex-direction: column; gap: var(--sp-2);
+}
+.fb-box--no   { border-color: var(--no-line);   background: var(--no-bg);   color: var(--no-ink); }
+.fb-box--warn { border-color: var(--warn-line); background: var(--warn-bg); color: var(--warn-ink); }
+.fb-box__title { font-size: var(--fs-meta); font-weight: var(--fw-black); letter-spacing: .06em; text-transform: uppercase; }
+.fb-box__item  { font-size: var(--fs-ui-sm); font-weight: var(--fw-semi); padding-left: var(--sp-3); position: relative; }
+.fb-box__item::before { content: "•"; position: absolute; left: 2px; }
+
+/* Score / progression. */
+.score {
+  display: inline-flex; align-items: center;
+  padding: 6px var(--sp-3); border-radius: var(--r-pill);
+  background: var(--sec-soft, var(--accent-soft)); color: var(--sec, var(--accent-ink));
+  font-size: var(--fs-ui-sm); font-weight: var(--fw-bold); white-space: nowrap;
+}
+
+/* Bannière d'aide contextuelle (« un mot est choisi, placez-le »). */
+.banner {
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding: var(--sp-3) var(--gutter);
+  background: var(--warn-bg); border-bottom: 2px solid var(--warn-line);
+  color: var(--warn-ink); font-size: var(--fs-body-sm); font-weight: var(--fw-bold);
+}
+
+
+/* ── components/infobulle.css ── */
+/* ============================================================
+   FRANCISATION · INFOBULLE
+   Une explication courte, au survol et au clavier.
+
+   Elle sert aux repères qui ne peuvent pas porter leur
+   explication en toutes lettres : un voyant, une pastille, un
+   bouton à icône. Elle ne remplace jamais un libellé — si la
+   place existe pour écrire, on écrit.
+
+   Usage :
+       <span class="badge" data-info="Vert dès que l'élève a
+             écouté le dialogue." tabindex="0">Dialogue</span>
+
+   Trois règles tenues ici :
+   · elle paraît au SURVOL et au FOCUS — un repère qu'on ne peut
+     atteindre qu'à la souris n'existe pas pour qui navigue au
+     clavier ;
+   · sur un repère qui n'est pas un bouton, ajoutez `tabindex="0"` :
+     l'élève au doigt n'a pas de survol, la touche lui donne le
+     focus, donc l'explication ;
+   · le texte est du CONTENU, pas du style : il vit dans
+     l'attribut `data-info`, jamais dans la feuille de style.
+
+   Un piège, vérifié au navigateur : un ancêtre en `overflow:
+   hidden` ou `overflow-x: auto` DÉCOUPE la bulle. Nos tableaux
+   arrondis en étaient là. Le remède n'est pas dans ce fichier —
+   c'est à l'ancêtre de cesser de découper : sur un tableau, on
+   retire l'`overflow: hidden` et on arrondit les deux cellules
+   d'en-tête du bout ; sur un conteneur de défilement, on lui
+   donne un `padding-bottom` que reprend une marge négative.
+   Voir `.fe-table` dans fiche-eleve.html et `.pg-scroll` dans
+   progression.html.
+   ============================================================ */
+
+[data-info] { position: relative; }
+
+[data-info]::after {
+  content: attr(data-info);
+  position: absolute;
+  top: calc(100% + 9px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-2px);
+  z-index: 90;
+  width: max-content;
+  max-width: 264px;
+  padding: var(--sp-2, 8px) var(--sp-3, 12px);
+  border-radius: var(--r-sm, 10px);
+  /* La plaque encre du système : le seul aplat foncé autorisé hors
+     bandeau, et le meilleur contraste sur toutes nos surfaces. */
+  background: var(--sel-bg, #17181A);
+  color: var(--sel-ink, #FFFFFF);
+  box-shadow: var(--sh-2, 0 6px 18px rgba(20, 20, 20, .18));
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: var(--fs-meta, 13px);
+  font-weight: var(--fw-medium, 500);
+  line-height: 1.45;
+  /* Le repère est souvent en capitales espacées ; l'explication,
+     elle, est une phrase et se lit comme une phrase. */
+  text-transform: none;
+  letter-spacing: 0;
+  text-align: left;
+  white-space: normal;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--dur, .15s) var(--ease, ease),
+              transform var(--dur, .15s) var(--ease, ease);
+}
+
+/* La pointe, du même noir, sans ombre pour ne pas doubler le trait. */
+[data-info]::before {
+  content: '';
+  position: absolute;
+  top: calc(100% + 3px);
+  left: 50%;
+  transform: translateX(-50%) translateY(-2px);
+  z-index: 91;
+  border: 6px solid transparent;
+  border-bottom-color: var(--sel-bg, #17181A);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--dur, .15s) var(--ease, ease),
+              transform var(--dur, .15s) var(--ease, ease);
+}
+
+[data-info]:hover::after,
+[data-info]:hover::before,
+[data-info]:focus-visible::after,
+[data-info]:focus-visible::before,
+[data-info][tabindex]:focus::after,
+[data-info][tabindex]:focus::before {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ── Sens et alignement ──────────────────────────────────────
+   Par défaut l'infobulle descend. En bas d'écran, ou sous une
+   barre collée en bas, elle monte. */
+[data-info-sens="haut"]::after {
+  top: auto;
+  bottom: calc(100% + 9px);
+  transform: translateX(-50%) translateY(2px);
+}
+[data-info-sens="haut"]::before {
+  top: auto;
+  bottom: calc(100% + 3px);
+  border-bottom-color: transparent;
+  border-top-color: var(--sel-bg, #17181A);
+  transform: translateX(-50%) translateY(2px);
+}
+
+/* Contre un bord d'écran, une bulle centrée sort de la page. On
+   l'accroche alors par un côté plutôt que par son milieu. */
+[data-info-cote="droite"]::after { left: auto; right: 0; transform: translateY(-2px); }
+[data-info-cote="gauche"]::after { left: 0; transform: translateY(-2px); }
+[data-info-cote="droite"]:hover::after,
+[data-info-cote="droite"]:focus-visible::after,
+[data-info-cote="droite"][tabindex]:focus::after,
+[data-info-cote="gauche"]:hover::after,
+[data-info-cote="gauche"]:focus-visible::after,
+[data-info-cote="gauche"][tabindex]:focus::after { transform: translateY(0); }
+
+/* Un repère qui porte une explication l'annonce : le curseur
+   d'aide, et un focus visible comme partout ailleurs. */
+[data-info][tabindex] { cursor: help; }
+[data-info][tabindex]:focus-visible {
+  outline: 2px solid var(--accent, #0A8F5B);
+  outline-offset: 3px;
+  border-radius: var(--r-sm, 10px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-info]::after, [data-info]::before { transition: none; }
+}
+
+/* Écrans étroits : la bulle prend la largeur qu'elle peut, sans
+   pousser la page. */
+@media (max-width: 520px) {
+  [data-info]::after { max-width: min(264px, 72vw); }
+}
+

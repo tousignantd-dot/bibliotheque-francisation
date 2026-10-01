@@ -1,0 +1,162 @@
+{
+ "page": "eleve.html",
+ "date": "2026-09-30",
+ "grille": "~/.claude/skills/impeccable/reference/audit.md + craft-floor.md, arbitrée par assets/design-system/README.md, tokens/*.css, skill francis et CLAUDE.md (section Portail élève)",
+ "methode": "Code lu en entier : eleve.html (791 lignes), styles.css et ses 16 @import (jetons, base, layout, buttons, forms, cards, feedback, infobulle), marque-francis.css (barre), js/appui.js, routes serveur utiles (/api/student/*, safe_filename, envois). Rendu réel : server.py lancé sur le port 5199 avec STORAGE_DIR dans le bloc-notes (copie de data/, aucun fichier du dépôt écrit), Chrome sans interface piloté par CDP (WebSocket natif de node 26, sans puppeteer), connexion avec le code de démonstration UTG9BS (Lilas : 11 modules, 32 ateliers, aucune progression). Mesuré par script dans la page à 320, 390, 640 et 1280 px : débordement horizontal (scrollWidth et boîtes), contraste calculé de chaque nœud texte contre son fond composé (opacités cumulées), cibles interactives < 44 px, tailles de texte < 17 px, titres, repères, id en double, alignement logotype/contenu, document.fonts.check('17px Nunito'). Les blocs « Votre enseignant vous a envoyé » et « Documents à consulter » étant vides pour Lilas, ils ont été rendus par injection (appel des fonctions blocPointsExpress/blocDocuments de la page avec des données fictives) puis mesurés. Non mesuré : gestes tactiles réels (aucun glisser sur cette page, seulement des taps), lecteur d'écran réel (annonces déduites du balisage), réseau lent ou Google Fonts bloqué (déduit du code), états « en cours » et « fait » des tuiles (Lilas n'a aucune progression ; leur style a été lu dans le code). Serveur et Chrome arrêtés à la fin. Le binaire impeccable n'a pas été lancé : le détecteur de la dimension 5 est remplacé par une relecture manuelle contre le système.",
+ "scores": {"accessibilite": 2, "performance": 3, "responsive": 3, "theming": 3, "integrite": 2},
+ "total": "13/20 — acceptable (travail notable sur deux dimensions)",
+ "verdict_integrite": "Réussite partielle. Le corps de la page exprime bien le système francis : jetons partout, plaque encre unique, états glyphe + mot, logotype conforme (role=img, ı U+0131), Nunito locale chargée (fonts.check vrai), aucune icône ni émoji décoratif. Mais quatre dérives vérifiées : (1) le bloc des points express, ajouté après coup, est écrit hors système (jetons inexistants --rule et --font-titre, repli en hexadécimal, rayon 5 px, corps 11-16 px, carte de la couleur du fond de page) ; (2) les tuiles de modules sont colorées par domaine de vie alors que la règle du 20 août veut la couleur du niveau — l'élève voit une tuile sarcelle et ouvre un module à en-tête or ; (3) une collision de cascade (.om-sec > span écrase .score) ; (4) le logotype n'est pas aligné sur le contenu sous 900 px. CLAUDE.md affirme « aucune couleur en dur, deux seules pièces écrites à la main » : c'est devenu faux.",
+ "constats": [
+  {
+   "id": "i01",
+   "gravite": "P1",
+   "categorie": "accessibilite",
+   "titre": "Textes de repérage sous 4,5:1 (couleur de section verte, pastilles numérotées, lien enseignant)",
+   "ou": "eleve.html:71 (.om-bilan-sur), :94-100 (.om-tuile-num, .om-tuile-domaine), :56 (.om-prof a), :315 (repli exo--vocab) ; assets/design-system/components/layout.css (.exo--vocab = --green-600)",
+   "preuve": "Mesuré à 390 et 1280 px : « VOCABULAIRE » (.om-bilan-sur, 13 px/800, #0A8F5B sur blanc) 4,12:1 ; .om-tuile-domaine « Vie quotidienne », « Consommation et environnement » 4,12:1 ; pastilles .om-tuile-num 15 px/900 : sarcelle sur sarcelle-100 4,46:1, ambre 4,39:1, vert 3,66:1 (modules 07 et 17) ; « Espace enseignant » #6E7175 sur bande acier #E7F0F6 4,25:1. Aucun de ces textes n'atteint le seuil « grand texte » (18,66 px gras).",
+   "impact": "Le numéro du module (seul endroit où il figure, le titre de tuile en est retiré par titreCourt) et le domaine se lisent mal, surtout sur téléphone en plein jour ; seuil du système (≥ 4,5:1 pour tout texte, y compris les libellés secondaires) et WCAG 1.4.3 non tenus.",
+   "correction": "Garder la teinte de section pour le filet de 4 px et le fond de pastille, mais écrire le texte en encre (--text-strong) ou dans un pas plus foncé déjà au système (--green-800 au lieu de --green-600 pour le repli vert). Lien enseignant : --text-body au lieu de --text-muted sur la bande. Si la correction i05 est faite (couleur du niveau), vérifier --niv-4-line sur --niv-4-bg : 4,41:1, donc texte en encre sur la pastille."
+  },
+  {
+   "id": "i02",
+   "gravite": "P1",
+   "categorie": "integrite",
+   "titre": "Bloc « Votre enseignant vous a envoyé » écrit hors système : corps 11-16 px, « Fait » à 2,69:1, carte invisible",
+   "ou": "eleve.html:125-145 (.pe-*), :550-571 (blocPointsExpress)",
+   "preuve": "Rendu par injection à 390 px : .pe-etat 11 px, .pe-tete p et .pe-duree 12 px, .pe-mot 13 px, .pe-titre 16 px. Sur une carte terminée, opacity .66 donne « ✓ FAIT » 2,69:1 et « 10 minutes » 3,32:1. La carte prend background var(--paper-100) — la couleur du fond de page (mesuré rgb(247,247,245) sur rgb(247,247,245)) — alors que son repli #FFF montre l'intention d'une carte blanche. var(--rule) et var(--font-titre) n'existent dans aucun jeton : bordure #D0CFCA et police 'Nunito', sans-serif viennent des replis. Rayon 5 px et filet gauche 3 px hors échelle (cartes 18 px, filet de section 4 px). Couleur fixée à --niv-5-line alors que data/points_express.json compte des points des niveaux 1 à 8.",
+   "impact": "C'est le premier bloc de la page et le seul qui attend une réponse de l'élève : il est le plus petit et le plus pâle de l'écran, et un point fait devient presque illisible. L'élève de niveau 2 reçoit un point teinté sarcelle (niveau 5).",
+   "correction": "Réécrire le bloc avec les composants existants : .card.card--marked (blanc, 18 px, filet 4 px) dans une .grid-auto, titre en --fs-lead/900, état en .om-etat (déjà glyphe + mot, 15 px), méta en --fs-body-sm ; en-tête de section en .om-sec comme les autres blocs. Point terminé : retirer l'opacité, le dire par l'état « ✓ Fait » en --green-800. Couleur : --niv-N-line selon le niveau du point (ajouter `niveau` à l'envoi côté serveur, il est déjà dans points_express.json) ou neutre --niv-outil-line à défaut."
+  },
+  {
+   "id": "i03",
+   "gravite": "P1",
+   "categorie": "responsive",
+   "titre": "Sélecteur de langue d'appui : 88 × 26 px et texte 12 px (zoom de Safari au focus)",
+   "ou": "eleve.html:186-196 (.appui-sel, max-width 96px / font-size 12px / padding 3px 2px sous 640 px) ; js/appui.js:120-150",
+   "preuve": "Mesuré : 88 × 26 px et 12 px à 320/390/640 px, 107 × 29 px et 14 px à 1280 px. Un champ de formulaire sous 16 px fait zoomer Safari iOS au toucher (règle du skill francis).",
+   "impact": "C'est la porte d'entrée des élèves qui ont le moins de français, et elle est la plus petite cible de la page : difficile à toucher, puis la page zoome et décale tout. Seuil du système : cibles ≥ 44 px.",
+   "correction": "min-height: var(--tap-min) ; font-size: 16px minimum (17 px = --fs-body-sm de .field) ; padding: 0 var(--sp-2) ; border-radius: var(--r-sm) ; filet --border. Si la barre manque de place sous 480 px, le logotype y est déjà réduit au nom seul ; mesurer à 320 px que nom + sélecteur + « Se déconnecter » tiennent avec 12 px d'écart."
+  },
+  {
+   "id": "i04",
+   "gravite": "P1",
+   "categorie": "accessibilite",
+   "titre": "Échec de connexion : message non annoncé et faux en cas de panne réseau",
+   "ou": "eleve.html:245 (#loginError sans role/aria-live), :352-356 (catch unique), :339 et :355 (textContent)",
+   "preuve": "Le paragraphe d'erreur passe de hidden à visible sans role=\"alert\" ni aria-live, l'input n'a ni aria-invalid ni aria-describedby vers l'aide (« Six caractères… ») ou l'erreur. Le catch traite pareil un 401, un 500 et un fetch qui échoue hors ligne : tous affichent « Ce code ne correspond à aucun élève. ». De plus btn.textContent = 'Entrer' efface le <span class=\"ap\"> que Appui.poser a mis dans le bouton : après un échec, le bouton perd sa traduction d'appui.",
+   "impact": "Hors ligne ou serveur en panne, l'élève croit que son code est faux et le retape, puis demande un nouveau code à l'enseignante. Avec un lecteur d'écran, rien n'est dit. WCAG 4.1.3 (messages d'état) et 3.3.1.",
+   "correction": "role=\"alert\" sur #loginError ; aria-describedby=\"aideCode loginError\" et aria-invalid sur l'input ; deux messages : 401 → « Ce code ne correspond à aucun élève. », autre → « Connexion impossible pour l'instant. Vérifiez votre réseau, puis réessayez. » ; changer l'état du bouton par disabled + aria-busy sans réécrire textContent, ou rappeler Appui.poser(btn) après."
+  },
+  {
+   "id": "i05",
+   "gravite": "P2",
+   "categorie": "integrite",
+   "titre": "Tuiles colorées par domaine de vie, alors que la couleur d'un module est celle de son niveau",
+   "ou": "eleve.html:303-309 (SECTIONS), :413-416 (sectionDe), :665 (classe exo--* sur la tuile)",
+   "preuve": "L'API /api/student/activities rend nouveauDesignColor = #8C6A07 (niveau 4, or) pour les modules 1 à 10, que viewer.html applique à l'en-tête. La page, elle, peint la tuile en sarcelle (santé), acier (travail), indigo (culture), ambre (logement) ou vert (repli exo--vocab, « Vie quotidienne », « Consommation »). CLAUDE.md, section « La couleur d'un module est celle de son niveau » : « les jetons --niv-N-line / --niv-N-bg servent au catalogue, au portail et à l'en-tête du module », et la mémoire « plus aucun vert au repérage ».",
+   "impact": "Deux échelles pour une même idée : l'élève voit une tuile sarcelle et ouvre un module à en-tête or. Le vert du repli usurpe la couleur de l'action et de « juste ».",
+   "correction": "Poser --sec / --sec-soft depuis nouveauDesignColor / nouveauDesignTint (ou --niv-N-line / --niv-N-bg) sur .om-tuile ; supprimer SECTIONS et le repli exo--vocab. Le domaine reste écrit en toutes lettres dans .om-tuile-domaine (texte en encre, voir i01)."
+  },
+  {
+   "id": "i06",
+   "gravite": "P2",
+   "categorie": "integrite",
+   "titre": "Collision de cascade : .om-sec > span écrase la pastille .score",
+   "ou": "eleve.html:25-28 (.om-sec > span) et :689 (<span class=\"score\"> enfant direct de .om-sec)",
+   "preuve": "Spécificité (0,1,1) contre (0,1,0) : la pastille « 0 / 11 terminés » prend color --text-muted, text-transform uppercase et letter-spacing .1em. Mesuré : #6E7175 sur --accent-soft #E6F5EE = 4,36:1, rendu « 0 / 11 TERMINÉS ».",
+   "impact": "Le seul compteur de progression global de la liste est en capitales espacées (le système réserve les majuscules aux sur-titres) et sous le seuil de contraste.",
+   "correction": "Restreindre la règle au libellé : .om-sec > .om-sec__lib (ou :first-child), comme le préconise le skill francis pour les noms qui veulent dire deux choses — renommer plutôt que monter la spécificité."
+  },
+  {
+   "id": "i07",
+   "gravite": "P2",
+   "categorie": "accessibilite",
+   "titre": "Aucun titre de section ni <main> : la page n'a qu'un h1",
+   "ou": "eleve.html:542, 602, 651, 687, 713 (<div class=\"om-sec\"><span>…), :219 et :256 (pas de <main>)",
+   "preuve": "Arbre mesuré à 390 et 1280 px : un seul titre, « H1: Bonjour Lilas ». « Votre bilan », « Les 11 modules », « Activités thématiques », « Pour vous exercer seul », « Documents à consulter » sont des <span>. Repères présents : header.band, footer.cf-lien ; aucun main. Seul le bloc points express porte un h2 (quand il existe).",
+   "impact": "Au lecteur d'écran, impossible de sauter d'une section à l'autre dans une page de 43 activités ; WCAG 1.3.1 et 2.4.1.",
+   "correction": "Faire de chaque .om-sec un <h2 class=\"om-sec\"> (le libellé dans un span stylé comme aujourd'hui, aucun changement visuel) ; titres de tuile et de rangée en <h3> ; envelopper #contenu dans <main>."
+  },
+  {
+   "id": "i08",
+   "gravite": "P2",
+   "categorie": "accessibilite",
+   "titre": "43 boutons au nom identique (« Ouvrir » ×32, « Commencer » ×8, « Bientôt » ×4)",
+   "ou": "eleve.html:723-732 (boutonOuvrir)",
+   "preuve": "Décompte dans le DOM rendu : {Ouvrir: 32, Commencer: 8, Bientôt: 4}, sans aria-label ni aria-describedby vers le titre de l'activité.",
+   "impact": "Au lecteur d'écran ou à la liste des contrôles, « Ouvrir, bouton » ×32 ne dit pas quoi ; WCAG 2.4.6.",
+   "correction": "aria-describedby vers l'id du titre de la tuile/rangée (le libellé visible ne change pas), ou un <span class=\"u-visually-hidden\"> avec le titre court dans le bouton."
+  },
+  {
+   "id": "i09",
+   "gravite": "P2",
+   "categorie": "responsive",
+   "titre": "Gouttière de 32 px sur téléphone et logotype décalé de 12 px du contenu",
+   "ou": "assets/design-system/components/layout.css (.container padding 0 var(--gutter), sans requête de média) ; marque-francis.css:185-186 (.fr-barre__in 20 px sous 900 px) ; eleve.html (aucune surcharge)",
+   "preuve": "Mesuré : à 390 px, .fr-nom à left 20 px, contenu à left 32 px ; idem à 640 px. Aligné à 1280 px (172/172). Largeur utile 326 px à 390, 256 px à 320 (la .grid-auto minmax(280px) déborde alors de son conteneur de 24 px sur la gouttière, sans défilement horizontal).",
+   "impact": "Le décalage logotype/contenu est le défaut que le skill francis dit voir « tout de suite » ; 64 px de marges sur 390 px resserrent les tuiles et poussent les titres sur trois lignes.",
+   "correction": "Dans eleve.html : @media (max-width: 640px) { .container { padding: 0 var(--sp-4); } .fr-barre .fr-barre__in { padding: 0 var(--sp-4); } } et, entre 640 et 900 px, aligner .fr-barre__in sur la gouttière du .container (ou l'inverse). Remesurer getBoundingClientRect().left à 375, ~1100 et 1600 px."
+  },
+  {
+   "id": "i10",
+   "gravite": "P2",
+   "categorie": "accessibilite",
+   "titre": "État et progression des activités en 15 px",
+   "ou": "eleve.html:34 (.om-etat), :102 (.om-tuile-detail), :109 (.om-rangee-resume), :75 (.om-bilan-legende) — tous var(--fs-ui)",
+   "preuve": "Mesuré : 37 états « À faire » à 15 px, 11 détails « Écouter · Parler » / « 3 exercices sur 8 » à 15 px, 32 résumés à 15 px. --fs-ui est défini dans typography.css comme « libellé de bouton ».",
+   "impact": "« En cours », « Fait le 12 mars », « 3 exercices sur 8 » sont l'information que l'élève vient chercher ; le système dit « rien sous 17 px sauf libellés d'interface ».",
+   "correction": "Passer .om-etat et .om-tuile-detail à --fs-body-sm (17 px). Les résumés de compétences peuvent rester en --fs-ui s'ils sont assumés comme libellés ; le noter dans le commentaire de tête."
+  },
+  {
+   "id": "i11",
+   "gravite": "P2",
+   "categorie": "performance",
+   "titre": "Feuille de style en cascade d'@import, dont une vers Google Fonts, qui bloque le premier rendu",
+   "ou": "eleve.html:11 → assets/design-system/styles.css (16 @import) → tokens/fonts.css:9 (@import fonts.googleapis.com)",
+   "preuve": "styles.css n'est que des @import : le navigateur ne découvre les 16 feuilles qu'après l'avoir reçue, et fonts.css n'émet sa requête vers Google qu'après avoir été reçue elle-même (trois allers-retours en série avant le premier rendu). Le commentaire de fonts.css confirme que les faces locales suffisent pour tout le latin ; l'@import externe ne sert qu'aux alphabets hors plage.",
+   "impact": "Sur un téléphone en 4G faible ou un réseau de centre filtrant, la page reste blanche le temps de la chaîne ; si la requête vers Google pend au lieu d'échouer, tout le CSS attend.",
+   "correction": "Sans toucher au contenu du système : produire au build un styles.css concaténé (un seul fichier) pour les pages du portail, et sortir l'@import Google de la chaîne bloquante (un <link rel=\"stylesheet\" media=\"print\" onload=\"this.media='all'\"> dans les pages qui servent des langues hors latin). Nunito reste locale, conforme au système."
+  },
+  {
+   "id": "i12",
+   "gravite": "P3",
+   "categorie": "accessibilite",
+   "titre": "Deux <select id=\"appuiSel\"> dans le même document",
+   "ou": "js/appui.js:124 (sel.id = 'appuiSel') appelé pour les deux .appui-hote (eleve.html:227 et :265, boucle :770-771)",
+   "preuve": "Mesuré : idsDoubles = [[\"appuiSel\", 2]] sur les deux écrans.",
+   "impact": "Faible aujourd'hui (aucun label for ne pointe dessus), mais tout getElementById('appuiSel') ou label futur visera le sélecteur caché.",
+   "correction": "Ne pas poser d'id dans selecteur(), ou un id suffixé par l'hôte."
+  },
+  {
+   "id": "i13",
+   "gravite": "P3",
+   "categorie": "integrite",
+   "titre": "Le code d'accès est affiché en sur-titre de l'accueil",
+   "ou": "eleve.html:380-381 (bandSurtitre = `Code ${session.code}`)",
+   "preuve": "Rendu : « CODE UTG9BS » au-dessus de « Bonjour Lilas ». CLAUDE.md (registre des appels) rappelle que le code « authentifie » et vaut un mot de passe.",
+   "impact": "En classe, l'écran projeté ou vu par-dessus l'épaule donne l'accès complet au dossier de l'élève.",
+   "correction": "Retirer le code du sur-titre (ou le masquer partiellement : « Code ••••BS ») ; le sur-titre peut porter le groupe ou rester vide."
+  }
+ ],
+ "ecartes": [
+  {"titre": "Absence de mode sombre / theming clair-sombre", "raison": "contredit le système : fond neutre chaud et cartes blanches, aucun mode sombre défini dans tokens/colors.css ; en ajouter un créerait une palette parallèle."},
+  {"titre": "Bannir le sur-titre au-dessus du titre (« kicker / eyebrow », craft-floor)", "raison": "contredit le système : .band__eyebrow et les sur-titres 13 px majuscules sont un composant officiel de la hiérarchie à quatre niveaux du README."},
+  {"titre": "Cartes de même taille icône + titre + texte comme structure (craft-floor)", "raison": "contredit le système : la remise « portail élève 2a » fait foi pour eleve.html (tuiles à filet de couleur, rangées card--flush)."},
+  {"titre": "Filet gauche coloré de plus de 1 px sur les cartes (craft-floor)", "raison": "contredit le système : le filet gauche de 4 px est le seul usage décoratif autorisé de la couleur de section (cards.css, .card--marked). Seul le filet de 3 px du bloc points express est relevé, parce qu'il sort de l'échelle (i02)."},
+  {"titre": "Thémer barres de défilement, sélection de texte, caret (craft-floor « browser surfaces »)", "raison": "hors sujet pour le système : base.css règle déjà la barre de défilement et le focus ; la sélection de texte n'est pas une plaque encre au sens du système (qui vise l'élément choisi d'un exercice). Aucun gain pour l'élève."},
+  {"titre": "Ajouter un moment d'animation « signature » (craft-floor « one authored moment »)", "raison": "contredit le système : transitions de 140 ms sur la couleur seulement, aucun déplacement, rien qui détourne d'une consigne."},
+  {"titre": "Remplacer les glyphes ✓ → · par des icônes dessinées", "raison": "contredit le système : les glyphes ✓ ✕ sont l'exception explicite du README, toujours doublés du mot ; « → » et « · » suivent la même logique et sont aria-hidden."},
+  {"titre": "Chiffre du bilan à 40 px hors échelle typographique", "raison": "écart assumé et commenté dans la page (ligne 73), issu de la remise 2a ; ni lisibilité ni contraste en cause."},
+  {"titre": "Boutons désactivés « Bientôt » à opacité .5 sous 4,5:1", "raison": "WCAG exempte les composants inactifs, et le système (buttons.css) définit cet état ; le mot « Bientôt » et la date de l'état portent l'information."}
+ ],
+ "positifs": [
+  "Aucun débordement horizontal à 320, 390, 640 et 1280 px (scrollWidth = largeur mesurée), y compris avec les blocs injectés ; le correctif min(320px, 100%) du bloc encre tient.",
+  "Tous les boutons (Entrer, Commencer, Ouvrir, Se déconnecter, Continuer) font au moins 44 px de haut ; le champ du code est en 17 px (pas de zoom Safari) avec un vrai label for.",
+  "Chaque état porte glyphe ET mot (✓ Fait le…, → En cours, · À faire / Le 12 mars), glyphe aria-hidden : la couleur ne porte jamais seule l'information.",
+  "Une seule plaque encre (« Votre prochaine étape »), bande d'en-tête claire, jamais noire ; logotype par le balisage officiel (role=img, aria-label, ı U+0131), Nunito locale chargée (document.fonts.check vrai).",
+  "Les trois appels du chargement partent en parallèle (Promise.all), l'envoi des points express échoue en silence, le service worker n'est enregistré qu'après load ; état de chargement et état d'erreur présents.",
+  "Tout le texte dynamique passe par escHtml ; les noms de fichiers de groupe sont assainis au serveur (safe_filename + slugify), le lien Teams est posé par la propriété href après filtre http(s) côté serveur.",
+  "translate=\"no\" et la langue d'appui en couche sous le français, avec direction rtl pour l'arabe, le farsi et l'ourdou : choix pédagogique cohérent et soigné.",
+  "prefers-reduced-motion annule les durées dans les jetons ; aucune animation décorative."
+ ]
+}

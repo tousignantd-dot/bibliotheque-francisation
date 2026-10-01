@@ -121,7 +121,8 @@
     if (!hote) return null;
     var sel = document.createElement('select');
     sel.className = 'appui-sel';
-    sel.id = 'appuiSel';
+    // Pas d'id : une page porte un sélecteur par barre (connexion et
+    // accueil), et un id posé ici sortait deux fois dans le même document.
     sel.setAttribute('aria-label', "Langue d'appui");
     var o = document.createElement('option');
     o.value = ''; o.textContent = 'Français';
