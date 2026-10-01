@@ -26,6 +26,12 @@ import toronto_commun as C  # noqa: E402
 from azure_voix import cle_region  # noqa: E402
 
 RELEVE = C.SONS / "releve.json"
+# Le texte DIT peut différer du texte affiché (comme PRONONCIATION chez Francœur). Essais du 1er oct. 2026 :
+# Clara avale « And you? » en « Nu » (3 tirages identiques : voix neurale) ; une virgule le rend net.
+PRONONCIATION = {
+    "And you? How about you?": "And, you? How about you?",
+    "And you? Where are you from?": "And, you? Where are you from?",
+}
 SEUIL = 0.80
 TARIF = {"neural": 16, "hd": 30}   # $ US par million de caractères (≈, grille Azure)
 
@@ -78,20 +84,32 @@ def entendre(mp3):
         return ""
 
 
+NOMBRES = set("zero one two three four five six seven eight nine ten eleven twelve thirteen fourteen fifteen sixteen "
+              "seventeen eighteen nineteen twenty thirty forty fifty sixty seventy eighty ninety hundred quarter past "
+              "half to o clock am pm a m p m".split())
+
+
 def _net(t):
-    t = re.sub(r"(\d+)\.(\d\d)", r"\1 \2", t.lower().replace("$", ""))
-    return re.sub(r"[^a-z0-9 ]", " ", t).split()
+    """Sans les nombres : la reconnaissance écrit « 1350 » pour « thirteen fifty », « 10:15 » pour
+    « quarter past ten » ; comparer ces écritures ne dit rien de la voix (relevé du 1er oct. 2026).
+    Les nombres se vérifient à l'oreille. « I'm » et « I am » se valent."""
+    t = t.lower().replace("i'm", "i am").replace("’", "'")
+    t = re.sub(r"[^a-z ]", " ", t.replace("'", ""))
+    return [w for w in t.split() if w not in NOMBRES]
 
 
 def similitude(voulu, entendu):
-    return difflib.SequenceMatcher(None, _net(voulu), _net(entendu)).ratio()
+    v, e = _net(voulu), _net(entendu)
+    if not v:   # que des nombres : rien à comparer en mots ; il faut au moins avoir entendu quelque chose
+        return 1.0 if entendu.strip() else 0.0
+    return difflib.SequenceMatcher(None, v, e).ratio()
 
 
 def un(x, releve, forcer=False):
     dest = C.SONS / x["fichier"]
     if dest.exists() and not forcer:
         return
-    dire(x["texte"], x["voix"], dest)
+    dire(PRONONCIATION.get(x["texte"], x["texte"]), x["voix"], dest)
     e = entendre(dest)
     releve[x["fichier"]] = {"voulu": x["texte"], "entendu": e, "sim": round(similitude(x["texte"], e), 2), "voix": x["voix"]}
 
@@ -110,6 +128,10 @@ if __name__ == "__main__":
               f"(neural {car['neural']}, HD/MAI {car['hd']}) ≈ {cout:.2f} $ US, plus la retranscription (≈ 0,05 $)")
         sys.exit(0)
     releve = json.loads(RELEVE.read_text()) if RELEVE.exists() else {}
+    if "--recalculer" in args:   # la comparaison a changé : on la refait sur les retranscriptions gardées, sans rien payer
+        for k, v in releve.items():
+            v["sim"] = round(similitude(v["voulu"], v["entendu"]), 2)
+        args.append("--rien")
     if "--retenter" in args:
         douteux = [x for x in tous if releve.get(x["fichier"], {}).get("sim", 1) < SEUIL]
         for x in douteux:
@@ -121,7 +143,7 @@ if __name__ == "__main__":
                     meilleur, garde = releve[x["fichier"]], (C.SONS / x["fichier"]).read_bytes()
             (C.SONS / x["fichier"]).write_bytes(garde); releve[x["fichier"]] = meilleur
             print(f"  {x['fichier']:28} {meilleur['sim']:.2f}  « {meilleur['entendu']} »")
-    else:
+    elif "--rien" not in args:
         with ThreadPoolExecutor(4) as ex:
             list(ex.map(lambda x: un(x, releve), tous))
     RELEVE.write_text(json.dumps(releve, ensure_ascii=False, indent=1), encoding="utf-8")
