@@ -31,6 +31,9 @@ RELEVE = C.SONS / "releve.json"
 PRONONCIATION = {
     "And you? How about you?": "And, you? How about you?",
     "And you? Where are you from?": "And, you? Where are you from?",
+    # Étape 2 : la virgule avalait « a tablet » ; « toque » sortait « toke » — au Canada, on dit « touk ».
+    "a pill, a tablet": "a pill. a tablet.",
+    "a toque": "a tuque",
 }
 SEUIL = 0.80
 TARIF = {"neural": 16, "hd": 30}   # $ US par million de caractères (≈, grille Azure)
