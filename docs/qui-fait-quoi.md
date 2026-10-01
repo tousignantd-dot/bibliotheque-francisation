@@ -30,6 +30,7 @@ autre chose.
 
 | Session | Ouverte | Ce que je tiens | Jusqu'à |
 |---|---|---|---|
+| toronto (étape 5) | 1er oct. 2026 | server.py (chargement du scénario), pelerins.py (trousse, produit, codes d'essai), build/azure_voix.py (rôles toronto_*) | fin de l'étape 5 |
 
 Le nom de session est celui que donne `ListAgents` (`claude-38`, `claude-71`…).
 Il ne survit pas à la fermeture, et c'est voulu : une ligne dont le nom ne
