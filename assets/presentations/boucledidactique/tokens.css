@@ -1,0 +1,70 @@
+/* ============================================================
+   BOUCLEDIDACTIQUE · jetons du système de design
+   Retenu le 1er octobre 2026 : palette « graphite et bleu »,
+   direction tirée d'Agence Foudre (aplats, grande typographie),
+   mouvement à la GSAP et à la Lusion. Fond blanc, neutres froids :
+   aucun crème (c'est ce qui se lisait « français »).
+
+   Contrastes calculés (WCAG 2.2), voir systeme.html qui les
+   recalcule en direct :
+     encre / blanc 18,47 · encre-2 / blanc 6,75 · bleu-texte / blanc 6,02
+     blanc / graphite 14,59 · pâle / graphite 11,07 · encre / bleu 5,79
+     bleu / blanc 3,19 → formes et texte ≥ 24 px seulement
+     encre-3 / blanc 3,98 → décor, jamais du texte à lire
+   Ce fichier est RECOPIÉ dans chaque page (<style id="jetons">),
+   jamais importé : un @import échoue en silence depuis file://.
+   ============================================================ */
+:root {
+  /* — Neutres (froids) — */
+  --blanc:      #FFFFFF;
+  --gris:       #F1F3F5;   /* fond des bandes et des zones */
+  --trait:      #E3E6EA;   /* filets, bordures */
+  --encre:      #111418;   /* texte */
+  --encre-2:    #565C64;   /* texte secondaire */
+  --encre-3:    #7A8089;   /* décor seulement (3,98:1) */
+
+  /* — Marque : le bleu — */
+  --bleu:       #6E93BF;   /* formes, anneaux, grands titres (3,19:1) */
+  --bleu-texte: #3E6593;   /* le bleu quand il est du texte (6,02:1) */
+  --bleu-doux:  #E5EDF6;   /* aplats, étape active, pastilles */
+  --pale:       #D4E2F0;   /* accent pâle : surligneur, texte sur graphite */
+
+  /* — Action : le graphite — */
+  --graphite:      #26292E;   /* boutons, bandeau défilant */
+  --graphite-doux: #E6E8EB;
+
+  /* — Verdicts (le diagnostic est le métier) — */
+  --juste: #1D6A47;   /* 6,55:1 sur blanc, 5,55:1 sur bleu-doux */
+  --faux:  #B3261E;   /* 6,54:1 sur blanc, 5,53:1 sur bleu-doux */
+
+  /* — Typographie — Clash Grotesk (titres) + General Sans (texte),
+       Fontshare, licence ITF libre pour l'usage commercial. — */
+  --f-titre: "Clash Grotesk", "Arial Black", system-ui, sans-serif;
+  --f-texte: "General Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fs-affiche: clamp(48px, 8.6vw, 136px);  /* titre d'accueil, 700, -.02em */
+  --fs-h2:      clamp(40px, 6vw, 84px);     /* titre de section, 700, -.03em */
+  --fs-h3:      clamp(24px, 2.4vw, 30px);   /* titre de carte, 600 */
+  --fs-chapeau: clamp(18px, 1.6vw, 22px);
+  --fs-corps:   17px;                        /* jamais moins pour du texte à lire */
+  --fs-libelle: 14px;                        /* sur-titres en capitales, .12em */
+  --lh-titre: .95;
+  --lh-corps: 1.55;
+
+  /* — Espacement (base 4) et rayons — */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px; --sp-5: 24px;
+  --sp-6: 32px; --sp-7: 48px; --sp-8: 64px; --sp-9: 120px;  /* entre sections */
+  --colonne: 1240px;
+  --gouttiere: 24px;         /* 20px sous 860px */
+  --r-pilule: 999px;         /* boutons */
+  --r-carte: 24px;           /* cartes de démo */
+  --r-bloc: 20px;            /* étapes, encadrés */
+  --r-pastille: 16px;        /* pastille d'icône */
+  --cible: 48px;             /* hauteur des boutons (≥ 44) */
+
+  /* — Mouvement — tout passe par GSAP ; prefers-reduced-motion coupe tout. — */
+  --d-court: 200ms;   /* survol, appui */
+  --d-moyen: 600ms;   /* entrée d'un bloc au défilement */
+  --d-long:  1600ms;  /* compteurs, titre d'accueil */
+  --ease-sortie: cubic-bezier(.22, 1, .36, 1);   /* GSAP « power3.out » */
+  --ease-rebond: cubic-bezier(.34, 1.56, .64, 1); /* GSAP « back.out(1.6) » */
+}

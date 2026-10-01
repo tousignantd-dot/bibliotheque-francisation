@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Système BoucleDidactique</title>
+<link rel="icon" type="image/svg+xml" href="logo/favicon.svg">
+<style id="polices">/* Les polices de BoucleDidactique, servies par le dépôt (fonts/).
+   Comme les jetons, ce bloc est RECOPIÉ dans chaque page, avec le chemin
+   relatif qui convient à la page : « fonts/ » depuis ce dossier,
+   « ../boucledidactique/fonts/ » depuis assets/presentations/identite/. */
+@font-face{font-family:"Clash Grotesk";src:url("fonts/clash-grotesk-500.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"Clash Grotesk";src:url("fonts/clash-grotesk-600.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:"Clash Grotesk";src:url("fonts/clash-grotesk-700.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"General Sans";src:url("fonts/general-sans-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"General Sans";src:url("fonts/general-sans-500.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"General Sans";src:url("fonts/general-sans-600.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap}</style>
+<style id="jetons">/* ============================================================
+   BOUCLEDIDACTIQUE · jetons du système de design
+   Retenu le 1er octobre 2026 : palette « graphite et bleu »,
+   direction tirée d'Agence Foudre (aplats, grande typographie),
+   mouvement à la GSAP et à la Lusion. Fond blanc, neutres froids :
+   aucun crème (c'est ce qui se lisait « français »).
+
+   Contrastes calculés (WCAG 2.2), voir systeme.html qui les
+   recalcule en direct :
+     encre / blanc 18,47 · encre-2 / blanc 6,75 · bleu-texte / blanc 6,02
+     blanc / graphite 14,59 · pâle / graphite 11,07 · encre / bleu 5,79
+     bleu / blanc 3,19 → formes et texte ≥ 24 px seulement
+     encre-3 / blanc 3,98 → décor, jamais du texte à lire
+   Ce fichier est RECOPIÉ dans chaque page (<style id="jetons">),
+   jamais importé : un @import échoue en silence depuis file://.
+   ============================================================ */
+:root {
+  /* — Neutres (froids) — */
+  --blanc:      #FFFFFF;
+  --gris:       #F1F3F5;   /* fond des bandes et des zones */
+  --trait:      #E3E6EA;   /* filets, bordures */
+  --encre:      #111418;   /* texte */
+  --encre-2:    #565C64;   /* texte secondaire */
+  --encre-3:    #7A8089;   /* décor seulement (3,98:1) */
+
+  /* — Marque : le bleu — */
+  --bleu:       #6E93BF;   /* formes, anneaux, grands titres (3,19:1) */
+  --bleu-texte: #3E6593;   /* le bleu quand il est du texte (6,02:1) */
+  --bleu-doux:  #E5EDF6;   /* aplats, étape active, pastilles */
+  --pale:       #D4E2F0;   /* accent pâle : surligneur, texte sur graphite */
+
+  /* — Action : le graphite — */
+  --graphite:      #26292E;   /* boutons, bandeau défilant */
+  --graphite-doux: #E6E8EB;
+
+  /* — Verdicts (le diagnostic est le métier) — */
+  --juste: #1D6A47;   /* 6,55:1 sur blanc, 5,55:1 sur bleu-doux */
+  --faux:  #B3261E;   /* 6,54:1 sur blanc, 5,53:1 sur bleu-doux */
+
+  /* — Typographie — Clash Grotesk (titres) + General Sans (texte),
+       Fontshare, licence ITF libre pour l'usage commercial. — */
+  --f-titre: "Clash Grotesk", "Arial Black", system-ui, sans-serif;
+  --f-texte: "General Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --fs-affiche: clamp(48px, 8.6vw, 136px);  /* titre d'accueil, 700, -.02em */
+  --fs-h2:      clamp(40px, 6vw, 84px);     /* titre de section, 700, -.03em */
+  --fs-h3:      clamp(24px, 2.4vw, 30px);   /* titre de carte, 600 */
+  --fs-chapeau: clamp(18px, 1.6vw, 22px);
+  --fs-corps:   17px;                        /* jamais moins pour du texte à lire */
+  --fs-libelle: 14px;                        /* sur-titres en capitales, .12em */
+  --lh-titre: .95;
+  --lh-corps: 1.55;
+
+  /* — Espacement (base 4) et rayons — */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px; --sp-5: 24px;
+  --sp-6: 32px; --sp-7: 48px; --sp-8: 64px; --sp-9: 120px;  /* entre sections */
+  --colonne: 1240px;
+  --gouttiere: 24px;         /* 20px sous 860px */
+  --r-pilule: 999px;         /* boutons */
+  --r-carte: 24px;           /* cartes de démo */
+  --r-bloc: 20px;            /* étapes, encadrés */
+  --r-pastille: 16px;        /* pastille d'icône */
+  --cible: 48px;             /* hauteur des boutons (≥ 44) */
+
+  /* — Mouvement — tout passe par GSAP ; prefers-reduced-motion coupe tout. — */
+  --d-court: 200ms;   /* survol, appui */
+  --d-moyen: 600ms;   /* entrée d'un bloc au défilement */
+  --d-long:  1600ms;  /* compteurs, titre d'accueil */
+  --ease-sortie: cubic-bezier(.22, 1, .36, 1);   /* GSAP « power3.out » */
+  --ease-rebond: cubic-bezier(.34, 1.56, .64, 1); /* GSAP « back.out(1.6) » */
+}</style>
+<style>
+/* La documentation s'écrit avec les jetons qu'elle documente : aucune valeur
+   en dur ci-dessous, hormis les mesures de mise en page de la doc elle-même. */
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--blanc);color:var(--encre);font:var(--fs-corps)/var(--lh-corps) var(--f-texte)}
+:focus-visible{outline:3px solid var(--bleu-texte);outline-offset:3px}
+.cadre{max-width:var(--colonne);margin:0 auto;padding:0 var(--gouttiere)}
+section{padding:var(--sp-8) 0;border-top:1px solid var(--trait)}
+.sur{font-size:var(--fs-libelle);font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--encre-2);margin:0 0 var(--sp-3)}
+h1,h2,h3{font-family:var(--f-titre);margin:0;letter-spacing:-.02em}
+h2{font-size:clamp(32px,4.4vw,56px);font-weight:700;line-height:1;margin-bottom:var(--sp-4)}
+h3{font-size:var(--fs-h3);font-weight:600;margin-bottom:var(--sp-2)}
+.chap{font-size:var(--fs-chapeau);color:var(--encre-2);max-width:60ch;margin:0 0 var(--sp-6)}
+.grille{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--sp-4)}
+.boite{background:var(--gris);border-radius:var(--r-bloc);padding:var(--sp-5)}
+.boite.blanche{background:var(--blanc);border:1px solid var(--trait)}
+.boite.sombre{background:var(--graphite);color:var(--blanc)}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px}
+
+/* Le logo et son verrouillage */
+.marque{display:inline-flex;align-items:center;gap:.32em;font-size:40px}
+.boite .marque{font-size:clamp(20px,2.1vw,26px);margin-bottom:var(--sp-3)}
+.marque svg{width:1.3em;height:1.3em;flex:none}
+.mot{font-family:var(--f-titre);font-weight:600;font-size:1em;letter-spacing:-.02em;line-height:1;color:var(--encre)}
+.mot b{font-weight:700;color:var(--bleu-texte)}
+.sombre .mot{color:var(--blanc)}.sombre .mot b{color:var(--pale)}
+.l1{stroke:var(--graphite)}.l2{stroke:var(--bleu)}
+.sombre .l1{stroke:var(--blanc)}
+/* Le quart bleu fait le tour en quatre temps, puis se pose où il est né. */
+@keyframes tour{0%{transform:rotate(0)}22%,25%{transform:rotate(90deg)}47%,50%{transform:rotate(180deg)}72%,75%{transform:rotate(270deg)}97%,100%{transform:rotate(360deg)}}
+.quart{transform-origin:24px 24px}
+.joue .quart{animation:tour 2.4s var(--ease-sortie) 1}
+
+.entete{padding:var(--sp-8) 0 var(--sp-7)}
+.entete .marque{font-size:clamp(40px,7vw,88px)}
+.entete p{font-size:var(--fs-chapeau);color:var(--encre-2);max-width:56ch;margin:var(--sp-5) 0 0}
+
+/* Couleurs */
+.nuances{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:var(--sp-3)}
+.nu{border:1px solid var(--trait);border-radius:var(--r-pastille);overflow:hidden}
+.nu i{display:block;height:84px}
+.nu div{padding:var(--sp-3)}
+.nu b{display:block}.nu code{color:var(--encre-2)}
+table{width:100%;border-collapse:collapse;margin-top:var(--sp-5)}
+th,td{text-align:left;padding:var(--sp-2) var(--sp-3);border-bottom:1px solid var(--trait);font-size:15px}
+th{font-size:var(--fs-libelle);text-transform:uppercase;letter-spacing:.08em;color:var(--encre-2)}
+.ok{color:var(--juste);font-weight:600}.limite{color:var(--bleu-texte);font-weight:600}.ko{color:var(--faux);font-weight:600}
+
+/* Typographie */
+.type div{border-top:1px solid var(--trait);padding:var(--sp-4) 0;display:grid;grid-template-columns:180px 1fr;gap:var(--sp-4);align-items:baseline}
+.type small{color:var(--encre-2);font-size:14px}
+.t-affiche{font-family:var(--f-titre);font-weight:700;font-size:var(--fs-affiche);line-height:var(--lh-titre);letter-spacing:-.02em}
+.t-h2{font-family:var(--f-titre);font-weight:700;font-size:var(--fs-h2);line-height:var(--lh-titre);letter-spacing:-.03em}
+.t-h3{font-family:var(--f-titre);font-weight:600;font-size:var(--fs-h3)}
+.t-chap{font-size:var(--fs-chapeau);color:var(--encre-2)}
+.t-lib{font-size:var(--fs-libelle);font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+
+/* Composants */
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:var(--cible);padding:0 var(--sp-5);border-radius:var(--r-pilule);font:600 16px var(--f-texte);text-decoration:none;border:2px solid transparent;white-space:nowrap;transition:transform var(--d-court) var(--ease-sortie);cursor:pointer}
+.btn:hover{transform:translateY(-2px)}
+.btn-plein{background:var(--graphite);color:var(--blanc)}
+.btn-ligne{border-color:var(--encre);color:var(--encre);background:transparent}
+.sombre .btn-plein{background:var(--blanc);color:var(--graphite)}
+.rangee{display:flex;gap:var(--sp-3);flex-wrap:wrap;align-items:center}
+.demo{display:flex;flex-direction:column;gap:var(--sp-2);padding:var(--sp-5);border-radius:var(--r-carte);background:var(--blanc);border:2px solid transparent;min-height:210px;text-decoration:none;color:inherit;transition:border-color var(--d-court)}
+.demo:hover{border-color:var(--encre)}
+.demo .ic{width:56px;height:56px;border-radius:var(--r-pastille);display:flex;align-items:center;justify-content:center;background:var(--graphite);color:var(--pale)}
+.demo .ic.b{background:var(--bleu-doux);color:var(--bleu-texte)}
+.demo b{font-family:var(--f-titre);font-size:24px;font-weight:600;letter-spacing:-.01em}
+.demo span{color:var(--encre-2)}.demo em{margin-top:auto;font-style:normal;font-weight:600}
+.etape{border:2px solid var(--trait);border-radius:var(--r-bloc);padding:var(--sp-5)}
+.etape.on{background:var(--bleu-doux);border-color:var(--bleu)}
+.etape.on h3{color:var(--bleu-texte)}
+.etape p{margin:0;color:var(--encre-2)}
+.chiffre{border-top:4px solid var(--encre);padding-top:var(--sp-4)}
+.chiffre b{display:block;font-family:var(--f-titre);font-weight:700;font-size:clamp(56px,7vw,96px);line-height:1;letter-spacing:-.03em}
+.chiffre span{color:var(--encre-2)}
+.verdicts{display:flex;gap:var(--sp-2);flex-wrap:wrap}
+.v{font-size:15px;font-weight:600;padding:var(--sp-1) var(--sp-3);border-radius:var(--r-pilule);background:var(--bleu-doux)}
+.v-juste{color:var(--juste)}.v-faux{color:var(--faux)}
+.defile{background:var(--graphite);color:var(--pale);border-radius:var(--r-bloc);overflow:hidden;white-space:nowrap;padding:var(--sp-4) 0;font:600 clamp(24px,3vw,40px) var(--f-titre)}
+.defile div{display:inline-flex;gap:var(--sp-7);padding-left:var(--sp-5)}
+.defile span::after{content:"·";margin-left:var(--sp-7);color:var(--bleu)}
+
+/* Mouvement : démonstrations */
+.scene{background:var(--gris);border-radius:var(--r-bloc);padding:var(--sp-5);min-height:200px;display:flex;flex-direction:column;justify-content:space-between;gap:var(--sp-4)}
+.scene .zone{min-height:100px;display:flex;align-items:center}
+@keyframes monte{from{transform:translateY(110%);opacity:0}to{transform:none;opacity:1}}
+@keyframes bloc{from{transform:translateY(32px);opacity:0}to{transform:none;opacity:1}}
+.mots{font:700 clamp(28px,3.2vw,44px)/1 var(--f-titre);letter-spacing:-.02em;overflow:hidden;display:flex;gap:.25em;flex-wrap:wrap}
+.mots span{display:inline-block}
+.joue .mots span{animation:monte var(--d-moyen) var(--ease-rebond) both}
+.joue .mots span:nth-child(2){animation-delay:80ms}.joue .mots span:nth-child(3){animation-delay:160ms}
+.carte-mini{background:var(--blanc);border-radius:var(--r-carte);padding:var(--sp-4) var(--sp-5);font-weight:600}
+.joue .carte-mini{animation:bloc var(--d-moyen) var(--ease-sortie) both}
+.joue .carte-mini:nth-child(2){animation-delay:90ms}.joue .carte-mini:nth-child(3){animation-delay:180ms}
+.minis{display:flex;gap:var(--sp-3);flex-wrap:wrap}
+.scene .marque{font-size:30px}
+.regles li{margin:var(--sp-2) 0}
+.interdit{color:var(--faux);font-weight:600}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:860px){:root{--gouttiere:20px}.type div{grid-template-columns:1fr;gap:var(--sp-1)}}
+</style></head>
+<body>
+<div class="cadre">
+
+<header class="entete">
+  <p class="sur">Système de design · version 1 · 1er octobre 2026</p>
+  <span class="marque joue" id="logo-tete" role="img" aria-label="BoucleDidactique">
+    <svg viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke-width="7"><path class="l1" d="M39.91 25.67A16 16 0 0 1 25.67 39.91"/><path class="l1" d="M22.33 39.91A16 16 0 0 1 8.09 25.67"/><path class="l1" d="M8.09 22.33A16 16 0 0 1 22.33 8.09"/><path class="l2 quart" d="M25.67 8.09A16 16 0 0 1 39.91 22.33"/></g></svg>
+    <span class="mot">Boucle<b>Didactique</b></span>
+  </span>
+  <p>Conception pédagogique pour la formation en entreprise. Fond blanc, neutres froids, un bleu de marque, un graphite qui agit, une grande typographie, et un mouvement qui sert la lecture.</p>
+</header>
+
+<section id="logo">
+  <p class="sur">1 · Le logo</p>
+  <h2>Le quart de tour</h2>
+  <p class="chap">Un cercle en quatre temps — cadrer, écrire, faire jouer, mesurer. Un seul quart est bleu : celui où l'on en est. C'est la boucle et la jauge à la fois. Retenu le 1er octobre 2026, parmi six pistes, après un anneau ouvert refusé (« une espèce de fer à cheval »).</p>
+  <div class="grille">
+    <div class="boite blanche"><span class="marque joue" role="img" aria-label="BoucleDidactique"><svg viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke-width="7"><path class="l1" d="M39.91 25.67A16 16 0 0 1 25.67 39.91"/><path class="l1" d="M22.33 39.91A16 16 0 0 1 8.09 25.67"/><path class="l1" d="M8.09 22.33A16 16 0 0 1 22.33 8.09"/><path class="l2 quart" d="M25.67 8.09A16 16 0 0 1 39.91 22.33"/></g></svg><span class="mot">Boucle<b>Didactique</b></span></span><p><b>Sur fond clair.</b> Arcs graphite, quart bleu ; « Boucle » en encre, « Didactique » en bleu-texte.</p></div>
+    <div class="boite sombre"><span class="marque joue" role="img" aria-label="BoucleDidactique"><svg viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke-width="7"><path class="l1" d="M39.91 25.67A16 16 0 0 1 25.67 39.91"/><path class="l1" d="M22.33 39.91A16 16 0 0 1 8.09 25.67"/><path class="l1" d="M8.09 22.33A16 16 0 0 1 22.33 8.09"/><path class="l2 quart" d="M25.67 8.09A16 16 0 0 1 39.91 22.33"/></g></svg><span class="mot">Boucle<b>Didactique</b></span></span><p><b>Sur graphite.</b> Arcs blancs, quart bleu ; « Didactique » en pâle.</p></div>
+    <div class="boite"><p class="rangee"><img src="logo/marque.svg" width="64" height="64" alt=""><img src="logo/marque.svg" width="32" height="32" alt=""><img src="logo/favicon.svg" width="16" height="16" alt=""></p><p><b>Tailles.</b> La marque seule tient jusqu'à 24 px. En dessous (onglet, 16 px), <code>favicon.svg</code> : trait plus épais, écarts plus larges, sinon les quatre arcs se soudent.</p></div>
+  </div>
+  <div class="grille" style="margin-top:var(--sp-4)">
+    <div class="boite blanche"><h3>Les règles</h3><ul class="regles"><li>Le quart bleu est en haut à droite, au repos. Il ne bouge qu'en entrée (un tour, quatre temps) ou pour dire « en cours ».</li><li>Zone de protection : un quart de la largeur de la marque, tout autour.</li><li>Fichiers : <code>logo/marque.svg</code>, <code>logo/marque-sombre.svg</code>, <code>logo/favicon.svg</code>.</li></ul></div>
+    <div class="boite blanche"><h3>Ce qu'on ne fait pas</h3><ul class="regles"><li class="interdit">Tourner la marque au repos, ou mettre deux quarts bleus.</li><li class="interdit">Changer les couleurs, ajouter un dégradé, une ombre, un contour.</li><li class="interdit">Remplir le cercle, ou en fermer les écarts.</li><li class="interdit">Écrire « Boucle Didactique » en deux mots : le nom s'écrit d'un seul tenant, les deux majuscules marquent la coupure.</li></ul></div>
+  </div>
+</section>
+
+<section id="couleurs">
+  <p class="sur">2 · Les couleurs</p>
+  <h2>Graphite et bleu</h2>
+  <p class="chap">Retenue parmi quatre palettes adoucies : la première maquette, en magenta et vert, était trop vive. Fond blanc et neutres froids — jamais de crème. Les contrastes ci-dessous sont recalculés par la page, sur les valeurs réelles des jetons.</p>
+  <div class="nuances" id="nuances"></div>
+  <table><thead><tr><th>Texte</th><th>sur</th><th>Rapport</th><th>Usage permis</th></tr></thead><tbody id="contrastes"></tbody></table>
+</section>
+
+<section id="type">
+  <p class="sur">3 · La typographie</p>
+  <h2>Clash Grotesk et General Sans</h2>
+  <p class="chap">Clash Grotesk, très grasse et serrée, porte les titres ; General Sans porte tout le reste, à 17 px au moins. Les deux viennent de Fontshare, libres pour l'usage commercial (licence ITF).</p>
+  <div class="type">
+    <div><small>Affiche · 700 · <code>--fs-affiche</code></small><span class="t-affiche">Ça se joue.</span></div>
+    <div><small>Section · 700 · <code>--fs-h2</code></small><span class="t-h2">Une boucle, pas une ligne droite.</span></div>
+    <div><small>Carte · 600 · <code>--fs-h3</code></small><span class="t-h3">Réception d'hôtel, vente au détail</span></div>
+    <div><small>Chapeau · <code>--fs-chapeau</code></small><span class="t-chap">Vos employés font le geste eux-mêmes, puis nous mesurons ce qui a changé.</span></div>
+    <div><small>Corps · 17 px · <code>--fs-corps</code></small><span>Le texte courant ne descend jamais sous 17 px. Il se lit sans effort, même long, sur un téléphone tenu à bout de bras.</span></div>
+    <div><small>Libellé · 14 px · <code>--fs-libelle</code></small><span class="t-lib">Formation en entreprise</span></div>
+  </div>
+</section>
+
+<section id="composants">
+  <p class="sur">4 · Les composants</p>
+  <h2>Ce qui se répète</h2>
+  <div class="grille">
+    <div class="boite"><h3>Boutons</h3><p class="rangee"><span class="btn btn-plein">Essayer une démo</span><span class="btn btn-ligne">Voir la méthode</span></p><p>Un seul bouton plein par bloc. Hauteur <code>--cible</code> (48 px), pilule, texte jamais coupé.</p></div>
+    <div class="boite sombre"><h3>Sur graphite</h3><p class="rangee"><span class="btn btn-plein">Nous écrire</span></p><p>Le bouton plein s'inverse : blanc, texte graphite.</p></div>
+    <div class="boite"><h3>Verdicts</h3><p class="verdicts"><span class="v v-juste">✓ Juste · 86 %</span><span class="v v-faux">✕ À revoir · 3 questions</span></p><p>Le verdict porte toujours un glyphe et un mot : la couleur n'est jamais seule.</p></div>
+  </div>
+  <div class="grille" style="margin-top:var(--sp-4)">
+    <a class="demo" href="#composants"><span class="ic"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21l18 0"/><path d="M5 21v-14l8 -4v18"/><path d="M19 21v-10l-6 -4"/><path d="M9 9l0 .01"/><path d="M9 12l0 .01"/><path d="M9 15l0 .01"/><path d="M9 18l0 .01"/></svg></span><b>Hôtel Rive-Claire</b><span>La réception : les mots, les exercices, puis le comptoir joué.</span><em>Essayer →</em></a>
+    <a class="demo" href="#composants"><span class="ic b"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12h4.5l1.5 -6l4 12l2 -9l1.5 3h4.5"/></svg></span><b>SimDEA</b><span>La formation au défibrillateur, simulation comprise.</span><em>Essayer →</em></a>
+    <div class="etape on"><h3>3 · Faire jouer et mesurer</h3><p>L'étape active prend l'aplat bleu-doux et le filet bleu.</p></div>
+    <div class="chiffre"><b>23</b><span>Le chiffre : très grand, en Clash Grotesk, légende en encre-2.</span></div>
+  </div>
+  <div class="defile" style="margin-top:var(--sp-4)" aria-hidden="true"><div><span>Cadrer</span><span>Écrire</span><span>Faire jouer</span><span>Mesurer</span><span>Réviser</span></div></div>
+  <p>Icônes : Tabler (<code>build/icone.py</code> dans bibliotheque-francisation), en <code>currentColor</code>, jamais dessinées.</p>
+</section>
+
+<section id="mouvement">
+  <p class="sur">5 · Le mouvement</p>
+  <h2>Il sert la lecture</h2>
+  <p class="chap">Le site bouge, mais jamais pour rien : un titre qui entre, un bloc qui monte quand on arrive, la boucle qui se trace, un chiffre qui compte. Sur le site, tout passe par GSAP ; les démonstrations ci-dessous sont en CSS, avec les mêmes durées et les mêmes courbes.</p>
+  <div class="grille">
+    <div class="scene" data-scene><div class="zone"><span class="marque"><svg viewBox="0 0 48 48" aria-hidden="true"><g fill="none" stroke-width="7"><path class="l1" d="M39.91 25.67A16 16 0 0 1 25.67 39.91"/><path class="l1" d="M22.33 39.91A16 16 0 0 1 8.09 25.67"/><path class="l1" d="M8.09 22.33A16 16 0 0 1 22.33 8.09"/><path class="l2 quart" d="M25.67 8.09A16 16 0 0 1 39.91 22.33"/></g></svg><span class="mot">Boucle<b>Didactique</b></span></span></div><p class="rangee"><b>Le logo entre</b> <code>2,4 s · un tour en quatre temps</code> <button class="btn btn-ligne" type="button">Rejouer</button></p></div>
+    <div class="scene" data-scene><div class="zone"><span class="mots"><span>Des</span><span>formations</span><span>qui&nbsp;se&nbsp;jouent.</span></span></div><p class="rangee"><b>Un titre monte</b> <code>--d-moyen · --ease-rebond</code> <button class="btn btn-ligne" type="button">Rejouer</button></p></div>
+    <div class="scene" data-scene><div class="zone minis"><span class="carte-mini">Rive-Claire</span><span class="carte-mini">Francœur</span><span class="carte-mini">SimDEA</span></div><p class="rangee"><b>Des cartes en cascade</b> <code>--d-moyen · décalage 90 ms</code> <button class="btn btn-ligne" type="button">Rejouer</button></p></div>
+  </div>
+  <div class="grille" style="margin-top:var(--sp-4)">
+    <div class="boite blanche"><h3>Les durées</h3><p><code>--d-court</code> 200 ms : survol, appui. <code>--d-moyen</code> 600 ms : un bloc qui entre. <code>--d-long</code> 1,6 s : un compteur, le titre d'accueil.</p></div>
+    <div class="boite blanche"><h3>Les courbes</h3><p><code>--ease-sortie</code> (GSAP <code>power3.out</code>) pour presque tout ; <code>--ease-rebond</code> (<code>back.out(1.6)</code>) pour les titres seulement.</p></div>
+    <div class="boite blanche"><h3>Les limites</h3><p>Une entrée se joue <b>une fois</b>. Rien ne boucle sous un texte qu'on lit. Les anneaux 3D vivent dans l'accueil seulement. <code>prefers-reduced-motion</code> coupe tout : la page reste entière, immobile.</p></div>
+  </div>
+</section>
+
+<section id="regles">
+  <p class="sur">6 · L'essentiel</p>
+  <h2>Huit règles</h2>
+  <ol class="regles">
+    <li>Fond blanc, neutres froids. Jamais de crème ni de papier chaud.</li>
+    <li>Le bleu ne porte pas de petit texte : il est aux formes et aux titres de 24 px et plus. Le texte bleu prend <code>--bleu-texte</code>.</li>
+    <li>Le graphite agit : un seul bouton plein par bloc.</li>
+    <li>Des aplats. Pas de dégradés, pas d'ombres portées, sauf ce qui flotte.</li>
+    <li>Grande typographie : Clash Grotesk aux titres, General Sans au texte, jamais sous 17 px.</li>
+    <li>Le mouvement sert la lecture, et se joue une fois.</li>
+    <li><code>prefers-reduced-motion</code> coupe tout.</li>
+    <li>Icônes Tabler, jamais dessinées ; le logo depuis <code>logo/</code>, jamais redessiné à la main.</li>
+  </ol>
+</section>
+
+<p style="color:var(--encre-2);font-size:15px;padding:var(--sp-6) 0">Source : <code>~/Claude/systemes-design/boucledidactique/</code> (tokens.css, systeme.html, logo/, README.md). Les jetons sont recopiés dans cette page, jamais importés. Les polices (fonts/) et les bibliothèques (vendor/) sont servies par le dépôt : la page ne demande rien au réseau.</p>
+</div>
+<script>
+(function(){
+  /* Les nuances et les contrastes, lus dans les jetons réels. */
+  var cs=getComputedStyle(document.documentElement);
+  function v(n){return cs.getPropertyValue(n).trim();}
+  var NUANCES=[["--blanc","fond"],["--gris","bandes, zones"],["--trait","filets"],["--encre","texte"],["--encre-2","texte secondaire"],["--encre-3","décor seulement"],["--bleu","marque, formes"],["--bleu-texte","le bleu en texte"],["--bleu-doux","aplats"],["--pale","accent pâle"],["--graphite","action"],["--graphite-doux","aplat neutre"],["--juste","verdict juste"],["--faux","verdict faux"]];
+  var box=document.getElementById("nuances");
+  NUANCES.forEach(function(n){var d=document.createElement("div");d.className="nu";d.innerHTML='<i style="background:var('+n[0]+')"></i><div><b>'+n[0].slice(2)+'</b><code>'+v(n[0])+'</code><br><span style="color:var(--encre-2);font-size:14px">'+n[1]+'</span></div>';box.appendChild(d);});
+  function lum(h){h=h.replace("#","");var c=[0,2,4].map(function(i){var x=parseInt(h.substr(i,2),16)/255;return x<=.03928?x/12.92:Math.pow((x+.055)/1.055,2.4)});return .2126*c[0]+.7152*c[1]+.0722*c[2];}
+  function rap(a,b){var x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);}
+  var PAIRES=[["--encre","--blanc"],["--encre","--gris"],["--encre-2","--blanc"],["--encre-2","--gris"],["--encre-3","--blanc"],["--bleu","--blanc"],["--bleu-texte","--blanc"],["--bleu-texte","--bleu-doux"],["--blanc","--graphite"],["--pale","--graphite"],["--encre","--bleu"],["--juste","--blanc"],["--faux","--blanc"],["--juste","--bleu-doux"],["--faux","--bleu-doux"]];
+  var tb=document.getElementById("contrastes");
+  PAIRES.forEach(function(p){var r=rap(v(p[0]),v(p[1]));var u=r>=4.5?["ok","✓ tout texte"]:r>=3?["limite","→ formes et texte ≥ 24 px"]:["ko","✕ décor seulement"];
+    if(p[0]==="--encre-3")u=["limite","→ décor seulement (choix)"];
+    var tr=document.createElement("tr");tr.innerHTML="<td>"+p[0].slice(2)+"</td><td>"+p[1].slice(2)+"</td><td>"+r.toFixed(2)+":1</td><td class='"+u[0]+"'>"+u[1]+"</td>";tb.appendChild(tr);});
+  /* Les démonstrations de mouvement : à l'arrivée à l'écran, puis sur « Rejouer ». */
+  function jouer(el){el.classList.remove("joue");void el.offsetWidth;el.classList.add("joue");}
+  document.querySelectorAll("[data-scene]").forEach(function(s){s.querySelector("button").addEventListener("click",function(){jouer(s)});});
+  var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){jouer(e.target);obs.unobserve(e.target);}})},{threshold:.5});
+  document.querySelectorAll("[data-scene], .boite .marque").forEach(function(s){obs.observe(s);});
+  document.getElementById("logo-tete").addEventListener("mouseenter",function(){jouer(this)});
+})();
+</script>
+</body></html>
