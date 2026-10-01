@@ -980,15 +980,19 @@ const estRelance = q => q && !CLARIF.test(q) && !POLI.test(q) && !/(^| )(repeat|
 // Une citation courte (« you », « and you ») ne vaut que si la réplique FINIT par elle, jamais « thank you ».
 const contient = (d, q) => q.split(' ').length <= 2 ? (d === q || (d.endsWith(' ' + q) && !/(thank|see|meet) you$/.test(d))) : (' ' + d + ' ').includes(' ' + q + ' ');
 const repliquesRelancees = (citees, dits) => { const qs = (citees || []).map(q => sansMerci(plat(q))).filter(estRelance);
-  return dits.filter(d => qs.some(q => contient(d, q))).length; };
+  return dits.filter(d => qs.some(q => contient(sansMerci(d), q))).length; };
 // A-t-il RÉPONDU à Maya ? Une réplique anglaise qui n'est ni une clarification, ni une politesse seule, ni une
 // question citée (tour 4 : « Sorry? » et des questions sans aucune réponse passaient pour un succès).
-const NON_REPONSE = /(^| )(repeat|sorry|pardon|slowly|again|excuse me)( |$)|^(what|hello|hi|hey|ok|okay|yes|no)( [a-z]+)?$/;
+// Tour 5 : « Quebec. », « Yes. », « No, first time. » SONT des réponses (le palier lent parle ainsi) ; ne
+// sont pas des réponses : une demande de clarification, un salut, une politesse, une question citée.
+const PAS_REPONSE = /^((sorry|pardon|excuse me|what|huh)( please)?|(sorry )?(can|could) you repeat( that)?( please)?|repeat( please)?|(sorry )?(more )?slowly( please)?|again( please)?|hello|hi|hey|ok|okay|bye|ok bye|thanks|thank you)$/;
+const QUEUE = / (and you|what about you|how about you|and yourself|you|thank you|thanks|bye|nice to meet you( too)?|nice meeting you|see you)$/;
 const aRepondu = (citees, dits) => { const qs = (citees || []).map(q => plat(q)).filter(Boolean);
-  return dits.some(d => { if (CLARIF.test(d) || POLI.test(d) || NON_REPONSE.test(d)) return false;
-    let r = ' ' + d + ' '; qs.forEach(q => { r = r.split(' ' + q + ' ').join(' '); });
-    r = r.replace(/ (and you|what about you|how about you|and yourself|you|thank you|thanks|bye)(?= )/g, ' ');
-    return r.trim().split(' ').some(w => w && !VIDES.has(w)); }); };
+  return dits.some(d => { let r = ' ' + d + ' ';
+    qs.forEach(q => { r = r.split(' ' + q + ' ').join(' '); });
+    r = r.replace(/\s+/g, ' ').trim(); let avant;
+    do { avant = r; r = (' ' + r).replace(QUEUE, '').trim(); } while (r !== avant);
+    return !!r && !PAS_REPONSE.test(r) && !POLI.test(r); }); };
 // Ce qui COMPTE les questions est retiré, phrase par phrase ; parler des questions de Maya reste permis.
 const COMPTE_Q = /(\d+|une|deux|trois|aucune|plusieurs|pas assez de|assez de|toutes? (ses|les|vos)|une seule) questions?/i;
 const sansCompte = t => String(t || '').split(/(?<=[.!?])\s+/).filter(x => !COMPTE_Q.test(x)).join(' ');
@@ -1005,8 +1009,11 @@ const fideleA = (dit, mieux) => { const d = new Set(pleins(dit)), m = pleins(mie
 const FRANCAIS = { test: t => /(^| )(je|j|tu|toi|vous|nous|ca va|hein|pis|merci|bonjour|oui)( |$)/.test(t)
   || (t.match(/(^| )(est|et|le|la|les|des|ou|aussi|comment|quoi|avec|pour|dans)(?= |$)/g) || []).length >= 2 };
 // Ce qui touche le produit dangereux, dans un lieu à éliminatoire : on ne le peaufine jamais.
-// Tour 4 : mots entiers, et seulement une COMMANDE du produit (« start » contenait « tart »).
-const DANGER = /(^| )(i ll|i will|i want|i d like|i would like|i take|i ll take|i ll have|give me|can i (have|get)|one|two|a|some)( [a-z]+){0,3} (salmon|pecans?|almonds?|tart|ice cream|walnuts?|hazelnuts?|cookies?|biscuits?|peanuts?)( |$)/;
+// Tour 5 : le produit en mots entiers (« start » contenait « tart »), dans une réplique qui n'est ni une question
+// ni un refus (« The salmon, please » commande ; « Are there nuts in the tart? » demande).
+const PRODUIT = /(^| )(salmon|pecans?|almonds?|tart|ice cream|walnuts?|hazelnuts?|cookies?|biscuits?|peanuts?)( |$)/;
+const QUESTION_REFUS = /^(is|are|does|do|has|have|any|what|which|can you|could you)( |$)|(^| )(no|not|don t|do not|without|allerg[a-z]*|nut free|peanut free)( |$)/;
+const DANGER = { test: t => PRODUIT.test(t) && !QUESTION_REFUS.test(t) };
 const PALIERS = [['lent', 'Lentement'], ['normal', 'Normalement'], ['rapide', 'Vite, comme à Toronto']];
 const estCode = c => /^PC[A-Z2-9]{6}$/.test(c || '');
 const lireCode = () => { try { return localStorage.getItem(CLE_CODE) || ''; } catch(e) { return ''; } };
@@ -1147,7 +1154,7 @@ function vueJouer(cas){
           ${att.length ? `<h3>Les gestes</h3>${att.map((g, i) => { const f = !!(b.gestes && b.gestes[i] && b.gestes[i].fait === true);
             return `<div class="geste"><b>${f ? '✓' : '—'}</b><span>${E(g)}${f ? '' : ' <span class="muted">(pas encore)</span>'}</span></div>`; }).join('')}` : ''}
           ${c.maya ? (b.reussi === true ? `<div class="retro ok">✓ Vous avez répondu et posé ${relances} questions à Maya.</div>`
-                                        : `<div class="retro no">— Pas encore : ${!repondu ? 'répondez à ses questions en anglais, même brièvement' + (relances < 2 ? `, et posez-lui au moins deux questions (${relances} pour l’instant)` : '') : relances >= 2 ? 'répondez-lui en anglais' : `vous lui avez posé ${relances} question${relances > 1 ? 's' : ''} ; il en faut au moins deux (And you? What about you?)`}.</div>`) : ''}
+                                        : `<div class="retro no">— Pas encore : ${!repondu ? 'répondez à ses questions en anglais, même brièvement' + (relances < 2 ? `, et posez-lui au moins deux questions (${relances} pour l’instant)` : '') : `vous lui avez posé ${relances} question${relances > 1 ? 's' : ''} ; il en faut au moins deux (And you? What about you?)`}.</div>`) : ''}
           ${!c.maya && !gagne && D.jeu.elim.includes(c.cas) && att.some((g, i) => /allerg|arachide|noix/i.test(g) && !(b.gestes && b.gestes[i] && b.gestes[i].fait === true))
             ? `<div class="retro no"><b>Éliminatoire :</b> ${E(D.jeu.regle[c.cas])}</div>` : ''}
           ${(b.compris || []).length ? `<h3>Ce que vous avez obtenu</h3><ul>${b.compris.map(x => `<li>${E(x)}</li>`).join('')}</ul>` : ''}
