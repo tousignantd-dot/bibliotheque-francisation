@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Le journal de la boucle didactique d'« Une semaine à Toronto » — l'étape 1, « Avant de partir ».
+"""Le journal de la boucle didactique d'« Une semaine à Toronto » — ses trois boucles.
 
     python3 build/toronto_audit.py   # → assets/presentations/toronto/toronto-audit.html
 
@@ -113,6 +113,173 @@ TOURS = [
  ]},
 ]
 
+# ── Les exercices (étape 4) : six tours, 1er oct. 2026.
+TOURS_EXOS = [
+ {"tour": 1, "commit": "e368a2fb1", "compte": (1, 5, 12),
+  "note": "Audit de la version zéro : chaque famille jouée par script, stratégies aveugles calculées, clés rejouées dans la page.",
+  "constats": [
+   ("A3", "bloquant", "Alignement",
+    "La série de l'allergie, promise au cadrage pour l'objectif éliminatoire (O3), n'existait pas.",
+    "Série « L'allergie » : la règle affichée avant, un carré (allergène ou non × sûr ou à vérifier), un contre-exemple où l'on peut commander."),
+   ("D4", "majeur", "Le total à payer",
+    "Le contexte français donnait la règle (« pas de pourboire ») : l'anglais n'était plus nécessaire.",
+    "Carré : le prix bien ou mal entendu (teen/ty) × la règle tenue ou oubliée ; tout se calcule."),
+   ("D3", "majeur", "Faux amis",
+    "Tous les choix qui ressemblaient étaient faux : « éviter la ressemblance » gagnait toujours.",
+    "Des vrais amis (souvenir, menu, terminal) mêlés à la série."),
+   ("D4", "majeur", "Carrés",
+    "Un quatrième choix qui perdait un segment se repérait comme « l'opposé du plus court ».",
+    "Le quatrième se compose des segments EXACTS des choix 2 et 3."),
+   ("A3", "majeur", "Je le dis",
+    "Le bavardage et « faire répéter » manquaient aux situations à dire.",
+    "Ajoutés, avec leurs clés et leurs réponses témoins."),
+ ]},
+ {"tour": 2, "commit": "9a2672d2c", "compte": (0, 5, 12),
+  "note": "Quatre des cinq majeurs viennent des corrections du tour 1.",
+  "constats": [
+   ("D4", "majeur", "Le total à payer",
+    "La règle ne faisait qu'ajouter : « le plus grand de la paire » gagnait 6 fois sur 6 ; et le prix mal entendu se rejetait au bon sens (70 $ un sandwich).",
+    "Deux lectures vraisemblables, et des items « tip included », « no tax » où l'erreur est d'ajouter."),
+   ("D4/D3", "majeur", "L'allergie",
+    "Trois saumons aux mêmes quatre choix : le troisième se déduisait des deux autres ; la série ne changeait jamais.",
+    "Une banque qui couvre les quatre cases, trois réponses tirées par série."),
+   ("E1/F1", "majeur", "Relance",
+    "La clé acceptait « I'm from Quebec, thank you » comme une relance.",
+    "La clôture refusée ; les formules de politesse entrent dans les réponses témoins."),
+   ("E1", "majeur", "« Autre chose »",
+    "« I'll take the salmon » était accepté sur l'item où commander le saumon est la faute éliminatoire.",
+    "Le plat refusé nommé dans la consigne, une clé qui refuse le saumon."),
+   ("A3", "majeur", "Lexique",
+    "« the third floor » traduit « le troisième étage » contredisait le piège « first floor ».",
+    "« le 3e étage (deux étages au-dessus de la rue) »."),
+ ]},
+ {"tour": 3, "commit": "ec6f39701", "compte": (0, 6, 10),
+  "note": "Les six majeurs naissent tous du tour 2.",
+  "constats": [
+   ("E1", "majeur", "Relance",
+    "La liste noire fuyait (« Nice meeting you », « I'll call you » passaient).",
+    "Une liste blanche des mots qui précèdent un « you » nu."),
+   ("E1", "majeur", "« Anything else? »",
+    "Exclure par une liste d'aliments refusait les vraies réponses (« Just the coffee, thanks »).",
+    "Reconnaître une commande en plus par sa forme."),
+   ("E1/D2", "majeur", "Noix et arachides",
+    "La clé acceptait « I'm allergic to peanuts » pour les noix, que la série du marché distingue ; les négations passaient.",
+    "Arachide retirée de la clé des noix, négations et affirmations refusées."),
+   ("D3/D1", "majeur", "L'allergie, marché",
+    "La seule question où l'on décide revenait toujours à « on n'en prend pas » : seulement le geste prudent.",
+    "Un second marché où l'on PEUT en prendre ; un des deux tiré par série ; deux saumons par case."),
+   ("D2", "majeur", "Sons",
+    "La voix de la serveuse faisait entendre « knots » pour « nuts », le mot de l'allergène.",
+    "« pecans », que la retranscription rend juste ; chaque son neuf vérifié avant de commiter."),
+   ("D4", "mineur", "Nombres",
+    "Un nombre composé (« seventy-five ») exclut la lecture en -teen : le carré tombait à deux choix.",
+    "Nombres simples (« seventy forty »)."),
+ ]},
+ {"tour": 4, "commit": "acb701b58", "compte": (0, 1, 8),
+  "note": "Aucune stratégie aveugle ne dépasse plus le hasard.",
+  "constats": [
+   ("E1/E2", "majeur", "Je le dis, les gardes",
+    "Une clé qui refuse une faute comptait comme « la moitié » : qui commandait le saumon douteux lisait « Presque. Il manque : I'll ».",
+    "Une garde se reconnaît par programme (vraie sur la phrase vide) et passe d'abord, avec un message propre à l'item."),
+ ]},
+ {"tour": 5, "commit": "7a4a18570", "compte": (0, 2, 3),
+  "note": "Les deux majeurs naissent du tour 4.",
+  "constats": [
+   ("E1/G2", "majeur", "Je le dis",
+    "Après une garde ratée, ni le modèle ni « Suivant » ne s'ouvraient : une impasse sur 14 fautes sur 14.",
+    "La branche de garde finit comme les autres : le modèle au 2e essai, puis « Suivant »."),
+   ("E1", "majeur", "Le saumon",
+    "« Instead of the salmon, I'll have the chicken » était accusé de la faute éliminatoire.",
+    "Clé élargie (instead of, rather than, forget) ; plus aucune phrase juste accusée."),
+ ]},
+ {"tour": 6, "commit": "vérification", "compte": (0, 0, 6),
+  "note": "Sortie de boucle : 231 essais au micro sans impasse, aucune faute éliminatoire acceptée, aucune stratégie aveugle au-dessus du hasard.",
+  "constats": [
+   ("D4", "mineur", "Restes consignés",
+    "Quelques tournures improbables au restaurant (« Not the pasta, the salmon » accepté ; « no fish for me » refusé) ; les faux amis gardent un léger avantage par convergence (0,43 contre 0,33).",
+    "Consignés, sans correction."),
+ ]},
+]
+
+# ── La semaine jouée (étape 5) : cinq tours, 1er oct. 2026.
+TOURS_JEU = [
+ {"tour": 1, "commit": "ac9c70f79", "compte": (2, 7, 12),
+  "note": "13 conversations réelles sur un serveur jetable, et un parcours dans la page à 375 px.",
+  "constats": [
+   ("A3/F1", "bloquant", "Le français",
+    "Une situation jouée entièrement en français gagnait la carte : la personne « comprenait un peu ».",
+    "La personne ne parle pas français (« Sorry, I don't speak French! ») ; une réplique en français ne compte pour aucun geste."),
+   ("F1/E2", "bloquant", "L'allergie au restaurant",
+    "L'éliminatoire se contournait : la serveuse avertissait d'elle-même et refusait la tarte aux amandes.",
+    "Elle ne parle d'allergène que si on le demande et prend la commande telle quelle ; demander le plat douteux est éliminatoire, même repris."),
+   ("E1/F1", "majeur", "Le bilan",
+    "Des gestes cochés sans preuve, ou faits par la personne (Marcus épelait le nom à la place du touriste).",
+    "Un geste ne compte que fait par le touriste, en anglais ; la page exige chaque geste coché pour donner la carte."),
+   ("A3", "majeur", "Alignement",
+    "L'objectif de l'allergie nommait aussi le marché ; Maya ne demandait qu'une question, l'objectif deux.",
+    "Les arachides au marché, avec leur éliminatoire ; deux relances pour Maya."),
+ ]},
+ {"tour": 2, "commit": "60d4853a8", "compte": (1, 4, 11),
+  "note": "Le modèle ne suit pas toutes les consignes : ce qui se compte passe dans la page.",
+  "constats": [
+   ("A3/F1", "bloquant", "Maya",
+    "Jamais réussie : le modèle exigeait qu'on ait répondu à TOUTES ses questions, alors qu'elle en pose une à chaque réplique.",
+    "Les relances comptées par la page ; le modèle ne juge plus que la réponse en anglais."),
+   ("E1", "majeur", "Corrections",
+    "Des phrases justes « corrigées » à l'identique ou réécrites (« OK bye » → « I haven't eaten yet… »).",
+    "La page écarte les corrections identiques ou qui réécrivent au lieu de corriger."),
+   ("B3", "majeur", "Accords",
+    "« Vous vous êtes débrouillé » sans genre choisi.",
+    "Un second tirage du bilan quand un accord masculin paraît sans genre choisi."),
+   ("O3/E1", "majeur", "Le marché",
+    "La formule « I'm allergic to nuts » proposée là où il s'agit d'arachides.",
+    "Formule et règle de l'éliminatoire propres à chaque lieu."),
+ ]},
+ {"tour": 3, "commit": "8c1da619c", "compte": (1, 4, 7),
+  "note": "Le défaut le plus grave naît de la correction du tour 2.",
+  "constats": [
+   ("F1", "bloquant", "Maya",
+    "Deviner une question à sa forme comptait « Yes I do, thank you » et ratait « you like poutine ».",
+    "Le bilan CITE les questions du touriste ; la page vérifie chaque citation, écarte clarifications et politesses, puis compte."),
+   ("E1", "majeur", "Corrections",
+    "« I am allergy at the peanuts → I'm allergic to peanuts », la correction la plus utile, était jetée.",
+    "Comparaison sur les mots pleins, contractions dépliées."),
+   ("E1/D2", "majeur", "Lieu éliminatoire raté",
+    "Le bilan peaufinait la commande du plat dangereux (« I'll have the salmon, please »).",
+    "Rien ne corrige la phrase qui commande le produit dangereux."),
+ ]},
+ {"tour": 4, "commit": "0f703c39d", "compte": (1, 2, 7),
+  "note": "Rejoué sur les six conversations de Maya enregistrées par l'auditeur avant de commiter.",
+  "constats": [
+   ("F1/E1", "bloquant", "Maya",
+    "« And you? » dit deux fois ne comptait qu'une fois : qui ne connaissait que cette formule ne pouvait jamais réussir.",
+    "On compte les répliques qui relancent ; une citation courte ne vaut qu'en fin de réplique, jamais après « thank you »."),
+   ("F1/E2", "majeur", "Maya",
+    "« Réussie » sans avoir répondu à une seule question.",
+    "La page vérifie qu'il y a une vraie réponse en anglais."),
+   ("E1", "majeur", "Bilan de Maya",
+    "Retirer toute phrase contenant « question » vidait le résumé et le conseil.",
+    "Seules les phrases qui chiffrent les questions sont retirées."),
+ ]},
+ {"tour": 5, "commit": "60bba6dce", "compte": (0, 2, 6),
+  "note": "Sortie de boucle, vérifiée avec les batteries de l'auditeur : 62 répliques sur 63 jugées comme attendu (l'écart est une attente contradictoire), 19 commandes sur 19, toutes les conversations rejugées.",
+  "constats": [
+   ("F1/E1", "majeur", "Maya",
+    "« Quebec. », « Yes. », « No, first time. » ne comptaient pas comme réponses : les élèves les plus faibles échouaient.",
+    "Une réponse brève en anglais est une réponse ; seules les clarifications, saluts et politesses n'en sont pas."),
+   ("E1/A3", "majeur", "Le plat dangereux",
+    "« The salmon, please » échappait au filtre, alors que « I will start with the soup » était jeté (« start » contient « tart »).",
+    "Le produit en mots entiers, dans une réplique qui n'est ni une question ni un refus."),
+ ]},
+ {"tour": "6 · sortie", "commit": "vérification", "compte": (0, 0, 6),
+  "note": "Les corrections du tour 5 vérifiées avec les batteries que l'auditeur avait écrites pour son tour 6 : la boucle est fermée.",
+  "constats": [
+   ("E1", "mineur", "Restes consignés",
+    "Le bilan reformule encore parfois une formule juste (« Bye » → « Bye, see you later ») ; le modèle peut louer « de bonnes questions » quand la page refuse faute de réponse ; à la pharmacie, la posologie arrive parfois dans la réplique de clôture.",
+    "Consignés, sans correction ; à observer au pilote."),
+ ]},
+]
+
 
 def main():
     tete = SOURCE.read_text(encoding="utf-8")
@@ -122,25 +289,33 @@ def main():
 .cst{background:var(--card);border:1px solid var(--line);border-radius:3px;padding:14px 16px;margin:10px 0}
 .cst .t{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .cst .g-bloquant{color:#B91C1C}.cst .g-majeur{color:#8A5206}.cst .g-mineur{color:var(--muted)}
-.cst p{margin:6px 0 0}.cst .fait{border-left:3px solid #0A8F5B;padding-left:10px}
+.cst p{margin:6px 0 0} h3.tour{font-size:20px;margin:28px 0 6px} .partie{margin-top:46px;padding-top:10px;border-top:3px solid var(--ink,#222)}
+.sommaire a{display:inline-block;margin:4px 10px 4px 0}.cst .fait{border-left:3px solid #0A8F5B;padding-left:10px}
 ol.chaine li{margin:6px 0}
 </style>
 </head>""")
-    tours = ""
-    for t in TOURS:
+    def rendre(liste):
+      tours = ""
+      for t in liste:
         b, m, n = t["compte"]
         items = "".join(
             f'<div class="cst"><div class="t"><span class="g-{g}">{E(g)}</span> · {E(c)} · {E(o)}</div>'
             f'<p>{E(k)}</p><p class="fait"><b>Corrigé.</b> {E(f)}</p></div>' for c, g, o, k, f in t["constats"])
-        tours += f"""<section><h2>Tour {t['tour']}</h2>
+        tours += f"""<section><h3 class="tour">Tour {t['tour']}</h3>
   <div class="chiffres"><div class="ch"><span class="n">{b}</span><span class="q">bloquant{'s' if b > 1 else ''}</span></div>
   <div class="ch"><span class="n">{m}</span><span class="q">majeur{'s' if m > 1 else ''}</span></div><div class="ch"><span class="n">{n}</span><span class="q">mineurs</span></div></div>
   <p style="margin-top:12px">{E(t['note'])}</p>{items}</section>"""
-    suite = " → ".join(f"{b}/{m}/{n}" for b, m, n in (t["compte"] for t in TOURS))
+      return tours
+    suite_de = lambda L: " → ".join(f"{b}/{m}/{n}" for b, m, n in (t["compte"] for t in L))
+    suite = suite_de(TOURS)
+    tours = rendre(TOURS)
     corps = f"""<body><div class="doc">
 <a class="retour" href="/presentations.html"><span aria-hidden="true">&#8592;</span> Le classeur</a>
 <p class="eyebrow">Une semaine à Toronto &middot; qualité</p>
-<h1>La boucle didactique de « Avant de partir »</h1>
+<h1>La boucle didactique d'« Une semaine à Toronto »</h1>
+<p class="chapeau">Trois boucles, un regard extérieur à chaque tour, jusqu'à zéro bloquant et zéro majeur.</p>
+<p class="sommaire"><a href="#prep">« Avant de partir » — {E(suite)}</a><a href="#exos">Les exercices — {E(suite_de(TOURS_EXOS))}</a><a href="#jeu">La semaine jouée — {E(suite_de(TOURS_JEU))}</a></p>
+<h2 class="partie" id="prep">1. « Avant de partir »</h2>
 <p class="chapeau">Les huit séances et le test « Prêt à partir ? », passés à la grille de 23 critères par un regard qui ne les a
 pas écrits, six fois. Bloquants / majeurs / mineurs : <b>{suite}</b>, puis zéro bloquant et zéro majeur, confirmés par
 47 réponses témoins rejouées dans la page. Ce que la boucle ne vérifie pas : l'exactitude de l'anglais (à faire relire par
@@ -161,8 +336,35 @@ avant toute diffusion.</p>
   hasard. La leçon est entrée dans la méthode de la boucle pour les trousses suivantes.</p>
 </section>
 {tours}
+
+<h2 class="partie" id="exos">2. Les exercices</h2>
+<p class="chapeau">Neuf familles, passées six fois : chaque série jouée par script, les stratégies qui répondent sans écouter
+calculées contre le hasard, les clés du micro rejouées dans la page sur des centaines de phrases. Bloquants / majeurs /
+mineurs : <b>{E(suite_de(TOURS_EXOS))}</b>.</p>
+<section class="premier"><h2>Ce que la boucle a appris</h2>
+  <ol class="chaine">
+    <li><b>Une règle qui ne fait qu'ajouter se juge sans calcul</b> : le total le plus grand gagnait ; il a fallu des items où l'erreur est d'ajouter.</li>
+    <li><b>Une liste noire fuit, une liste d'exclusion refuse le juste</b> : les clés du micro se sont fermées par la forme de la phrase, éprouvées sur des batteries.</li>
+    <li><b>Une garde qui refuse une faute doit avoir son propre message</b>, et finir comme les autres : sinon elle accuse ou enferme.</li>
+    <li><b>Un son se vérifie avant de partir</b> : la retranscription a trouvé « knots » pour « nuts », le mot de l'allergène.</li>
+  </ol></section>
+{rendre(TOURS_EXOS)}
+
+<h2 class="partie" id="jeu">3. La semaine jouée</h2>
+<p class="chapeau">Dix lieux et Maya, avec l'assistance qui joue les gens de Toronto. Cinq tours, des conversations réelles sur un
+serveur jetable (jamais la production), les logiques de la page rejouées hors ligne. Bloquants / majeurs / mineurs :
+<b>{E(suite_de(TOURS_JEU))}</b>.</p>
+<section class="premier"><h2>Ce que la boucle a appris</h2>
+  <ol class="chaine">
+    <li><b>La personne ne parle pas la langue de l'apprenant</b>, et ne fait jamais sa part (épeler, avertir, signaler l'erreur).</li>
+    <li><b>Ce qui se compte se compte dans la page</b>, pas par le modèle : chaque geste coché, les relances de Maya.</li>
+    <li><b>Chaque règle écrite pour juger à la place du modèle a produit le défaut inverse au tour suivant</b> : trop large, puis trop étroite.
+      Ce qui a fermé la boucle : faire CITER le modèle, vérifier la citation, et des batteries de phrases au verdict écrit d'avance, rejouées avant chaque commit.</li>
+  </ol></section>
+{rendre(TOURS_JEU)}
 <div class="pied"><p>Produit par <code>build/toronto_audit.py</code> — ne pas l'éditer. Contenu audité :
-<code>build/contenu/toronto/preparation.py</code> ; moteur : <code>build/toronto_app.py</code>.</p></div>
+<code>build/contenu/toronto/preparation.py</code>, <code>exercices.py</code>, <code>jeu_de_role.py</code> ; moteur : <code>build/toronto_app.py</code>.
+Restent hors de portée de la boucle : l'exactitude de l'anglais (relecteur canadien) et l'essai auprès de vrais touristes (le pilote).</p></div>
 </div></body></html>"""
     SORTIE.write_text(tete + corps, encoding="utf-8")
     print(SORTIE.relative_to(RACINE), "—", suite)
