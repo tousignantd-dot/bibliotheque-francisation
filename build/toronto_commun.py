@@ -1,0 +1,58 @@
+"""Ce que partagent l'application d'« Une semaine à Toronto » et son générateur de voix.
+
+UNE SEULE liste d'extraits (leçon de Compostelle, 25 sept. 2026 : jouer les 70
+temps par programme a trouvé un son « undefined » qu'aucune relecture n'aurait
+vu). La page ne joue que ce que cette liste nomme ; le générateur ne produit que
+ce qu'elle nomme. Les noms de fichiers sont ceux que la page fabrique.
+"""
+import importlib.util, pathlib
+
+RACINE = pathlib.Path(__file__).resolve().parent.parent
+CONTENU = RACINE / "build" / "contenu" / "toronto"
+SONS = RACINE / "assets" / "interactive" / "toronto" / "sons"
+
+
+def charger(nom):
+    """Sous un nom à soi : `lexique`, `sujets`, `personnages` existent aussi ailleurs
+    (Francœur, Compostelle), et un import ordinaire rendrait LEURS modules."""
+    sp = importlib.util.spec_from_file_location(f"toronto_{nom}", CONTENU / f"{nom}.py")
+    m = importlib.util.module_from_spec(sp); sp.loader.exec_module(m)
+    return m
+
+
+def extraits():
+    """[{fichier, texte, voix}] — tout ce que la page peut jouer."""
+    PR, LX, PS = charger("preparation"), charger("lexique"), charger("personnages")
+    n = PS.NARRATRICE
+    out = []
+    for s in PR.SEANCES:
+        b = f"prep/{s['id']}"
+        for k, (en, _) in enumerate(s["ecoute"]):
+            out.append({"fichier": f"{b}/e{k}.mp3", "texte": en, "voix": n})
+        for k, q in enumerate(s["quiz"]):
+            if q["type"] == "dire":
+                out.append({"fichier": f"{b}/q{k}-c0.mp3", "texte": q["choix"][0][0], "voix": n})
+            else:
+                out.append({"fichier": f"{b}/q{k}.mp3", "texte": q["en"], "voix": q.get("qui", n)})
+        for k, d in enumerate(s["dire"]):
+            out.append({"fichier": f"{b}/d{k}.mp3", "texte": d[1], "voix": n})
+    for f, forme in enumerate(PR.TEST):
+        for k, it in enumerate(forme):
+            if it["type"] == "oral":
+                out.append({"fichier": f"prep/test/{f}-{k}-m.mp3", "texte": it["modele"], "voix": n})
+            elif it["type"] == "dire":
+                out.append({"fichier": f"prep/test/{f}-{k}-c0.mp3", "texte": it["choix"][0][0], "voix": n})
+            else:
+                out.append({"fichier": f"prep/test/{f}-{k}.mp3", "texte": it["en"], "voix": it.get("qui", n)})
+    mots = {m for s in PR.SEANCES for m in s["mots"]}
+    for e in LX.LEXIQUE:
+        if e[0] in mots:
+            out.append({"fichier": f"mots/{e[0]}.mp3", "texte": e[2], "voix": n})
+    return out
+
+
+if __name__ == "__main__":
+    x = extraits()
+    from collections import Counter
+    print(f"{len(x)} extraits, {sum(len(e['texte']) for e in x)} caractères")
+    print(dict(Counter(e["voix"] for e in x)))
