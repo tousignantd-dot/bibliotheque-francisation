@@ -43,7 +43,7 @@ FAITS = {
     "hotel": ["The guest has a reservation for three nights, a queen room, under the name they give (ask them to spell it).",
               "Check-in is at 3 p.m.; if they arrive early, the room may not be ready, but you can keep their bags.",
               "There is a $100 deposit held on the card, released at check-out. Do not end the check-in until the guest has handed you a card for the deposit.",
-              "Breakfast is included, on the second floor, from 6:30 to 10.",
+              "Breakfast is included, on the second floor, from 6:30 to 10. Do not mention breakfast or Wi-Fi unless the guest asks.",
               "The Wi-Fi network is 'Guest' and the password is on the key-card sleeve."],
     "cafe": ["Sizes: small, medium, large. Muffins: blueberry is sold out; there is banana and chocolate.",
              "A medium coffee is $2.75, a muffin $3.25, plus tax. You ask: for here or to go? Anything else?",
@@ -62,7 +62,7 @@ FAITS = {
     "pharmacie": ["For a sunburn: an after-sun cream, twice a day, and stay out of the sun for a couple of days.",
                   "For a headache: ibuprofen or acetaminophen, no prescription needed; not with alcohol.",
                   "If there is a fever or blisters, go to a walk-in clinic."],
-    "resto": ["Tonight: the pasta (no nuts at all), the salmon with a pecan crust (nuts!), the chicken (no nuts).",
+    "resto": ["Tonight: the pasta (no nuts at all), the pecan-crusted salmon (nuts!), the chicken (no nuts). When you list the dishes, name them as on the menu; just don't add allergy warnings.",
               "Dessert: an almond tart (nuts!) or ice cream (made in a kitchen that also uses nuts: you are not sure).",
               "You never mention nuts or allergens unless the customer mentions an allergy or asks. If a customer orders a dish, you take the order as asked.",
               "If a customer says they have a nut allergy, you answer honestly; if you are not sure, you say you will check with the kitchen.",
@@ -84,6 +84,12 @@ GESTES = {
     "resto": ["dire son allergie aux noix AVANT de commander", "ne pas commander un plat qui contient des noix ou dont la serveuse n'est pas sûre", "commander un plat"],
     "depart": ["signaler poliment l'erreur sur la facture", "comprendre ce qu'on fait de la somme", "demander comment aller à l'aéroport (UP Express)"],
 }
+# La formule modèle du bilan, propre à chaque allergène (tour 2 : « nuts » servi au marché, où c'est l'arachide).
+FORMULE = {"resto": "Before I order: I'm allergic to nuts.",
+           "marche": "I'm allergic to peanuts. Do the cookies have peanuts?"}
+# La règle affichée avant de jouer, par lieu (la règle du restaurant ne vaut pas au marché).
+REGLE_ELIM = {"resto": "dites-la en anglais avant de commander, et ne demandez rien qui contient des noix ou dont on n’est pas sûr.",
+              "marche": "demandez en anglais si les biscuits contiennent des arachides, et n’en prenez pas s’il y a un doute ou des traces."}
 ELIMINATOIRE = {
     "resto": ("l'allergie aux noix n'a pas été dite EN ANGLAIS avant la première commande d'un plat, ou le touriste a "
               "DEMANDÉ un plat avec des noix ou dont la serveuse n'est pas sûre — même si la serveuse l'a ensuite refusé "
@@ -115,7 +121,7 @@ MAYA = [
 ]
 
 PALIERS = {
-    "lent": "SLOW LEVEL: very short sentences (one idea, eight words at most), common words, no idioms and no expressions like 'no worries' or 'just so you know'. Speak clearly. If the tourist struggles, say it again more simply.",
+    "lent": "SLOW LEVEL: very short sentences (one idea, eight words at most), common words, no idioms, no small talk expressions at all ('no worries', 'just so you know', 'small world', 'eh', 'you bet'). Speak clearly. If the tourist struggles, say it again more simply.",
     "normal": "NORMAL LEVEL: natural sentences of one or two clauses, the vocabulary of a real conversation, a few Canadian expressions (no worries, for sure, eh).",
     "rapide": "FAST LEVEL: speak naturally fast, like a busy Torontonian, with everyday expressions (you bet, no worries, what can I get you, you're all set), without simplifying.",
 }
@@ -128,12 +134,16 @@ def systeme(cas_id, role_eleve, palier=None):
             "You are playing a role in a speaking exercise for a French-speaking tourist from Quebec visiting Toronto "
             "for a week, who is a false beginner in English.\n\n"
             "YOU ARE Maya, a friendly Torontonian in her early thirties, a nurse, born in Toronto to a family from "
-            f"Trinidad; you met the tourist at a coffee shop and you run into them again, {ou}. "
+            "Trinidad; "
+            + ("you meet the tourist for the first time, " if cas_id == "maya-1" else
+               "you met the tourist at a coffee shop and you run into them again, ")
+            + f"{ou}. "
             f"Today's topic: {sujet}.\n\n"
             "Language: speak ONLY Canadian English. You do not speak French: if the tourist speaks French, say kindly "
         "\"Sorry, I don't speak French!\" and ask again in simple English; never act on anything said in French.\n\n"
             "How you talk:\n- Never more than three sentences per turn; no lists.\n- Ask questions about their life and "
-            "trip, share a little of yours, and remember what they told you.\n- Never correct their English and never "
+            "trip, share a little of yours, and remember what they told you.\n- If they ask something you already said, answer "
+            "again kindly; never point it out.\n- Never correct their English and never "
             "comment on mistakes; if a sentence is impossible to understand, just ask (Sorry? What was that?).\n"
             "- Stay in character. No stage directions, no asterisks: only what you say.\n\n"
             "When the conversation naturally ends, say goodbye and end your last turn with the word FIN."
@@ -183,6 +193,9 @@ BILAN = (
     "« resume » : une phrase simple, en français, adressée au touriste en le vouvoyant.\n"
     "« dit » est copié MOT POUR MOT d'une réplique du TOURISTE ; « mieux » dit exactement la même idée, sans rien "
     "ajouter. Une formule courte et juste n'est jamais fautive : « Thank you, bye. », « Yes. », « OK. », « No. ».\n"
+    "« mieux » est DIFFÉRENT de « dit » et garde le sens exact ; si le sens est incertain, ne corrige pas. « I am » et "
+    "« I'm » sont justes tous les deux : « I am a teacher. », « What do you have tonight? » ne se corrigent pas. Ne "
+    "peaufine jamais la phrase qui commet une erreur éliminatoire.\n"
     "Une réplique en FRANÇAIS ne compte pour AUCUN geste : le but est de se débrouiller en anglais.\n"
     "Un geste ne compte que si le TOURISTE l'a fait LUI-MÊME, en anglais, dans ses répliques ; ce que la PERSONNE a dit "
     "ou fait à sa place ne compte pas. « Comprendre » se prouve : le touriste reformule, confirme (« 3 p.m.? ») ou agit "
@@ -200,7 +213,7 @@ BILAN = (
 def _accord(genre):
     """Le genre choisi dans la page (« f », « m ») ; sinon la règle neutre de la consigne."""
     if genre == "f":
-        return "\nLa personne qui apprend est une FEMME : en français, accorde au féminin (« débrouillée », « allée », « prête »)."
+        return "\nLa personne qui apprend est une FEMME : en français, accorde au féminin (« allée », « prête », « arrivée »)."
     if genre == "m":
         return "\nLa personne qui apprend est un HOMME : en français, accorde au masculin."
     return ""
@@ -230,8 +243,10 @@ def _bilan(cas_id):
             "\"conseil\": \"…\", \"resume\": \"…\"}.")
     if cas_id.startswith("maya-"):
         return (BILAN + "La PERSONNE est Maya, une femme. C'est une conversation libre : « reussi » vaut true si le "
-                "touriste a répondu EN ANGLAIS à ses questions ET lui a posé au moins DEUX questions de relance (« And you? », "
-                "« What about you? »…). Écris toujours « reussi », true ou false.\n"
+                "touriste a répondu EN ANGLAIS à au moins une question de Maya. Ne compte PAS ses questions (la page "
+                "les compte) et ne lui reproche jamais de ne pas avoir répondu à TOUTES les questions : Maya en pose à "
+                "chaque tour. Une question redondante compte quand même. Ne parle du nombre de questions posées ni "
+                "dans « resume » ni dans « conseil ». Écris toujours « reussi », true ou false.\n"
                 "Réponds UNIQUEMENT en JSON : {\"compris\": [\"…\"], \"phrases\": [{\"dit\": \"…\", \"mieux\": \"…\"}], "
                 "\"conseil\": \"…\", \"resume\": \"…\", \"reussi\": true}.")
     l = LIEUX[cas_id]; g = GENS[l[6]]
@@ -245,7 +260,7 @@ def _bilan(cas_id):
                "« conseil ».\n" if elim else "")
             + "« reussi » vaut true si tous les gestes sont accomplis" + (" et que l'éliminatoire est évité" if elim else "")
             + ". Écris toujours « reussi », true ou false.\n"
-            + ("Formule modèle pour l'allergie : « Before I order: I'm allergic to nuts. »\n" if elim else "")
+            + (f"Formule modèle pour l'allergie : « {FORMULE[cas_id]} »\n" if cas_id in FORMULE else "")
             + "Réponds UNIQUEMENT en JSON : {\"compris\": [\"…\"], \"phrases\": [{\"dit\": \"…\", \"mieux\": \"…\"}], "
             "\"gestes\": [{\"geste\": \"…\", \"fait\": true}], \"conseil\": \"…\", \"resume\": \"…\", \"reussi\": true}.")
 

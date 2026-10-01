@@ -63,7 +63,7 @@ def donnees():
                    "portrait": (MEDIA / "gens" / f"{g[0]}-neutre.jpg").exists()} for g in SE.GENS}
     # L'étape 5 : la semaine jouée (build/contenu/toronto/jeu_de_role.py, chargé aussi par server.py).
     JR = C.charger("jeu_de_role"); JR.verifier()
-    jeu = {"consigne": JR.CONSIGNE, "gestes": JR.GESTES, "elim": list(JR.ELIMINATOIRE),
+    jeu = {"consigne": JR.CONSIGNE, "gestes": JR.GESTES, "elim": list(JR.ELIMINATOIRE), "regle": JR.REGLE_ELIM,
            "maya": [{"cas": m[0], "jour": m[1], "ou": m[2]} for m in JR.MAYA]}
     EX = C.charger("exercices"); EX.verifier({l[0] for l in SE.LIEUX} | {"magasin"}, PS.VOIX, {g[0] for g in SE.GENS})
     nom_lieu = {l[0]: l[3] for l in SE.LIEUX} | {"magasin": "Un magasin"}
@@ -882,7 +882,7 @@ function vueCarte(id){
     <div class="cp-carte${gagne ? '' : ' a-gagner'}" style="cursor:default"><span class="cp-recto">${l.carte ? `<img src="${BASE}cartes/${l.id}.jpg?v=${D.v}" alt="">` : ''}<span class="cp-n">${l.n}</span><b>${E(l.lieu)}</b></span></div>
     <div class="verso" aria-label="Le dos de la carte"><div class="msg">${gagne && (S.ecrits || {})[l.id] ? `<div class="ecrit">${E(S.ecrits[l.id])}</div>` : `${gagne ? 'Votre carte attend ses deux lignes.' : 'Ici, vous écrirez deux lignes en anglais, une fois la carte gagnée.'}<div class="lignes"></div><div class="lignes"></div><div class="lignes"></div>`}</div>
       <div><div class="timbre">TIMBRE</div><div class="lignes" style="margin-top:28px"></div><div class="lignes"></div></div></div>
-    <div class="objectif" style="margin-top:14px"><b>${E(l.situation)}</b> — avec ${E(g.nom)}, ${E(g.role.charAt(0).toLowerCase() + g.role.slice(1))}.
+    <div class="objectif" style="margin-top:14px"><b>${E(l.situation)}</b> — avec ${E(g.nom)}, ${E(l.qui === 'kevin' ? (l.id === 'iles' ? 'le guichetier du traversier' : 'l’agent de la gare') : g.role.charAt(0).toLowerCase() + g.role.slice(1))}.
       Pour gagner la carte : ${D.jeu.gestes[l.id].map(E).join(' · ')}.</div>
     ${gagne ? `<div class="retro ok">✓ Carte gagnée le ${E(S.cartes[l.id])}.</div>
       <button class="btn btn--pri btn--large" onclick="aller('semaine/${l.id}/ecrire')">${(S.ecrits || {})[l.id] ? 'Récrire la carte' : 'Écrire la carte'}</button>
@@ -898,6 +898,16 @@ function vueCarte(id){
    éliminatoire. Une situation réussie donne la carte postale du lieu, qu'on écrit
    ensuite en deux lignes, relues par l'assistance. Un code ouvre l'assistance. */
 const CLE_CODE = 'toronto:code';
+// Un accord au masculin quand aucun genre n'est choisi (« vous vous êtes débrouillé », « vous êtes allé »).
+const ACCORDE = /vous vous êtes (\S+ )?\S*(é|i|u)(?=[\s.,;:!?»]|$)|vous êtes (allé|arrivé|venu|prêt|enseignant|perdu|resté|parti)(?=[\s.,;:!?»]|$)/i;
+// Une question se reconnaît au « ? », ou à sa forme : le micro du navigateur ne ponctue souvent pas.
+const estQuestion = t => /\?\s*$/.test(t) || /(^| )(and you|about you|and yourself)$|(^| )(what|where|how|do|does|did|are|is|have|has|can|could|who|why|when|which|would|will) [a-z]/.test(plat(t).split(' ').slice(-8).join(' ')) && /(^| )(you|your|yours|yourself)( |$)/.test(plat(t));
+// Une correction garde le sens : plus de mots neufs que de mots gardés, ou une formule de deux mots
+// (« OK bye »), c'est une phrase réécrite, pas corrigée (tour 2 : « OK bye » → « I haven't eaten yet… »).
+const fideleA = (dit, mieux) => { const d = new Set(plat(dit).split(' ')), m = plat(mieux).split(' ');
+  return d.size > 2 && m.filter(w => !d.has(w)).length * 2 <= m.length; };
+// Une relance en français ne compte pas.
+const FRANCAIS = /(^| )(je|vous|est|et|oui|merci|bonjour|vous|toi|tu|quoi|comment|ou|aussi|le|la|les|des)( |$)/;
 const PALIERS = [['lent', 'Lentement'], ['normal', 'Normalement'], ['rapide', 'Vite, comme à Toronto']];
 const estCode = c => /^PC[A-Z2-9]{6}$/.test(c || '');
 const lireCode = () => { try { return localStorage.getItem(CLE_CODE) || ''; } catch(e) { return ''; } };
@@ -934,9 +944,9 @@ function vueJouer(cas){
   const choixGenre = () => [['f', 'Féminin'], ['m', 'Masculin'], ['', 'Sans accord']].map(([k, t]) => `<button class="btn btn--petit ${(S.genre || '') === k ? 'btn--pri' : ''}" data-genre="${k}">${t}</button>`).join('');
   function accueil(err){
     app.innerHTML = `${retour(c.retour, titreRetour)}<p class="surtitre">${E(c.jour)} · avec l'assistance</p><h1>${E(c.titre)}</h1>
-      <div class="objectif">${c.maya ? `Vous croisez Maya ${E(c.ou)}. Elle vous parle, vous répondez — et vous lui posez au moins une question à votre tour.`
+      <div class="objectif">${c.maya ? `Vous croisez Maya ${E(c.ou)}. Elle vous parle, vous répondez — et vous lui posez au moins deux questions à votre tour (And you? What about you?).`
         : E(D.jeu.consigne[c.cas])}</div>
-      ${c.maya ? '' : `<p class="muted" style="font-size:15px">Pour gagner la carte : ${D.jeu.gestes[c.cas].map(E).join(' · ')}.${D.jeu.elim.includes(c.cas) ? ' <b>L’allergie est éliminatoire :</b> dites-la avant de commander, et ne prenez rien dont on n’est pas sûr.' : ''}</p>`}
+      ${c.maya ? '' : `<p class="muted" style="font-size:15px">Pour gagner la carte : ${D.jeu.gestes[c.cas].map(E).join(' · ')}.${D.jeu.elim.includes(c.cas) ? ' <b>L’allergie est éliminatoire :</b> ' + E(D.jeu.regle[c.cas]) : ''}</p>`}
       <p class="muted">${E(g.nom)} vous répond vraiment, en anglais : dites ce que vous voulez, comme vous pouvez. Il faut du réseau.</p>
       <h3>Comment on vous parle</h3><div class="rangee" id="pal">${choixPal()}</div>
       <h3>Le bilan, en français, s'accorde au</h3><div class="rangee" id="genre">${choixGenre()}</div>
@@ -1005,17 +1015,24 @@ function vueJouer(cas){
         <button class="btn btn--pri btn--large" onclick="rendre()">Recommencer</button>`; return; }
       $('#saisie').innerHTML = `<div class="muted">Le bilan arrive…</div>`;
       try {
-        const r = await fetch('/api/jeu-de-role', {method:'POST', headers:{'Content-Type':'application/json'},
+        const demander = async () => { const r = await fetch('/api/jeu-de-role', {method:'POST', headers:{'Content-Type':'application/json'},
           body: JSON.stringify({code, scenario:'toronto-en', cas:c.cas, role:'touriste', bilan:true, genre:S.genre || null, historique:hist.slice(1)})});
-        const d = await r.json().catch(() => ({})), b = d.bilan;
+          return [r, await r.json().catch(() => ({}))]; };
+        let [r, d] = await demander();
+        // Tour 2 : sans genre choisi, le modèle accordait encore au masculin malgré la consigne — un second tirage.
+        if (r.ok && d.bilan && !S.genre && ACCORDE.test([d.bilan.resume, d.bilan.conseil, ...(d.bilan.compris || [])].join(' '))) [r, d] = await demander();
+        const b = d.bilan;
         if (!r.ok || !b) { $('#saisie').innerHTML = `<div class="retro no">${E(d.error || 'Pas de bilan cette fois.')}</div>`; return; }
         // Audit étape 5 : la carte ne tient pas au seul « reussi » du modèle — chaque geste attendu doit être coché.
         const att = c.maya ? [] : (D.jeu.gestes[c.cas] || []);
         const gestesOk = Array.isArray(b.gestes) && b.gestes.length === att.length && b.gestes.every(x => x && x.fait === true);
         const gagne = !c.maya && b.reussi === true && gestesOk;
+        // Maya : les relances se comptent ici, pas par le modèle (tour 2 : deux relances jugées « pas réussi »).
+        const relances = hist.slice(1).filter(m => m.role === 'user' && estQuestion(m.contenu) && !FRANCAIS.test(plat(m.contenu))).length;
+        if (c.maya) b.reussi = b.reussi === true && relances >= 2;
         // « dit » doit venir d'une réplique du touriste : sinon le bilan corrige ce qu'il n'a pas dit.
         const dits = hist.filter(m => m.role === 'user').map(m => plat(m.contenu)).join(' | ');
-        b.phrases = (b.phrases || []).filter(x => x && x.dit && dits.includes(plat(x.dit)));
+        b.phrases = (b.phrases || []).filter(x => x && x.dit && x.mieux && dits.includes(plat(x.dit)) && plat(x.dit) !== plat(x.mieux) && fideleA(x.dit, x.mieux));
         if (gagne) { S.cartes = S.cartes || {}; if (!S.cartes[c.cas]) S.cartes[c.cas] = aujourdhui(); }
         if (c.maya && b.reussi === true) { S.maya = S.maya || {}; S.maya[c.cas] = aujourdhui(); }
         sauver();
@@ -1023,8 +1040,9 @@ function vueJouer(cas){
           ${b.resume ? `<div class="retro info">${E(b.resume)}</div>` : ''}
           ${att.length ? `<h3>Les gestes</h3>${att.map((g, i) => { const f = !!(b.gestes && b.gestes[i] && b.gestes[i].fait === true);
             return `<div class="geste"><b>${f ? '✓' : '—'}</b><span>${E(g)}${f ? '' : ' <span class="muted">(pas encore)</span>'}</span></div>`; }).join('')}` : ''}
-          ${c.maya ? (b.reussi === true ? '<div class="retro ok">✓ Vous avez répondu et relancé la conversation.</div>'
-                                        : '<div class="retro no">— Pas encore : répondez-lui en anglais, et posez-lui au moins deux questions.</div>') : ''}
+          ${c.maya ? (b.reussi === true ? `<div class="retro ok">✓ Vous avez répondu et posé ${relances} questions à Maya.</div>`
+                                        : `<div class="retro no">— Pas encore : ${relances >= 2 ? 'répondez-lui en anglais' : `vous lui avez posé ${relances} question${relances > 1 ? 's' : ''} ; il en faut au moins deux (And you? What about you?)`}.</div>`) : ''}
+          ${!c.maya && !gagne && D.jeu.elim.includes(c.cas) ? `<div class="retro no"><b>Éliminatoire :</b> ${E(D.jeu.regle[c.cas])}</div>` : ''}
           ${(b.compris || []).length ? `<h3>Ce que vous avez obtenu</h3><ul>${b.compris.map(x => `<li>${E(x)}</li>`).join('')}</ul>` : ''}
           ${(b.phrases || []).length ? `<h3>À dire autrement</h3>${b.phrases.map(x => `<div class="carte" style="margin:6px 0"><div class="muted">${E(x.dit)}</div><div style="font-size:18px;font-weight:800;color:var(--text-strong)">${E(x.mieux)}</div></div>`).join('')}` : ''}
           ${b.conseil ? `<div class="retro info">${E(b.conseil)}</div>` : ''}
@@ -1062,6 +1080,7 @@ function vueEcrire(id){
         body: JSON.stringify({code, scenario:'toronto-en', cas:'carte-' + id, role:'touriste', bilan:true, genre:S.genre || null, historique:[{role:'user', contenu:t}]})});
       const d = await r.json().catch(() => ({})), b = d.bilan;
       if (!r.ok || !b) { $('#r').innerHTML = `<div class="retro no">${E(d.error || 'Pas de relecture cette fois.')}</div>`; return; }
+      b.phrases = (b.phrases || []).filter(x => x && x.dit && x.mieux && plat(t).includes(plat(x.dit)) && plat(x.dit) !== plat(x.mieux) && fideleA(x.dit, x.mieux));
       $('#r').innerHTML = `${b.resume ? `<div class="retro info">${E(b.resume)}</div>` : ''}
         ${(b.compris || []).length ? `<ul>${b.compris.map(x => `<li>${E(x)}</li>`).join('')}</ul>` : ''}
         ${(b.phrases || []).length ? `<h3>À écrire autrement</h3>${b.phrases.map(x => `<div class="carte" style="margin:6px 0"><div class="muted">${E(x.dit)}</div><div style="font-size:18px;font-weight:800;color:var(--text-strong)">${E(x.mieux)}</div></div>`).join('')}
