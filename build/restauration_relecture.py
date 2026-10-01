@@ -252,7 +252,7 @@ def page_daniel(chiffres):
   font-family:inherit;font-size:15px;color:var(--body);overflow-wrap:anywhere}
 .btn-export{font:inherit;font-weight:700;cursor:pointer;background:var(--acier);color:#fff;border:0;border-radius:10px;padding:8px 14px}
 .etat{margin-left:10px;color:var(--muted);font-size:15px}
-table.cmp{display:table;width:100%;min-width:0}
+table.cmp{display:block;max-width:100%;min-width:0;overflow-x:auto}
 </style>""", 1)
     corps = f"""<body><div class="doc">
 <a class="retour" href="/presentations.html#restauration"><span aria-hidden="true">&#8592;</span> Le classeur</a>

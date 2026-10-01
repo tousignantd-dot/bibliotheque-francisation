@@ -218,6 +218,8 @@ INTERFACE.update({
     "ia_avis": "Ce que vous dites ou écrivez part au service d'assistance, qui vous répond. Rien n'est gardé ici.",
     "micro_test": "Le micro n'est pas disponible. Continuez : vous redirez ces phrases à votre formateur.",
     "phrase_a_redire": "La phrase à faire redire",
+    "choix_n": "Choix",
+    "ecoute_dabord": "Écoutez d'abord la phrase.",
     "non_evalue": "pas évalué cette fois",
     "aller_verifier": "Aller vérifier à la cuisine",
     "cuisine_dit": "La cuisine vous répond :",
@@ -376,12 +378,20 @@ def traduire_mots(code, entrees):
     return rendu
 
 
-def traduire_interface(code):
+def traduire_interface(code, deja=None, source=None):
     # Par tranches de 60 : à 205 textes d'un bloc, la connexion se fermait
     # avant la fin (30 sept. 2026), comme les longues langues de Francœur.
     nom = NOMS[code][0]
-    cles = list(INTERFACE)
-    ui = {}
+    # Seulement ce qui manque (30 sept. 2026 : retraduire 400 textes × 11 langues pour deux
+    # textes neufs coûtait ~8 $). `--tout` force la retraduction complète.
+    # Un texte déjà traduit se garde si son français n'a pas changé depuis (`source` : le
+    # français au moment de la traduction ; absent = d'avant cette règle, gardé).
+    ui = ({k: v for k, v in (deja or {}).items()
+           if k in INTERFACE and (source is None or source.get(k, INTERFACE[k]) == INTERFACE[k])}
+          if "--tout" not in sys.argv else {})
+    cles = [k for k in INTERFACE if k not in ui]
+    if not cles:
+        return ui
     for i in range(0, len(cles), 60):
         lignes = "\n".join(f"- k={k} | {INTERFACE[k]}" for k in cles[i:i + 60])
         d = appel(f"Traduis vers l'{nom} les textes de l'écran d'une application où des employés de "
@@ -440,7 +450,8 @@ def main():
             v["mots"].update(traduire_mots(code, entrees))
             if ids:
                 v["relu"] = False
-        v["interface"] = traduire_interface(code)
+        v["interface"] = traduire_interface(code, v.get("interface"), v.get("interface_src"))
+        v["interface_src"] = dict(INTERFACE)
         SORTIE.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     print("→", SORTIE.relative_to(RACINE))
 

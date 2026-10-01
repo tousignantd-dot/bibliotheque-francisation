@@ -66,7 +66,7 @@ def chiffres():
 def tete(titre):
     t = (RACINE / "assets" / "presentations" / "magasin-vetements-plan.html").read_text(encoding="utf-8")
     t = t[:t.index("<body")]
-    return re.sub(r"<title>.*?</title>", f"<title>{E(titre)}</title>", t).replace("</style>", HE.CSS + "</style>", 1)
+    return re.sub(r"<title>.*?</title>", f"<title>{E(titre)}</title>", t).replace("</style>", HE.CSS + "\n/* (audit de design, majeur) l'en-tête recopié pose table{min-width:640px} : au téléphone, toute la page dézoomait. */\ntable.cmp{display:block;max-width:100%;min-width:0;overflow-x:auto}\n" + "</style>", 1)
 
 
 NIV = {"debutant": "débutant", "fonctionnel": "fonctionnel", "aise": "à l'aise"}

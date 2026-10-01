@@ -218,6 +218,7 @@ GABARIT = r"""<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
 <meta name="robots" content="noindex">
 <title>%%NOM%% — les mots du restaurant</title>
 <link rel="stylesheet" href="/assets/design-system/styles.css">
@@ -238,10 +239,12 @@ GABARIT = r"""<!DOCTYPE html>
 body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:Nunito,system-ui,sans-serif}
 .rj{max-width:1080px;margin:0 auto;padding:18px 16px 60px}
 .fr-barre .fr-barre__in{max-width:1080px;padding-left:16px;padding-right:16px}
+.rj-tete>div:first-child{flex:1 1 220px}
 .rj-tete{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
 .rj-enseigne{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--rj-teinte);margin:0}
 .rj h1{font-size:28px;line-height:1.15;margin:4px 0 0;color:var(--text-strong)}
-.appui{display:block;font-size:15px;font-weight:600;color:var(--text-muted);margin-top:3px}
+/* (audit de design, majeur) L'appui est TOUJOURS plus petit que le français qu'il suit : une seule échelle, relative. */
+.appui{display:block;font-size:.85em;font-weight:600;color:var(--text-muted);margin-top:3px}
 .appui:empty{display:none}
 .appui[dir=rtl],.trad[dir=rtl]{text-align:right}
 .btn-rj{font:inherit;font-weight:700;font-size:15px;cursor:pointer;border-radius:10px;padding:9px 14px;min-height:44px;
@@ -250,7 +253,7 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .btn-rj--pri{background:var(--accent);border-color:var(--accent);color:#fff}
 .btn-rj--pri .appui{color:#fff;opacity:.9}
 .btn-rj svg{width:20px;height:20px;flex:none}
-.btn-rj .appui{font-size:12px;margin:0}
+.btn-rj .appui{font-size:.8em;margin:0}
 .btn-rj--pile{flex-direction:column;align-items:flex-start;gap:0}
 
 /* La langue */
@@ -325,7 +328,8 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .carte .note{margin-top:10px;font-size:15px;color:var(--text-body)}
 .carte .nav{display:flex;justify-content:space-between;gap:12px;margin-top:14px}
 .ferme{float:inline-end}
-.petit{padding:6px 10px;min-height:36px;font-size:14px}
+/* (audit de design, majeur) 44 px au moins : des mains de cuisine. */
+.petit{padding:6px 10px;min-height:44px;min-width:44px;font-size:14px}
 
 .secteur{display:flex;flex-direction:column;align-items:flex-end;text-align:right;line-height:1.15}
 .secteur small{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted)}
@@ -353,7 +357,7 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .exo-porte:hover{border-color:var(--rj-teinte)}
 .exo-porte .rang{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--rj-fond);color:var(--rj-teinte);font-weight:900}
 .exo-porte b{font-size:18px;color:var(--text-strong);display:block}
-.exo-porte .sous{display:block;font-size:14px;margin-top:2px}
+.exo-porte .sous{display:block;font-size:16px;margin-top:2px}
 .exo-porte.pont{border-color:var(--rj-teinte);box-shadow:inset 4px 0 0 var(--rj-teinte)}
 .filtre{margin-top:4px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .filtre select{font:inherit;font-size:16px;min-height:44px;padding:8px 10px;border-radius:10px;border:1px solid var(--line-300);background:var(--surface-card);color:var(--text-strong);max-width:100%}
@@ -367,17 +371,15 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .jeu .sujet img{width:100%;max-width:260px;aspect-ratio:1/1;object-fit:contain}
 .jeu .ecoute{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:6px 0 14px}
 .question{font-size:19px;font-weight:800;color:var(--text-strong);margin:4px 0 12px;text-align:center}
-.question .appui{font-size:15px}
 .choix{display:grid;gap:10px;grid-template-columns:repeat(4,minmax(0,1fr))}
 .choix.mots{grid-template-columns:repeat(2,minmax(0,1fr))}
 .choix.actes{grid-template-columns:1fr}
 .choix.tickets{grid-template-columns:repeat(2,minmax(0,1fr))}
-.opt{font:inherit;cursor:pointer;border:2px solid var(--line-200);background:#fff;border-radius:12px;padding:8px;color:#17181A;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:52px}
+.opt{position:relative;font:inherit;cursor:pointer;border:2px solid var(--line-200);background:#fff;border-radius:12px;padding:8px;color:#17181A;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:52px}
 .opt:hover{border-color:var(--rj-teinte)}
 .opt img{width:100%;aspect-ratio:1/1;object-fit:contain}
 .choix.mots .opt{font-size:19px;font-weight:800;padding:12px}
 .choix.actes .opt{align-items:flex-start;text-align:start;font-size:17px;font-weight:700;padding:12px 14px}
-.choix.actes .opt .appui{font-size:14px}
 .ticket{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:6px;width:100%}
 .ticket img{width:100%;aspect-ratio:1/1;object-fit:contain}
 .ticket .chg{font-weight:900;font-size:17px;border:2px solid #17181A;border-radius:6px;padding:2px 7px;background:#fff;white-space:nowrap}
@@ -407,8 +409,7 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 
 .seuil{font-weight:700;color:var(--rj-teinte);margin:0 0 6px}
 .seuil-porte{display:block;font-size:13px;font-weight:700;color:var(--rj-teinte);margin-top:4px}
-.seuil-porte .appui{font-size:12px}
-.non-relu{font-size:13px;color:var(--text-muted);margin:6px 0}
+.non-relu{font-size:14px;color:var(--text-muted);margin:6px 0}
 .unique{text-align:center;font-weight:800;color:var(--rj-teinte);margin:6px 0 14px}
 .regle-liste{padding-left:0;margin:0 0 10px;list-style:none;counter-reset:geste}
 .regle-liste li{counter-increment:geste}
@@ -475,6 +476,24 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .bilan-gestes .marque{font-weight:900;width:18px}
 .bilan-gestes .fait .marque{color:var(--ok-ink,#1B5E20)} .bilan-gestes .manque .marque{color:var(--warn-ink)}
 @media (max-width:640px){.scene{grid-template-columns:1fr}.avatar{position:static}.avatar img{max-height:160px}}
+
+/* (audit de design, majeurs) Un bouton désactivé se voit ; le verdict d'une carte porte un signe, pas la couleur seule. */
+.btn-rj:disabled,.btn-rj[disabled]{opacity:.45;cursor:not-allowed}
+.opt:disabled:not(.juste):not(.faux){opacity:.55;cursor:not-allowed}
+.opt.juste::after,.opt.faux::after{position:absolute;top:6px;inset-inline-end:6px;width:28px;height:28px;border-radius:50%;
+  display:grid;place-items:center;font-weight:900;font-size:16px;color:#fff;line-height:1}
+.opt.juste::after{content:"✓";background:var(--ok-ink,#1B5E20)}
+.opt.faux::after{content:"✕";background:var(--no-ink,#9B1C1C)}
+.jeu .ecoute{margin-bottom:12px}
+.regle .pref{margin-top:8px}
+.verrou{text-align:center;font-size:14px;color:var(--text-muted);margin:0}
+/* (audit de design, majeur) Le service à 375 px : une ligne par situation, l'image du poste une fois. */
+@media (max-width:640px){
+  .clients{grid-template-columns:1fr;gap:8px}
+  .client img{display:none}
+  .client{padding:12px 14px}
+  .porte-titre{margin-top:14px}
+}
 </style>
 </head>
 <body>
@@ -618,7 +637,7 @@ function ouvrir(i){
     + '<div class="gestes">' + (m.son ? '<button class="btn-rj btn-rj--pri btn-rj--pile" data-act="ecouter">' + tb('ecouter') + '</button>' : '')
     + (tr ? '<button class="btn-rj btn-rj--pile" data-act="voir" aria-expanded="false">' + tb('voir') + '</button>' : '') + '</div>'
     + (tr ? '<div class="trad" id="trad" hidden lang="' + l.c + '"' + dirL(l) + '>' + esc(tr[0]) + (tr[1] ? '<small>' + esc(tr[1]) + '</small>' : '')
-        + (l.relu ? '' : '<span class="relu">' + t('non_relu') + '</span>') + '</div>' : '')
+        + (l.relu ? '' : '<span class="relu" dir="ltr" lang="fr">' + t('non_relu') + '</span>') + '</div>' : '')
     + (note ? (m.piege ? '<div class="piege">' + esc(FR.piege) + ' : ' + esc(note) + '</div>' : '<p class="note">' + esc(note) + '</p>') : '')
     + '<div class="nav"><button class="btn-rj petit" data-act="prec" ' + (i ? '' : 'disabled') + '>' + ICO.g + esc(FR.precedent) + '</button>'
     + '<button class="btn-rj petit" data-act="suiv" ' + (i < liste.length - 1 ? '' : 'disabled') + '>' + esc(FR.suivant) + ICO.d + '</button></div>';
@@ -867,7 +886,7 @@ function formules(){
 }
 function barreBruit(){
   if (!S.x.bruit) return '';
-  return '<div class="bruit" role="group" aria-label="' + esc(FR.bruit) + '"><span>' + esc(FR.bruit) + '</span>'
+  return '<div class="bruit" role="group" aria-label="' + esc(FR.bruit) + '"><span>' + t('bruit') + '</span>'
     + [0, 1, 2].map(n => '<button class="btn-rj petit" data-bruit="' + n + '" aria-pressed="' + (Bruit.niveau === n) + '">' + esc(FR['bruit_' + n]) + '</button>').join('') + '</div>';
 }
 function filtreHTML(){
@@ -898,7 +917,7 @@ function item(){
   else if (it.type === 'acte') h += '<div class="choix mots actes">' + it.choix.map((c, i) =>
       '<div class="acte-ligne"><button class="opt" data-o="' + i + '">' + c.html + '</button><button class="btn-rj petit ecoute-acte" data-acte="' + i + '" aria-label="' + esc(FR.ecouter_acte) + '">' + ICO.son + '</button></div>').join('') + '</div>';
   else h += '<div class="choix ' + {img: 'imgs', mot: 'mots', ticket: 'tickets'}[it.type] + '">' + it.choix.map((c, i) =>
-      '<button class="opt" data-o="' + i + '">' + c.html + '</button>').join('') + '</div>';
+      '<button class="opt" data-o="' + i + '" aria-label="' + esc(FR.choix_n || 'Choix') + ' ' + (i + 1) + '">' + c.html + '</button>').join('') + '</div>';
   h += '<p class="retro" id="retro" aria-live="polite"></p><div class="apres" id="apres"></div><div class="suite" id="suite"></div></div>';
   app.innerHTML = h;
   const f = document.getElementById('filtre'); if (f) f.value = S.filtre;
@@ -1028,8 +1047,9 @@ function test(){
   // Une passation interrompue reprend au début de sa partie, même forme.
   if (r && r.partie) { T = r; return introPartie(r.partie); }
   app.innerHTML = tete('test', 'test_sous', 'accueil')
-    + '<div class="regle"><p>' + t('t_intro1') + '</p><p>' + t('t_intro2') + '</p><p class="seuil">' + t('t_cadrage') + '</p>'
-    + '<button class="btn-rj btn-rj--pri btn-rj--pile" data-t="demarrer">' + tb('commencer') + '</button></div>';
+    + '<div class="regle"><p>' + t('t_intro1') + '</p><p>' + t('t_intro2') + '</p>'
+    + '<button class="btn-rj btn-rj--pri btn-rj--pile" data-t="demarrer">' + tb('commencer') + '</button>'
+    + '<p class="n" style="margin-top:14px">' + t('t_cadrage') + '</p></div>';
 }
 function demarrer(){
   const avant = lire(TF, null);
@@ -1047,7 +1067,7 @@ function introPartie(p){
     + '<button class="btn-rj btn-rj--pri btn-rj--pile" data-t="partie">' + tb('continuer') + '</button></div>';
 }
 function lancerPartie(){ ({A: aItem, B: bItem, C: cItem, D: dItem})[T.partie](); }
-function choixImages(ids){ return '<div class="choix imgs">' + ids.map((id, i) => '<button class="opt" data-r="' + i + '"><img src="' + parId[id].img + '" alt=""></button>').join('') + '</div>'; }
+function choixImages(ids){ return '<div class="choix imgs">' + ids.map((id, i) => '<button class="opt" data-r="' + i + '" aria-label="' + esc(FR.choix_n || 'Choix') + ' ' + (i + 1) + '"><img src="' + parId[id].img + '" alt=""></button>').join('') + '</div>'; }
 
 // A · adaptative : trois bonnes montent d'un cran, deux erreurs arrêtent.
 function aItem(){
@@ -1072,7 +1092,7 @@ function bItem(){
   if (!it) return introPartie('C');
   if (it.type === 'chef') { Bruit.niveau = 1; Bruit.demarrer(); } else Bruit.arreter();
   const choix = it.type === 'chef' ? choixImages(it.o)
-    : '<div class="choix tickets">' + it.cartes.map((c, i) => '<button class="opt" data-r="' + i + '">' + ticketHTML(c) + '</button>').join('') + '</div>';
+    : '<div class="choix tickets">' + it.cartes.map((c, i) => '<button class="opt" data-r="' + i + '" aria-label="' + esc(FR.choix_n || 'Choix') + ' ' + (i + 1) + '">' + ticketHTML(c) + '</button>').join('') + '</div>';
   app.innerHTML = enTete('partB', T.bi, F().B.length)
     + '<p class="qui">' + t(it.type === 'chef' ? 'qui_chef' : 'qui_client') + '</p>'
     + '<div class="ecoute"><button class="btn-rj btn-rj--pri btn-rj--pile" data-t="une">' + tb('jouer_une') + '</button></div>'
@@ -1116,13 +1136,15 @@ function dItem(){
   app.innerHTML = enTete('partD', T.di, F().D.length) + '<p class="qui">' + t(it.qui) + '</p>'
     + '<div class="ecoute"><button class="btn-rj btn-rj--pri btn-rj--pile" data-t="une">' + tb('jouer_une') + '</button></div>'
     + '<div class="oral"><button class="btn-rj btn-rj--pile rec" data-t="rec"' + ((T.joue || {})[it.id] ? '' : ' disabled') + '>' + tb('enregistrer') + '</button>'
+    + ((T.joue || {})[it.id] ? '' : '<p class="verrou" id="verrou">' + t('ecoute_dabord') + '</p>')
     + '<p class="etat" id="etat" aria-live="polite"></p><button class="btn-rj btn-rj--pile" data-t="passer">' + tb('passer') + '</button></div>';
 }
 function dJouer(b){
   const it = F().D[T.di];
   b.disabled = true; b.innerHTML = tb('deja_joue');
   audio.onplaying = () => { audio.onplaying = null; T.joue = T.joue || {}; T.joue[it.id] = true; tGarder(); };
-  const ouvrir = () => { audio.onended = audio.onerror = null; clearTimeout(T._s); const r = app.querySelector('[data-t=rec]'); if (r) { r.disabled = false; r.focus({preventScroll: true}); } };
+  const ouvrir = () => { audio.onended = audio.onerror = null; clearTimeout(T._s); const r = app.querySelector('[data-t=rec]'); if (r) { r.disabled = false; r.focus({preventScroll: true}); }
+    const v = document.getElementById('verrou'); if (v) v.remove(); };
   audio.onended = audio.onerror = ouvrir; T._s = setTimeout(ouvrir, 12000);
   jouerNormal(it.son);
 }
@@ -1277,7 +1299,7 @@ function service(){
   const l = L();
   app.innerHTML = tete('service', 'service_sous', 'accueil')
     + '<p class="n">' + t('ia_avis') + '</p>'
-    + '<p style="margin:10px 0 4px"><b>' + esc(FR.niveau_jeu) + '</b>' + (niveauJeu ? '' : ' — ' + esc(FR.faire_test)) + '</p>'
+    + '<p style="margin:10px 0 4px"><b>' + t('niveau_jeu') + '</b>' + (niveauJeu ? '' : '<span class="n">' + t('faire_test') + '</span>') + '</p>'
     + '<div class="choisir3">' + ['debutant', 'fonctionnel', 'aise'].map(p => '<button class="btn-rj petit" data-s="niv" data-v="' + p + '" aria-pressed="' + (p === niveauJeu) + '">' + esc(FR['p_' + p]) + '</button>').join('') + '</div>'
     + ['cuisine', 'salle'].map(p => '<h2 class="porte-titre">' + t('porte_' + p) + '<span class="appui-sous">' + t('porte_' + p + '_sous') + '</span></h2><div class="clients">'
       + SV.situations.filter(s => s.porte === p && (!niveauJeu || s.paliers.includes(niveauJeu))).map(s =>

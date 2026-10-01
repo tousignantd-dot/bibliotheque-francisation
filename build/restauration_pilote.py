@@ -81,7 +81,7 @@ def main():
     tete = (RACINE / "assets" / "presentations" / "magasin-vetements-plan.html").read_text(encoding="utf-8")
     tete = tete[:tete.index("<body")]
     tete = re.sub(r"<title>.*?</title>", f"<title>{E(ID.NOM)} — le pilote</title>", tete)
-    tete = tete.replace("</style>", HP.CSS + "</style>", 1)
+    tete = tete.replace("</style>", HP.CSS + "\n/* (audit de design, majeur) l'en-tête recopié pose table{min-width:640px} : au téléphone, toute la page dézoomait. */\ntable.cmp{display:block;max-width:100%;min-width:0;overflow-x:auto}\n" + "</style>", 1)
 
     corps = f"""<body><div class="doc">
 <a class="retour" href="/presentations.html#restauration"><span aria-hidden="true">&#8592;</span> Le classeur</a>
