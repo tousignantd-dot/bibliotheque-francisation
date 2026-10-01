@@ -52,8 +52,9 @@ APPLICATIONS = [
          "L'espagnol du pèlerin, du départ à Santiago. Tout est gratuit sauf "
          "« Parler librement », qui s'ouvre avec un code.", "compostelle"),
         ("Une semaine à Toronto", "modules-autonomes/toronto/",
-         "L'anglais du touriste francophone. Pour l'instant, la préparation : "
-         "huit séances et le test « Prêt à partir ? ». Aucun code.", None),
+         "L'anglais du touriste francophone : huit séances, le test, les mots, les "
+         "exercices, puis la semaine jouée avec l'assistance (dix lieux et Maya), "
+         "ouverte par un code.", "toronto"),
         ("Montréal en poche", "modules-autonomes/montreal/",
          "Le guide touristique de Montréal pour le téléphone, en trois "
          "langues. Tout est ouvert, aucun code.", None),

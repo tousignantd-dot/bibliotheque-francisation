@@ -59,7 +59,12 @@ def donnees():
     # La série des pièges : (id, phrase, bonne, fausse lecture, second choix, explication).
     pieges = [{"id": i, "en": t[0], "bonne": t[1], "fausse": t[2], "seconde": t[3], "expl": t[4], "expl2": t[5],
                "vrai": i in LX.VRAIS_AMIS} for i, t in LX.PIEGES.items()]
-    gens = {g[0]: {"nom": g[1], "role": g[3]} for g in SE.GENS}
+    gens = {g[0]: {"nom": g[1], "role": g[3], "voix": "toronto_" + g[2],
+                   "portrait": (MEDIA / "gens" / f"{g[0]}-neutre.jpg").exists()} for g in SE.GENS}
+    # L'étape 5 : la semaine jouée (build/contenu/toronto/jeu_de_role.py, chargé aussi par server.py).
+    JR = C.charger("jeu_de_role"); JR.verifier()
+    jeu = {"consigne": JR.CONSIGNE, "gestes": JR.GESTES, "elim": list(JR.ELIMINATOIRE),
+           "maya": [{"cas": m[0], "jour": m[1], "ou": m[2]} for m in JR.MAYA]}
     EX = C.charger("exercices"); EX.verifier({l[0] for l in SE.LIEUX} | {"magasin"}, PS.VOIX, {g[0] for g in SE.GENS})
     nom_lieu = {l[0]: l[3] for l in SE.LIEUX} | {"magasin": "Un magasin"}
     totaux = []
@@ -78,7 +83,7 @@ def donnees():
     semaine = [{"id": l[0], "n": l[1], "jour": l[2], "lieu": l[3], "situation": l[4], "geste": l[5], "qui": l[6],
                 "carte": (MEDIA / "cartes" / f"{l[0]}.jpg").exists()} for l in SE.LIEUX]
     return {"v": MEDIA_V, "mots": mots, "perso": perso, "sons": sons, "planches": LX.PLANCHES, "pieges": pieges,
-            "semaine": semaine, "gens": gens, "exos": exos,
+            "semaine": semaine, "gens": gens, "exos": exos, "jeu": jeu,
             "prep": {"seances": PR.SEANCES, "test": PR.TEST, "objectifs": PR.OBJECTIFS, "seuil": PR.SEUIL,
                      "conseils": PR.CONSEILS, "fin": PR.FIN, "lieu": PR.LIEU, "solide": PR.SEUIL_SOLIDE},
             # Les réponses témoins des clés, rejouées dans le moteur de la page (audit tour 5) : `window.__toronto`.
@@ -255,6 +260,27 @@ button{font:inherit}
 .verso .msg{border-right:1px solid #E7D3C3;padding-right:12px;font-size:15px;color:var(--text-muted)}
 .verso .timbre{justify-self:end;width:54px;height:64px;border:2px dashed #C8102E;border-radius:3px;display:grid;place-items:center;color:#C8102E;font-size:11px;font-weight:900;text-align:center}
 .verso .lignes{border-bottom:1px solid #D7BFAE;height:26px}
+.verso .ecrit{font-family:"Segoe Print","Bradley Hand",cursive;font-size:16px;color:#1F2A44;white-space:pre-wrap;line-height:26px}
+/* La semaine jouée (étape 5) */
+.scene-tete img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid #fff;box-shadow:0 0 0 1px var(--line-200)}
+.fil{display:flex;flex-direction:column;gap:10px}
+.bulle{max-width:88%;border-radius:16px;padding:10px 12px;background:#fff;border:1px solid var(--line-200)}
+.bulle.lui{align-self:flex-start;border-top-left-radius:4px}
+.bulle.moi{align-self:flex-end;background:var(--carte-bg);border-color:#E7D3C3;border-top-right-radius:4px}
+.bulle .qui{font-size:13px;font-weight:900;letter-spacing:.05em;text-transform:uppercase;color:var(--text-muted)}
+.bulle .en{font-size:17px;color:var(--text-strong);font-weight:700}
+.bulle.cache .en{filter:blur(6px);user-select:none}
+.saisie-txt{flex:1;min-width:0;font:inherit;padding:10px;border-radius:10px;border:1px solid var(--line-300)}
+.code-champ{font:inherit;font-size:20px;letter-spacing:.2em;padding:10px;border-radius:10px;border:1px solid var(--line-300);width:10em;text-transform:uppercase}
+.code-achat{font-size:32px;font-weight:900;letter-spacing:.16em;text-align:center;background:#fff;border:2px dashed var(--carte);color:var(--carte);border-radius:14px;padding:14px;margin:12px 0}
+details.rub{background:#fff;border:1px solid var(--line-200);border-radius:12px}
+details.rub summary{cursor:pointer;padding:12px 14px;font-weight:800;display:flex;justify-content:space-between;gap:10px}
+.prix-barre{color:var(--text-muted);font-weight:700}
+.avis-local{font-size:14px;color:var(--text-muted);margin:6px 0 0}
+.geste{display:flex;gap:8px;align-items:baseline;margin:4px 0;font-size:15.5px}
+.geste b{flex:none;width:1.2em}
+.carte-postale-txt{width:100%;min-height:96px;font:inherit;font-size:17px;padding:10px;border-radius:10px;border:1px solid var(--line-300)}
+.maya-jours{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
 </style>
 </head>
 <body>
@@ -379,13 +405,16 @@ const app = $('#app');
 function aller(h){ location.hash = h; }
 function retour(h, t){ return `<button class="retour" onclick="aller('${h}')">${ICO.retour} ${E(t)}</button>`; }
 function rendre(){
-  window.scrollTo(0, 0); arreterMicro(); lecteur.pause();
+  window.scrollTo(0, 0); arreterMicro(); lecteur.pause(); voixEnCours = null; try { speechSynthesis.cancel(); } catch(e) {}
   const p = (location.hash.slice(1) || 'accueil').split('/');
   if (p[0] === 'prep') return p[1] === 'test' ? vuePrepTest() : p[1] ? vueSeance(p[1], p[2]) : vuePrep();
   if (p[0] === 'reglages') return vueReglages();
   if (p[0] === 'mots') return p[1] ? vuePlanche(p[1]) : vueMots();
   if (p[0] === 'pieges') return vuePieges();
-  if (p[0] === 'semaine') return p[1] ? vueCarte(p[1]) : vueSemaine();
+  if (p[0] === 'semaine') return p[2] === 'jouer' ? vueJouer(p[1]) : p[2] === 'ecrire' ? vueEcrire(p[1]) : p[1] ? vueCarte(p[1]) : vueSemaine();
+  if (p[0] === 'maya') return vueJouer(p[1]);
+  if (p[0] === 'achat') return vueAchat(p[1]);
+  if (p[0] === 'achat-annule') return vueAchatAnnule();
   if (p[0] === 'exos') return p[1] ? vueFamille(p[1]) : vueExos();
   return vueAccueil();
 }
@@ -429,8 +458,9 @@ function vueAccueil(){
     <section class="acc">
       <p class="surtitre">2 · La semaine</p><h2>Dix lieux, dix cartes postales</h2>
       <p class="muted">Union Station, l'hôtel, le café, la tour CN, le marché St. Lawrence, Kensington, les îles, la pharmacie,
-      le restaurant, le départ. Les situations jouées sont en préparation ; le plan et l'album sont déjà là.</p>
-      <button class="btn btn--large" onclick="aller('semaine')">Le plan et l'album des cartes postales</button>
+      le restaurant, le départ. Chaque lieu se joue avec l'assistance, qui tient le rôle de la personne en anglais ; une situation
+      réussie vous donne sa carte postale.</p>
+      <button class="btn btn--pri btn--large" onclick="aller('semaine')">Jouer la semaine</button>
     </section>`;
 }
 
@@ -838,18 +868,283 @@ function vueSemaine(){
     <h2>L'album · ${n} sur ${D.semaine.length}</h2>
     <div class="album">${D.semaine.map(l => `<button class="cp-carte${carteGagnee(l.id) ? '' : ' a-gagner'}" onclick="aller('semaine/${l.id}')">
       <span class="cp-recto">${l.carte ? `<img src="${BASE}cartes/${l.id}.jpg?v=${D.v}" alt="" loading="lazy">` : ''}<span class="cp-n">${l.n}</span><b>${E(l.lieu)}</b></span>
-      <small>${E(l.jour)} · ${E(l.situation)}${carteGagnee(l.id) ? ' · ✓ gagnée' : ''}</small></button>`).join('')}</div>`;
+      <small>${E(l.jour)} · ${E(l.situation)}${carteGagnee(l.id) ? ' · ✓ gagnée' : ''}</small></button>`).join('')}</div>
+    <h2>Bavarder avec Maya</h2>
+    <p>Maya est infirmière, née à Toronto. Vous la croisez chaque jour : elle vous pose des questions, vous lui en posez à votre tour.</p>
+    <div class="maya-jours">${D.jeu.maya.map(m => `<button class="btn" onclick="aller('maya/${m.cas}')">${(S.maya || {})[m.cas] ? '✓ ' : ''}${E(m.jour)} · ${E(m.ou)}</button>`).join('')}</div>`;
 }
 function vueCarte(id){
   const l = D.semaine.find(x => x.id === id); if (!l) return vueSemaine();
   const g = D.gens[l.qui], gagne = carteGagnee(l.id);
   app.innerHTML = `${retour('semaine', "L'album")}<p class="surtitre">${E(l.jour)} · carte ${l.n} sur ${D.semaine.length}</p><h1>${E(l.lieu)}</h1>
     <div class="cp-carte${gagne ? '' : ' a-gagner'}" style="cursor:default"><span class="cp-recto">${l.carte ? `<img src="${BASE}cartes/${l.id}.jpg?v=${D.v}" alt="">` : ''}<span class="cp-n">${l.n}</span><b>${E(l.lieu)}</b></span></div>
-    <div class="verso" aria-label="Le dos de la carte"><div class="msg">${gagne ? '' : 'Ici, vous écrirez deux lignes en anglais, une fois la carte gagnée.'}<div class="lignes"></div><div class="lignes"></div><div class="lignes"></div></div>
+    <div class="verso" aria-label="Le dos de la carte"><div class="msg">${gagne && (S.ecrits || {})[l.id] ? `<div class="ecrit">${E(S.ecrits[l.id])}</div>` : `${gagne ? 'Votre carte attend ses deux lignes.' : 'Ici, vous écrirez deux lignes en anglais, une fois la carte gagnée.'}<div class="lignes"></div><div class="lignes"></div><div class="lignes"></div>`}</div>
       <div><div class="timbre">TIMBRE</div><div class="lignes" style="margin-top:28px"></div><div class="lignes"></div></div></div>
     <div class="objectif" style="margin-top:14px"><b>${E(l.situation)}</b> — avec ${E(g.nom)}, ${E(g.role.charAt(0).toLowerCase() + g.role.slice(1))}.
       Le geste qui compte : ${E(l.geste)}.</div>
-    <p class="muted">${gagne ? '✓ Carte gagnée.' : 'La situation jouée de ce lieu arrive bientôt : la carte se gagne en la réussissant.'}</p>`;
+    ${gagne ? `<div class="retro ok">✓ Carte gagnée le ${E(S.cartes[l.id])}.</div>
+      <button class="btn btn--pri btn--large" onclick="aller('semaine/${l.id}/ecrire')">${(S.ecrits || {})[l.id] ? 'Récrire la carte' : 'Écrire la carte'}</button>
+      <button class="btn btn--large" style="margin-top:8px" onclick="aller('semaine/${l.id}/jouer')">Rejouer la situation</button>`
+    : `<button class="btn btn--pri btn--large" onclick="aller('semaine/${l.id}/jouer')">Jouer la situation</button>
+      <p class="muted" style="margin-top:8px;font-size:15px">Préparez-la d'abord dans les exercices : les mêmes lieux, les mêmes gens.</p>`}`;
+}
+
+/* ---------- étape 5 : la semaine jouée, avec l'assistance ---------- */
+/* /api/jeu-de-role, scénario « toronto-en » (build/contenu/toronto/jeu_de_role.py) :
+   la personne du lieu vous répond en anglais, avec sa voix (/api/voix, rôles toronto_*).
+   Le bilan, en français, dit les gestes accomplis ; au restaurant, l'allergie est
+   éliminatoire. Une situation réussie donne la carte postale du lieu, qu'on écrit
+   ensuite en deux lignes, relues par l'assistance. Un code ouvre l'assistance. */
+const CLE_CODE = 'toronto:code';
+const PALIERS = [['lent', 'Lentement'], ['normal', 'Normalement'], ['rapide', 'Vite, comme à Toronto']];
+const estCode = c => /^PC[A-Z2-9]{6}$/.test(c || '');
+const lireCode = () => { try { return localStorage.getItem(CLE_CODE) || ''; } catch(e) { return ''; } };
+const garderCode = c => { try { localStorage.setItem(CLE_CODE, c); } catch(e) {} };
+let voixEnCours = null;
+function voixRepli(t){
+  try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = 'en-CA'; u.rate = S.lent ? .8 : 1;
+    const v = speechSynthesis.getVoices().find(x => x.lang === 'en-CA') || speechSynthesis.getVoices().find(x => /^en/.test(x.lang));
+    if (v) u.voice = v; speechSynthesis.speak(u); } catch(e) {}
+}
+async function direAvecVoix(t, code, personnage, palier){
+  try { speechSynthesis.cancel(); } catch(e) {}
+  lecteur.pause();
+  const n = voixEnCours = {};
+  try {
+    const r = await fetch('/api/voix', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({code, texte:t, personnage, role:'touriste', palier: palier === 'lent' ? 'lent' : null})});
+    if (!r.ok) throw 0;
+    const b = await r.blob(); if (n !== voixEnCours) return;
+    lecteur.src = URL.createObjectURL(b); lecteur.playbackRate = 1;
+    await lecteur.play();
+  } catch(e) { if (n === voixEnCours) voixRepli(t); }
+}
+function casDe(cas){
+  if (cas.startsWith('maya-')) { const m = D.jeu.maya.find(x => x.cas === cas); return m && {cas, maya:true, qui:'maya', titre:'Bavarder avec Maya', jour:m.jour, ou:m.ou, retour:'semaine'}; }
+  const l = D.semaine.find(x => x.id === cas); return l && {cas, qui:l.qui, titre:l.situation, jour:l.jour, lieu:l.lieu, retour:'semaine/' + l.id, l};
+}
+function vueJouer(cas){
+  const c = casDe(cas); if (!c) return vueSemaine();
+  const g = D.gens[c.qui];
+  let code = lireCode(), palier = S.palier || 'lent';
+  const choixPal = () => PALIERS.map(([k, t]) => `<button class="btn btn--petit ${palier === k ? 'btn--pri' : ''}" data-pal="${k}">${t}</button>`).join('');
+  const titreRetour = c.maya ? "L'album" : c.lieu;
+  const choixGenre = () => [['f', 'Féminin'], ['m', 'Masculin'], ['', 'Sans accord']].map(([k, t]) => `<button class="btn btn--petit ${(S.genre || '') === k ? 'btn--pri' : ''}" data-genre="${k}">${t}</button>`).join('');
+  function accueil(err){
+    app.innerHTML = `${retour(c.retour, titreRetour)}<p class="surtitre">${E(c.jour)} · avec l'assistance</p><h1>${E(c.titre)}</h1>
+      <div class="objectif">${c.maya ? `Vous croisez Maya ${E(c.ou)}. Elle vous parle, vous répondez — et vous lui posez au moins une question à votre tour.`
+        : E(D.jeu.consigne[c.cas])}</div>
+      ${c.maya ? '' : `<p class="muted" style="font-size:15px">Pour gagner la carte : ${D.jeu.gestes[c.cas].map(E).join(' · ')}.${D.jeu.elim.includes(c.cas) ? ' <b>L’allergie est éliminatoire :</b> dites-la avant de commander, et ne prenez rien dont on n’est pas sûr.' : ''}</p>`}
+      <p class="muted">${E(g.nom)} vous répond vraiment, en anglais : dites ce que vous voulez, comme vous pouvez. Il faut du réseau.</p>
+      <h3>Comment on vous parle</h3><div class="rangee" id="pal">${choixPal()}</div>
+      <h3>Le bilan, en français, s'accorde au</h3><div class="rangee" id="genre">${choixGenre()}</div>
+      <h3>Votre code</h3><input id="code" class="code-champ" value="${E(code)}" autocomplete="off" autocapitalize="characters">
+      <div id="compte"></div>
+      <p class="avis-local">Le code de votre achat. Il ouvre l'assistance ; il ne dit pas qui vous êtes.</p>
+      ${err ? `<div class="retro no">${E(err)}</div>` : ''}
+      <button class="btn btn--pri btn--large" id="go" style="margin-top:10px">Commencer</button>
+      <div id="offre"></div>`;
+    afficherCompte(code); afficherOffre(!code);
+    $('#genre').onclick = e => { const b = e.target.closest('[data-genre]'); if (b) { S.genre = b.dataset.genre; sauver(); $('#genre').innerHTML = choixGenre(); } };
+    $('#pal').onclick = e => { const b = e.target.closest('[data-pal]'); if (b) { palier = S.palier = b.dataset.pal; sauver(); $('#pal').innerHTML = choixPal(); } };
+    $('#go').onclick = () => { code = $('#code').value.trim().toUpperCase(); garderCode(code); conversation(); };
+  }
+  function conversation(){
+    const hist = []; let fini = false, cache = false;
+    app.innerHTML = `${retour(c.retour, titreRetour)}
+      <div class="scene-tete">${g.portrait ? `<img src="${BASE}gens/${c.qui}-neutre.jpg?v=${D.v}" alt="">` : ''}<div><b>${E(g.nom)}</b><div class="muted" style="font-size:14px">${E(c.titre)}</div></div></div>
+      <label class="aide-bascule"><input type="checkbox" id="cache"> Écouter sans lire (le texte se montre en le touchant)</label>
+      <div class="fil" id="fil"></div>
+      <div id="saisie" style="margin-top:12px">
+        ${Reco ? `<div class="micro"><button class="btn-micro" id="mic" aria-label="Parler">${ICO.micro}</button><div class="entendu" id="entendu"></div></div>` : ''}
+        <div class="rangee"><input id="txt" class="saisie-txt" placeholder="…ou écrivez en anglais" autocomplete="off">
+        <button class="btn btn--pri" id="env">Envoyer</button></div>
+        <button class="btn btn--large" id="fin" style="margin-top:10px">Terminer et voir le bilan</button></div><div id="r"></div>`;
+    const fil = $('#fil');
+    $('#cache').onchange = e => { cache = e.target.checked; fil.querySelectorAll('.bulle.lui').forEach(b => b.classList.toggle('cache', cache)); };
+    const bulle = (moi, t) => { const b = document.createElement('div'); b.className = 'bulle ' + (moi ? 'moi' : 'lui') + (!moi && cache ? ' cache' : '');
+      b.innerHTML = `<div class="qui">${moi ? 'Vous' : E(g.nom)}</div><div class="en">${E(t)}</div>`;
+      if (!moi) { b.title = 'Toucher pour réentendre'; b.onclick = () => { b.classList.remove('cache'); direAvecVoix(t, code, g.voix, palier); }; }
+      fil.appendChild(b); b.scrollIntoView({behavior:'smooth', block:'end'}); };
+    async function tour(texte){
+      if (texte) { hist.push({role:'user', contenu:texte}); bulle(true, texte); }
+      const att = document.createElement('div'); att.className = 'muted'; att.textContent = g.nom + ' réfléchit…'; fil.appendChild(att);
+      try {
+        const r = await fetch('/api/jeu-de-role', {method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({code, scenario:'toronto-en', cas:c.cas, role:'touriste', niveau:palier, historique:hist})});
+        const d = await r.json().catch(() => ({})); att.remove();
+        if (!r.ok) {
+          if (r.status === 401) return accueil('Ce code n’est pas accepté.');
+          if (d.pelerin || r.status === 403) return accueil(d.error);
+          $('#r').innerHTML = `<div class="retro no">${E(d.error || 'Erreur')}</div>`; return; }
+        if (d.pelerin) memoCompte(d.pelerin);
+        if (d.ouverture) { hist.unshift({role:'user', contenu:d.ouverture}); bulle(true, d.ouverture); }
+        let t = String(d.reponse || ''); fini = /\bFIN\W*$/.test(t); t = t.replace(/\bFIN\W*$/, '').trim();
+        hist.push({role:'assistant', contenu:t}); bulle(false, t); direAvecVoix(t, code, g.voix, palier);
+        if (fini) bilan();
+      } catch(e) { att.remove(); $('#r').innerHTML = `<div class="retro no">Pas de réseau ? L’assistance a besoin d’une connexion.</div>`; }
+    }
+    const envoyer = () => { const t = $('#txt').value.trim(); if (t && !fini) { $('#txt').value = ''; tour(t); } };
+    $('#env').onclick = envoyer; $('#txt').onkeydown = e => { if (e.key === 'Enter') envoyer(); };
+    $('#fin').onclick = () => bilan();
+    if (Reco) $('#mic').onclick = () => {
+      const mic = $('#mic'); if (recoActive) { arreterMicro(); return; }
+      try { speechSynthesis.cancel(); } catch(e) {} lecteur.pause();
+      mic.classList.add('ecoute'); mic.innerHTML = ICO.stop;
+      ecouterMicro(t => { $('#entendu').textContent = '« ' + t + ' »'; }, final => {
+        mic.classList.remove('ecoute'); mic.innerHTML = ICO.micro; $('#entendu').textContent = '';
+        if (!final) { $('#entendu').textContent = rienEntendu('Je n’ai rien entendu. Réessayez, ou écrivez votre réponse.'); return; }
+        if (!fini) tour(final);
+      });
+    };
+    async function bilan(){
+      fini = true; arreterMicro();
+      if (hist.filter(m => m.role === 'user').length < 2) { $('#saisie').innerHTML = `<div class="retro info">Vous n’avez encore rien dit : le bilan juge ce que vous dites.</div>
+        <button class="btn btn--pri btn--large" onclick="rendre()">Recommencer</button>`; return; }
+      $('#saisie').innerHTML = `<div class="muted">Le bilan arrive…</div>`;
+      try {
+        const r = await fetch('/api/jeu-de-role', {method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({code, scenario:'toronto-en', cas:c.cas, role:'touriste', bilan:true, genre:S.genre || null, historique:hist.slice(1)})});
+        const d = await r.json().catch(() => ({})), b = d.bilan;
+        if (!r.ok || !b) { $('#saisie').innerHTML = `<div class="retro no">${E(d.error || 'Pas de bilan cette fois.')}</div>`; return; }
+        const gagne = !c.maya && b.reussi === true;
+        if (gagne) { S.cartes = S.cartes || {}; if (!S.cartes[c.cas]) S.cartes[c.cas] = aujourdhui(); }
+        if (c.maya && b.reussi === true) { S.maya = S.maya || {}; S.maya[c.cas] = aujourdhui(); }
+        sauver();
+        $('#saisie').innerHTML = `<h2>Le bilan</h2>
+          ${b.resume ? `<div class="retro info">${E(b.resume)}</div>` : ''}
+          ${(b.gestes || []).length ? `<h3>Les gestes</h3>${b.gestes.map(x => `<div class="geste"><b>${x.fait ? '✓' : '—'}</b><span>${E(x.geste)}${x.fait ? '' : ' <span class="muted">(pas encore)</span>'}</span></div>`).join('')}` : ''}
+          ${(b.compris || []).length ? `<h3>Ce que vous avez obtenu</h3><ul>${b.compris.map(x => `<li>${E(x)}</li>`).join('')}</ul>` : ''}
+          ${(b.phrases || []).length ? `<h3>À dire autrement</h3>${b.phrases.map(x => `<div class="carte" style="margin:6px 0"><div class="muted">${E(x.dit)}</div><div style="font-size:18px;font-weight:800;color:var(--text-strong)">${E(x.mieux)}</div></div>`).join('')}` : ''}
+          ${b.conseil ? `<div class="retro info">${E(b.conseil)}</div>` : ''}
+          ${c.maya ? '' : gagne ? `<div class="retro ok">✓ Carte postale gagnée : ${E(c.lieu)}. Écrivez-la maintenant, en deux lignes.</div>
+              <button class="btn btn--pri btn--large" onclick="aller('semaine/${c.cas}/ecrire')">Écrire la carte</button>`
+            : `<div class="retro no">— Pas encore la carte : rejouez la situation en visant les gestes qui manquent.</div>`}
+          <button class="btn btn--large" style="margin-top:8px" onclick="rendre()">Rejouer</button>
+          <button class="btn btn--large" style="margin-top:8px" onclick="aller('${c.retour}')">${c.maya ? "Retour à l'album" : 'Retour à la carte'}</button>`;
+      } catch(e) { $('#saisie').innerHTML = `<div class="retro no">Pas de réseau pour le bilan.</div>`; }
+    }
+    tour('');
+  }
+  accueil();
+}
+function vueEcrire(id){
+  const l = D.semaine.find(x => x.id === id); if (!l) return vueSemaine();
+  if (!carteGagnee(id)) return aller('semaine/' + id);
+  const ecrits = S.ecrits || {};
+  app.innerHTML = `${retour('semaine/' + id, l.lieu)}<p class="surtitre">Carte ${l.n} · ${E(l.lieu)}</p><h1>Deux lignes au dos</h1>
+    <p>Écrivez à quelqu'un de chez vous, en anglais : où vous êtes, ce que vous avez fait, ce que vous en pensez. Deux phrases suffisent.</p>
+    <textarea id="txt" class="carte-postale-txt" maxlength="400" placeholder="Hi Léa! Today I…">${E(ecrits[id] || '')}</textarea>
+    <p class="avis-local">Le texte reste dans ce téléphone ; il part seulement pour être relu, si vous le demandez, avec votre code.</p>
+    <div class="rangee"><button class="btn btn--pri" id="relire" style="flex:1">Faire relire</button><button class="btn" id="garder" style="flex:1">Garder tel quel</button></div>
+    <div id="r"></div>`;
+  const garder = () => { S.ecrits = S.ecrits || {}; S.ecrits[id] = $('#txt').value.trim(); sauver(); };
+  $('#garder').onclick = () => { garder(); aller('semaine/' + id); };
+  $('#relire').onclick = async () => {
+    const t = $('#txt').value.trim(), code = lireCode();
+    if (t.split(/\s+/).length < 4) { $('#r').innerHTML = `<div class="retro info">Écrivez au moins une phrase avant de la faire relire.</div>`; return; }
+    if (!code) { $('#r').innerHTML = `<div class="retro info">La relecture passe par l'assistance : entrez d'abord votre code dans une situation jouée.</div>`; return; }
+    garder(); $('#r').innerHTML = `<div class="muted">La relecture arrive…</div>`;
+    try {
+      const r = await fetch('/api/jeu-de-role', {method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({code, scenario:'toronto-en', cas:'carte-' + id, role:'touriste', bilan:true, genre:S.genre || null, historique:[{role:'user', contenu:t}]})});
+      const d = await r.json().catch(() => ({})), b = d.bilan;
+      if (!r.ok || !b) { $('#r').innerHTML = `<div class="retro no">${E(d.error || 'Pas de relecture cette fois.')}</div>`; return; }
+      $('#r').innerHTML = `${b.resume ? `<div class="retro info">${E(b.resume)}</div>` : ''}
+        ${(b.compris || []).length ? `<ul>${b.compris.map(x => `<li>${E(x)}</li>`).join('')}</ul>` : ''}
+        ${(b.phrases || []).length ? `<h3>À écrire autrement</h3>${b.phrases.map(x => `<div class="carte" style="margin:6px 0"><div class="muted">${E(x.dit)}</div><div style="font-size:18px;font-weight:800;color:var(--text-strong)">${E(x.mieux)}</div></div>`).join('')}
+          <p class="muted" style="font-size:14.5px">Corrigez vous-même, puis gardez la carte.</p>` : ''}
+        ${b.conseil ? `<div class="retro info">${E(b.conseil)}</div>` : ''}`;
+    } catch(e) { $('#r').innerHTML = `<div class="retro no">Pas de réseau pour la relecture.</div>`; }
+  };
+}
+
+/* ---------- l'accès payant à l'assistance ---------- */
+/* Même vente que Compostelle (pelerins.py, produit « toronto ») : tout est gratuit
+   sauf la semaine jouée. Le serveur fait foi sur le prix et les limites. */
+const enDollars = c => (c / 100).toLocaleString('fr-CA', {style:'currency', currency:'CAD'});
+const dateFr = iso => { const [a, m, j] = String(iso).split('-').map(Number); return a ? new Date(a, m - 1, j).toLocaleDateString('fr-CA', {day:'numeric', month:'long', year:'numeric'}) : ''; };
+let OFFRE = null;
+async function offreServeur(){
+  if (OFFRE) return OFFRE;
+  try { const r = await fetch('/api/pelerins/offre'); if (r.ok) OFFRE = await r.json(); } catch(e) {}
+  return OFFRE;
+}
+function memoCompte(etat){ try { localStorage.setItem('toronto:compte', JSON.stringify(etat)); } catch(e) {} }
+async function afficherCompte(code){
+  if (!$('#compte') || !estCode(code)) return;
+  let e = null;
+  try { const r = await fetch('/api/pelerins/etat?code=' + encodeURIComponent(code)); if (r.ok) e = await r.json(); } catch(x) {}
+  if (!e) { try { e = JSON.parse(localStorage.getItem('toronto:compte') || 'null'); } catch(x) {} }
+  if (!e || !$('#compte')) return;
+  memoCompte(e);
+  const expire = e.expire && e.expire < new Date().toISOString().slice(0, 10);
+  $('#compte').innerHTML = `<div class="retro ${e.restant && !expire ? 'info' : 'no'}" style="margin-top:8px">${
+    expire ? `Votre accès a pris fin le ${dateFr(e.expire)}.` :
+    `Il vous reste <b>${e.restant} conversation${e.restant > 1 ? 's' : ''}</b>, jusqu'au ${dateFr(e.expire)}.`}</div>`;
+  const o = await offreServeur();
+  if (o && o.ouverte && !expire && e.restant <= 10)
+    $('#compte').insertAdjacentHTML('beforeend', `<button class="btn btn--large" id="recharger" style="margin-top:6px">Ajouter ${o.rechargeConversations} conversations — ${enDollars(o.recharge)}</button>`);
+  if (o && o.ouverte && expire) afficherOffre(true);
+  const b = $('#recharger'); if (b) b.onclick = () => acheter(code);
+}
+async function afficherOffre(ouvrir){
+  const o = await offreServeur(), z = $('#offre');
+  if (!z || !o || !o.ouverte) return;
+  const promo = o.promo && o.prixRegulier > o.prix;
+  const prixHtml = promo ? `<s class="prix-barre">${enDollars(o.prixRegulier)}</s> <b>${enDollars(o.prix)}</b>` : enDollars(o.prix);
+  z.innerHTML = `<details class="rub" style="margin-top:16px"${ouvrir ? ' open' : ''}><summary>Pas encore de code ? <span>${prixHtml}</span></summary>
+    <div style="padding:0 14px 14px;font-size:15.5px">
+     ${promo ? `<p>Prix de lancement : <b>${enDollars(o.prix)}</b> au lieu de ${enDollars(o.prixRegulier)}${o.promoFin ? `, jusqu'au ${dateFr(o.promoFin)} inclusivement` : ''}.</p>` : ''}
+     <p style="margin:0 0 8px"><b>${o.conversations} conversations</b> avec les gens de Toronto, pendant <b>${Math.round(o.jours / 30.4)} mois</b> :
+     la personne du lieu, ou Maya, qui vous répond vraiment en anglais, puis un bilan en français. La relecture des cartes postales est comprise.</p>
+     <p class="muted" style="font-size:14px;margin:0 0 10px">Les séances, les mots, les exercices et le test restent gratuits. Paiement par carte chez Stripe ;
+     nous ne recevons ni votre nom ni votre carte. Le code s'affiche ici tout de suite, et il est aussi écrit sur votre reçu.</p>
+     <p class="muted" style="font-size:14px;margin:0 0 10px">Vendu par Boucledidactique. Carte de crédit seulement. Remboursable dans les 14 jours si 3 conversations au plus ont servi.
+     Réservé aux personnes majeures (ou avec l'accord d'un parent). Aucune taxe. <a href="/conditions-de-vente.html" target="_blank" rel="noopener">Conditions de vente</a></p>
+     <button class="btn btn--pri btn--large" id="acheter">Obtenir mon code — ${enDollars(o.prix)}</button></div></details>`;
+  $('#acheter').onclick = () => acheter(null);
+}
+async function acheter(recharge){
+  const b = document.activeElement; if (b && b.tagName === 'BUTTON') { b.disabled = true; b.textContent = 'Vers le paiement…'; }
+  try {
+    const r = await fetch('/api/pelerins/achat', {method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(recharge ? {recharge} : {produit:'toronto'})});
+    const d = await r.json().catch(() => ({}));
+    if (r.ok && d.url) { try { sessionStorage.setItem('toronto:retour', location.hash); } catch(e) {} location.href = d.url; return; }
+    alert(d.error || 'Le paiement ne s’ouvre pas. Réessayez dans un moment.');
+  } catch(e) { alert('Pas de réseau : le paiement demande une connexion.'); }
+  if (b && b.tagName === 'BUTTON') { b.disabled = false; b.textContent = 'Réessayer'; }
+}
+function suiteApresAchat(){
+  let h = ''; try { h = sessionStorage.getItem('toronto:retour') || ''; } catch(e) {}
+  return /^#(semaine\/[a-z]+\/jouer|maya\/maya-\d)$/.test(h) ? h.slice(1) : 'semaine';
+}
+async function vueAchat(sid){
+  app.innerHTML = `<p class="surtitre">Merci !</p><h1>Votre accès</h1><div class="muted" id="att">Nous vérifions le paiement auprès de Stripe…</div><div id="z"></div>`;
+  let d = null, err = '';
+  for (let essai = 0; essai < 6 && !d; essai++) {
+    try {
+      const r = await fetch('/api/pelerins/session?id=' + encodeURIComponent(sid || ''));
+      const j = await r.json().catch(() => ({}));
+      if (r.ok) d = j; else if (r.status === 409) await new Promise(ok => setTimeout(ok, 2000)); else { err = j.error || 'Paiement introuvable.'; break; }
+    } catch(e) { err = 'Pas de réseau.'; await new Promise(ok => setTimeout(ok, 2000)); }
+  }
+  $('#att').remove();
+  if (!d) { $('#z').innerHTML = `<div class="retro no">${E(err || 'Le paiement n’est pas encore confirmé.')} Si vous avez payé, votre code est écrit sur le reçu reçu par courriel.</div>
+    <button class="btn btn--large" onclick="location.reload()">Vérifier de nouveau</button>`; return; }
+  garderCode(d.code); memoCompte(d);
+  $('#z').innerHTML = `<p>Voici votre code. Il est gardé dans ce téléphone ; notez-le quand même, pour un autre appareil (il est aussi sur votre reçu).</p>
+    <div class="code-achat">${E(d.code)}</div>
+    <div class="rangee" style="justify-content:center"><button class="btn" id="copier">Copier le code</button></div>
+    <div class="retro ok" style="margin-top:12px">✓ ${d.restant} conversations, jusqu'au ${dateFr(d.expire)}.</div>
+    <button class="btn btn--pri btn--large" style="margin-top:10px" onclick="aller('${suiteApresAchat()}')">Jouer la semaine</button>`;
+  $('#copier').onclick = async () => { try { await navigator.clipboard.writeText(d.code); $('#copier').textContent = 'Copié'; } catch(e) {} };
+}
+function vueAchatAnnule(){
+  app.innerHTML = `${retour('semaine', "L'album")}<h1>Paiement annulé</h1>
+    <div class="retro info">Rien n'a été facturé. Les séances, les mots, les exercices et le test ne demandent aucun code.</div>
+    <button class="btn btn--pri btn--large" onclick="aller('${suiteApresAchat()}')">Revenir</button>`;
 }
 
 /* ---------- étape 4 : les exercices ---------- */

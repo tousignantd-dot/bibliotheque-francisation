@@ -93,6 +93,17 @@ VOIX = {
     "hotel_en_m": {"azure": "en-US-Andrew:DragonHDLatestNeural", "reference": "", "lang": "en-US"},
     "hotel_es_f": {"azure": "es-MX-Dalia:DragonHDLatestNeural", "reference": "", "lang": "es-MX"},
     "hotel_es_m": {"azure": "es-MX-Jorge:DragonHDLatestNeural", "reference": "", "lang": "es-MX"},
+    # Une semaine à Toronto (1er oct. 2026) : les gens de la ville parlent
+    # anglais, avec les voix auditionnées au cadrage (build/contenu/toronto/personnages.py).
+    "toronto_clara": {"azure": "en-CA-ClaraNeural", "reference": "", "lang": "en-CA"},
+    "toronto_liam": {"azure": "en-CA-LiamNeural", "reference": "", "lang": "en-CA"},
+    "toronto_andrew": {"azure": "en-US-Andrew:DragonHDLatestNeural", "reference": "", "lang": "en-US"},
+    "toronto_harper": {"azure": "en-US-Harper:MAI-Voice-2.1", "reference": "", "lang": "en-US"},
+    "toronto_aarti": {"azure": "en-IN-Aarti:DragonHDLatestNeural", "reference": "", "lang": "en-IN"},
+    "toronto_arjun": {"azure": "en-IN-Arjun:DragonHDLatestNeural", "reference": "", "lang": "en-IN"},
+    "toronto_rosa": {"azure": "en-PH-RosaNeural", "reference": "", "lang": "en-PH"},
+    "toronto_sam": {"azure": "en-HK-SamNeural", "reference": "", "lang": "en-HK"},
+    "toronto_ezinne": {"azure": "en-NG-EzinneNeural", "reference": "", "lang": "en-NG"},
 }
 
 # Les identifiants ElevenLabs rencontrés dans les 110 générateurs, et le rôle

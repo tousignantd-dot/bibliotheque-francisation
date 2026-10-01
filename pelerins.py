@@ -53,6 +53,7 @@ CODES_ESSAI = {"PCF8D9GQ": "essai 01", "PCM6WNSV": "essai 02", "PCEAN6WQ": "essa
 # personnages ; mêmes plafonds et même fin que les codes de Compostelle.
 # Coût plafonné : 16 × 25 conversations × ~8 ¢ ≈ 32 $ US au pire, voix comprises.
 TROUSSES = {
+    "toronto": ("toronto-en",),
     "francoeur": ("magasin",),
     "hotel": ("comptoir-fr-en", "comptoir-fr-es", "comptoir-en-fr", "comptoir-en-es", "comptoir-es-fr", "comptoir-es-en"),
 }
@@ -73,6 +74,14 @@ CODES_ESSAI_TROUSSES = {
     "PCKYJMPC": ("hotel 06", "hotel"),
     "PCUSZW3Q": ("hotel 07", "hotel"),
     "PCHK596K": ("hotel 08", "hotel"),
+    "PCAP52UU": ("toronto 01", "toronto"),
+    "PCJKZAUH": ("toronto 02", "toronto"),
+    "PCNTDR82": ("toronto 03", "toronto"),
+    "PCNDD43Y": ("toronto 04", "toronto"),
+    "PCMXN45W": ("toronto 05", "toronto"),
+    "PCMU2EB8": ("toronto 06", "toronto"),
+    "PCGZN3SB": ("toronto 07", "toronto"),
+    "PCEJ2S8H": ("toronto 08", "toronto"),
 }
 # Ce qui se vend (28 sept. 2026, décision de Daniel : « vendre les produits de
 # la même façon que Compostelle »). Chaque produit est un jeu de rôle vendu par
@@ -85,6 +94,8 @@ PRODUITS = {
                   "trousse": "francoeur", "locale": "fr-CA"},
     "hotel": {"nom": "Hôtel Rive-Claire — Le comptoir joué", "chemin": "/modules-autonomes/hotel-reception/",
               "trousse": "hotel", "locale": "auto"},
+    "toronto": {"nom": "Une semaine à Toronto — La semaine jouée", "chemin": "/modules-autonomes/toronto/",
+                "trousse": "toronto", "locale": "fr-CA"},
 }
 # Réglable pour les essais seulement (un faux Stripe local) ; jamais en production.
 API = os.environ.get("STRIPE_API", "https://api.stripe.com/v1")

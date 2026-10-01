@@ -16403,6 +16403,19 @@ try:
 except Exception as _e:  # pragma: no cover
     print(f"[WARN] scénario « camino » non chargé : {_e}", flush=True)
 
+# Une semaine à Toronto (trousse grand public, 1er octobre 2026) : l'assistance
+# joue les gens de la ville en anglais, et Maya. Même forme que Compostelle :
+# la source est build/contenu/toronto/jeu_de_role.py.
+try:
+    _spec = _ilu.spec_from_file_location(
+        "toronto_jeu_de_role",
+        os.path.join(BASE_DIR, "build", "contenu", "toronto", "jeu_de_role.py"))
+    _toronto = _ilu.module_from_spec(_spec)
+    _spec.loader.exec_module(_toronto)
+    JEU_DE_ROLE_SCENARIOS.update(_toronto.scenarios_serveur())
+except Exception as _e:  # pragma: no cover
+    print(f"[WARN] scénario « toronto » non chargé : {_e}", flush=True)
+
 # Le service chez Jocelyne (trousse de restauration, 30 septembre 2026) : deux
 # scénarios, « resto-cuisine » (l'IA joue le chef, l'élève est commis) et
 # « resto-salle » (l'IA joue le client, l'élève sert). Même règle : la source est
