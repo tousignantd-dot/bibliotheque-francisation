@@ -17,4 +17,6 @@ SECTEUR_COURT = "Restauration"
 # et en anglais seulement — relus avant la vente, plutôt que onze non relus. Les
 # voix ne changent pas : seul le français se dit (Azure HD, Sylvie et Thierry).
 LANGUE_APPRISE = "fr"
-LANGUES_APPUI = ["es", "en"]
+# Onze langues d'appui (Daniel, 30 sept. 2026, après l'analyse de coût : « lance la traduction des
+# onze langues ») — les mêmes que l'outil et que Francœur, dans le même ordre. Texte seulement.
+LANGUES_APPUI = ["ar", "es", "uk", "fa", "zh", "pt", "en", "ro", "ur", "ru", "ti"]

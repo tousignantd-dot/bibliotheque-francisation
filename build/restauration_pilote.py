@@ -62,9 +62,10 @@ def main():
          "Avec un code d'élève : une situation en cuisine (le bruit « Fort », la voix du chef), une en salle, la dictée "
          "au micro. Personne n'a encore entendu le mélange de la voix et du bruit, ni essayé la dictée.",
          "Vous. Vingt minutes."),
-        ("Faire relire l'espagnol et l'anglais",
-         "La règle d'allergie, le critère de gravité et les gestes d'abord : c'est ce qu'un employé lit pour une décision "
-         "éliminatoire. Puis les mots et les consignes. Chaque langue est marquée « non relue » à l'écran.",
+        ("Faire relire les langues d'appui",
+         "Au moins celles des employés du pilote. La règle d'allergie, le critère de gravité et les gestes d'abord : c'est "
+         "ce qu'un employé lit pour une décision éliminatoire. Puis les mots et les consignes. Chaque langue est marquée "
+         "« non relue » à l'écran.",
          "Un employé bilingue par langue, idéalement du pilote."),
         ("Faire vérifier deux normes",
          "Le hamburger (bœuf haché) toujours bien cuit, et la zone de danger des températures : écrites au lexique "
@@ -105,7 +106,7 @@ réussit accuse la situation. <strong>L'allergie se lit en premier</strong> : c'
     <tr><td><b>Ce qui compte d'abord</b></td><td>Redire la consigne, dire ce qui manque, l'allergie et la table</td><td>Redire la commande, faire préciser, l'allergie</td></tr>
   </tbody></table>
   <p><b>Quatre à huit personnes</b>, les deux postes mêlés : les mots et les exercices sont communs ; le service se
-  choisit par porte. Langue d'appui : français seul, espagnol ou anglais, au choix de chacun. Encadrement : un
+  choisit par porte. Langue d'appui : français seul, ou l'une des onze langues de l'outil, au choix de chacun. Encadrement : un
   formateur qui mène, un observateur qui ne parle pas et note. Matériel : leurs téléphones, des écouteurs (le chef
   se parle dans le bruit), la feuille QR. Durée : <b>deux séances de 90 minutes à une semaine d'écart</b> — le test
   se repasse à la fin, dans sa seconde forme.</p>

@@ -62,6 +62,7 @@ ol.p li{border-bottom:.6pt solid #B8B8B8;padding:3px 0;break-inside:avoid}
 ol.p li:first-child{border-top:.6pt solid #B8B8B8}
 ol.p .q{font-size:7.8pt;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#3A3A3A}
 ol.p .dit{font-size:10.4pt;font-weight:800;line-height:1.2}
+.ap[dir=rtl]{border-left:0;border-right:1.4pt solid #C9C9C9;padding-left:0;padding-right:7px;text-align:right}
 .ap{font-size:8pt;line-height:1.22;color:#3A3A3A;margin-top:1px;padding-left:7px;border-left:1.4pt solid #C9C9C9}
 .regle{border:1.6pt solid #000;padding:6px 10px;margin-top:9px;break-inside:avoid}
 .regle ol{margin:3px 0 0;padding-left:18px}
@@ -87,7 +88,9 @@ def page(L):
     ui = TRAD.get(L, {}).get("interface", {}) if L != "fr" else {}
     mots = TRAD.get(L, {}).get("mots", {}) if L != "fr" else {}
     fr = lambda k: INTERFACE[k]
-    ap = lambda k: (f'<div class="ap" lang="{L}">{E(ui[k])}</div>' if ui.get(k) else "")
+    rtl = TRAD.get(L, {}).get("rtl", False)
+    d = ' dir="rtl"' if rtl else ""
+    ap = lambda k: (f'<div class="ap" lang="{L}"{d}>{E(ui[k])}</div>' if ui.get(k) else "")
     ap_txt = lambda k: E(ui.get(k, "")) if ui.get(k) else ""
 
     def gestes(porte):
@@ -96,11 +99,11 @@ def page(L):
                        for i in ids)
     regle = "".join(f'<li>{E(fr(f"regle_{n}"))}{ap(f"regle_{n}")}</li>' for n in (1, 2, 3))
     lex = {e[0]: e for e in LX.LEXIQUE}
-    cris = "".join(f'<span lang="fr">{E(lex[i][2])}<small lang="{L}">{E(mots[i]["mot"]) if i in mots else ""}</small></span>' for i in CRIS)
+    cris = "".join(f'<span lang="fr">{E(lex[i][2])}<small lang="{L}"{d}>{E(mots[i]["mot"]) if i in mots else ""}</small></span>' for i in CRIS)
     pieges = [e for e in LX.LEXIQUE if e[5].startswith("PIÈGE")]
     # Deux colonnes : en une seule, la version avec appui débordait sur une 2e page.
     ligne = lambda e: (f'<tr><td class="m" lang="fr">{E(e[2])}</td><td class="a">{E(e[3])}</td>'
-                       f'<td class="a" lang="{L}">{E(mots[e[0]]["mot"]) if e[0] in mots else ""}</td></tr>')
+                       f'<td class="a" lang="{L}"{d}>{E(mots[e[0]]["mot"]) if e[0] in mots else ""}</td></tr>')
     moitie = (len(pieges) + 1) // 2
     lignes = (f'<div class="deux"><table>{"".join(ligne(e) for e in pieges[:moitie])}</table>'
               f'<table>{"".join(ligne(e) for e in pieges[moitie:])}</table></div>')

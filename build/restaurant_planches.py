@@ -67,7 +67,7 @@ def donnees():
         if (SONS / "autre" / f"{ident}.mp3").exists():
             m["autre_son"] = f"{URL}/sons/autre/{ident}.mp3?v={MEDIA_V}"
         mots.append(m)
-    langues = [{"c": c, "loc": trad[c]["loc"], "relu": trad[c]["relu"],
+    langues = [{"c": c, "loc": trad[c]["loc"], "relu": trad[c]["relu"], "rtl": trad[c].get("rtl", False),
                 "ui": trad[c].get("interface", {}),
                 # Le modèle a préfixé les pièges tantôt « Atención: », tantôt
                 # « Attention: » ou « Careful: » : l'écran dit déjà « Attention ».
@@ -243,6 +243,7 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .rj h1{font-size:28px;line-height:1.15;margin:4px 0 0;color:var(--text-strong)}
 .appui{display:block;font-size:15px;font-weight:600;color:var(--text-muted);margin-top:3px}
 .appui:empty{display:none}
+.appui[dir=rtl],.trad[dir=rtl]{text-align:right}
 .btn-rj{font:inherit;font-weight:700;font-size:15px;cursor:pointer;border-radius:10px;padding:9px 14px;min-height:44px;
   border:1px solid var(--line-300);background:var(--surface-card);color:var(--text-strong);display:inline-flex;gap:8px;align-items:center}
 .btn-rj:hover{border-color:var(--rj-teinte)}
@@ -510,8 +511,10 @@ function lireLangue(){ try { return localStorage.getItem(CLE); } catch(e){ retur
 function poserLangue(c){ try { localStorage.setItem(CLE, c); } catch(e){} }
 function L(){ return D.langues.find(l => l.c === langue) || null; }
 // Une consigne : le français, puis l'appui DESSOUS (jamais à sa place).
-function t(k){ const l = L(); const a = l && l.ui[k]; return esc(FR[k]) + (a ? '<span class="appui" lang="' + l.c + '">' + esc(a) + '</span>' : ''); }
-function tb(k){ const l = L(); const a = l && l.ui[k]; return '<span>' + esc(FR[k]) + '</span>' + (a ? '<span class="appui" lang="' + l.c + '">' + esc(a) + '</span>' : ''); }
+// L'arabe, le persan et l'ourdou s'écrivent de droite à gauche : l'appui seul, le français reste à gauche.
+const dirL = l => l && l.rtl ? ' dir="rtl"' : '';
+function t(k){ const l = L(); const a = l && l.ui[k]; return esc(FR[k]) + (a ? '<span class="appui" lang="' + l.c + '"' + dirL(l) + '>' + esc(a) + '</span>' : ''); }
+function tb(k){ const l = L(); const a = l && l.ui[k]; return '<span>' + esc(FR[k]) + '</span>' + (a ? '<span class="appui" lang="' + l.c + '"' + dirL(l) + '>' + esc(a) + '</span>' : ''); }
 function jouer(src){ if (!src) return; try { audio.pause(); audio.src = src; audio.currentTime = 0; audio.play().catch(()=>{}); } catch(e){} }
 
 function adresse(o){
@@ -534,7 +537,7 @@ function ecranLangue(){
   app.innerHTML = '<div class="rj-tete"><div><p class="rj-enseigne">' + esc(NOM) + '</p><h1>' + esc(FR.choisir) + '</h1>'
     + '<p style="margin:6px 0 0">' + esc(FR.choisir_sous) + '</p></div></div>'
     + '<button class="sans-trad" data-lang="fr">' + esc(FR.francais_seul) + '<small>' + esc(FR.francais_seul_sous) + '</small></button>'
-    + '<div class="langues">' + D.langues.map(l => '<button data-lang="' + l.c + '" lang="' + l.c + '">' + esc(l.loc) + '</button>').join('') + '</div>';
+    + '<div class="langues">' + D.langues.map(l => '<button data-lang="' + l.c + '" lang="' + l.c + '" dir="auto">' + esc(l.loc) + '</button>').join('') + '</div>';
   app.querySelector('button').focus();
 }
 
@@ -614,7 +617,7 @@ function ouvrir(i){
         + (m.autre_son ? ' <button class="btn-rj petit" data-act="autre" aria-label="' + esc(FR.ecouter) + ' : ' + esc(m.autre) + '">' + ICO.son + '</button>' : '') + '</p>' : '')
     + '<div class="gestes">' + (m.son ? '<button class="btn-rj btn-rj--pri btn-rj--pile" data-act="ecouter">' + tb('ecouter') + '</button>' : '')
     + (tr ? '<button class="btn-rj btn-rj--pile" data-act="voir" aria-expanded="false">' + tb('voir') + '</button>' : '') + '</div>'
-    + (tr ? '<div class="trad" id="trad" hidden lang="' + l.c + '">' + esc(tr[0]) + (tr[1] ? '<small>' + esc(tr[1]) + '</small>' : '')
+    + (tr ? '<div class="trad" id="trad" hidden lang="' + l.c + '"' + dirL(l) + '>' + esc(tr[0]) + (tr[1] ? '<small>' + esc(tr[1]) + '</small>' : '')
         + (l.relu ? '' : '<span class="relu">' + t('non_relu') + '</span>') + '</div>' : '')
     + (note ? (m.piege ? '<div class="piege">' + esc(FR.piege) + ' : ' + esc(note) + '</div>' : '<p class="note">' + esc(note) + '</p>') : '')
     + '<div class="nav"><button class="btn-rj petit" data-act="prec" ' + (i ? '' : 'disabled') + '>' + ICO.g + esc(FR.precedent) + '</button>'

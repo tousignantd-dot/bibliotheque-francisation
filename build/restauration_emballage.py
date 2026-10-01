@@ -79,8 +79,9 @@ def guide(c):
                    for s in SI.SITUATIONS)
     gestes = "".join(f"<li><b>{E(g['nom'])}</b> — « {E(g['phrase'])} »</li>" for g in SI.GESTES)
     regle = "".join(f"<li>{E(l)}</li>" for l in EX.REGLE)
-    fiches = "".join(f'<a href="fiche/fiche-{l}.pdf">{n}</a>' for l, n in
-                     [("fr", "Français seulement"), ("es", "Avec l'espagnol"), ("en", "Avec l'anglais")])
+    TR = json.loads((CONTENU / "traductions.json").read_text(encoding="utf-8"))
+    fiches = '<a href="fiche/fiche-fr.pdf">Français seulement</a>' + "".join(
+        f'<a href="fiche/fiche-{l}.pdf">{E(TR[l]["loc"])}</a>' for l in ID.LANGUES_APPUI if l in TR)
     corps = f"""<body><div class="doc">
 <a class="retour" href="/presentations.html#restauration"><span aria-hidden="true">&#8592;</span> Le classeur</a>
 <p class="eyebrow">{E(ID.NOM)} &middot; pour le formateur</p>
@@ -104,8 +105,9 @@ le suivi, et quoi faire quand ça casse. L'employé travaille sur son téléphon
 
 <section>
   <h2>Ce que fait la trousse</h2>
-  <p>On apprend le <b>français d'ici</b>. Chaque employé choisit une langue d'appui — français seulement, espagnol ou
-  anglais : elle s'écrit <b>sous</b> les consignes, et sous chaque mot tant qu'il ne la demande pas, elle reste cachée.</p>
+  <p>On apprend le <b>français d'ici</b>. Chaque employé choisit une langue d'appui — français seulement, ou l'une des
+  {len(ID.LANGUES_APPUI)} langues de l'outil (arabe, espagnol, ukrainien, persan, chinois, portugais, anglais, roumain, ourdou,
+  russe, tigrigna) : elle s'écrit <b>sous</b> les consignes, et sous chaque mot tant qu'il ne la demande pas, elle reste cachée.</p>
   <ol class="actions">
     <li><p><b>Apprendre les mots</b> — le poste de cuisine dessiné (la ligne, le passe, la plonge…), puis
       {c['planches']} planches, {c['mots']} mots, un croquis et une voix ; {c['pieges']} mots d'ici qui piègent sont signalés.</p></li>
@@ -279,7 +281,7 @@ affirmer ce qu'ils n'ont pas vérifié.</strong></p>
     <div class="ch"><span class="n">{c['mots']}</span><span class="q">mots de la cuisine et de la salle, en {c['planches']} planches et un poste dessiné</span></div>
     <div class="ch"><span class="n">{c['voix']}</span><span class="q">extraits de voix, Azure HD</span></div>
     <div class="ch"><span class="n">{c['situations']}</span><span class="q">situations jouées : le chef en cuisine, les clients en salle</span></div>
-    <div class="ch"><span class="n">3</span><span class="q">langues d'appui : français seulement, espagnol, anglais</span></div>
+    <div class="ch"><span class="n">{len(ID.LANGUES_APPUI)}</span><span class="q">langues d'appui, de l'arabe au tigrigna, sous le français ; ou le français seul</span></div>
   </div>
   <table class="cmp"><tbody>
     <tr><td><b>Apprendre les mots</b></td><td>{c['croquis']} croquis, dont un poste de cuisine vu de la place du commis ; {c['pieges']} mots d'ici qui piègent (le poêle et la poêle, une liqueur, le dîner…).</td></tr>

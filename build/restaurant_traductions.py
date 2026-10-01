@@ -14,7 +14,7 @@ langue naît `"relu": false`.
 
 Sortie : build/contenu/entreprise-restaurant/traductions.json
 """
-import json, pathlib, sys, time, urllib.request
+import json, pathlib, sys, time, urllib.error, urllib.request
 
 RACINE = pathlib.Path(__file__).resolve().parent.parent
 CONTENU = RACINE / "build" / "contenu" / "entreprise-restaurant"
@@ -25,8 +25,17 @@ import identite as IDE  # noqa: E402
 
 SORTIE = CONTENU / "traductions.json"
 MODELE = "claude-opus-5"
-NOMS = {"es": ("espagnol (d'Amérique latine, neutre)", "Español", False),
-        "en": ("anglais (nord-américain)", "English", False)}
+NOMS = {"ar": ("arabe (standard moderne)", "العربية", True),
+        "es": ("espagnol (d'Amérique latine, neutre)", "Español", False),
+        "uk": ("ukrainien", "Українська", False),
+        "fa": ("persan", "فارسی", True),
+        "zh": ("chinois (mandarin, caractères simplifiés)", "中文", False),
+        "pt": ("portugais (du Brésil)", "Português", False),
+        "en": ("anglais (nord-américain)", "English", False),
+        "ro": ("roumain", "Română", False),
+        "ur": ("ourdou", "اردو", True),
+        "ru": ("russe", "Русский", False),
+        "ti": ("tigrigna", "ትግርኛ", False)}
 TRANCHE = 50
 
 SCHEMA = {"type": "object", "properties": {"traductions": {"type": "array", "items": {
@@ -314,8 +323,11 @@ def appel(contenu, schema):
                  "anthropic-beta": "server-side-fallback-2026-07-01",
                  "content-type": "application/json"})
     t0 = time.time()
-    with urllib.request.urlopen(req, timeout=600) as r:
-        d = json.loads(r.read())
+    try:
+        with urllib.request.urlopen(req, timeout=600) as r:
+            d = json.loads(r.read())
+    except urllib.error.HTTPError as e:   # le corps dit pourquoi (un 400 seul ne dit rien)
+        raise RuntimeError(f"HTTP {e.code} : {e.read()[:400]!r}") from None
     if d.get("stop_reason") in ("refusal", "max_tokens"):
         raise RuntimeError(d.get("stop_reason"))
     u = d.get("usage", {})
@@ -351,6 +363,12 @@ def traduire_mots(code, entrees):
     rendu = {}
     for i in range(0, len(entrees), TRANCHE):
         d = appel(consigne(nom, entrees[i:i + TRANCHE]), SCHEMA)
+        rendu.update({t["id"]: {"mot": t["mot"], "note": t["note"]} for t in d["traductions"]})
+    # Le modèle saute parfois une entrée (l'ukrainien, « dessert », 30 sept. 2026) :
+    # on relance les manquantes, une fois.
+    manque = [e for e in entrees if e[0] not in rendu]
+    if manque:
+        d = appel(consigne(nom, manque), SCHEMA)
         rendu.update({t["id"]: {"mot": t["mot"], "note": t["note"]} for t in d["traductions"]})
     manque = [e[0] for e in entrees if e[0] not in rendu]
     if manque:

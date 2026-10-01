@@ -123,8 +123,8 @@ l'offrir, nous voulons la voir travailler chez vous, avec quelques-uns de vos em
 
 <h2>Ce que c'est</h2>
 <ul>
-  <li>Sur le téléphone de l'employé, sans application à installer ni compte à créer ; une aide en espagnol ou en
-  anglais, au choix, sous le français.</li>
+  <li>Sur le téléphone de l'employé, sans application à installer ni compte à créer ; une aide dans sa langue,
+  au choix parmi onze (de l'arabe au tigrigna), écrite sous le français.</li>
   <li>{len(LX.LEXIQUE)} mots du poste (la cuisine, les ustensiles, les plats, les allergènes, la salle…), dits par des
   voix naturelles ; la consigne du chef à entendre dans le bruit de la cuisine ; la commande modifiée ; un test de niveau.</li>
   <li>Un service joué : {len(SI.SITUATIONS)} situations, le chef en cuisine et les clients en salle, auxquels l'employé
