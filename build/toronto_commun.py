@@ -65,6 +65,10 @@ def extraits():
         out.append({"fichier": f"exos/all-{k}.mp3", "texte": it[2], "voix": voix_de[it[0]]})
     for k, (l, fr, en, cles) in enumerate(EX.DIRE):
         out.append({"fichier": f"exos/dire-{k}.mp3", "texte": en, "voix": n})
+    # Étape 6 : la poche — les urgences et les phrases à montrer (le reste reprend les sons des exercices).
+    PO = charger("poche")
+    for i, en, fr in PO.URGENCES + PO.A_MONTRER:
+        out.append({"fichier": f"poche/{i}.mp3", "texte": en, "voix": n})
     return out
 
 

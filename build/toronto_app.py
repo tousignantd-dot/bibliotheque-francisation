@@ -63,6 +63,19 @@ def donnees():
                    "portrait": (MEDIA / "gens" / f"{g[0]}-neutre.jpg").exists()} for g in SE.GENS}
     # L'étape 5 : la semaine jouée (build/contenu/toronto/jeu_de_role.py, chargé aussi par server.py).
     JR = C.charger("jeu_de_role"); JR.verifier()
+    # L'étape 6 : la poche — urgences et phrases à montrer (poche.py), puis, par lieu, les phrases
+    # « Je le dis » et ce qu'on peut vous répondre, avec les sons des exercices.
+    PO, EXP = C.charger("poche"), C.charger("exercices"); PO.verifier()
+    sons_ok = set(sons)
+    def s_(f): return f if f in sons_ok else ""
+    poche = {"urgences": [{"en": en, "fr": fr, "son": s_(f"poche/{i}.mp3")} for i, en, fr in PO.URGENCES],
+             "montrer": [{"en": en, "fr": fr, "son": s_(f"poche/{i}.mp3")} for i, en, fr in PO.A_MONTRER],
+             "pourboires": PO.POURBOIRES,
+             "lieux": [{"lieu": l[3],
+                        "dire": [{"en": en, "fr": fr, "son": s_(f"exos/dire-{k}.mp3")} for k, (li, fr, en, cles) in enumerate(EXP.DIRE) if li == l[0]],
+                        "reponses": [{"en": en, "fr": ch[0][0], "son": s_(f"exos/rep-{k}.mp3")} for k, (li, q, ctx, en, ch) in enumerate(EXP.REPONSES) if li == l[0]]}
+                       for l in SE.LIEUX]}
+    poids = round(sum((C.SONS / f).stat().st_size for f in sons) / 1e6)
     jeu = {"consigne": JR.CONSIGNE, "gestes": JR.GESTES, "elim": list(JR.ELIMINATOIRE), "regle": JR.REGLE_ELIM,
            "maya": [{"cas": m[0], "jour": m[1], "ou": m[2]} for m in JR.MAYA]}
     EX = C.charger("exercices"); EX.verifier({l[0] for l in SE.LIEUX} | {"magasin"}, PS.VOIX, {g[0] for g in SE.GENS})
@@ -83,14 +96,42 @@ def donnees():
     semaine = [{"id": l[0], "n": l[1], "jour": l[2], "lieu": l[3], "situation": l[4], "geste": l[5], "qui": l[6],
                 "carte": (MEDIA / "cartes" / f"{l[0]}.jpg").exists()} for l in SE.LIEUX]
     return {"v": MEDIA_V, "mots": mots, "perso": perso, "sons": sons, "planches": LX.PLANCHES, "pieges": pieges,
-            "semaine": semaine, "gens": gens, "exos": exos, "jeu": jeu,
+            "semaine": semaine, "gens": gens, "exos": exos, "jeu": jeu, "poche": poche, "poids": poids,
             "prep": {"seances": PR.SEANCES, "test": PR.TEST, "objectifs": PR.OBJECTIFS, "seuil": PR.SEUIL,
                      "conseils": PR.CONSEILS, "fin": PR.FIN, "lieu": PR.LIEU, "solide": PR.SEUIL_SOLIDE},
             # Les réponses témoins des clés, rejouées dans le moteur de la page (audit tour 5) : `window.__toronto`.
             "controle": {"refus": PR.REFUS + EX.REFUS, "accepte": PR.ACCEPTE + EX.ACCEPTE}}, len(sons), len(noms)
 
 
+def icones():
+    """L'icône de l'application installée : une tour d'observation dessinée au trait, rien d'écrit,
+    aucun logo d'organisme ; le rouge de la ville. Et le manifeste (même forme que Compostelle)."""
+    from PIL import Image, ImageDraw
+    dest = SORTIE.parent / "icones"; dest.mkdir(parents=True, exist_ok=True)
+    for nom, cote, part in (("icone-192.png", 192, .78), ("icone-512.png", 512, .78),
+                            ("icone-maskable-512.png", 512, .56), ("icone-180.png", 180, .78)):
+        im = Image.new("RGB", (cote, cote), "#FFFFFF"); d = ImageDraw.Draw(im)
+        h = cote * part; x0 = cote / 2; bas = (cote + h) / 2; haut = bas - h; r = (0xC8, 0x10, 0x2E)
+        d.polygon([(x0 - h * .09, bas), (x0 - h * .025, haut + h * .32), (x0 + h * .025, haut + h * .32), (x0 + h * .09, bas)], fill=r)
+        d.ellipse([x0 - h * .1, haut + h * .26, x0 + h * .1, haut + h * .36], fill=r)
+        d.rectangle([x0 - h * .012, haut, x0 + h * .012, haut + h * .27], fill=r)
+        d.rectangle([cote * .12, bas - h * .02, cote * .88, bas], fill=r)
+        im.save(dest / nom, optimize=True)
+    base = "/modules-autonomes/toronto/"
+    (SORTIE.parent / "manifest.webmanifest").write_text(json.dumps({
+        "name": "Une semaine à Toronto — francis", "short_name": "Toronto",
+        "description": "L'anglais du touriste francophone, pour une semaine à Toronto.",
+        "lang": "fr-CA", "dir": "ltr", "start_url": base, "scope": base,
+        "display": "standalone", "orientation": "portrait",
+        "background_color": "#FFFFFF", "theme_color": "#FFFFFF",
+        "icons": [{"src": base + "icones/icone-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+                  {"src": base + "icones/icone-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+                  {"src": base + "icones/icone-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}],
+    }, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
 def main():
+    icones()
     D, n, total = donnees()
     svg, regles = plan_ville()
     page = (GABARIT.replace("%%DONNEES%%", json.dumps(D, ensure_ascii=False, separators=(",", ":")))
@@ -110,6 +151,8 @@ GABARIT = r"""<!DOCTYPE html>
 <link rel="stylesheet" href="/assets/design-system/styles.css">
 <link rel="stylesheet" href="/assets/design-system/marque-francis.css">
 <link rel="icon" href="/assets/design-system/marque-francis-favicon.svg">
+<link rel="manifest" href="/modules-autonomes/toronto/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/modules-autonomes/toronto/icones/icone-180.png">
 <meta name="theme-color" content="#FFFFFF">
 <meta name="robots" content="noindex">
 <style>
@@ -280,6 +323,18 @@ details.rub summary{cursor:pointer;padding:12px 14px;font-weight:800;display:fle
 .geste{display:flex;gap:8px;align-items:baseline;margin:4px 0;font-size:15.5px}
 .geste b{flex:none;width:1.2em}
 .carte-postale-txt{width:100%;min-height:96px;font:inherit;font-size:17px;padding:10px;border-radius:10px;border:1px solid var(--line-300)}
+/* La poche (étape 6) */
+.ph{display:flex;gap:10px;align-items:center;padding:8px 12px;border-top:1px solid var(--line-200)}
+.ph .t{flex:1;min-width:0;display:flex;flex-direction:column}.ph .t b{color:var(--text-strong);font-size:16.5px}.ph .t span{font-size:14.5px;color:var(--text-muted)}
+.ph-tete{background:var(--carte-bg)}.ph-tete b{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--carte)}
+details.rub{margin:8px 0}details.rub summary span{color:var(--text-muted);font-weight:700}
+.calc{padding:4px 14px 14px}.calc label{display:flex;flex-direction:column;gap:6px;font-weight:800;margin-bottom:10px}
+.calc input{font:inherit;font-size:22px;padding:10px;border-radius:10px;border:1px solid var(--line-300);max-width:12em}
+.calcul{font-size:18px;margin-top:10px;min-height:28px;color:var(--text-strong)}.calcul b{font-size:22px}
+.montrer{position:fixed;inset:0;background:#fff;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}
+.montrer .fermer{position:absolute;top:14px;right:14px}
+.montrer .grand{font-size:clamp(30px,8vw,52px);font-weight:900;line-height:1.15;color:var(--text-strong)}
+.montrer .petit{font-size:18px;color:var(--text-muted);margin-top:16px}
 .maya-jours{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
 </style>
 </head>
@@ -413,6 +468,7 @@ function rendre(){
   if (p[0] === 'pieges') return vuePieges();
   if (p[0] === 'semaine') return p[2] === 'jouer' ? vueJouer(p[1]) : p[2] === 'ecrire' ? vueEcrire(p[1]) : p[1] ? vueCarte(p[1]) : vueSemaine();
   if (p[0] === 'maya') return vueJouer(p[1]);
+  if (p[0] === 'poche') return vuePoche();
   if (p[0] === 'achat') return vueAchat(p[1]);
   if (p[0] === 'achat-annule') return vueAchatAnnule();
   if (p[0] === 'exos') return p[1] ? vueFamille(p[1]) : vueExos();
@@ -461,6 +517,12 @@ function vueAccueil(){
       le restaurant, le départ. Chaque lieu se joue avec l'assistance, qui tient le rôle de la personne en anglais ; une situation
       réussie vous donne sa carte postale.</p>
       <button class="btn btn--pri btn--large" onclick="aller('semaine')">Jouer la semaine</button>
+    </section>
+    <section class="acc">
+      <p class="surtitre">3 · Sur place</p><h2>Ma poche</h2>
+      <p>Les phrases de chaque lieu avec leur voix, même sans réseau ; les urgences ; « plus lentement, s'il vous plaît » à
+      montrer en grand ; et ce que ça coûte vraiment, taxe et pourboire compris.</p>
+      <button class="btn btn--large" onclick="aller('poche')">Ouvrir ma poche</button>
     </section>`;
 }
 
@@ -1356,6 +1418,81 @@ function serieDire(){
   tour();
 }
 
+/* ---------- étape 6 : la poche ---------- */
+/* Gardée dans le téléphone, sans réseau : les phrases de chaque lieu avec leur son (celles des
+   exercices), ce qu'on peut vous répondre, les urgences, les phrases à montrer en grand, et
+   l'aide-mémoire du total à payer. « Préparer pour le voyage » demande une fois chaque fichier :
+   le service worker du site (/sw.js) les garde (sons : cache d'abord). Le jeu de rôle, lui,
+   a besoin du réseau. Contenu : build/contenu/toronto/poche.py. */
+function lignePoche(x, i, montrable){
+  return `<div class="ph"><button class="btn btn--son" aria-label="Écouter" onclick="jouer('${x.son}')">${ICO.son}</button>
+    <div class="t"><b lang="en">${E(x.en)}</b><span>${E(x.fr)}</span></div>
+    ${montrable ? `<button class="btn btn--petit" onclick="montrerPoche('${i}')">Montrer</button>` : ''}</div>`;
+}
+const POCHE_IDX = {};
+function vuePoche(){
+  const P = D.poche; let k = 0;
+  const idx = x => { const i = 'p' + (k++); POCHE_IDX[i] = x; return i; };
+  app.innerHTML = `${retour('accueil', 'Accueil')}<p class="surtitre">Sur place · même sans réseau</p><h1>Ma poche</h1>
+    <p class="muted">Les phrases de chaque lieu, avec leur voix. « Montrer » affiche la phrase en grand, pour la tendre à quelqu'un.</p>
+    <div class="carte" style="margin:12px 0"><b>Pas de réseau dans le métro ?</b>
+      <p class="muted" style="font-size:15px;margin:4px 0 10px">Une fois, avec du wifi : mettez tous les sons dans ce téléphone (environ ${D.poids} Mo).</p>
+      <button class="btn btn--pri" id="prep">Préparer pour le voyage</button><div id="prepEtat" class="muted" style="font-size:14px;margin-top:8px"></div></div>
+    <details class="rub" open><summary>Ce que ça coûte vraiment <span>$</span></summary><div class="calc">
+      <label>Le prix affiché, avant taxe <input id="prix" type="number" inputmode="decimal" min="0" step="0.01" placeholder="25.00"></label>
+      <div class="rangee" id="pbs">${[['0', 'Sans pourboire'], ...P.pourboires.flatMap(([lieu, a, b]) => [[String(a), `${a} % · ${lieu.toLowerCase()}`], [String(b), `${b} %`]])]
+        .map(([v, t], j) => `<button class="btn btn--petit${j === 0 ? ' btn--pri' : ''}" data-pb="${v}">${E(t)}</button>`).join('')}</div>
+      <div id="calcul" class="calcul" aria-live="polite"></div>
+      <p class="muted" style="font-size:14px;margin:6px 0 0">En Ontario, la taxe (13 %) s'ajoute à la caisse : le prix affiché ne la comprend pas. Le pourboire se calcule sur le prix <b>avant</b> taxe ; « tip included » veut dire qu'il est déjà compris.</p>
+    </div></details>
+    <details class="rub"><summary>Urgences <span>${P.urgences.length}</span></summary>${P.urgences.map(x => lignePoche(x, idx(x), true)).join('')}</details>
+    <details class="rub"><summary>À montrer <span>${P.montrer.length}</span></summary>${P.montrer.map(x => lignePoche(x, idx(x), true)).join('')}</details>
+    ${P.lieux.map(l => `<details class="rub"><summary>${E(l.lieu)} <span>${l.dire.length + l.reponses.length}</span></summary>
+      ${l.dire.map(x => lignePoche(x, idx(x), true)).join('')}
+      ${l.reponses.length ? `<div class="ph ph-tete"><b>Ce qu'on peut vous répondre</b></div>${l.reponses.map(x => lignePoche(x, idx(x), false)).join('')}` : ''}</details>`).join('')}`;
+  $('#prep').onclick = preparer;
+  let pb = 0;
+  const calculer = () => {
+    const v = parseFloat(String($('#prix').value).replace(',', '.'));
+    if (!(v > 0)) { $('#calcul').innerHTML = ''; return; }
+    const t = Math.round(v * 13) / 100, p = Math.round(v * pb) / 100;
+    $('#calcul').innerHTML = `${dollars(v)} + ${dollars(t)} de taxe${pb ? ` + ${dollars(p)} de pourboire (${pb} %)` : ''} = <b>${dollars(v + t + p)}</b>`;
+  };
+  $('#prix').oninput = calculer;
+  $('#pbs').onclick = e => { const b = e.target.closest('[data-pb]'); if (!b) return; pb = +b.dataset.pb;
+    $('#pbs').querySelectorAll('button').forEach(x => x.classList.toggle('btn--pri', x === b)); calculer(); };
+}
+function montrerPoche(i){
+  const x = POCHE_IDX[i]; if (!x) return;
+  const v = document.createElement('div'); v.className = 'montrer'; v.setAttribute('role', 'dialog');
+  v.innerHTML = `<button class="btn fermer">Fermer</button><div class="grand" lang="en">${E(x.en)}</div><div class="petit">${E(x.fr)}</div>
+    <button class="btn btn--son" style="margin-top:22px;width:72px;height:72px;border-radius:50%" aria-label="Écouter">${ICO.son}</button>`;
+  document.body.appendChild(v);
+  v.querySelector('.fermer').onclick = () => v.remove();
+  v.querySelector('.btn--son').onclick = () => jouer(x.son);
+}
+async function preparer(){
+  const bouton = $('#prep'), txt = $('#prepEtat'); bouton.disabled = true;
+  if ('serviceWorker' in navigator) { try { await navigator.serviceWorker.register('/sw.js'); await navigator.serviceWorker.ready; } catch(e) {} }
+  const urls = D.sons.map(f => BASE + 'sons/' + f + '?v=' + D.v);
+  Object.entries(D.mots).forEach(([id, m]) => m.img === 'croquis' && urls.push(BASE + 'croquis/' + id + '.jpg?v=' + D.v));
+  D.semaine.forEach(l => l.carte && urls.push(BASE + 'cartes/' + l.id + '.jpg?v=' + D.v));
+  urls.push(location.pathname);
+  // Ce que la page a chargé avant que le service worker ne la contrôle (feuilles, polices, icônes) :
+  // sans eux, la page hors ligne s'affiche sans ses styles (leçon de Compostelle, 25 sept. 2026).
+  performance.getEntriesByType('resource').forEach(r => { try { const u = new URL(r.name);
+    if (u.origin === location.origin && !u.pathname.startsWith('/api/') && !urls.includes(u.pathname + u.search)) urls.push(u.pathname + u.search); } catch(e) {} });
+  ['/assets/design-system/styles.css', '/assets/design-system/marque-francis.css', '/assets/design-system/marque-francis-favicon.svg']
+    .forEach(u => urls.includes(u) || urls.push(u));
+  let fait = 0, echec = 0;
+  const un = async u => { try { const r = await fetch(u, {cache:'reload'}); if (!r.ok) echec++; } catch(e) { echec++; } fait++; txt.textContent = `${fait} / ${urls.length} fichiers…`; };
+  for (let i = 0; i < urls.length; i += 6) await Promise.all(urls.slice(i, i + 6).map(un));
+  const controle = navigator.serviceWorker && navigator.serviceWorker.controller;
+  txt.innerHTML = echec ? `${echec} fichiers n'ont pas pu être pris. Réessayez avec un meilleur réseau.` :
+    (controle ? '✓ Tout est dans le téléphone. Bon voyage !' : '✓ Téléchargé. Rouvrez la page une fois, avec du réseau, pour que le téléphone la garde aussi.');
+  bouton.disabled = false;
+}
+
 /* ---------- réglages ---------- */
 function vueReglages(){
   app.innerHTML = `${retour('accueil', 'Accueil')}<h1>Réglages</h1>
@@ -1373,6 +1510,7 @@ window.__toronto = {D, S: () => S, trouve, plat, extraits: () => D.sons, itemsDe
   controle: () => [...D.controle.refus.filter(([c, t]) => trouve(t, c)).map(([, t]) => 'accepte à tort : ' + t),
                    ...D.controle.accepte.filter(([c, t]) => !trouve(t, c)).map(([, t]) => 'refuse à tort : ' + t)]};
 rendre();
+if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
 </script>
 </body>
 </html>
