@@ -46,7 +46,7 @@ def donnees():
     perso = {k: {"nom": v[0], "qui": v[4]} for k, v in PS.VOIX.items()}
     return {"v": MEDIA_V, "mots": mots, "perso": perso, "sons": sons,
             "prep": {"seances": PR.SEANCES, "test": PR.TEST, "objectifs": PR.OBJECTIFS, "seuil": PR.SEUIL,
-                     "conseils": PR.CONSEILS, "fin": PR.FIN, "lieu": PR.LIEU}}, len(sons), len(noms)
+                     "conseils": PR.CONSEILS, "fin": PR.FIN, "lieu": PR.LIEU, "solide": PR.SEUIL_SOLIDE}}, len(sons), len(noms)
 
 
 def main():
@@ -563,11 +563,15 @@ function vuePrepTest(){
     const suite = () => { const b = document.createElement('button'); b.className = 'btn btn--pri btn--large'; b.textContent = 'Suivant'; b.onclick = () => { k++; tour(); }; $('#r').appendChild(b); };
     const tete2 = `${retour('accueil', 'Accueil')}<p class="surtitre">Question ${k + 1} sur ${items.length}</p><div class="progres"><i style="width:${100 * k / items.length}%"></i></div>`;
     if (it.type === 'oral') {
-      let prises = 0;
+      // Audit tour 1 (M3) : la présentation se compte par parties (2 sur 3 = en route), pas tout ou rien.
+      let prises = 0, bons = 0;
       app.innerHTML = `${tete2}<h1>Dites-le</h1><div class="carte"><p style="font-size:18px;font-weight:800;margin:0">${E(it.fr)}</p></div>
         ${Reco ? `<div class="micro"><button class="btn-micro" id="mic" aria-label="Parler">${ICO.micro}</button><div class="muted" id="micEtat" style="font-size:14px">Deux essais.</div><div class="entendu" id="entendu"></div></div>` : ''}
         <div id="r"></div><button class="btn btn--large" id="sansmic" style="margin-top:8px">${Reco ? 'Sans micro : c’est dit !' : 'C’est dit !'}</button>`;
-      const fin = (ok, verifie) => { if (verifie) noter(ok); else { compte = true; nonVerif[it.obj] = (nonVerif[it.obj] || 0) + 1; }
+      const fin = (ok, verifie) => {
+        if (verifie && it.parties) { compte = true; const r = res[it.obj] || (res[it.obj] = [0, 0]); r[0] += ok ? it.cles.length : bons; r[1] += it.cles.length;
+          if (!ok) (manquees[it.obj] || (manquees[it.obj] = [])).push(it.modele); }
+        else if (verifie) noter(ok); else { compte = true; nonVerif[it.obj] = (nonVerif[it.obj] || 0) + 1; }
         if ($('#sansmic')) $('#sansmic').remove(); if ($('#mic')) $('#mic').disabled = true;
         $('#r').insertAdjacentHTML('beforeend', `<div class="retro ${!verifie ? 'info' : ok ? 'ok' : 'no'}">${!verifie ? 'Non vérifié : cette question ne compte pas.' : ok ? '✓ On vous a compris.' : 'Deux essais sans qu’on vous comprenne tout à fait.'}</div>
           <div class="retro info"><span class="surtitre">Le modèle</span><div class="phrase-en" lang="en">${E(it.modele)}</div></div>`);
@@ -579,7 +583,7 @@ function vuePrepTest(){
           mic.classList.remove('ecoute'); mic.innerHTML = ICO.micro;
           if (!final) { $('#r').innerHTML = `<div class="retro info">${rienEntendu('Je n’ai rien entendu. Vérifiez que le micro est permis et réessayez — ou touchez « C’est dit ! ».')}</div>`; return; }
           const manque = it.cles.map((c, i) => [c, i]).filter(([c]) => !trouve(final, c));
-          prises++;
+          prises++; bons = Math.max(bons, it.cles.length - manque.length);
           // Une fois le micro entendu, « sans micro » n'est plus une issue (Compostelle, tour 2, F1).
           if ($('#sansmic')) $('#sansmic').remove();
           if (!manque.length) { $('#r').innerHTML = ''; return fin(true, true); }
@@ -618,10 +622,10 @@ function vuePrepTest(){
     const lignes = Object.keys(D.prep.objectifs).map(o => {
       const [ok, tot] = res[o] || [0, 0], nv = nonVerif[o] || 0, lieu = LIEUX[D.prep.lieu[o]];
       if (!tot) return `<div class="carte" style="margin:8px 0"><b>${E(D.prep.objectifs[o])}</b><div class="retro info" style="margin:6px 0">Non vérifié au micro : refaites ces questions avec le micro.</div><p class="muted" style="margin:0;font-size:15px">${E(D.prep.conseils[o])}</p></div>`;
-      const r = ok / tot; if (r >= .8) solides++;
-      const etat = r >= .8 ? ['ok', '✓ Solide'] : r >= .5 ? ['info', '→ En route'] : ['no', '— À reprendre'];
+      const r = ok / tot; if (r >= D.prep.solide) solides++;
+      const etat = r >= D.prep.solide ? ['ok', '✓ Solide'] : r >= .5 ? ['info', '→ En route'] : ['no', '— À reprendre'];
       return `<div class="carte" style="margin:8px 0"><b>${E(D.prep.objectifs[o])}</b><div class="retro ${etat[0]}" style="margin:6px 0">${etat[1]} — ${ok} sur ${tot}${nv ? ` (et ${nv} non vérifiée${nv > 1 ? 's' : ''} au micro)` : ''}</div>
-        ${r < .8 ? `<p class="muted" style="margin:0;font-size:15px">${E(D.prep.conseils[o])}</p>` : ''}
+        ${r < D.prep.solide ? `<p class="muted" style="margin:0;font-size:15px">${E(D.prep.conseils[o])}</p>` : ''}
         ${(manquees[o] || []).length ? `<p class="muted" style="margin:4px 0 0;font-size:14px">À revoir : ${manquees[o].map(t => '<i lang="en">' + E(t) + '</i>').join(' · ')}</p>` : ''}
         ${lieu ? `<p class="muted" style="margin:4px 0 0;font-size:14px">Vous en aurez besoin ${E(lieu)}.</p>` : ''}</div>`;
     }).join('');
