@@ -187,7 +187,7 @@ TOTAL = [
     ("resto", "ada", "Vous laissez 18 % du prix avant taxe.", "Your bill is fifty, before tax.", 50.00, 15.00, 18, "fifty", ""),
     ("resto", "ada", "Vous laissez 20 % du prix avant taxe.", "That's sixteen, before tax.", 16.00, 60.00, 20, "sixteen", ""),
     ("marche", "wei", "Du fromage au poids, pour une fête.", "That's eighteen. No tax on cheese.", 18.00, 80.00, 0, "eighteen", "taxe"),
-    ("resto", "ada", "En groupe. Vous laissez 18 % du prix avant taxe.", "That's one-forty, tip included, plus tax.", 140.00, 114.00, 18, "forty", "pourboire"),
+    ("resto", "ada", "En groupe. D'habitude, vous laissez 18 % du prix avant taxe.", "That's one-forty, tip included, plus tax.", 140.00, 114.00, 18, "forty", "pourboire"),
 ]
 TAXE = 0.13
 # Un seul texte pour teen/ty, le même que les pièges du lexique (mineur du tour 2 : deux indices différents).
@@ -229,6 +229,17 @@ def total(prix, mal, pb, mot, inclus=""):
 # ── L'allergie (O3, éliminatoire) : la série JOUÉE EN ENTIER (bloquant du tour 1 : elle n'existait pas).
 # Carré (allergène ou non) × (elle en est sûre ou elle va vérifier), et un contre-exemple : le plat sans
 # danger qu'on peut commander (piège connu « seulement le geste prudent »). La règle est affichée avant.
+# Ce que dit le micro quand une GARDE rate (une clé vraie sur la phrase vide : elle refuse un geste faux).
+# Tour 4 (majeur) : « Presque. Il manque : I'll » répondait à qui commandait le saumon douteux.
+GARDES = {"La serveuse n'est pas sûre": "Vous commandez le saumon, et elle n'est pas sûre qu'il soit sans noix. Prenez autre chose.",
+          "Dites que vous êtes allergique": "Votre phrase dit que vous n'êtes PAS allergique.",
+          "Dites que vous avez une réservation": "C'est vous qui avez la réservation : « I have a reservation… »."}
+
+
+def garde(fr):
+    return next((v for k, v in GARDES.items() if fr.startswith(k)), "")
+
+
 REGLE_ALLERGIE = ("Une allergie se dit avant de commander. On commande seulement si la réponse est sûre : pas "
                   "d'allergène. S'il y en a, s'il peut y en avoir des traces, ou si la personne n'est pas sûre : on "
                   "attend la vérification, ou on prend autre chose.")
@@ -246,8 +257,8 @@ ALLERGIE = [
     ("ada", "Vous êtes allergique aux noix. Vous demandez si le saumon en contient.",
      "I don't think there are pecans in the salmon, but let me check with the kitchen.", 1,
      "Elle n'en est pas sûre : on attend la réponse de la cuisine, ou on prend autre chose.",
-     {0: "I don't THINK, let me check : elle croit, mais elle va vérifier.", 2: "No nuts, I think : elle croit qu'il n'y en a pas.",
-      3: "I don't think there are nuts : elle croit qu'il n'y en a PAS."}),
+     {0: "I don't THINK there are pecans, let me check : elle croit, mais elle va vérifier.", 2: "No pecans, I think : elle croit qu'il n'y en a pas.",
+      3: "I don't think there are pecans : elle croit qu'il n'y en a PAS."}),
     ("ada", "Vous êtes allergique aux noix. Vous demandez si le saumon en contient.",
      "The salmon has a pecan crust, so I wouldn't order it.", 2, "Des pacanes, ce sont des noix : on ne le commande pas.",
      {0: "A pecan crust : une croûte de pacanes, ce sont des noix.", 1: "Elle est sûre : la croûte est faite de pacanes.",
@@ -325,7 +336,7 @@ DIRE = [
     ("hotel", "Dites que vous avez une réservation au nom de Tremblay.", "I have a reservation under Tremblay.", ["~(^| )(reservation|booking|booked|reserved)( |$)", "~(^| )(trembl|trambl|tremble)[a-z]*( |$)", "~^(?!.*(^| )do you have a reservation)"]),
     ("hotel", "Demandez à quelle heure est le déjeuner.", "What time is breakfast?", ["what time|when", "breakfast"]),
     ("cafe", "Commandez un grand café pour emporter.", "Can I get a large coffee to go?", [DEMANDE, "large", "coffee", "~(to go|takeout|take out)"]),
-    ("cafe", "On vous demande « Anything else? ». Répondez que c'est tout.", "That's it, thanks!", ['~^(?!.*(^| )but( |$))(?!.*(^| )(yes|yeah|also|plus|and (a|an|one|two|some|the)|can i (get|have)|i ll (have|take)|i d like)( |$))(?!.*(^| )(a|an|one|two|some) ([a-z]+ )?(muffin|cookie|bagel|donut|croissant|sandwich|tea|coffee|water|juice|scone|lemonade|cake|pastry)).*(that s it|that s all|that s everything|that is it|that is all|that is everything|that ll be all|that will be all|that ll do|that s fine|it s fine|nothing else|(^| )nothing( |$)|no thanks|no thank you|(i m|im|we re) (good|ok|okay|fine|all set)|all good|all set|just (the|my|this|that)( [a-z]+){0,2}( thanks| thank you| please)?$|^no (thanks )?just (the|my|this|that)|just that)']),
+    ("cafe", "On vous demande « Anything else? ». Répondez que c'est tout.", "That's it, thanks!", ['~^(?!.*(^| )but( |$))(?!.*(^| )(yes|yeah|also|plus|and (a|an|one|two|some|the)|can i (get|have)|i ll (have|take)|i d like)( |$))(?!.*(^| )(a|an|one|two|some) ([a-z]+ )?(muffin|cookie|bagel|donut|croissant|sandwich|tea|coffee|water|juice|scone|lemonade|cake|pastry)).*(that s it|that s all|that s everything|that is it|that is all|that is everything|that ll be all|that will be all|that ll do|that s fine|it s fine|nothing else|(^| )nothing( |$)|no thanks|no thank you|(i m|im|we re) (good|ok|okay|fine|all set)|all good|all set|just (the|my|this|that)( [a-z]+){0,2}( thanks| thank you| please)?$|^no (thanks )?just (the|my|this|that)|just that|^(no|nope|nah)( sorry)?$)']),
     ("cafe", "Maya vous demande « Where are you from? ». Répondez, puis relancez.", "I'm from Quebec. And you?", [ORIGINE, RELANCE]),
     ("tour", "Demandez deux billets pour adultes.", "Two adult tickets, please.", ["two|2", "adult|adults"]),
     ("tour", "Demandez s'il y a un rabais pour les aînés.", "Is there a discount for seniors?", ["discount|reduced|cheaper|deal|price|rate|special", "senior|seniors|older"]),
@@ -340,7 +351,7 @@ DIRE = [
     ("pharmacie", "Demandez combien de fois par jour mettre la crème.", "How many times a day?", ["~(how many times|how often)"]),
     ("resto", "Dites que vous êtes allergique aux noix.", "I'm allergic to nuts.", ["allergic|allergy|allergies", '~^(?!.*(^| )(not|n t|no|don t have|do not have|never)( (a|an|any))?( [a-z]+)? (allergic|allergy|allergies)( |$))', 'nuts|nut|tree nut|almond|walnut|cashew|pecan|hazelnut|pistachio']),
     ("resto", "Demandez s'il y a des noix dans ce plat.", "Does this have any nuts in it?", ['~^(?!.*(^| )(i|we|my [a-z]+) (have|has|m|am|re|are|got)( |$))(?!.*(^| )(do you|you) (like|sell)( |$))(?=.*(^| )(does|do|is|are|any|contain|contains|safe)( |$))', 'nuts|nut|tree nut|almond|walnut|cashew|pecan|hazelnut|pistachio']),
-    ("resto", "La serveuse n'est pas sûre pour le saumon. Dites que vous prendrez autre chose.", "I'll have something else, then.", ['~(something else|something different|(^| )instead( |$)|(^| )other( |$)|skip (it|that)|i ll pass|(not|don t|do not) (take|have|order|get|want) (it|that|the salmon)|no (thanks|thank you)|never mind|(^| )(the|a) (?!salmon( |$))[a-z]+ (instead|then|please)( |$)|(^| )((i ll|i will) (have|take|get|go with)|i d like|i would like|can i (get|have)|could i (get|have)) (the|a) (?!salmon( |$))[a-z]+|skip the salmon|no salmon)', '~^(?!.*(^| )(salmon|fish)( |$))|(^| )(no|not|don t|do not|skip|without)( [a-z]+){0,2} (the )?(salmon|fish)( |$)']),
+    ("resto", "La serveuse n'est pas sûre pour le saumon. Dites que vous prendrez autre chose.", "I'll have something else, then.", ['~(something else|something different|(^| )instead( |$)|(^| )other( |$)|skip|(^| )pass( on)?( |$)|(not|don t|do not|won t|will not) (take|have|order|get|want|eat)|(^| )avoid|no (thanks|thank you)|never mind|forget it|(^| )menu( |$)|(^| )not the|no salmon|(^| )(i ll|i will|i d|i would|let s|can i|could i|may i|give me|i want|i prefer|i d prefer|i d rather|i would rather|maybe|then|go for|go with)( [a-z]+){0,3} (the|a|an|some) (?!salmon( |$))[a-z]+|(^| )(the|a) (?!salmon( |$))[a-z]+ (instead|then|please)( |$))', '~^(?!.*(^| )(salmon|fish)( |$))|(^| )(no|not|don t|do not|skip|without|pass on|won t|will not|avoid)( [a-z]+){0,2} (the )?(salmon|fish)( |$)']),
     ("resto", "Demandez des additions séparées.", "Can we get separate bills?", ["separate|split|separately", "~(bill|check|pay)"]),
     ("depart", "Dites poliment qu'il y a une erreur sur la facture.", "Sorry, I think there's a mistake on my bill.", ["mistake|error|wrong", "bill|invoice|charge"]),
     ("depart", "Demandez où prendre le train pour l'aéroport.", "Where can I take the train to the airport?", ["~(^| )(where|which way|how (do|can) (i|we) get)", "airport|up express|train|pearson"]),
@@ -374,6 +385,9 @@ REFUS = [
     (_cle("La serveuse n'est pas sûre", 1), "No thanks, I'll have the salmon."),
     (_cle("La serveuse n'est pas sûre", 1), "I'll have the smoked salmon."),
     (_cle("La serveuse n'est pas sûre", 1), "I'll have the salmon instead"),
+    (_cle("La serveuse n'est pas sûre", 1), "I'd rather have the salmon"),
+    (_cle("La serveuse n'est pas sûre", 1), "Give me the salmon"),
+    (_cle("On vous demande « Anything", 0), "No, a muffin"),
     (_cle("Dites que vous êtes allergique", 2), "I'm allergic to peanuts."),
     (_cle("Dites que vous êtes allergique", 1), "I don't have a nut allergy."),
     (_cle("Dites que vous êtes allergique", 1), "I have no nut allergy."),
@@ -406,6 +420,11 @@ ACCEPTE = [
     (_cle("On vous demande « Anything", 0), "Just the coffee, thanks."),
     (_cle("On vous demande « Anything", 0), "No, that's fine."),
     (_cle("La serveuse n'est pas sûre", 0), "I'd like the pasta."),
+    (_cle("La serveuse n'est pas sûre", 0), "I prefer the chicken."),
+    (_cle("La serveuse n'est pas sûre", 0), "Give me the pasta."),
+    (_cle("La serveuse n'est pas sûre", 1), "I'll pass on the salmon."),
+    (_cle("La serveuse n'est pas sûre", 1), "I won't take the salmon."),
+    (_cle("On vous demande « Anything", 0), "Nope."),
     (_cle("La serveuse n'est pas sûre", 0), "I'll skip the salmon."),
     (_cle("La serveuse n'est pas sûre", 1), "No salmon for me, then."),
 ]
@@ -458,6 +477,10 @@ def verifier(lieux, voix, gens):
         t = _PR.aplatir(en)
         rates = [c for c in cles if not _PR.cle_ok(c, t)]
         assert not rates, ("le modèle ne passe pas ses clés", en, rates)
+    for k in GARDES:
+        assert any(d[1].startswith(k) for d in DIRE), ("garde sans phrase", k)
+    for l, fr, en, cles in DIRE:   # une garde (vraie sur la phrase vide) doit avoir son message
+        assert all(not _PR.cle_ok(c, "") for c in cles) or garde(fr), ("garde sans message", fr)
     for c, t in REFUS:
         assert not _PR.cle_ok(c, _PR.aplatir(t)), ("accepte à tort", t)
     for c, t in ACCEPTE:

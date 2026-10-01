@@ -39,14 +39,14 @@ OBJECTIFS = {
     "P5": "Comprendre une réponse courte",
 }
 
-ORIGINE = "~^(?!.*(^| )(coming|come) from the )(?=.*((^| )(i m|i am|im|we re|we are|i come|we come|i m coming|we re coming|coming) from [a-z]+|(^| )(i|we) live in (?!toronto)[a-z]+|(^| )from (quebec|montreal|canada|france)|(^| )i m (quebecois|quebecoise|french canadian)( |$)|^(from )?(quebec|montreal|gatineau|sherbrooke|laval|canada)( |$)))"
+ORIGINE = "~^(?!.*(^| )(coming|come|i m|i am|we re|we are) from the (hotel|airport|station|museum|market|restaurant|cafe|coffee|island|islands|tower|bar|subway|train|bus|store|shop|pharmacy|gallery|game|park)( |$))(?=.*((^| )(i m|i am|im|we re|we are|i come|we come|i m coming|we re coming|coming) from [a-z]+|(^| )(i|we) live in (?!toronto)[a-z]+|(^| )from (quebec|montreal|canada|france)|(^| )i m (quebecois|quebecoise|french canadian)( |$)|^(from )?(quebec|montreal|gatineau|sherbrooke|laval|canada|saguenay|chicoutimi|rimouski|gaspe|gaspesie|levis|trois rivieres|drummondville|granby|joliette|rouyn|abitibi|beauce|charlevoix|outaouais|estrie|mauricie|lac saint jean)( |$)))"
 SEJOUR = "~^(?!.*(^| )(since|depuis) (a|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|couple|few|last|yesterday|this|monday|tuesday|wednesday|thursday|friday|saturday|sunday)( |$))(?!.*(^| )(day|days|week|weeks|night|nights|weekend) ago( |$))(?!.*(^| )(i|we) (ve|have) been (here|in [a-z]+) (for|since)( |$)).*?(?:(^| )(for|until|till|leave|leaving|stay|staying|here|just|only|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|fourteen|couple)( (?!since|ago)[a-z]+){0,3} (week|weeks|weekend|day|days|night|nights|month|monday|tuesday|wednesday|thursday|friday|saturday|sunday)(?! ago)( |$)|(^| )a (week|weekend|few days)( |$))"
 RELANCE = "~(^| )(and you|and yourself|how about you|how about yourself|what about you|what about yourself|how are you|are you from|are you (here|staying)|how long are you|do you (live|work|like)|have you (ever )?been|what do you do|where do you live|what s your name)( |$)|^you$|(^| )(and|so|well|thanks|good|fine|great|quebec|montreal|canada|here|week|weeks|weekend|days|nights|monday|tuesday|wednesday|thursday|friday|saturday|sunday|toronto) you$"
 # Les clés partagées (audit tour 1, M7) : une demande, dite de toutes les façons naturelles.
 DEMANDE = "~^((hi|hello|hey|excuse me|good morning|yes|um|uh|okay|ok|so) )*(just )?(a|one) [a-z ]{0,12}(tea|coffee)( |$)|give me|(^| )(can|could|may) (i|we)( please)? (get|have)|(can|could) you( please)? (give|get) (me|us)|(i|we) d like|(i|we)d like|(i|we) would like|(i|we) ll (have|take|get|go with)|(i|we) want|do you have|^(?!.*(you want|don t want|you get (a|one|the|some) )).*(^| )please( |$)"
 # Tour 3 : le cadre d'une plainte, dit de toutes les façons (I'm sunburned, my husband has a fever…).
 MAL = "~(^| )(i|we|he|she|my [a-z]+) (have|ve got|got|has|need|had|ve had)( a| an| some)? (?!no )[a-z]+|(^| )(i|we|he|she) (m|am|re|are|is|s|feel|feels|m feeling|am feeling|re feeling)( (really|very|so|a bit|a little|all|badly|pretty|quite|kind of))? (sunburned|sunburnt|burned|burnt|feverish|sick|hot)( |$)|(^| )(i m|i am|we re|he s|she s) running a|(^| )my [a-z]+ (is|are)( (really|very|so|all|badly|pretty|quite))? (burned|burnt|sunburned|red)( |$)|something for|(^| )(i|we) (burned|burnt) (myself|ourselves|my [a-z]+)( |$)"
-REPETER = "~(sorry what|didn t (catch|hear)|say (that|it) again|what did you say|what was that|repeat|^(sorry|excuse me|pardon( me)?)$|come again|^again( please)?$|(^| )(it|that) again|one more time|speak up|louder|(don t|didn t|do not|did not) (understand|get it|get that))"
+REPETER = "~(sorry what|didn t (catch|hear)|say (that|it) again|what did you say|what was that|repeat|^(sorry|excuse me|pardon( me)?)$|come again|^((sorry|excuse me|pardon) )?again( please)?$|missed (that|it)|(^| )(it|that) again|one more time|speak up|louder|(don t|didn t|do not|did not) (understand|get it|get that))"
 
 FIN = {
     "P1": "À la fin, vous direz ces formules au micro, sans les lire, et on vous comprendra du premier ou du deuxième coup — même quand un son raté changerait le mot (three, tree).",
@@ -494,7 +494,8 @@ REFUS = [(ORIGINE, "I'm in Toronto for a week. And you?"), (ORIGINE, "I live in 
          (RELANCE, "We're here for a week, thank you."), (REPETER, "Sorry, I'm lost."), (REPETER, "Excuse me, where is the subway?"),
          # Tour 3 : la liste noire de la relance fuyait ; « coming from the hotel » passait pour l'origine.
          (RELANCE, "I'm from Quebec. Nice meeting you."), (RELANCE, "It was nice meeting you!"), (RELANCE, "Glad I met you."),
-         (RELANCE, "I'll call you."), (ORIGINE, "I'm coming from the hotel. And you?"), (REPETER, "Thanks again!")]
+         (RELANCE, "I'll call you."), (ORIGINE, "I'm coming from the hotel. And you?"), (REPETER, "Thanks again!"),
+         (ORIGINE, "I'm from the hotel. And you?"), (ORIGINE, "We're from the airport. And you?"), (REPETER, "See you again"), (REPETER, "I missed the train")]
 ACCEPTE = [(ORIGINE, "We're from Sherbrooke"), (ORIGINE, "I live in Montreal"), (SEJOUR, "One week."), (SEJOUR, "Just the weekend"),
            (MAL, "I'm sunburned"), (MAL, "My husband has a fever"), (MAL, "I'm running a fever"), (MAL, "My skin is burned"),
            (DEMANDE, "A tea, please"), (DEMANDE, "Give me a tea"), (DEMANDE, "Do you have tea?"),
@@ -507,7 +508,8 @@ ACCEPTE = [(ORIGINE, "We're from Sherbrooke"), (ORIGINE, "I live in Montreal"), 
            (RELANCE, "We leave Saturday. You?"), (RELANCE, "Quebec. And you?"), (ORIGINE, "Quebec. And you?"),
            (REPETER, "Sorry?"), (REPETER, "Pardon me?"), (REPETER, "Sorry, could you say that again?"),
            (RELANCE, "We're staying for a week. How long are you staying?"), (RELANCE, "Saguenay. And you?"),
-           (REPETER, "Sorry, what?"), (REPETER, "Sorry, I didn't catch that."), (REPETER, "I didn't hear you")]
+           (REPETER, "Sorry, what?"), (REPETER, "Sorry, I didn't catch that."), (REPETER, "I didn't hear you"),
+           (ORIGINE, "Rimouski. And you?"), (ORIGINE, "Trois-Rivières. And you?"), (REPETER, "Sorry, again please?"), (REPETER, "Sorry, I missed that.")]
 
 
 def _cles(cles, modele, ou):

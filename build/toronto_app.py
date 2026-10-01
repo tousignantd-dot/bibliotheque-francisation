@@ -76,7 +76,7 @@ def donnees():
             "nombres": [{"qui": q, "en": en, "choix": ch} for q, en, ch in EX.NOMBRES],
             "totaux": totaux,
             "chemins": [{"qui": q, "en": en, "blocs": b, "tourner": t} for q, en, b, t in EX.CHEMIN],
-            "dire": [{"lieu": nom_lieu[l], "fr": fr, "en": en, "cles": cles} for l, fr, en, cles in EX.DIRE],
+            "dire": [{"lieu": nom_lieu[l], "fr": fr, "en": en, "cles": cles, "garde": EX.garde(fr)} for l, fr, en, cles in EX.DIRE],
             "allergie": {"regle": EX.REGLE_ALLERGIE, "items": [{"qui": it[0], "ctx": it[1], "en": it[2], "apres": it[4],
                          "choix": EX.choix_allergie(it)} for it in EX.ALLERGIE]},
             "proches": [sorted(g) for g in EX.PROCHES], "horsSerie": sorted(EX.HORS_SERIE)}
@@ -651,6 +651,7 @@ function seanceDire(x){
         const manque = cles.filter(c => !trouve(final, c));
         if (!manque.length) { if (essais <= 2 && !modeleVu) comprises++;
           poserR(`<div class="retro ok">✓ Well done! On vous a compris.</div>`); essaye(); setTimeout(montrer, 600); return; }
+        if (manque.some(c => trouve('', c))) { poserR(`<div class="retro no">Votre phrase dit le contraire de ce qu’il faut. ${essais < 2 && !modeleVu ? 'Réessayez.' : 'Comparez avec le modèle.'}</div>`); return; }
         const presque = manque.length <= cles.length / 2;
         poserR(`<div class="retro no">${presque ? `Presque. Il manque : <b lang="en">${manque.map(c => E(motDuModele(en, c))).join(', ')}</b>. ` : 'Je n’ai pas reconnu la phrase. '}${essais < 2 && !modeleVu ? 'Réessayez, sans regarder le modèle.' : 'Comparez avec le modèle.'}</div>`);
         essaye();
@@ -1256,6 +1257,7 @@ function vueFamille(fam){
   if (fam === 'allergie' && !vueFamille.regleVue) {
     app.innerHTML = `${retour('exos', 'Les exercices')}<p class="surtitre">L'allergie</p><h1>Avant de commencer</h1>
       <div class="regle"><b>La règle.</b> ${E(D.exos.allergie.regle)}</div>
+      <p>Les noix portent souvent leur nom : <b lang="en">pecans</b> (pacanes), <b lang="en">almonds</b> (amandes), <b lang="en">walnuts</b> (noix de Grenoble), <b lang="en">hazelnuts</b> (noisettes). Les arachides, ce sont les <b lang="en">peanuts</b>.</p>
       <p>Quatre réponses de serveuse ou de marchand. Comprenez ce qu'on vous dit ; la décision s'affiche ensuite. Au marché, c'est vous qui décidez.</p>
       <button class="btn btn--pri btn--large" id="go">Commencer</button>`;
     $('#go').onclick = () => { vueFamille.regleVue = true; vueFamille(fam); vueFamille.regleVue = false; }; return;
@@ -1321,6 +1323,8 @@ function serieDire(){
         mic.classList.remove('ecoute'); mic.innerHTML = ICO.micro; $('#micEtat').textContent = 'Touchez le micro pour réessayer.';
         if (!final) { poserR(`<div class="retro info">${rienEntendu('Je n’ai rien entendu. Vérifiez que le micro est permis, ou dites-le et touchez « C’est dit ! ».')}</div>`); return; }
         essais++; const manque = it.cles.filter(c => !trouve(final, c));
+        // Une garde ratée (clé vraie sur la phrase vide) : le geste est faux — jamais « Presque », jamais un mot du modèle.
+        if (manque.some(c => trouve('', c))) { poserR(`<div class="retro no">${E(it.garde || 'Votre phrase dit le contraire de ce qu’il faut.')} ${essais < 2 && !modeleVu ? 'Réessayez.' : 'Comparez avec le modèle.'}</div>`); return; }
         if (!manque.length) { if (essais <= 2 && !modeleVu) comprises++; poserR(`<div class="retro ok">✓ Well done! On vous a compris.</div>`); essaye(); setTimeout(montrer, 600); return; }
         poserR(`<div class="retro no">${manque.length <= it.cles.length / 2 ? `Presque. Il manque : <b lang="en">${manque.map(c => E(motDuModele(it.en, c))).join(', ')}</b>. ` : 'Je n’ai pas reconnu la phrase. '}${essais < 2 && !modeleVu ? 'Réessayez, sans regarder le modèle.' : 'Comparez avec le modèle.'}</div>`);
         essaye(); if (essais >= 2) montrer(); else $('#modele').disabled = false;
