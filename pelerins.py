@@ -384,6 +384,10 @@ class Registre:
             # l'adresse des conditions posée dans le tableau de bord de Stripe ;
             # STRIPE_CONSENTEMENT=0 la retire le temps de la poser.
             "payment_method_types": ["card"],
+            # Décision de Daniel (1er oct. 2026) : pas de « Paiements gérés » (Stripe vendeur
+            # officiel), que Stripe active par défaut et qui refuse custom_text. Le vendeur reste
+            # Boucledidactique, comme le disent les conditions de vente.
+            "managed_payments": {"enabled": False},
             "billing_address_collection": "required",
             "consent_collection": {"terms_of_service": "required"} if CONSENTEMENT else None,
             "custom_text": {"terms_of_service_acceptance": {"message":

@@ -64,6 +64,7 @@ ok(code in envoi["payment_intent_data"]["description"], "le code est dans la des
 ok(envoi["success_url"].endswith("/modules-autonomes/compostelle/#achat/{CHECKOUT_SESSION_ID}"), "le retour mène à l'application")
 ok(envoi["line_items"][0]["price_data"]["unit_amount"] == 999, "prix de lancement : 9,99 $ facturés")
 ok(envoi["line_items"][0]["price_data"]["currency"] == "cad", "en dollars canadiens")
+ok(dict(P._aplatir(envoi)).get("managed_payments[enabled]") == "false", "pas de « Paiements gérés » : le vendeur reste Boucledidactique")
 plat = dict(P._aplatir(envoi))
 ok(plat.get("line_items[0][price_data][unit_amount]") == "999" and plat.get("metadata[code]") == code,
    "le formulaire envoyé à Stripe a la forme attendue (line_items[0][…])")
