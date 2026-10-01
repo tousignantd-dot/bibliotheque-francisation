@@ -399,8 +399,34 @@ def traduire_interface(code):
     return ui
 
 
+def fusionner(dossier):
+    """Fusionne des traductions faites hors de l'API (sous-agents de la session, le
+    30 sept. 2026, quand le crédit de l'API était épuisé) : un fichier <code>.json
+    par langue, {"mots": {id: {mot, note}}, "interface": {clé: texte}}. Refuse une
+    langue incomplète ; chaque langue naît « non relue »."""
+    data = json.loads(SORTIE.read_text(encoding="utf-8")) if SORTIE.exists() else {}
+    for f in sorted(pathlib.Path(dossier).glob("*.json")):
+        code = f.stem
+        if code not in NOMS:
+            continue
+        t = json.loads(f.read_text(encoding="utf-8"))
+        manque_m = [e[0] for e in LEXIQUE if not (t.get("mots", {}).get(e[0], {}).get("mot") or "").strip()]
+        manque_i = [k for k in INTERFACE if not str(t.get("interface", {}).get(k, "")).strip()]
+        if manque_m or manque_i:
+            print(f"  {code} refusé : {len(manque_m)} mots, {len(manque_i)} textes manquants {(manque_m + manque_i)[:5]}")
+            continue
+        data[code] = {"loc": NOMS[code][1], "rtl": NOMS[code][2], "relu": False, "source": "sous-agent",
+                      "mots": {e[0]: {"mot": t["mots"][e[0]]["mot"].strip(), "note": (t["mots"][e[0]].get("note") or "").strip()}
+                               for e in LEXIQUE},
+                      "interface": {k: str(t["interface"][k]).strip() for k in INTERFACE}}
+        print(f"  {code} fusionné")
+    SORTIE.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
+
+
 def main():
     args = sys.argv[1:]
+    if "--fusionner" in args:
+        return fusionner(args[args.index("--fusionner") + 1])
     data = json.loads(SORTIE.read_text(encoding="utf-8")) if SORTIE.exists() else {}
     codes = [a for a in args if a in NOMS] or [c for c in IDE.LANGUES_APPUI if c not in data]
     if "--interface" in args:
