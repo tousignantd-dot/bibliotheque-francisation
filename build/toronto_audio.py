@@ -107,7 +107,9 @@ def similitude(voulu, entendu):
 
 def un(x, releve, forcer=False):
     dest = C.SONS / x["fichier"]
-    if dest.exists() and not forcer:
+    # Un fichier présent dont la phrase a changé (une correction d'audit) se refait : même nom, autre texte.
+    vieux = releve.get(x["fichier"], {}).get("voulu")
+    if dest.exists() and not forcer and (vieux is None or vieux == x["texte"]):
         return
     dire(PRONONCIATION.get(x["texte"], x["texte"]), x["voix"], dest)
     e = entendre(dest)

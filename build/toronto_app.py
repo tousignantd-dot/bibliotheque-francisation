@@ -28,7 +28,7 @@ import toronto_commun as C  # noqa: E402
 
 SORTIE = RACINE / "modules-autonomes" / "toronto" / "index.html"
 MEDIA = RACINE / "assets" / "interactive" / "toronto"
-MEDIA_V = "1"
+MEDIA_V = "2"  # 2 : cinq extraits refaits après le tour 3 (même nom, autre son) ; 1 : première production
 
 
 def donnees():
@@ -210,7 +210,7 @@ const ICO = {
   stop:'<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>',
   test:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>'
 };
-const LIEUX = {union: 'Union Station, le premier jour', cafe: 'au café, le premier matin', hotel: 'à la réception de l’hôtel', kensington: 'dans Kensington, perdu'};
+const LIEUX = {union: 'à Union Station, le premier jour', cafe: 'au café, le premier matin', hotel: 'à la réception de l’hôtel', kensington: 'dans Kensington, quand vous chercherez votre chemin'};
 
 /* ---------- l'état, dans ce téléphone seulement ---------- */
 const CLE = 'toronto:v1';
@@ -304,6 +304,8 @@ const plat = t => enLettres(String(t).replace(/['’]/g, ' ')).toLowerCase().nor
 const trouve = (t, cle) => cle.startsWith('~') ? new RegExp(cle.slice(1)).test(plat(t)) : cle.split('|').some(a => new RegExp('(^| )' + plat(a).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '(s|es)?( |$)').test(plat(t)));
 /* ---------- ordre des choix : jamais la bonne toujours au même rang ---------- */
 // Audit tour 2 : une rotation garde l'ordre cyclique (la bonne précède toujours le leurre). Mélange à graine stable.
+// La graine d'une question de séance : son identité, pas son rang dans la série (audit tour 3).
+function graineDe(t){ let h = 7; for (const c of t) h = (h * 31 + c.charCodeAt(0)) % 2147483647; return h % 9973; }
 function ordre(n, g){ const o = [...Array(n).keys()]; g = g + 1; for (let i = n - 1; i > 0; i--) { g = (g * 16807) % 2147483647; const j = g % (i + 1); [o[i], o[j]] = [o[j], o[i]]; } return o; }
 
 /* ---------- navigation ---------- */
@@ -439,7 +441,7 @@ function seanceEcoute(x){
 /* Une question à choix, jouée jusqu'à la bonne réponse : chaque mauvais choix
    dit pourquoi, et la place de la bonne tourne. */
 function questionPrep(it, fichier, graine, surFin, rappel, une){
-  const p = it.qui ? D.perso[it.qui] : null, estEn = it.type !== 'rep' || !!it.q;
+  const p = it.qui ? D.perso[it.qui] : null, estEn = it.type === 'dire' || (it.type === 'rep' && !!it.q) || (it.type === 'mot' && !it.q);
   const o = ordre(it.choix.length, graine);
   let fini = false, erreurs = 0;
   const titre = it.q || (it.type === 'rep' ? 'Que veut dire la phrase ?' : it.type === 'mot' ? 'Quel mot entendez-vous ?' : 'Que dites-vous ?');
@@ -448,7 +450,7 @@ function questionPrep(it, fichier, graine, surFin, rappel, une){
        <div class="gros-son"><button class="btn btn--son" aria-label="Écouter" id="rejouer">${ICO.son}</button></div>`;
   const html = `${rappel ? `<span class="rappel">${E(rappel)}</span>` : ''}${une ? '<span class="rappel">Une seule écoute, comme au comptoir : touchez le haut-parleur quand vous êtes prêt</span>' : ''}
     <h2 style="margin-top:6px">${titre}</h2>${haut}
-    <div class="choix">${o.map(i => `<button data-i="${i}" ${estEn ? 'lang="en"' : ''}>${E(it.choix[i][0])}</button>`).join('')}</div><div id="r"></div>`;
+    <div class="choix">${o.map(i => `<button data-i="${i}" ${estEn ? 'lang="en"' : ''}>${E(it.choix[i][0])}</button>`).join('')}</div><div id="r" aria-live="polite"></div>`;
   function brancher(){
     if ($('#rejouer')) {
       const jouerUne = () => { if (une) $('#rejouer').disabled = true; jouer(fichier, une).then(ok => { if (!ok && une) $('#rejouer').disabled = false; }); };
@@ -480,7 +482,7 @@ function seanceQuiz(x){
         <div style="margin-top:12px">${finTemps(x, 'quiz')}</div>`; return; }
     const {it, sid, k, rappel, une} = items[n];
     const fichier = `prep/${sid}/q${k}` + (it.type === 'dire' ? '-c0' : '') + '.mp3';
-    const [html, brancher] = questionPrep(it, fichier, ((n + 1) * 7919 + (idx + 1) * 104729) % 97, e => {
+    const [html, brancher] = questionPrep(it, fichier, graineDe(sid + ':' + k), e => {
       erreurs += e; const b = document.createElement('button'); b.className = 'btn btn--pri btn--large'; b.textContent = 'Suivant';
       b.onclick = () => { n++; tour(); }; $('#r').appendChild(b); }, rappel, une);
     app.innerHTML = `${teteSeance(x, 'quiz')}<div class="progres"><i style="width:${100 * n / items.length}%"></i></div>${html}`;
@@ -508,7 +510,7 @@ function seanceDire(x){
       <div class="carte"><p class="surtitre">À vous</p><p style="font-size:19px;font-weight:800;color:var(--text-strong);margin:4px 0 0">${E(fr)}</p></div>
       ${Reco ? `<div class="micro"><button class="btn-micro" id="mic" aria-label="Parler">${ICO.micro}</button>
         <div class="muted" id="micEtat" style="font-size:14px">Touchez le micro, dites-le en anglais.</div><div class="entendu" id="entendu"></div></div>` : ''}
-      <button class="btn btn--large" id="dit" style="margin:6px 0">C'est dit !</button><div id="r"></div>
+      <button class="btn btn--large" id="dit" style="margin:6px 0">C'est dit !</button><div id="r" aria-live="polite"></div>
       <div class="rangee" style="margin-top:10px"><button class="btn" id="modele" disabled>${ICO.son} Le modèle</button>
        <button class="btn btn--pri" id="suite" style="flex:1" disabled>Suivant</button></div>
       <p class="avis-local" style="margin-top:8px">Le modèle s'ouvre après votre essai : on cherche d'abord, on compare ensuite.</p>
@@ -552,9 +554,11 @@ function vuePrepTest(){
       <p>${items.length} questions, un quart d'heure, avec le son et le micro. Pour chacun des cinq objectifs, quelques questions — des phrases
       nouvelles : les mêmes outils que dans les séances, d'autres mots.</p>
       <div class="regle"><b>Comme à Toronto.</b> Les phrases qu'on vous dit ne s'écoutent <b>qu'une fois</b>, au débit normal. Au micro, <b>deux essais</b>.
-      ${E(D.prep.seuil.split(' Au micro')[0])} C'est un repère, pas une note : il ne vous empêche de rien.</div>
+      ${E(D.prep.seuil.replace(" Au micro, deux essais au plus ; les phrases entendues ne s'écoutent qu'une fois.", ''))} C'est un repère, pas une note : il ne vous empêche de rien.</div>
+      ${Reco ? '' : '<div class="sans-son">Ce navigateur ne reconnaît pas la voix : ouvrez la page dans Chrome ou Safari pour mesurer l’oral. Sans cela, les questions au micro ne compteront pas.</div>'}
       <button class="btn btn--pri btn--large" id="go">Commencer</button>`;
-    $('#go').onclick = tour;
+    // Tour 3 : la forme suivante est fixée dès le départ — un test abandonné ne retombe pas sur la même.
+    $('#go').onclick = () => { T.prochaine = 1 - f; sauver(); tour(); };
   }
   function tour(){
     if (k >= items.length) return bilan();
@@ -568,13 +572,13 @@ function vuePrepTest(){
       let prises = 0, bons = 0;
       app.innerHTML = `${tete2}<h1>Dites-le</h1><div class="carte"><p style="font-size:18px;font-weight:800;margin:0">${E(it.fr)}</p></div>
         ${Reco ? `<div class="micro"><button class="btn-micro" id="mic" aria-label="Parler">${ICO.micro}</button><div class="muted" id="micEtat" style="font-size:14px">Deux essais.</div><div class="entendu" id="entendu"></div></div>` : ''}
-        <div id="r"></div><button class="btn btn--large" id="sansmic" style="margin-top:8px">${Reco ? 'Sans micro : c’est dit !' : 'C’est dit !'}</button>`;
+        <div id="r" aria-live="polite"></div><button class="btn btn--large" id="sansmic" style="margin-top:8px">${Reco ? 'Sans micro : c’est dit !' : 'C’est dit !'}</button>`;
       const fin = (ok, verifie) => {
         if (verifie && it.parties) { compte = true; const r = res[it.obj] || (res[it.obj] = [0, 0]); r[0] += ok ? it.cles.length : bons; r[1] += it.cles.length;
           if (!ok) (manquees[it.obj] || (manquees[it.obj] = [])).push(it.modele); }
         else if (verifie) noter(ok); else { compte = true; nonVerif[it.obj] = (nonVerif[it.obj] || 0) + 1; }
         if ($('#sansmic')) $('#sansmic').remove(); if ($('#mic')) $('#mic').disabled = true;
-        $('#r').insertAdjacentHTML('beforeend', `<div class="retro ${!verifie ? 'info' : ok ? 'ok' : 'no'}">${!verifie ? 'Non vérifié : cette question ne compte pas.' : ok ? '✓ On vous a compris.' : 'Deux essais sans qu’on vous comprenne tout à fait.'}</div>
+        $('#r').insertAdjacentHTML('beforeend', `<div class="retro ${!verifie ? 'info' : ok ? 'ok' : 'no'}">${!verifie ? 'Non vérifié : sans le micro, cet objectif ne pourra pas être « Solide ».' : ok ? '✓ On vous a compris.' : 'Deux essais sans qu’on vous comprenne tout à fait.'}</div>
           <div class="retro info"><span class="surtitre">Le modèle</span><div class="phrase-en" lang="en">${E(it.modele)}</div></div>`);
         jouer(`prep/test/${f}-${k}-m.mp3`); suite(); };
       $('#sansmic').onclick = () => fin(false, false);
@@ -582,7 +586,7 @@ function vuePrepTest(){
         mic.classList.add('ecoute'); mic.innerHTML = ICO.stop;
         ecouterMicro(t => { $('#entendu').textContent = '« ' + t + ' »'; }, final => {
           mic.classList.remove('ecoute'); mic.innerHTML = ICO.micro;
-          if (!final) { $('#r').innerHTML = `<div class="retro info">${rienEntendu('Je n’ai rien entendu. Vérifiez que le micro est permis et réessayez — ou touchez « C’est dit ! ».')}</div>`; return; }
+          if (!final) { $('#r').innerHTML = `<div class="retro info">${rienEntendu($('#sansmic') ? 'Je n’ai rien entendu. Vérifiez que le micro est permis et réessayez — ou touchez « Sans micro : c’est dit ! ».' : 'Je n’ai rien entendu. Vérifiez que le micro est permis et réessayez.')}</div>`; return; }
           const manque = it.cles.map((c, i) => [c, i]).filter(([c]) => !trouve(final, c));
           prises++; bons = Math.max(bons, it.cles.length - manque.length);
           // Une fois le micro entendu, « sans micro » n'est plus une issue (Compostelle, tour 2, F1).
@@ -597,13 +601,17 @@ function vuePrepTest(){
     // Au test, le premier choix compte. P2 et P5 : une seule écoute, au débit naturel.
     const fichier = `prep/test/${f}-${k}` + (it.type === 'dire' ? '-c0' : '') + '.mp3';
     const unefois = it.obj === 'P2' || it.obj === 'P5';
-    const o = ordre(it.choix.length, ((k + 1) * 7919 + f * 104729) % 97), estEn = it.type !== 'rep', p = it.qui ? D.perso[it.qui] : null;
+    // Tour 3 (bloquant) : la place de la bonne réponse est posée dans les données (`place`, une permutation par
+    // objectif et par forme), décalée à chaque passage ; les mauvais choix se mélangent autour.
+    const pa = T.passages || 0, o = ordre(it.choix.length, ((k + 1) * 7919 + f * 104729 + pa) % 97).filter(i => i !== 0);
+    o.splice(((it.place || 0) + pa) % it.choix.length, 0, 0);
+    const estEn = it.type !== 'rep', p = it.qui ? D.perso[it.qui] : null;
     const titre = it.type === 'rep' ? 'Que veut dire la phrase ?' : it.type === 'mot' ? 'Quel mot entendez-vous ?' : 'Que dites-vous ?';
     app.innerHTML = `${tete2}<h1>${titre}</h1>
       ${it.type === 'dire' ? `<div class="carte"><p style="font-size:18px;font-weight:800;margin:0">${E(it.fr)}</p></div>` :
         `${p ? `<div class="scene-tete"><div><b>${E(p.nom)}</b><div class="muted" style="font-size:14px">${unefois ? 'Une seule écoute, comme au comptoir : touchez le haut-parleur quand vous êtes prêt.' : 'Vous pouvez réécouter.'}</div></div></div>` : ''}
          <div class="gros-son"><button class="btn btn--son" aria-label="Écouter" id="ecoute1">${ICO.son}</button></div>`}
-      <div class="choix">${o.map(i => `<button data-i="${i}" ${estEn ? 'lang="en"' : ''}>${E(it.choix[i][0])}</button>`).join('')}</div><div id="r"></div>`;
+      <div class="choix">${o.map(i => `<button data-i="${i}" ${estEn ? 'lang="en"' : ''}>${E(it.choix[i][0])}</button>`).join('')}</div><div id="r" aria-live="polite"></div>`;
     if (it.type !== 'dire') {
       let joue = false;
       // Une seule écoute : elle part au toucher, jamais toute seule (Compostelle, 27 sept. 2026).
@@ -614,7 +622,8 @@ function vuePrepTest(){
     app.querySelectorAll('.choix button').forEach(b => b.onclick = () => {
       if (compte) return; const i = +b.dataset.i; noter(i === 0);
       b.classList.add(i === 0 ? 'juste' : 'faux'); if (i !== 0) app.querySelector('.choix button[data-i="0"]').classList.add('juste');
-      $('#r').innerHTML = `<div class="retro ${i === 0 ? 'ok' : 'no'}">${i === 0 ? '✓' + (it.en ? ' « ' + E(it.en) + ' »' : '') : E(it.choix[i][1])}</div>`;
+      $('#r').innerHTML = `<div class="retro ${i === 0 ? 'ok' : 'no'}">${i === 0 ? '✓' + (it.en ? ' « ' + E(it.en) + ' »' : '') : E(it.choix[i][1]) + (it.en ? ' « ' + E(it.en) + ' »' : '')}</div>`;
+      if ($('#ecoute1')) { $('#ecoute1').disabled = false; $('#ecoute1').onclick = () => jouer(fichier); }
       if (it.type === 'dire') jouer(fichier); suite();
     });
   }

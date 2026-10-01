@@ -40,18 +40,20 @@ OBJECTIFS = {
 }
 
 ORIGINE = "~(^| )(i m|i am|im|we re|we are|i come|we come|i live|we live|living|coming) (from|in) [a-z]+|(^| )(from|live in|living in) (quebec|montreal|canada|france)"
-SEJOUR = "~(^| )(for|until|till|leave|leaving|stay|staying|here)( [a-z]+){0,3} (week|weeks|weekend|day|days|night|nights|month|monday|tuesday|wednesday|thursday|friday|saturday|sunday)( |$)"
-RELANCE = "~(^| )(and you|and yourself|how about you|how about yourself|what about you|what about yourself|how are you|are you from)( |$)"
+SEJOUR = "~(^| )(for|until|till|leave|leaving|stay|staying|here|just|only|one|two|three|four|five|six|seven|ten)( [a-z]+){0,3} (week|weeks|weekend|day|days|night|nights|month|monday|tuesday|wednesday|thursday|friday|saturday|sunday)( |$)|(^| )a (week|weekend|few days)( |$)"
+RELANCE = "~(^| )(and you|and yourself|how about you|how about yourself|what about you|what about yourself|how are you|are you from|do you (live|work|like)|have you (ever )?been|what do you do|where do you live)( |$)"
 # Les clés partagées (audit tour 1, M7) : une demande, dite de toutes les façons naturelles.
 DEMANDE = "~(^| )(can|could|may) (i|we)( please)? (get|have)|(can|could) you( please)? (give|get) (me|us)|(i|we) d like|(i|we)d like|(i|we) would like|(i|we) ll (have|take|get|go with)|(i|we) want|(^| )please( |$)"
+# Tour 3 : le cadre d'une plainte, dit de toutes les façons (I'm sunburned, my husband has a fever…).
+MAL = "~(^| )(i|we|he|she|my [a-z]+) (have|ve got|got|has|m|am|is|think|need)( |$)|something for"
 REPETER = "~(say (that|it) again|repeat|pardon|sorry|excuse me|come again|again|one more time|(don t|didn t|do not|did not) (understand|get it|get that))"
 
 FIN = {
     "P1": "À la fin, vous direz ces formules au micro, sans les lire, et on vous comprendra du premier ou du deuxième coup — même quand un son raté changerait le mot (three, tree).",
     "P2": "À la fin, vous comprendrez un prix ou une heure entendus une seule fois, sans confondre 13 et 30, ni « quarter to » et « quarter past » — au moins 3 fois sur 4.",
-    "P3": "À la fin, vous saurez demander ce qu'il vous faut, dans une situation que vous n'avez jamais vue.",
+    "P3": "À la fin, vous saurez demander ce qu'il vous faut, dans une situation que vous n'avez jamais vue — compris au micro du premier ou du deuxième coup, 3 fois sur 3.",
     "P4": "À la fin, vous vous présenterez en trois phrases — d'où vous venez, combien de temps vous restez, et la question qui relance — sans les lire.",
-    "P5": "À la fin, vous saisirez le mot qui décide dans une réponse dite vite (oui, non, il n'en reste plus, à gauche, ce n'est pas compris) — au moins 3 fois sur 4, entendue une seule fois.",
+    "P5": "À la fin, vous saisirez les mots qui décident dans une réponse dite vite (oui ou non, il n'en reste plus, à gauche, ce n'est pas compris, ce qu'on vous propose) — au moins 3 fois sur 4, entendue une seule fois.",
 }
 # Le lieu de la semaine où chaque objectif servira d'abord (lien du bilan du test).
 LIEU = {"P1": "union", "P2": "cafe", "P3": "hotel", "P4": "cafe", "P5": "kensington"}
@@ -298,6 +300,10 @@ SEANCES = [
       "choix": [("La chambre n'est pas prête ; elle le sera à 15 h.", None), ("La chambre est prête depuis 15 h.", "Isn't ready yet : pas encore prête."), ("Vous devez partir à 15 h.", "On parle de la chambre prête, pas du départ.")]},
      {"type": "rep", "qui": "arjun", "en": "The soup doesn't have any nuts.",
       "choix": [("La soupe ne contient pas de noix.", None), ("La soupe contient des noix.", "Doesn't have : ne contient pas."), ("Il n'y a plus de soupe.", "La soupe existe ; ce sont les noix qui n'y sont pas.")]},
+     {"type": "rep", "qui": "andrew", "en": "The museum is closed on Monday, but it's open late on Thursday.",
+      "choix": [("Fermé le lundi ; ouvert tard le jeudi.", None), ("Fermé le mardi ; ouvert tard le jeudi.", "Monday : lundi. Mardi, ce serait Tuesday."), ("Fermé le lundi ; ouvert tard le vendredi.", "Thursday : jeudi. Vendredi, ce serait Friday."), ("Fermé le mardi ; ouvert tard le vendredi.", "Monday, lundi ; et Thursday, jeudi : deux mots qui décident.")]},
+     {"type": "rep", "qui": "rosa", "en": "Your room is ready, but the pool is closed today.",
+      "choix": [("Chambre prête ; piscine fermée aujourd'hui.", None), ("Chambre pas prête ; piscine fermée aujourd'hui.", "Your room IS ready : elle est prête."), ("Chambre prête ; piscine ouverte aujourd'hui.", "But the pool is closed : la piscine est fermée."), ("Chambre pas prête ; piscine ouverte aujourd'hui.", "C'est l'inverse des deux : la chambre est prête, la piscine fermée.")]},
      {"type": "rep", "qui": "rosa", "en": "You're all set! Have a good one.",
       "choix": [("C'est réglé ! Bonne journée.", None), ("Asseyez-vous, s'il vous plaît.", "Set ne veut pas dire s'asseoir ici : you're all set, c'est réglé."), ("Il vous manque quelque chose.", "Au contraire : tout est réglé.")]},
    ],
@@ -309,10 +315,14 @@ SEANCES = [
 # Le test « Prêt à partir ? » : chaque objectif mesuré comme son critère le dit.
 # P1 et P3 : DITS au micro, deux essais au plus. P2 et P5 : entendus UNE fois,
 # au débit naturel. P4 : une seule tâche, se présenter et relancer. Deux formes
-# parallèles, la première tirée au hasard ; phrases NEUVES, jamais celles des
-# séances. Un faux débutant qui le réussit (« Solide » partout) peut sauter
+# parallèles, la première tirée au hasard ; situations NEUVES — en P1, les
+# formules figées (Three., Sorry, could you say that again?) sont par nature
+# celles des séances : c'est leur emploi dans une situation neuve qui se mesure.
+# Tour 3 : chaque item à choix porte sa `place` (la bonne réponse y est posée,
+# décalée à chaque passage) — un mélange à graine fixe la mettait trop souvent
+# au même bouton. Un faux débutant qui le réussit (« Solide » partout) peut sauter
 # les séances — décision du plan du 1er oct. 2026.
-_P4_PARTIES = ["d'où vous venez (I'm from…)", "combien de temps vous restez (for a week…)", "la relance (And you?)"]
+_P4_PARTIES = ["d'où vous venez", "combien de temps vous restez", "la question qui relance"]
 # Révisé au tour 1 de la boucle (1er oct. 2026) : choix de même longueur, le leurre
 # porté par DEUX mauvais choix (B1), phrases neuves (M6), un son raté qui change
 # le mot (M1 : three/tree, leaving/living), le mot qui décide toujours enseigné (M4).
@@ -321,55 +331,55 @@ TEST = [
     {"obj": "P1", "type": "oral", "fr": "Une passante vous tient la porte : remerciez-la.", "cles": ["thank|thanks"], "modele": "Thank you!"},
     {"obj": "P1", "type": "oral", "fr": "Le caissier demande combien de billets. Répondez d'un seul mot : trois.", "cles": ["three|3"], "modele": "Three."},
     {"obj": "P1", "type": "oral", "fr": "Dites que vous ne comprenez pas.", "cles": ["~(do not|dont|don t|did not|didnt|didn t) (understand|get it|get that)"], "modele": "Sorry, I don't understand."},
-    {"obj": "P2", "type": "rep", "qui": "liam", "en": "That's thirty forty.",
+    {"obj": "P2", "type": "rep", "place": 2, "qui": "liam", "en": "That's thirty forty.",
      "choix": [("30,40 $", None), ("13,40 $", "Thirteen finirait sur un « n ». Ici, thirty finit court : 30."), ("13,14 $", "Ni treize ni quatorze : thirty forty, 30,40 $."), ("30,14 $", "Thirty, oui ; mais forty finit court : 40, pas 14.")]},
-    {"obj": "P2", "type": "rep", "qui": "harper", "en": "The museum closes at quarter to six.",
+    {"obj": "P2", "type": "rep", "place": 0, "qui": "harper", "en": "The museum closes at quarter to six.",
      "choix": [("Le musée ferme à 17 h 45.", None), ("Le musée ferme à 18 h 15.", "Quarter past serait et quart. Quarter TO : moins quart, 17 h 45."), ("Le musée ouvre à 18 h 15.", "Closes : ferme ; et quarter to six, 17 h 45."), ("Le musée ouvre à 17 h 45.", "Closes : il ferme ; l'heure, elle, est juste.")]},
-    {"obj": "P2", "type": "rep", "qui": "andrew", "en": "That'll be fifteen fifty, plus tax.",
+    {"obj": "P2", "type": "rep", "place": 3, "qui": "andrew", "en": "That'll be fifteen fifty, plus tax.",
      "choix": [("15,50 $, plus les taxes", None), ("50,15 $, plus les taxes", "Les deux nombres sont inversés : fifteen d'abord, puis fifty."), ("50,50 $, plus les taxes", "Fifteen finit sur un « n » : 15, puis fifty, 50."), ("15,15 $, plus les taxes", "Fifteen d'abord, oui ; puis fifty, qui finit court : 50.")]},
-    {"obj": "P2", "type": "rep", "qui": "rosa", "en": "Check-out is at eleven a.m.",
+    {"obj": "P2", "type": "rep", "place": 1, "qui": "rosa", "en": "Check-out is at eleven a.m.",
      "choix": [("Départ à 11 h du matin.", None), ("Départ à 11 h du soir.", "A.m. : le matin. Le soir, ce serait p.m."), ("Arrivée à 11 h du soir.", "Check-out, c'est le départ ; et a.m., le matin."), ("Arrivée à 11 h du matin.", "A.m., oui ; mais check-out, c'est le départ.")]},
     {"obj": "P3", "type": "oral", "fr": "Au café, commandez un thé.", "cles": [DEMANDE, "tea"], "modele": "Can I get a tea, please?"},
     {"obj": "P3", "type": "oral", "fr": "Demandez où est l'arrêt d'autobus.", "cles": ["~(where|is there)", "bus"], "modele": "Where is the bus stop?"},
-    {"obj": "P3", "type": "oral", "fr": "Vous avez un coup de soleil : dites-le au pharmacien.", "cles": ["~(i have|i ve got|i got|i think i have|something for)", "sunburn|sunburned|sunburnt|burn|burned"], "modele": "I have a sunburn."},
+    {"obj": "P3", "type": "oral", "fr": "Vous avez un coup de soleil : dites-le au pharmacien.", "cles": [MAL, "~(^| )(sunburn|sunburns|sunburned|sunburnt|burn|burned|burnt)( |$)"], "modele": "I have a sunburn."},
     {"obj": "P4", "type": "oral", "fr": "Une Torontoise vous demande qui vous êtes. Répondez : d'où vous venez, combien de temps vous restez, et relancez.",
      "cles": [ORIGINE, SEJOUR, RELANCE], "parties": _P4_PARTIES,
      "modele": "I'm from Quebec. I'm here for a week. How about you?"},
-    {"obj": "P5", "type": "rep", "qui": "aarti", "en": "Sorry, the tower is closed today because of the wind.",
+    {"obj": "P5", "type": "rep", "place": 1, "qui": "aarti", "en": "Sorry, the tower is closed today because of the wind.",
      "choix": [("La tour est fermée aujourd'hui à cause du vent.", None), ("La tour est ouverte, malgré le vent.", "Sorry, au début, annonçait un non : closed, fermée."), ("La tour est ouverte, mais l'ascenseur est fermé à cause du vent.", "Closed porte sur la tour elle-même."), ("La tour est fermée aujourd'hui à cause de la pluie.", "Closed, oui ; mais because of the WIND : le vent.")]},
-    {"obj": "P5", "type": "rep", "qui": "sam", "en": "Take the second right, then it's straight ahead.",
+    {"obj": "P5", "type": "rep", "place": 3, "qui": "sam", "en": "Take the second right, then it's straight ahead.",
      "choix": [("Deuxième rue à droite, puis tout droit.", None), ("Deuxième rue à gauche, puis tout droit.", "Right : à droite."), ("Deuxième rue à gauche, puis c'est juste là.", "Right : à droite ; et straight ahead, tout droit."), ("Deuxième rue à droite, puis c'est juste là.", "À droite, oui ; mais straight ahead : tout droit.")]},
-    {"obj": "P5", "type": "rep", "qui": "ezinne", "en": "We're out of the fish tonight, but the chicken is great.",
+    {"obj": "P5", "type": "rep", "place": 0, "qui": "ezinne", "en": "We're out of the fish tonight, but the chicken is great.",
      "choix": [("Plus de poisson ce soir ; le poulet est très bon.", None), ("Plus de poulet ce soir ; le poisson est très bon.", "C'est l'inverse : out of the FISH."), ("Plus de poulet ce soir ; prenez plutôt le poisson.", "Out of the fish : c'est le poisson qui manque."), ("Plus de poisson ce soir ; le poulet aussi est fini.", "Le poisson manque, oui ; mais the chicken is great : le poulet est très bon.")]},
-    {"obj": "P5", "type": "rep", "qui": "liam", "en": "Breakfast isn't included with this rate.",
+    {"obj": "P5", "type": "rep", "place": 2, "qui": "liam", "en": "Breakfast isn't included with this rate.",
      "choix": [("Le déjeuner n'est pas compris dans ce tarif.", None), ("Le déjeuner est bien compris dans le prix de la chambre.", "Isn't : n'est pas."), ("Le déjeuner est compris, mais pas le café.", "Isn't included : le déjeuner lui-même n'est pas compris."), ("Le déjeuner n'est pas compris, ni le café.", "Rien n'est dit du café : seulement le déjeuner, qui n'est pas compris.")]},
   ],
   [
     {"obj": "P1", "type": "oral", "fr": "Au comptoir, le serveur a parlé trop bas : faites-le répéter.", "cles": [REPETER], "modele": "Sorry, could you say that again?"},
-    {"obj": "P1", "type": "oral", "fr": "Saluez en entrant au café, et demandez comment ça va.", "cles": ["hi|hello|hey|good morning|good afternoon|good evening|morning", "how are you|how s it going|how is it going"], "modele": "Hi! How are you?"},
-    {"obj": "P1", "type": "oral", "fr": "Au restaurant, dites que vous voulez partir.", "cles": ["leave"], "modele": "I want to leave."},
-    {"obj": "P2", "type": "rep", "qui": "andrew", "en": "It's forty-three fifteen.",
+    {"obj": "P1", "type": "oral", "fr": "Saluez en entrant au café, et demandez comment ça va.", "cles": ["hi|hello|hey|good morning|good afternoon|good evening|morning", "how are you|how s it going|how is it going|how you doing|how are things"], "modele": "Hi! How are you?"},
+    {"obj": "P1", "type": "oral", "fr": "À l'hôtel, dites que vous partez demain — avec le verbe « leave ».", "cles": ["~(^| )(leave|leaving|leaves)( |$)"], "modele": "I'm leaving tomorrow."},
+    {"obj": "P2", "type": "rep", "place": 3, "qui": "andrew", "en": "It's forty-three fifteen.",
      "choix": [("43,15 $", None), ("43,50 $", "Fifty finirait court ; ici, on entend le « n » de fifteen : 15."), ("33,50 $", "Ni trente-trois ni cinquante : forty-three fifteen, 43,15 $."), ("33,15 $", "Fifteen, oui ; mais forty-three : 43.")]},
-    {"obj": "P2", "type": "rep", "qui": "liam", "en": "The next train is at quarter past eight.",
+    {"obj": "P2", "type": "rep", "place": 1, "qui": "liam", "en": "The next train is at quarter past eight.",
      "choix": [("Le prochain train est à 8 h 15.", None), ("Le prochain train est à 7 h 45.", "Quarter to serait moins quart. Quarter PAST : et quart, 8 h 15."), ("Le prochain train est à 8 h 45.", "Quarter past eight, c'est huit heures et quart : 8 h 15."), ("Le prochain train est à 7 h 15.", "Quarter PAST eight : huit heures et quart, 8 h 15.")]},
-    {"obj": "P2", "type": "rep", "qui": "harper", "en": "Tickets are thirteen dollars.",
-     "choix": [("13 $", None), ("30 $", "Ici, on entend le « n » de thirteen : 13."), ("3 $", "Three serait 3. Ici : thirteen, 13.")]},
-    {"obj": "P2", "type": "rep", "qui": "rosa", "en": "Last entry is at eight p.m.",
+    {"obj": "P2", "type": "rep", "place": 0, "qui": "harper", "en": "Tickets are thirteen thirty.",
+     "choix": [("13,30 $", None), ("30,13 $", "Les deux nombres sont inversés : thirteen d'abord, puis thirty."), ("30,30 $", "Thirteen finit sur un « n » : 13 d'abord."), ("13,13 $", "Thirteen d'abord, oui ; puis thirty, qui finit court : 30.")]},
+    {"obj": "P2", "type": "rep", "place": 2, "qui": "rosa", "en": "Last entry is at eight p.m.",
      "choix": [("Dernière entrée à 8 h du soir.", None), ("Dernière entrée à 8 h du matin.", "P.m. : le soir. Le matin, ce serait a.m."), ("Première entrée à 8 h du matin.", "Last : la dernière ; et p.m., le soir."), ("Première entrée à 8 h du soir.", "Le soir, oui ; mais last, c'est la dernière.")]},
     {"obj": "P3", "type": "oral", "fr": "À la réception, demandez le mot de passe du wifi.", "cles": ["wifi|wi fi|wireless|internet", "password|code"], "modele": "Can I get the Wi-Fi password?"},
     {"obj": "P3", "type": "oral", "fr": "À l'hôtel, demandez où est l'ascenseur.", "cles": ["~(where|is there)", "elevator|lift"], "modele": "Where is the elevator?"},
-    {"obj": "P3", "type": "oral", "fr": "Vous avez de la fièvre : dites-le au pharmacien.", "cles": ["~(i have|i ve got|i got|i think i have|something for)", "fever|temperature"], "modele": "I have a fever."},
+    {"obj": "P3", "type": "oral", "fr": "Vous avez de la fièvre : dites-le au pharmacien.", "cles": [MAL, "~(^| )(fever|feverish|temperature)( |$)"], "modele": "I have a fever."},
     {"obj": "P4", "type": "oral", "fr": "Au marché, un vendeur vous demande d'où vous êtes. Répondez : d'où vous venez, combien de temps vous restez, et relancez.",
      "cles": [ORIGINE, SEJOUR, RELANCE], "parties": _P4_PARTIES,
      "modele": "I'm from Montreal. I'm here for the weekend. And you? Are you from here?"},
-    {"obj": "P5", "type": "rep", "qui": "liam", "en": "The washrooms are right there, on your left.",
+    {"obj": "P5", "type": "rep", "place": 0, "qui": "liam", "en": "The washrooms are right there, on your left.",
      "choix": [("Les toilettes sont juste là, à votre gauche.", None), ("Les toilettes sont juste là, à votre droite.", "Right there veut dire juste là ; la direction, c'est on your LEFT."), ("Les toilettes sont plus loin, à votre droite.", "Right there : juste là ; et à gauche, on your left."), ("Les toilettes sont plus loin, à votre gauche.", "À gauche, oui ; mais right there : juste là.")]},
-    {"obj": "P5", "type": "rep", "qui": "sam", "en": "Your card didn't go through. Do you want to try again?",
-     "choix": [("Carte refusée ; voulez-vous réessayer ?", None), ("Carte acceptée ; voulez-vous le reçu ?", "Didn't go through : elle n'est pas passée."), ("Carte acceptée ; voulez-vous un sac ?", "Didn't go through : refusée ; on vous propose de réessayer."), ("Carte refusée ; voulez-vous payer comptant ?", "Refusée, oui ; mais try again : on vous propose de réessayer.")]},
-    {"obj": "P5", "type": "rep", "qui": "arjun", "en": "The kitchen closes at ten, so this is your last chance to order.",
+    {"obj": "P5", "type": "rep", "place": 2, "qui": "sam", "en": "Your card didn't go through. Do you want to try again?",
+     "choix": [("Carte refusée ; voulez-vous réessayer ?", None), ("Carte refusée ; voulez-vous annuler ?", "Refusée, oui ; mais try again : on vous propose de réessayer, pas d'annuler."), ("Carte acceptée ; voulez-vous signer ?", "Didn't go through : elle n'est pas passée ; on vous propose de réessayer."), ("Carte acceptée ; voulez-vous votre reçu ?", "Didn't go through : refusée ; et try again, réessayer.")]},
+    {"obj": "P5", "type": "rep", "place": 3, "qui": "arjun", "en": "The kitchen closes at ten, so this is your last chance to order.",
      "choix": [("La cuisine ferme à 22 h ; c'est le moment de commander.", None), ("La cuisine ouvre à 22 h ; vous pourrez commander plus tard.", "Closes : ferme."), ("La cuisine ouvre à 22 h ; c'est le moment de réserver.", "Closes : ferme ; et order, c'est commander."), ("La cuisine ferme à 22 h ; c'est le moment de réserver.", "Ferme, oui ; mais order, c'est commander.")]},
-    {"obj": "P5", "type": "rep", "qui": "ezinne", "en": "The tip isn't included. It's up to you.",
-     "choix": [("Pourboire non compris ; c'est à vous de voir.", None), ("Pourboire compris ; vous n'avez rien à ajouter.", "Isn't included : n'est pas compris."), ("Pourboire compris ; ajoutez-en si vous voulez.", "Isn't included : il n'est pas compris ; c'est à vous de choisir."), ("Non compris ; le pourboire est fixé à 15 %.", "Non compris, oui ; mais it's up to you : c'est vous qui choisissez le montant.")]},
+    {"obj": "P5", "type": "rep", "place": 1, "qui": "ezinne", "en": "The tip isn't included. It's up to you.",
+     "choix": [("Pourboire non compris ; le montant est à votre choix.", None), ("Pourboire compris ; vous n'avez rien de plus à ajouter.", "Isn't included : n'est pas compris."), ("Pourboire compris ; ajoutez-en si vous voulez.", "Isn't included : il n'est pas compris ; c'est à vous de choisir."), ("Pourboire non compris ; le montant est fixé à 15 %.", "Non compris, oui ; mais it's up to you : c'est vous qui choisissez le montant.")]},
   ],
 ]
 PAR_OBJECTIF = {"P1": 3, "P2": 4, "P3": 3, "P4": 1, "P5": 4}
@@ -423,6 +433,8 @@ def verifier(lexique_ids=None, personnages=None):
             assert fr and en and cles, s["id"]
             _cles(cles, en, s["id"])
     for f, forme in enumerate(TEST):
+        for o in ("P2", "P5"):   # tour 3 : une permutation complète des places par objectif et par forme
+            assert sorted(it["place"] for it in forme if it["obj"] == o) == list(range(4)), (f, o)
         objs = [it["obj"] for it in forme]
         for o in OBJECTIFS:
             assert objs.count(o) == PAR_OBJECTIF[o], (f, o)
