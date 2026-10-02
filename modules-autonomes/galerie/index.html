@@ -72,6 +72,21 @@ p,ul{margin:0}
 .btn:focus-visible{outline:3px solid var(--mauve);outline-offset:2px}
 .pied{margin-top:64px;padding-top:18px;border-top:1px solid var(--filet);font-size:13px;color:var(--gris);display:flex;gap:18px;flex-wrap:wrap}
 .pied a{color:var(--gris)}
+/* La version papier (galerie.pdf) : format lettre, une famille par page et ses trois cartes de front, les couleurs gardées ; les boutons
+   disparaissent (on ne clique pas une feuille), le code QR reste — c'est sur papier qu'il sert. */
+@page{size:letter;margin:12mm}
+@media print{
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{background:#FFFFFF;font-size:12px}
+  .barre-in,.tete{padding-left:0;padding-right:0} .tete{padding-top:18px;padding-bottom:16px}
+  .tete h1{font-size:30px} .tete p{font-size:14px} .puces,.liens,.pied a.pdf{display:none}
+  .page{padding:0} .famille{padding-top:20px;break-before:auto} .famille h2{font-size:20px}
+  .grille{grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+  .carte{break-inside:avoid} .ecran{height:150px;padding:10px 10px 0} .ecran img{width:104px;border-width:4px;border-radius:14px 14px 0 0}
+  .corps{padding:10px 12px 12px;gap:6px} .carte h3{font-size:15px} .accroche,.carte ul{font-size:11px} .carte ul{padding-left:14px}
+  .etat,.prix{font-size:10.5px;padding:5px 8px} .bas{justify-content:center} .qr figcaption{font-size:9.5px}
+  .qr svg{width:84px;height:84px} .famille+.famille{break-before:page}
+}
 @media (max-width:640px){
   .barre-in{padding:12px 16px} .trait,.desc{display:none}
   .page{padding:0 16px 64px} .tete{padding:30px 16px 22px} .puces a{font-size:13px;padding:6px 12px} .tete h1{font-size:32px} .tete p{font-size:16px}
@@ -185,6 +200,7 @@ p,ul{margin:0}
   <footer class="pied">
     <span>Les conversations jouées se font avec un personnage, à l'aide de l'assistance ; le reste de chaque application est gratuit.</span>
     <a href="mailto:support@edufrancis.ca">support@edufrancis.ca</a>
+    <a class="pdf" href="galerie.pdf">Version à imprimer (PDF)</a>
   </footer>
 </main>
 <script>

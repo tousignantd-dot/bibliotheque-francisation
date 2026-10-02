@@ -12,6 +12,7 @@ build/toronto_captures.mjs, la semaine jouée sur un faux serveur) ; et tout ce 
 compté (séances, mots, lieux, voix, prix) relu dans le contenu et dans pelerins.py,
 jamais écrit à la main. `noindex` pendant le pilote, comme l'application.
 """
+from qr_bloc import bloc  # le code QR de l'application (2 oct. 2026)
 import html, pathlib, sys
 
 RACINE = pathlib.Path(__file__).resolve().parent.parent
@@ -138,6 +139,7 @@ h2{{font-size:clamp(26px,3.6vw,36px);line-height:1.1;margin:0 0 8px;color:#1d1b1
     à Toronto. Quinze minutes à la fois, à préparer chez vous, puis dans la trousse une fois sur place.</p>
     <a class="cta" href="{APP}">Ouvrir l'application</a>
     <p style="font-size:14.5px;color:var(--doux);margin-top:10px">Dans le navigateur du téléphone, sans compte ni mot de passe.</p>
+    {bloc(APP, "Une semaine à Toronto")}
   </div>
   <div class="visuel">{tel("accueil", "L'accueil de l'application", "a")}{tel("conversation", "Une conversation au restaurant", "b")}</div>
 </div>

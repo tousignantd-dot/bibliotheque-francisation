@@ -11,6 +11,7 @@ prises par le protocole de Chrome à 390 px), et tout ce qui est compté
 (haltes, kilomètres, séances, prix) relu dans le contenu et dans pelerins.py.
 Imprimable : une feuille lettre recto verso, les couleurs gardées.
 """
+from qr_bloc import bloc  # le code QR de l'application (2 oct. 2026)
 import html, pathlib, sys
 
 RACINE = pathlib.Path(__file__).resolve().parent.parent
@@ -245,6 +246,7 @@ footer{{text-align:center;font-size:13px;color:var(--doux);padding:26px 0 40px}}
     parler avec les autres le soir : vous apprenez chaque phrase <b>la veille du jour où vous en aurez besoin</b>, dans votre téléphone.
     Le chemin compte une trentaine d'étapes de marche : nous en avons retenu <b>dix</b>, environ une tous les trois jours, chacune avec une situation nouvelle.</p>
     <a class="cta" href="{APP}" target="_blank" rel="noopener">Essayer gratuitement</a>
+    {bloc(APP, "En route vers Compostelle")}
   </div>
   <div class="visuel" aria-hidden="true">
     <div class="tel a"><img src="{CAP}accueil.jpg" alt=""></div>

@@ -194,6 +194,21 @@ p,ul{{margin:0}}
 .btn:focus-visible{{outline:3px solid var(--mauve);outline-offset:2px}}
 .pied{{margin-top:64px;padding-top:18px;border-top:1px solid var(--filet);font-size:13px;color:var(--gris);display:flex;gap:18px;flex-wrap:wrap}}
 .pied a{{color:var(--gris)}}
+/* La version papier (galerie.pdf) : format lettre, une famille par page et ses trois cartes de front, les couleurs gardées ; les boutons
+   disparaissent (on ne clique pas une feuille), le code QR reste — c'est sur papier qu'il sert. */
+@page{{size:letter;margin:12mm}}
+@media print{{
+  *{{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  body{{background:#FFFFFF;font-size:12px}}
+  .barre-in,.tete{{padding-left:0;padding-right:0}} .tete{{padding-top:18px;padding-bottom:16px}}
+  .tete h1{{font-size:30px}} .tete p{{font-size:14px}} .puces,.liens,.pied a.pdf{{display:none}}
+  .page{{padding:0}} .famille{{padding-top:20px;break-before:auto}} .famille h2{{font-size:20px}}
+  .grille{{grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}}
+  .carte{{break-inside:avoid}} .ecran{{height:150px;padding:10px 10px 0}} .ecran img{{width:104px;border-width:4px;border-radius:14px 14px 0 0}}
+  .corps{{padding:10px 12px 12px;gap:6px}} .carte h3{{font-size:15px}} .accroche,.carte ul{{font-size:11px}} .carte ul{{padding-left:14px}}
+  .etat,.prix{{font-size:10.5px;padding:5px 8px}} .bas{{justify-content:center}} .qr figcaption{{font-size:9.5px}}
+  .qr svg{{width:84px;height:84px}} .famille+.famille{{break-before:page}}
+}}
 @media (max-width:640px){{
   .barre-in{{padding:12px 16px}} .trait,.desc{{display:none}}
   .page{{padding:0 16px 64px}} .tete{{padding:30px 16px 22px}} .puces a{{font-size:13px;padding:6px 12px}} .tete h1{{font-size:32px}} .tete p{{font-size:16px}}
@@ -219,6 +234,7 @@ p,ul{{margin:0}}
   <footer class="pied">
     <span>Les conversations jouées se font avec un personnage, à l'aide de l'assistance ; le reste de chaque application est gratuit.</span>
     <a href="mailto:support@edufrancis.ca">support@edufrancis.ca</a>
+    <a class="pdf" href="galerie.pdf">Version à imprimer (PDF)</a>
   </footer>
 </main>
 <script>
@@ -239,6 +255,31 @@ p,ul{{margin:0}}
 """
 
 
+
+def pdf():
+    """galerie.pdf, à côté de la page : Chrome sans interface imprime la page servie (les images et les
+    polices se chargent par le serveur local). Le format vient de @page ; on relit le /MediaBox."""
+    import re, subprocess, time
+    port = next((a.split("=")[1] for a in sys.argv if a.startswith("--port=")), "5497")
+    sortie = SORTIE.parent / "galerie.pdf"
+    chrome = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    profil = pathlib.Path("/tmp") / f"galerie-pdf-{int(time.time())}"
+    proc = subprocess.Popen([chrome, "--headless=new", "--disable-gpu", "--no-pdf-header-footer", f"--user-data-dir={profil}",
+                             "--virtual-time-budget=8000", f"--print-to-pdf={sortie}",
+                             f"http://localhost:{port}/modules-autonomes/galerie/"],
+                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    debut = sortie.stat().st_mtime if sortie.exists() else 0
+    for _ in range(90):   # Chrome écrit le PDF puis tarde parfois à rendre la main : on n'attend que le fichier
+        time.sleep(1)
+        if sortie.exists() and sortie.stat().st_mtime > debut and sortie.stat().st_size > 10000:
+            time.sleep(2); break
+    proc.kill()
+    b = sortie.read_bytes()
+    boites = set(re.findall(rb"/MediaBox\s*\[\s*0 0 ([\d.]+) ([\d.]+)", b))
+    pages = len(re.findall(rb"/Type\s*/Page[^s]", b))
+    assert boites == {(b"612", b"792")}, f"format inattendu : {boites}"
+    print(f"{sortie.relative_to(RACINE)} — {pages} pages lettre, {len(b) // 1024} Ko")
+
 if __name__ == "__main__":
     for p in PRODUITS:
         img = (SORTIE.parent / p[6]).resolve()
@@ -247,3 +288,6 @@ if __name__ == "__main__":
     SORTIE.parent.mkdir(parents=True, exist_ok=True)
     SORTIE.write_text(page(), encoding="utf-8")
     print(f"{SORTIE.relative_to(RACINE)} — {len(PRODUITS)} produits")
+    if "--pdf" in sys.argv:
+        pdf()
+

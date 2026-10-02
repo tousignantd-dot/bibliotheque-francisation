@@ -19,6 +19,7 @@ build/francoeur_captures.mjs, plus une scène jouée en ligne avec un code
 d'essai), réduites en JPEG à côté du dépliant. Tout ce qui se compte (mots,
 clients, gestes, langues, prix) est relu dans le contenu.
 """
+from qr_bloc import bloc  # le code QR de l'application (2 oct. 2026)
 import html, importlib.util, json, pathlib, sys
 
 RACINE = pathlib.Path(__file__).resolve().parent.parent
@@ -416,6 +417,7 @@ def page(t):
     <h1>{t['h1']}</h1>
     <p class="chapeau">{E(t['chapeau'])}</p>
     <a class="cta" href="{t['app']}" target="_blank" rel="noopener">Essayer gratuitement</a>
+    {bloc(t['app'], t['titre'].split(' — ')[0])}
   </div>
   <div class="visuel" aria-hidden="true">
     <div class="tel a"><img src="{cap}{t['une'][0]}.jpg" alt=""></div>
