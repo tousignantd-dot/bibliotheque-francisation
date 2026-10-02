@@ -27,9 +27,12 @@ def bloc(chemin, nom, cote=112):
     lisible = html.escape(adresse.replace("https://", ""))
     return f"""<div class="qrb">{carre}<p><b>Sur votre téléphone</b><br>Visez ce code avec l'appareil photo, ou tapez
   <span class="qrb-url">{lisible}</span></p></div>
+<p class="qrb-pdf"><a href="/{chemin.strip('/')}/fiche.pdf" target="_blank" rel="noopener">La fiche d'une page, à imprimer (PDF)</a></p>
 <style>.qrb{{display:flex;align-items:center;gap:14px;margin-top:16px;max-width:430px}}
 .qrb svg{{flex:none;border-radius:6px;border:1px solid #E2E1DC}}
 .qrb p{{margin:0;font-size:14px;line-height:1.4}}
 .qrb-url{{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;word-break:break-all}}
 @media (max-width:640px){{.qrb{{display:none}}}}
+.qrb-pdf{{margin:10px 0 0;font-size:14px}}
+@media print{{.qrb-pdf{{display:none}}}}
 @media print{{.qrb{{display:flex!important;break-inside:avoid}}}}</style>"""
