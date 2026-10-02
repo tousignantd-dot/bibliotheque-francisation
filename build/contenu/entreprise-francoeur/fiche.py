@@ -12,6 +12,17 @@ traductions.json sous `fiche` ; tant qu'elles manquent, la fiche imprime le
 français seul pour ces lignes, et le dit.
 """
 
+# Audit, tour 3 (A3, majeur) : ce que le vendeur décide seul n'était écrit
+# nulle part, et la mise de côté recevait trois verdicts. LA RÈGLE, écrite une
+# fois, reprise par la phrase « relais » ci-dessous, le guide, les clients du
+# magasin et « Ce que je réponds ».
+# Simplifiée le 2 oct. 2026 (Daniel, après la partie C de l'hôtel : « fais quelque
+# chose de simple ») : une question, qui décide, l'exception. Avant : « Mettre de
+# côté sans argent : vous, avec le nom et le numéro. Argent, remboursement,
+# exception : la gérante. »
+REGLE_RELAIS = ("Qui décide ? S'il y a de l'argent, un remboursement, une plainte ou une exception, "
+                "c'est la gérante. Une mise de côté sans argent, c'est vous : prenez le nom et le numéro.")
+
 # (id, la phrase à dire, quand s'en servir)
 PHRASES = [
     ("accueil", "Bonjour ! Je peux vous aider ?",
@@ -25,11 +36,6 @@ PHRASES = [
     ("repeter", "Un instant, s'il vous plaît. Pouvez-vous répéter plus lentement ?",
      "Quand ça va trop vite. Faire semblant de comprendre fait perdre la vente."),
     ("relais", "Un instant. Je vais chercher la gérante.",
-     "Un retour, une plainte, de l'argent (un dépôt), une exception : la gérante. Une mise de côté sans argent, avec le nom et le numéro, vous la faites vous-même."),
+     REGLE_RELAIS),
 ]
-# Audit, tour 3 (A3, majeur) : ce que le vendeur décide seul n'était écrit
-# nulle part, et la mise de côté recevait trois verdicts. LA RÈGLE, une ligne,
-# reprise par le guide, les clients du magasin et « Ce que je réponds ».
-REGLE_RELAIS = ("Mettre de côté sans argent : vous, avec le nom et le numéro. "
-                "Argent, remboursement, exception : la gérante.")
 DEFI = ("Cette semaine, dites une fois « Je vais vérifier en arrière » au lieu de promettre.",)
