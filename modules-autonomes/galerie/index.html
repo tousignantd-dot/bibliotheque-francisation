@@ -16,11 +16,16 @@
   --action:#F2F1EE;--action-txt:#17181A;--vert:#5CC6B8;--vert-pale:#173733;--ambre:#F0A55A;--ambre-pale:#3A2A17;--ecran:#2A2C30}}
 :root[data-theme="dark"]{--sol:#151618;--carte:#1E2023;--encre:#F2F1EE;--texte:#C9CACC;--gris:#9A9DA1;--filet:#33363A;
   --action:#F2F1EE;--action-txt:#17181A;--vert:#5CC6B8;--vert-pale:#173733;--ambre:#F0A55A;--ambre-pale:#3A2A17;--ecran:#2A2C30}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .ecran{background:color-mix(in srgb,var(--c) 30%,#1E2023)}
+  :root:not([data-theme="light"]) .langue{color:color-mix(in srgb,var(--c) 45%,#FFFFFF)}}
+:root[data-theme="dark"] .ecran{background:color-mix(in srgb,var(--c) 30%,#1E2023)}
+:root[data-theme="dark"] .langue{color:color-mix(in srgb,var(--c) 45%,#FFFFFF)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--sol);color:var(--texte);font:15px/1.55 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased}
 h1,h2,h3{margin:0;font-family:'Nunito',sans-serif;color:var(--encre);text-wrap:balance}
 p,ul{margin:0}
-.barre{background:var(--carte);border-bottom:2px solid var(--mauve);padding:14px 40px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.barre{background:var(--carte);border-bottom:2px solid var(--mauve)}
+.barre-in{max-width:1120px;margin:0 auto;padding:14px 40px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .nom{font-family:'Nunito',sans-serif;font-weight:900;font-size:28px;letter-spacing:-.035em;line-height:1;color:var(--encre);text-decoration:none;white-space:nowrap}
 .fr-i{position:relative;display:inline-block}
 .fr-point{position:absolute;left:1px;top:2px;width:7px;height:7px;border-radius:999px;background:var(--mauve)}
@@ -34,11 +39,11 @@ p,ul{margin:0}
 .famille h2{font-size:26px;font-weight:900;border-top:2px solid var(--encre);padding-top:12px}
 .intro{margin-top:8px;max-width:70ch;color:var(--gris)}
 .grille{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px;margin-top:22px}
-.carte{background:var(--carte);border:1px solid var(--filet);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
-.ecran{display:block;background:var(--ecran);padding:22px 22px 0;height:300px;overflow:hidden}
+.carte{background:var(--carte);border:1px solid var(--filet);border-top:5px solid var(--c);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+.ecran{display:block;background:var(--c-pale);padding:22px 22px 0;height:300px;overflow:hidden}
 .ecran img{display:block;width:190px;height:auto;margin:0 auto;border-radius:22px 22px 0 0;border:6px solid #17181A;border-bottom:0;box-shadow:0 8px 24px rgba(0,0,0,.12)}
 .corps{padding:18px 22px 22px;display:flex;flex-direction:column;gap:10px;flex:1}
-.langue{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gris)}
+.langue{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--c)}
 .carte h3{font-size:22px;font-weight:900;letter-spacing:-.015em;line-height:1.15}
 .accroche{font-size:15px;color:var(--encre)}
 .carte ul{padding-left:18px;font-size:14px}
@@ -52,29 +57,29 @@ p,ul{margin:0}
 .qr{margin:0;display:flex;flex-direction:column;align-items:center;gap:4px;flex:none}
 .qr svg{display:block;width:96px;height:96px;border-radius:6px}
 .qr figcaption{font-size:11px;line-height:1.3;color:var(--gris);text-align:center;max-width:110px}
-.btn{display:inline-block;padding:10px 16px;border-radius:10px;background:var(--action);color:var(--action-txt);font-weight:600;font-size:14px;text-decoration:none}
+.btn{display:inline-block;padding:10px 16px;border-radius:10px;background:var(--c,var(--action));color:#FFFFFF;font-weight:600;font-size:14px;text-decoration:none}
 .btn.sec{background:transparent;color:var(--encre);border:1px solid var(--filet)}
 .btn:focus-visible{outline:3px solid var(--mauve);outline-offset:2px}
 .pied{margin-top:64px;padding-top:18px;border-top:1px solid var(--filet);font-size:13px;color:var(--gris);display:flex;gap:18px;flex-wrap:wrap}
 .pied a{color:var(--gris)}
 @media (max-width:640px){
-  .barre{padding:12px 16px} .trait,.desc{display:none}
+  .barre-in{padding:12px 16px} .trait,.desc{display:none}
   .page{padding:0 16px 64px} .tete{padding-top:32px} .tete h1{font-size:32px} .tete p{font-size:16px}
   .grille{grid-template-columns:1fr} .qr{display:none} .ecran{height:250px} .ecran img{width:160px}
 }
 </style>
 </head>
 <body>
-<header class="barre">
+<header class="barre"><div class="barre-in">
   <a class="nom" href="/" aria-label="francis">franc<span class="fr-i">ı<span class="fr-point"></span></span>s</a>
   <span class="trait"></span><span class="desc">Aide à l'apprentissage des langues</span>
-</header>
+</div></header>
 <main class="page">
   <div class="tete">
     <h1>Nos applications</h1>
     <p>Des langues pour voyager et pour travailler, dans le téléphone. Sans compte, sans installation : on ouvre et on commence.</p>
   </div>
-  <section class="famille"><h2>Pour voyager</h2><p class="intro">Une langue pour partir : on prépare le voyage chez soi, on le garde dans le téléphone sur place.</p><div class="grille"><article class="carte" id="compostelle">
+  <section class="famille"><h2>Pour voyager</h2><p class="intro">Une langue pour partir : on prépare le voyage chez soi, on le garde dans le téléphone sur place.</p><div class="grille"><article class="carte" id="compostelle" style="--c:#2C5594;--c-pale:#E3EBF7">
   <a class="ecran" href="../compostelle/" tabindex="-1" aria-hidden="true"><img src="../compostelle/depliant/accueil.jpg" alt="" loading="lazy" width="520" height="1125"></a>
   <div class="corps">
     <p class="langue">Espagnol</p>
@@ -89,7 +94,7 @@ p,ul{margin:0}
     </div>
   </div>
 </article>
-<article class="carte" id="toronto">
+<article class="carte" id="toronto" style="--c:#C8102E;--c-pale:#FBE7EA">
   <a class="ecran" href="../toronto/" tabindex="-1" aria-hidden="true"><img src="../toronto/depliant/accueil.jpg" alt="" loading="lazy" width="520" height="1125"></a>
   <div class="corps">
     <p class="langue">Anglais</p>
@@ -104,7 +109,7 @@ p,ul{margin:0}
     </div>
   </div>
 </article>
-<article class="carte" id="montreal">
+<article class="carte" id="montreal" style="--c:#B8325A;--c-pale:#FFE3EA">
   <a class="ecran" href="../montreal/" tabindex="-1" aria-hidden="true"><img src="montreal.jpg" alt="" loading="lazy" width="520" height="1125"></a>
   <div class="corps">
     <p class="langue">Français · English · Español</p>
@@ -118,7 +123,7 @@ p,ul{margin:0}
       <figure class="qr"><svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 45 45" shape-rendering="crispEdges" role="img" aria-label="Code QR : Montréal en poche"><rect width="45" height="45" fill="#FFFFFF"/><path fill="#17181A" d="M4 4h7v1h-7zM12 4h2v1h-2zM16 4h3v1h-3zM22 4h1v1h-1zM24 4h1v1h-1zM26 4h1v1h-1zM28 4h1v1h-1zM30 4h2v1h-2zM34 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM17 5h2v1h-2zM22 5h4v1h-4zM27 5h3v1h-3zM31 5h1v1h-1zM34 5h1v1h-1zM40 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM12 6h2v1h-2zM16 6h1v1h-1zM18 6h1v1h-1zM20 6h2v1h-2zM26 6h1v1h-1zM30 6h1v1h-1zM32 6h1v1h-1zM34 6h1v1h-1zM36 6h3v1h-3zM40 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM12 7h2v1h-2zM15 7h1v1h-1zM18 7h2v1h-2zM21 7h1v1h-1zM24 7h1v1h-1zM26 7h1v1h-1zM31 7h1v1h-1zM34 7h1v1h-1zM36 7h3v1h-3zM40 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM14 8h2v1h-2zM18 8h2v1h-2zM21 8h1v1h-1zM25 8h1v1h-1zM27 8h1v1h-1zM29 8h3v1h-3zM34 8h1v1h-1zM36 8h3v1h-3zM40 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h1v1h-1zM14 9h3v1h-3zM19 9h5v1h-5zM26 9h1v1h-1zM30 9h3v1h-3zM34 9h1v1h-1zM40 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h1v1h-1zM28 10h1v1h-1zM30 10h1v1h-1zM32 10h1v1h-1zM34 10h7v1h-7zM12 11h3v1h-3zM17 11h2v1h-2zM20 11h1v1h-1zM22 11h7v1h-7zM5 12h1v1h-1zM7 12h1v1h-1zM9 12h4v1h-4zM14 12h1v1h-1zM16 12h3v1h-3zM21 12h3v1h-3zM25 12h1v1h-1zM27 12h5v1h-5zM33 12h3v1h-3zM37 12h2v1h-2zM40 12h1v1h-1zM4 13h1v1h-1zM8 13h2v1h-2zM11 13h1v1h-1zM13 13h2v1h-2zM16 13h1v1h-1zM18 13h1v1h-1zM21 13h4v1h-4zM32 13h3v1h-3zM39 13h2v1h-2zM4 14h1v1h-1zM7 14h6v1h-6zM14 14h1v1h-1zM17 14h1v1h-1zM19 14h4v1h-4zM24 14h3v1h-3zM34 14h1v1h-1zM36 14h2v1h-2zM39 14h2v1h-2zM11 15h1v1h-1zM13 15h1v1h-1zM15 15h1v1h-1zM18 15h2v1h-2zM22 15h6v1h-6zM29 15h1v1h-1zM31 15h2v1h-2zM39 15h2v1h-2zM4 16h5v1h-5zM10 16h4v1h-4zM15 16h3v1h-3zM19 16h1v1h-1zM22 16h2v1h-2zM25 16h1v1h-1zM29 16h1v1h-1zM33 16h3v1h-3zM37 16h1v1h-1zM39 16h1v1h-1zM4 17h1v1h-1zM7 17h1v1h-1zM11 17h3v1h-3zM16 17h3v1h-3zM22 17h3v1h-3zM26 17h1v1h-1zM28 17h3v1h-3zM34 17h2v1h-2zM37 17h1v1h-1zM39 17h2v1h-2zM4 18h5v1h-5zM10 18h1v1h-1zM12 18h1v1h-1zM14 18h1v1h-1zM16 18h1v1h-1zM19 18h1v1h-1zM23 18h1v1h-1zM25 18h1v1h-1zM27 18h4v1h-4zM34 18h1v1h-1zM38 18h3v1h-3zM4 19h2v1h-2zM8 19h2v1h-2zM12 19h1v1h-1zM16 19h1v1h-1zM19 19h6v1h-6zM29 19h1v1h-1zM31 19h2v1h-2zM39 19h1v1h-1zM5 20h4v1h-4zM10 20h4v1h-4zM17 20h3v1h-3zM21 20h1v1h-1zM26 20h1v1h-1zM28 20h1v1h-1zM33 20h2v1h-2zM37 20h3v1h-3zM4 21h1v1h-1zM7 21h2v1h-2zM13 21h1v1h-1zM15 21h2v1h-2zM18 21h4v1h-4zM25 21h1v1h-1zM27 21h1v1h-1zM30 21h1v1h-1zM32 21h1v1h-1zM34 21h1v1h-1zM36 21h1v1h-1zM38 21h1v1h-1zM40 21h1v1h-1zM7 22h1v1h-1zM9 22h3v1h-3zM13 22h3v1h-3zM18 22h1v1h-1zM22 22h1v1h-1zM24 22h1v1h-1zM26 22h1v1h-1zM28 22h1v1h-1zM32 22h3v1h-3zM36 22h1v1h-1zM39 22h2v1h-2zM6 23h4v1h-4zM14 23h5v1h-5zM24 23h2v1h-2zM27 23h2v1h-2zM30 23h1v1h-1zM32 23h1v1h-1zM35 23h1v1h-1zM38 23h1v1h-1zM6 24h3v1h-3zM10 24h9v1h-9zM20 24h1v1h-1zM23 24h3v1h-3zM29 24h2v1h-2zM32 24h1v1h-1zM34 24h3v1h-3zM39 24h1v1h-1zM7 25h1v1h-1zM13 25h1v1h-1zM15 25h1v1h-1zM17 25h7v1h-7zM25 25h1v1h-1zM28 25h2v1h-2zM33 25h2v1h-2zM38 25h3v1h-3zM4 26h1v1h-1zM6 26h3v1h-3zM10 26h2v1h-2zM14 26h1v1h-1zM16 26h2v1h-2zM20 26h1v1h-1zM23 26h1v1h-1zM25 26h1v1h-1zM29 26h1v1h-1zM33 26h1v1h-1zM35 26h3v1h-3zM39 26h2v1h-2zM4 27h1v1h-1zM7 27h2v1h-2zM11 27h1v1h-1zM15 27h3v1h-3zM19 27h4v1h-4zM25 27h2v1h-2zM28 27h2v1h-2zM33 27h2v1h-2zM36 27h1v1h-1zM39 27h1v1h-1zM7 28h1v1h-1zM9 28h3v1h-3zM13 28h1v1h-1zM15 28h2v1h-2zM20 28h2v1h-2zM24 28h2v1h-2zM29 28h1v1h-1zM31 28h1v1h-1zM33 28h2v1h-2zM39 28h1v1h-1zM6 29h1v1h-1zM9 29h1v1h-1zM12 29h4v1h-4zM18 29h1v1h-1zM20 29h2v1h-2zM23 29h1v1h-1zM26 29h1v1h-1zM28 29h1v1h-1zM33 29h3v1h-3zM37 29h4v1h-4zM4 30h1v1h-1zM6 30h1v1h-1zM8 30h1v1h-1zM10 30h1v1h-1zM13 30h6v1h-6zM24 30h2v1h-2zM27 30h1v1h-1zM32 30h6v1h-6zM39 30h2v1h-2zM5 31h4v1h-4zM11 31h4v1h-4zM16 31h1v1h-1zM18 31h2v1h-2zM21 31h3v1h-3zM25 31h1v1h-1zM27 31h1v1h-1zM29 31h1v1h-1zM32 31h1v1h-1zM34 31h1v1h-1zM36 31h2v1h-2zM4 32h3v1h-3zM8 32h1v1h-1zM10 32h4v1h-4zM16 32h1v1h-1zM22 32h2v1h-2zM25 32h3v1h-3zM31 32h6v1h-6zM38 32h1v1h-1zM40 32h1v1h-1zM12 33h1v1h-1zM14 33h1v1h-1zM16 33h3v1h-3zM21 33h2v1h-2zM24 33h2v1h-2zM27 33h6v1h-6zM36 33h1v1h-1zM40 33h1v1h-1zM4 34h7v1h-7zM12 34h3v1h-3zM20 34h1v1h-1zM22 34h2v1h-2zM26 34h1v1h-1zM29 34h4v1h-4zM34 34h1v1h-1zM36 34h1v1h-1zM38 34h3v1h-3zM4 35h1v1h-1zM10 35h1v1h-1zM12 35h2v1h-2zM15 35h1v1h-1zM17 35h4v1h-4zM23 35h3v1h-3zM28 35h1v1h-1zM30 35h1v1h-1zM32 35h1v1h-1zM36 35h1v1h-1zM38 35h1v1h-1zM4 36h1v1h-1zM6 36h3v1h-3zM10 36h1v1h-1zM14 36h2v1h-2zM20 36h1v1h-1zM22 36h1v1h-1zM26 36h1v1h-1zM28 36h3v1h-3zM32 36h6v1h-6zM39 36h1v1h-1zM4 37h1v1h-1zM6 37h3v1h-3zM10 37h1v1h-1zM12 37h2v1h-2zM15 37h1v1h-1zM17 37h1v1h-1zM19 37h2v1h-2zM22 37h3v1h-3zM26 37h1v1h-1zM28 37h2v1h-2zM31 37h1v1h-1zM33 37h1v1h-1zM35 37h2v1h-2zM40 37h1v1h-1zM4 38h1v1h-1zM6 38h3v1h-3zM10 38h1v1h-1zM14 38h1v1h-1zM17 38h2v1h-2zM24 38h3v1h-3zM29 38h5v1h-5zM36 38h2v1h-2zM40 38h1v1h-1zM4 39h1v1h-1zM10 39h1v1h-1zM12 39h1v1h-1zM18 39h1v1h-1zM21 39h1v1h-1zM25 39h2v1h-2zM29 39h1v1h-1zM32 39h2v1h-2zM4 40h7v1h-7zM16 40h4v1h-4zM22 40h4v1h-4zM29 40h1v1h-1zM31 40h2v1h-2zM35 40h1v1h-1zM39 40h2v1h-2z"/></svg><figcaption>Scannez pour l'ouvrir sur votre téléphone</figcaption></figure>
     </div>
   </div>
-</article></div></section><section class="famille"><h2>Pour le travail</h2><p class="intro">La langue d&#x27;un poste, sur les objets et les gestes de ce poste, jusqu&#x27;à la situation jouée.</p><div class="grille"><article class="carte" id="francoeur">
+</article></div></section><section class="famille"><h2>Pour le travail</h2><p class="intro">La langue d&#x27;un poste, sur les objets et les gestes de ce poste, jusqu&#x27;à la situation jouée.</p><div class="grille"><article class="carte" id="francoeur" style="--c:#2B4A78;--c-pale:#E6ECF4">
   <a class="ecran" href="../francoeur-planches/" tabindex="-1" aria-hidden="true"><img src="../francoeur-planches/depliant/magasin.jpg" alt="" loading="lazy" width="520" height="1125"></a>
   <div class="corps">
     <p class="langue">Français</p>
@@ -133,7 +138,7 @@ p,ul{margin:0}
     </div>
   </div>
 </article>
-<article class="carte" id="hotel">
+<article class="carte" id="hotel" style="--c:#0F5E63;--c-pale:#DDEDEC">
   <a class="ecran" href="../hotel-reception/" tabindex="-1" aria-hidden="true"><img src="../hotel-reception/depliant/comptoir.jpg" alt="" loading="lazy" width="520" height="1125"></a>
   <div class="corps">
     <p class="langue">Français · English · Español</p>
@@ -148,7 +153,7 @@ p,ul{margin:0}
     </div>
   </div>
 </article>
-<article class="carte" id="restaurant">
+<article class="carte" id="restaurant" style="--c:#8A2E1C;--c-pale:#F6E7E1">
   <a class="ecran" href="../restaurant-planches/" tabindex="-1" aria-hidden="true"><img src="restaurant.jpg" alt="" loading="lazy" width="520" height="1125"></a>
   <div class="corps">
     <p class="langue">Français</p>

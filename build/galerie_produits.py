@@ -59,6 +59,17 @@ PRODUITS = [
      "restaurant.jpg", "../restaurant-planches/", "", "preparation"),
 ]
 
+# La couleur de chaque carte : celle de l'application elle-même (filet, plaque de l'écran, bouton).
+# Le mauve reste à la marque seule. Texte blanc sur chaque teinte : contraste ≥ 4,5:1.
+COULEURS = {
+    "compostelle": ("#2C5594", "#E3EBF7"),
+    "toronto": ("#C8102E", "#FBE7EA"),
+    "montreal": ("#B8325A", "#FFE3EA"),
+    "francoeur": ("#2B4A78", "#E6ECF4"),
+    "hotel": ("#0F5E63", "#DDEDEC"),
+    "restaurant": ("#8A2E1C", "#F6E7E1"),
+}
+
 FAMILLES = [
     ("voyage", "Pour voyager", "Une langue pour partir : on prépare le voyage chez soi, on le garde dans le téléphone sur place."),
     ("travail", "Pour le travail", "La langue d'un poste, sur les objets et les gestes de ce poste, jusqu'à la situation jouée."),
@@ -84,7 +95,8 @@ def carte(p):
     liens = f'<a class="btn" href="{e(adresse)}">Ouvrir l\'application</a>'
     if depliant:
         liens += f'<a class="btn sec" href="{e(depliant)}">Voir la présentation</a>'
-    return f"""<article class="carte" id="{pid}">
+    c, pale = COULEURS[pid]
+    return f"""<article class="carte" id="{pid}" style="--c:{c};--c-pale:{pale}">
   <a class="ecran" href="{e(adresse)}" tabindex="-1" aria-hidden="true"><img src="{e(image)}" alt="" loading="lazy" width="520" height="1125"></a>
   <div class="corps">
     <p class="langue">{e(langue)}</p>
@@ -124,11 +136,16 @@ def page():
   --action:#F2F1EE;--action-txt:#17181A;--vert:#5CC6B8;--vert-pale:#173733;--ambre:#F0A55A;--ambre-pale:#3A2A17;--ecran:#2A2C30}}}}
 :root[data-theme="dark"]{{--sol:#151618;--carte:#1E2023;--encre:#F2F1EE;--texte:#C9CACC;--gris:#9A9DA1;--filet:#33363A;
   --action:#F2F1EE;--action-txt:#17181A;--vert:#5CC6B8;--vert-pale:#173733;--ambre:#F0A55A;--ambre-pale:#3A2A17;--ecran:#2A2C30}}
+@media (prefers-color-scheme:dark){{:root:not([data-theme="light"]) .ecran{{background:color-mix(in srgb,var(--c) 30%,#1E2023)}}
+  :root:not([data-theme="light"]) .langue{{color:color-mix(in srgb,var(--c) 45%,#FFFFFF)}}}}
+:root[data-theme="dark"] .ecran{{background:color-mix(in srgb,var(--c) 30%,#1E2023)}}
+:root[data-theme="dark"] .langue{{color:color-mix(in srgb,var(--c) 45%,#FFFFFF)}}
 *{{box-sizing:border-box}}
 body{{margin:0;background:var(--sol);color:var(--texte);font:15px/1.55 'IBM Plex Sans','Helvetica Neue',Arial,sans-serif;-webkit-font-smoothing:antialiased}}
 h1,h2,h3{{margin:0;font-family:'Nunito',sans-serif;color:var(--encre);text-wrap:balance}}
 p,ul{{margin:0}}
-.barre{{background:var(--carte);border-bottom:2px solid var(--mauve);padding:14px 40px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}}
+.barre{{background:var(--carte);border-bottom:2px solid var(--mauve)}}
+.barre-in{{max-width:1120px;margin:0 auto;padding:14px 40px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}}
 .nom{{font-family:'Nunito',sans-serif;font-weight:900;font-size:28px;letter-spacing:-.035em;line-height:1;color:var(--encre);text-decoration:none;white-space:nowrap}}
 .fr-i{{position:relative;display:inline-block}}
 .fr-point{{position:absolute;left:1px;top:2px;width:7px;height:7px;border-radius:999px;background:var(--mauve)}}
@@ -142,11 +159,11 @@ p,ul{{margin:0}}
 .famille h2{{font-size:26px;font-weight:900;border-top:2px solid var(--encre);padding-top:12px}}
 .intro{{margin-top:8px;max-width:70ch;color:var(--gris)}}
 .grille{{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px;margin-top:22px}}
-.carte{{background:var(--carte);border:1px solid var(--filet);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}}
-.ecran{{display:block;background:var(--ecran);padding:22px 22px 0;height:300px;overflow:hidden}}
+.carte{{background:var(--carte);border:1px solid var(--filet);border-top:5px solid var(--c);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}}
+.ecran{{display:block;background:var(--c-pale);padding:22px 22px 0;height:300px;overflow:hidden}}
 .ecran img{{display:block;width:190px;height:auto;margin:0 auto;border-radius:22px 22px 0 0;border:6px solid #17181A;border-bottom:0;box-shadow:0 8px 24px rgba(0,0,0,.12)}}
 .corps{{padding:18px 22px 22px;display:flex;flex-direction:column;gap:10px;flex:1}}
-.langue{{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gris)}}
+.langue{{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--c)}}
 .carte h3{{font-size:22px;font-weight:900;letter-spacing:-.015em;line-height:1.15}}
 .accroche{{font-size:15px;color:var(--encre)}}
 .carte ul{{padding-left:18px;font-size:14px}}
@@ -160,23 +177,23 @@ p,ul{{margin:0}}
 .qr{{margin:0;display:flex;flex-direction:column;align-items:center;gap:4px;flex:none}}
 .qr svg{{display:block;width:96px;height:96px;border-radius:6px}}
 .qr figcaption{{font-size:11px;line-height:1.3;color:var(--gris);text-align:center;max-width:110px}}
-.btn{{display:inline-block;padding:10px 16px;border-radius:10px;background:var(--action);color:var(--action-txt);font-weight:600;font-size:14px;text-decoration:none}}
+.btn{{display:inline-block;padding:10px 16px;border-radius:10px;background:var(--c,var(--action));color:#FFFFFF;font-weight:600;font-size:14px;text-decoration:none}}
 .btn.sec{{background:transparent;color:var(--encre);border:1px solid var(--filet)}}
 .btn:focus-visible{{outline:3px solid var(--mauve);outline-offset:2px}}
 .pied{{margin-top:64px;padding-top:18px;border-top:1px solid var(--filet);font-size:13px;color:var(--gris);display:flex;gap:18px;flex-wrap:wrap}}
 .pied a{{color:var(--gris)}}
 @media (max-width:640px){{
-  .barre{{padding:12px 16px}} .trait,.desc{{display:none}}
+  .barre-in{{padding:12px 16px}} .trait,.desc{{display:none}}
   .page{{padding:0 16px 64px}} .tete{{padding-top:32px}} .tete h1{{font-size:32px}} .tete p{{font-size:16px}}
   .grille{{grid-template-columns:1fr}} .qr{{display:none}} .ecran{{height:250px}} .ecran img{{width:160px}}
 }}
 </style>
 </head>
 <body>
-<header class="barre">
+<header class="barre"><div class="barre-in">
   <a class="nom" href="/" aria-label="francis">franc<span class="fr-i">ı<span class="fr-point"></span></span>s</a>
   <span class="trait"></span><span class="desc">Aide à l'apprentissage des langues</span>
-</header>
+</div></header>
 <main class="page">
   <div class="tete">
     <h1>Nos applications</h1>
