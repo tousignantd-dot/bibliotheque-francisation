@@ -60,6 +60,8 @@ INTERFACE = {
     "salle": "Salle",
     "deux": "Cuisine et salle",
     "toucher": "Touchez un mot pour l'entendre.",
+    # Avis du 2 oct. 2026 (Daniel) : les allergènes restent, mais la trousse ne remplace pas la procédure.
+    "avis_allergenes": "La trousse enseigne les mots des allergènes, pas la procédure. Devant un client allergique, suivez toujours la règle de votre établissement et vérifiez auprès du cuisinier ou du gérant.",
     "ecouter": "Écouter",
     "voir": "Voir dans ma langue",
     "cacher": "Cacher",

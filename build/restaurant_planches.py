@@ -319,6 +319,8 @@ body{margin:0;background:var(--surface-page);color:var(--text-body);font-family:
 .carte .trad[hidden]{display:none}
 .carte .trad small{display:block;font-size:15px;font-weight:600;color:var(--text-body);margin-top:6px}
 .carte .trad .relu{display:block;font-size:12px;font-weight:600;color:var(--text-muted);margin-top:8px}
+.avis-alg{margin:0 0 14px;padding:12px 14px;border-radius:10px;background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-ink);font-size:15px;font-weight:700;line-height:1.4}
+.avis-alg .appui{display:block;font-weight:500;margin-top:4px}
 .carte .piege{margin-top:10px;padding:10px 12px;border-radius:10px;background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-ink);font-size:15px;font-weight:700}
 .carte .note{margin-top:10px;font-size:15px;color:var(--text-body)}
 .carte .nav{display:flex;justify-content:space-between;gap:12px;margin-top:14px}
@@ -604,6 +606,7 @@ function planche(k){
   if (!p) return planches();
   liste = D.mots.filter(m => m.p === k);
   app.innerHTML = tete('p_' + k, 'toucher', 'planches')
+    + (k === 'allergenes' ? '<div class="avis-alg" role="note">' + t('avis_allergenes') + '</div>' : '')
     + '<div class="planche">' + liste.map((m, i) =>
       '<button class="art' + (m.piege ? ' piege' : '') + '" data-i="' + i + '"><span class="num">' + (i + 1) + '</span>'
       + illustration(m, false) + '<span class="mot">' + esc(m.mot) + '</span></button>').join('') + '</div>';
