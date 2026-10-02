@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chez Jocelyne en application</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   UN MODULE POUR LA VENTE DE CHAUSSURES — LE CADRAGE
+   Chantier « formation en entreprise », second secteur :
+   le commerce de détail. Écrite à la main, comme
+   analyse-marche.html — ses chiffres viennent d'ailleurs et
+   doivent vieillir visiblement.
+
+   Vert : ce que le tour de main actuel produit déjà.
+   Ambre : ce qui attend votre décision.
+   Rouge : l'argument de vente qui tient à une obligation légale.
+   L'acier ne fait que la structure.
+   ═══════════════════════════════════════════════════════════ */
+
+:root{
+  --ground:#F7F7F5; --card:#FFFFFF; --sunken:#FBFBFA;
+  --ink:#17181A; --body:#3A3D40; --muted:#6E7175;
+  --line:#E4E4E0; --line-fort:#D2D2CD;
+
+  --fait:#0A8F5B;    --fait-bg:#E6F5EE;
+  --decid:#C07A08;   --decid-bg:#FBF2E2;
+  --loi:#C7302B;     --loi-bg:#FBEDEC;
+  --acier:#1D6B8F;   --acier-bg:#E7F0F6;
+
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#151618; --card:#1D1F22; --sunken:#212326;
+    --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+    --line:#2E3135; --line-fort:#3D4146;
+    --fait:#4BC48D; --fait-bg:#12291F;
+    --decid:#E0A63F; --decid-bg:#2C2213;
+    --loi:#EE7A73; --loi-bg:#2E1917;
+    --acier:#6DAFD2; --acier-bg:#14242C;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#151618; --card:#1D1F22; --sunken:#212326;
+  --ink:#F2F2F0; --body:#CFD1D3; --muted:#94979B;
+  --line:#2E3135; --line-fort:#3D4146;
+  --fait:#4BC48D; --fait-bg:#12291F;
+  --decid:#E0A63F; --decid-bg:#2C2213;
+  --loi:#EE7A73; --loi-bg:#2E1917;
+  --acier:#6DAFD2; --acier-bg:#14242C;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--body);
+  font-family:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.doc{max-width:880px;margin:0 auto;padding:56px 24px 96px}
+
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--acier);margin:0 0 14px}
+h1{font-family:Newsreader,Georgia,serif;font-size:clamp(38px,6.4vw,58px);line-height:1.04;
+  font-weight:500;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px;text-wrap:balance}
+.chapeau{font-size:19px;line-height:1.6;color:var(--body);margin:0;max-width:62ch}
+.chapeau strong{color:var(--ink);font-weight:700}
+h2{font-family:Newsreader,Georgia,serif;font-size:29px;line-height:1.2;font-weight:600;
+  letter-spacing:-.01em;color:var(--ink);margin:0 0 4px;text-wrap:balance}
+h3{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 6px}
+p{margin:0;max-width:68ch}
+section{display:flex;flex-direction:column;gap:16px;padding:44px 0 0;margin:44px 0 0;
+  border-top:1px solid var(--line)}
+section.premier{border-top:none;margin-top:0;padding-top:40px}
+code{font-family:var(--mono);font-size:.86em;background:var(--sunken);
+  border:1px solid var(--line);border-radius:4px;padding:1px 5px;color:var(--ink)}
+ul.simple{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+ul.simple li{max-width:66ch} ul.simple li strong{color:var(--ink)}
+em.art{font-style:normal;font-family:var(--mono);font-size:.82em;color:var(--muted);
+  white-space:nowrap}
+
+.these{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acier);
+  border-radius:3px;padding:26px 28px;display:flex;flex-direction:column;gap:12px}
+.these p{font-size:18px}
+.these .cle{font-family:Newsreader,Georgia,serif;font-size:23px;line-height:1.3;
+  font-weight:500;color:var(--ink);font-style:italic}
+
+/* ── Les décisions ─────────────────────────────────────── */
+.decisions{display:flex;flex-direction:column;gap:2px;counter-reset:d}
+.dec{counter-increment:d;background:var(--card);border:1px solid var(--line);
+  border-left:5px solid var(--decid);border-radius:3px;padding:19px 22px 19px 60px;
+  position:relative;display:flex;flex-direction:column;gap:8px}
+.dec.ok{border-left-color:var(--fait)}
+.dec::before{content:counter(d);position:absolute;left:24px;top:18px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+.dec .ligne{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+  justify-content:space-between}
+.dec p{font-size:15.5px}
+.dec .defaut{font-size:13.5px;color:var(--muted);font-style:italic}
+
+.badge{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.05em;
+  text-transform:uppercase;padding:3px 9px;border-radius:2px;white-space:nowrap}
+.b-fait{background:var(--fait-bg);color:var(--fait)}
+.b-dec{background:var(--decid-bg);color:var(--decid)}
+.b-loi{background:var(--loi-bg);color:var(--loi)}
+.b-n{background:var(--sunken);color:var(--muted);border:1px solid var(--line)}
+
+/* ── Tableaux ──────────────────────────────────────────── */
+.defile{overflow-x:auto;border:1px solid var(--line);border-radius:3px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:15px;min-width:640px}
+caption{caption-side:top;text-align:left;padding:0 0 10px;font-size:13.5px;color:var(--muted)}
+th,td{padding:12px 15px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--muted);background:var(--sunken);white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.q{font-weight:700;color:var(--ink)}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td small{display:block;color:var(--muted);font-size:13px;line-height:1.45;margin-top:3px}
+tbody tr td:first-child{border-left:4px solid transparent}
+tr.l td:first-child{border-left-color:var(--loi)}
+tr.d td:first-child{border-left-color:var(--decid)}
+tr.f td:first-child{border-left-color:var(--fait)}
+
+/* ── Chiffres ──────────────────────────────────────────── */
+.chiffres{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.ch{background:var(--card);border:1px solid var(--line);border-radius:3px;
+  border-top:3px solid var(--acier);padding:15px 16px}
+.ch .n{font-family:Newsreader,Georgia,serif;font-size:30px;line-height:1;font-weight:500;
+  color:var(--ink);display:block;font-variant-numeric:tabular-nums}
+.ch .q{font-size:12.5px;font-weight:700;color:var(--muted);line-height:1.35;display:block;margin-top:7px}
+
+/* ── Marche à suivre ───────────────────────────────────── */
+ol.actions{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;
+  counter-reset:a}
+ol.actions li{counter-increment:a;background:var(--card);border:1px solid var(--line);
+  border-radius:3px;padding:18px 22px 18px 62px;position:relative;display:flex;
+  flex-direction:column;gap:6px}
+ol.actions li::before{content:counter(a);position:absolute;left:22px;top:17px;
+  font-family:var(--mono);font-size:14px;color:var(--muted)}
+ol.actions li p{font-size:15.5px}
+.qui{font-size:13px;color:var(--muted);font-style:italic}
+
+.reserve{border:1px dashed var(--line-fort);border-radius:3px;padding:20px 24px;
+  font-size:15px;color:var(--muted);display:flex;flex-direction:column;gap:9px}
+.reserve strong{color:var(--body)}
+.avert{background:var(--loi-bg);border:1px solid var(--loi);border-radius:3px;
+  padding:20px 24px;display:flex;flex-direction:column;gap:9px}
+.avert strong{color:var(--ink)}
+.avert p{font-size:15.5px;color:var(--body)}
+.pied{margin-top:52px;padding-top:22px;border-top:1px solid var(--line);font-size:13.5px;
+  color:var(--muted);display:flex;flex-direction:column;gap:5px}
+@media (max-width:620px){ .doc{padding:36px 18px 72px} }
+
+/* ── décisions à boutons (plan magasin de vêtements) ── */
+.dec2{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:12px 0}
+.dq{margin:0 0 10px;font-weight:700;color:var(--ink)}
+.dn{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--decid-bg);color:var(--decid);font-size:13px;margin-right:8px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{font:inherit;font-size:15px;text-align:left;cursor:pointer;background:var(--sunken);color:var(--body);border:1px solid var(--line-fort);border-radius:10px;padding:8px 12px}
+.opt:hover{border-color:var(--acier)}
+.opt[aria-pressed="true"]{background:var(--fait-bg);border-color:var(--fait);color:var(--ink);font-weight:700}
+.opt .tag{font-size:12px;color:var(--decid);font-weight:700;margin-left:4px}
+.dw{margin:10px 0 0;font-size:15px;color:var(--muted)}
+.btn-export{font:inherit;font-weight:700;cursor:pointer;background:var(--acier);color:#fff;border:0;border-radius:10px;padding:10px 16px}
+.etat{margin-left:12px;color:var(--muted);font-size:15px}
+table{display:block;overflow-x:auto}
+
+.champ{font:inherit;font-size:15px;width:100%;padding:8px 10px;border:1px solid var(--line-fort);border-radius:8px;
+  background:var(--card);color:var(--ink);margin-top:10px;box-sizing:border-box}
+table.cmp{display:table;width:100%;min-width:0}
+.cmp td{overflow-wrap:anywhere;vertical-align:top}
+.cmp td:first-child{width:9em}
+</style>
+<style>
+  .doc{padding-top:26px}
+  .retour{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;
+    color:var(--muted);text-decoration:none;margin-bottom:34px}
+  .retour:hover{color:var(--acier)}
+  table.cmp{width:100%;border-collapse:collapse;font-size:15px;background:var(--card);
+    border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  table.cmp th,table.cmp td{padding:13px 15px;text-align:left;vertical-align:top;
+    border-bottom:1px solid var(--line)}
+  table.cmp thead th{background:var(--sunken);font-size:12px;font-weight:800;
+    letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  table.cmp tbody tr:last-child td{border-bottom:0}
+  table.cmp td:first-child{font-weight:700;color:var(--ink)}
+  .roule{overflow-x:auto}
+  .voie{background:var(--card);border:1px solid var(--line);border-radius:3px;
+    padding:24px 26px;display:flex;flex-direction:column;gap:11px}
+  .voie.oui{border-color:var(--fait);border-width:2px;padding:23px 25px}
+  .voie.non{border-left:5px solid var(--loi)}
+  .voie h3{font-size:19px;font-family:Newsreader,Georgia,serif;font-weight:600;margin:0}
+  .voie .cout{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .verdict{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+    padding:3px 10px;border-radius:99px;align-self:flex-start}
+  .v-oui{background:var(--fait-bg);color:var(--fait)}
+  .v-peut{background:var(--decid-bg);color:var(--decid)}
+  .v-non{background:var(--loi-bg);color:var(--loi)}
+  .mes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:2px;
+    background:var(--line);border:1px solid var(--line);border-radius:3px;overflow:hidden}
+  .mes div{background:var(--card);padding:16px 18px}
+  .mes b{display:block;font-family:Newsreader,Georgia,serif;font-size:27px;font-weight:500;
+    color:var(--ink);line-height:1.1}
+  .mes span{font-size:13px;color:var(--muted)}
+  .planche{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .planche figure{margin:0;background:var(--card);border:1px solid var(--line);
+    border-radius:3px;overflow:hidden;display:flex;flex-direction:column}
+  .planche figure.large{grid-column:1 / -1}
+  .planche img{display:block;width:100%;height:auto;background:var(--sunken)}
+  .planche figcaption{padding:13px 16px 15px;font-size:14px;line-height:1.5;color:var(--muted);
+    border-top:1px solid var(--line)}
+  .planche figcaption b{display:block;color:var(--ink);font-size:14.5px;margin-bottom:2px}
+  @media (max-width:620px){ .planche{grid-template-columns:1fr} }
+  .doc p a,.doc li a,.doc td a{color:var(--acier);text-decoration:underline;
+    text-underline-offset:2px;text-decoration-thickness:1px}
+  ul.src{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:7px;font-size:14.5px}
+  ul.src li{color:var(--muted)} ul.src .d{font-family:var(--mono);font-size:12.5px}
+  h3.sous{font-family:Newsreader,Georgia,serif;font-size:21px;font-weight:600;
+    letter-spacing:-.01em;color:var(--ink);margin:14px 0 0}
+  @media (max-width:640px){ .doc{padding-left:18px;padding-right:18px} }
+</style>
+</head>
+<body><div class="doc">
+<a class="retour" href="/presentations.html#restauration"><span aria-hidden="true">&#8592;</span> Le classeur</a>
+<p class="eyebrow">Chez Jocelyne &middot; une application ?</p>
+<h1>En faire une application iPhone</h1>
+<p class="chapeau">L'écran des planches marche déjà sur un téléphone, dans le navigateur. La question est de savoir
+si une vraie application vaut l'effort : trois voies, ce qu'Apple exige, puis six décisions.</p>
+
+<section>
+  <h2>Ce que l'application emporterait</h2>
+  <p>L'écran tel que les générateurs le produisent : 186 mots, 429 fichiers de voix, les croquis et
+  le décor, environ 23 Mo en tout. Hors ligne, les mots, les exercices et le test marchent entièrement.
+  <b>Le service (le jeu de rôle) a toujours besoin du réseau</b> : les clients et le bilan passent par le serveur.</p>
+</section>
+
+<section>
+  <h2>Les trois voies</h2>
+  <div class="dec2"><p class="dq">1. Ce qu&#x27;on a déjà : le site installable</p><p>« Ajouter à l&#x27;écran d&#x27;accueil » dans Safari : une icône, le plein écran, le même écran que sur le Web.</p><table class="cmp"><tbody><tr><td><b>Coût</b></td><td>0 $</td></tr><tr><td><b>Travail</b></td><td>Aucun travail.</td></tr><tr><td><b>Ce qui coince</b></td><td>Rien dans l&#x27;App Store : il faut montrer le geste à chaque employé. Safari limite la place gardée hors ligne, et la dictée du navigateur est la partie la plus fragile sur iPhone.</td></tr></tbody></table></div><div class="dec2"><p class="dq">2. Une coquille autour de la page (recommandé)</p><p>Le même écran, emballé par Capacitor : les mots, les voix et les images dans l&#x27;application, le micro et la reconnaissance vocale d&#x27;Apple branchés en natif. Le même emballage sort une application Android.</p><table class="cmp"><tbody><tr><td><b>Coût</b></td><td>99 $ US par an (compte Apple) + 25 $ US une fois (Google)</td></tr><tr><td><b>Travail</b></td><td>Quelques jours, puis la révision d&#x27;Apple.</td></tr><tr><td><b>Ce qui coince</b></td><td>Apple refuse une page web simplement emballée (règle 4.2) : le hors-ligne complet et la dictée native sont ce qui la justifie. Une mise à jour du contenu passe par une nouvelle version, sauf si l&#x27;application va chercher le contenu au serveur.</td></tr></tbody></table></div><div class="dec2"><p class="dq">3. Une application native (SwiftUI)</p><p>Réécrire l&#x27;écran, les exercices, le test et le service en Swift.</p><table class="cmp"><tbody><tr><td><b>Coût</b></td><td>99 $ US par an</td></tr><tr><td><b>Travail</b></td><td>Des semaines, puis chaque correction faite deux fois.</td></tr><tr><td><b>Ce qui coince</b></td><td>Deux versions de la trousse à tenir à jour pour toujours, et rien pour Android. Ce que la méthode des trousses évite partout ailleurs : deux sources pour une même idée.</td></tr></tbody></table></div>
+</section>
+
+<section>
+  <h2>Ce qu'Apple exige</h2>
+  <table class="cmp"><tbody>
+  <tr><td><b>Plus qu'une page</b></td><td>Une page web emballée est refusée (règle 4.2). Le hors-ligne complet et la
+  dictée native en font une application.</td></tr>
+  <tr><td><b>Le paiement</b></td><td>Un contenu numérique acheté par une personne passe par Apple (règle 3.1.1),
+  15 % prélevés pour une petite entreprise. Vendu à une organisation pour ses employés, il peut se payer ailleurs
+  (règle 3.1.3(c)).</td></tr>
+  <tr><td><b>La vie privée</b></td><td>Une fiche à remplir chez Apple : le micro, la voix envoyée au service
+  d'assistance, ce qui est gardé. La <a href="/confidentialite.html">politique de confidentialité</a> existe ; elle
+  devra nommer l'application (Loi 25).</td></tr>
+  <tr><td><b>La révision</b></td><td>Chaque version est relue par Apple, en général en un à deux jours.</td></tr>
+  </tbody></table>
+  <div class="reserve"><p><strong>À vérifier avant de lancer :</strong> les règles d'Apple changent, et la
+  distinction entre une vente à une organisation et une vente à une personne s'apprécie au cas par cas. Relire les
+  règles en vigueur le jour où l'on soumet.</p></div>
+</section>
+
+<section>
+  <h2>Six décisions</h2>
+  <div id="decisions"></div>
+  <p style="margin-top:1.4rem"><button type="button" class="btn-export" id="exporter">Exporter mes décisions</button>
+  <span id="etat" class="etat"></span></p>
+</section>
+
+<div class="pied"><p>Page produite par <code>build/restauration_app_ios.py</code> — ne pas l'éditer.</p></div>
+</div>
+<script>
+(function(){
+  var D=[{"k": "voie", "q": "La voie", "o": [["pwa", "Rester au site installable", false], ["coquille", "Une coquille autour de la page (iPhone et Android)", true], ["natif", "Une application native en Swift", false]], "w": "La coquille garde une seule source : les générateurs produisent l'écran, l'application l'emporte tel quel."}, {"k": "quand", "q": "Le moment", "o": [["apres", "Après le pilote réel, une fois connus les téléphones des employés", true], ["maintenant", "Maintenant, en parallèle du pilote", false]], "w": "Une question au pilote (« iPhone ou Android ? ») décide si l'iPhone vaut le premier effort. Le pilote peut se faire sur le site installable, sans attendre Apple.", "champ": "Ce que vous savez déjà des téléphones de vos employés (facultatif)"}, {"k": "plateformes", "q": "Les plateformes", "o": [["deux", "iPhone et Android, du même emballage", true], ["ios", "iPhone seulement", false]], "w": "En cuisine, beaucoup d'employés ont un téléphone Android. L'emballage est le même ; Android coûte surtout un second passage de vérification."}, {"k": "distribution", "q": "Comment les employés l'obtiennent", "o": [["surmesure", "Application sur mesure : l'employeur l'installe (Apple Business Manager, Play géré)", true], ["public", "Dans l'App Store public, visible de tous", false], ["testflight", "Par TestFlight, pour le pilote seulement", false]], "w": "La trousse se vend aux employeurs : l'application sur mesure n'est visible que de l'entreprise qui l'a achetée. L'App Store public demanderait un achat dans l'application pour quiconque la télécharge seul."}, {"k": "paiement", "q": "Le paiement", "o": [["employeur", "Vendu à l'employeur, hors de l'application, comme aujourd'hui", true], ["apple", "Achat dans l'application chez Apple (15 % prélevés)", false], ["les_deux", "Les deux : l'employeur hors de l'application, la personne seule chez Apple", false]], "w": "Apple exige son propre paiement pour un contenu numérique acheté par une personne (règle 3.1.1). Une application vendue directement à une organisation pour ses employés y échappe (règle 3.1.3(c)). Les codes « PC » vendus aux pèlerins de Compostelle, eux, tomberaient sous la règle d'Apple."}, {"k": "contenu", "q": "La mise à jour du contenu", "o": [["serveur", "Les mots et les voix dans l'application, les corrections tirées du serveur", true], ["embarque", "Tout dans l'application : une correction = une nouvelle version", false]], "w": "La relecture des onze langues va corriger des textes après la sortie : sans le serveur, chaque correction attendrait la révision d'Apple (un à deux jours)."}];
+  var CLE='restauration-app-ios', s={choix:{},champ:{}};
+  try{var l=JSON.parse(localStorage.getItem(CLE)||'null');if(l&&l.choix)s=l;}catch(e){}
+  function sv(){try{localStorage.setItem(CLE,JSON.stringify(s));}catch(e){}}
+  var zone=document.getElementById('decisions');
+  D.forEach(function(d,i){
+    var div=document.createElement('div');div.className='dec2';
+    var h='<p class="dq"><span class="dn">'+(i+1)+'</span>'+d.q+'</p>';
+    if(d.o.length){h+='<div class="opts">';d.o.forEach(function(o){h+='<button type="button" class="opt" data-k="'+d.k+'" data-v="'+o[0]+'" aria-pressed="false">'+o[1]+(o[2]?' <span class="tag">recommandé</span>':'')+'</button>';});h+='</div>';}
+    if(d.champ)h+='<input class="champ" type="text" data-c="'+d.k+'" placeholder="'+d.champ+'">';
+    div.innerHTML=h+'<p class="dw">'+d.w+'</p>';zone.appendChild(div);
+  });
+  zone.querySelectorAll('[data-c]').forEach(function(x){x.value=s.champ[x.dataset.c]||'';x.oninput=function(){s.champ[x.dataset.c]=x.value;sv();peindre();};});
+  function peindre(){
+    zone.querySelectorAll('.opt').forEach(function(b){b.setAttribute('aria-pressed',s.choix[b.dataset.k]===b.dataset.v?'true':'false');});
+    var n=D.filter(function(d){return s.choix[d.k];}).length;
+    document.getElementById('etat').textContent=n+' décision'+(n>1?'s':'')+' sur '+D.length;
+  }
+  zone.addEventListener('click',function(e){var b=e.target.closest('.opt');if(!b)return;
+    if(s.choix[b.dataset.k]===b.dataset.v)delete s.choix[b.dataset.k];else s.choix[b.dataset.k]=b.dataset.v;sv();peindre();});
+  document.getElementById('exporter').addEventListener('click',function(){
+    var out={page:'restauration-app-ios',date:new Date().toISOString().slice(0,10),decisions:{}};
+    D.forEach(function(d){var o=d.o.filter(function(x){return x[0]===s.choix[d.k];})[0];
+      out.decisions[d.k]={choix:o?o[0]:null,libelle:o?o[1]:null,texte:(s.champ[d.k]||'').trim()||null};});
+    var t=JSON.stringify(out,null,2),fin=function(){document.getElementById('etat').textContent='Copié — recollez-le-moi.';};
+    if(navigator.clipboard)navigator.clipboard.writeText(t).then(fin,function(){prompt('Copiez :',t);});else prompt('Copiez :',t);
+  });
+  peindre();
+})();
+</script>
+</body></html>
