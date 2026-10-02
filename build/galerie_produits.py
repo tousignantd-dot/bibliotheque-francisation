@@ -118,6 +118,8 @@ def page():
     for fid, titre, intro in FAMILLES:
         cartes = "\n".join(carte(p) for p in PRODUITS if p[1] == fid)
         sections.append(f'<section class="famille"><h2>{e(titre)}</h2><p class="intro">{e(intro)}</p><div class="grille">{cartes}</div></section>')
+    puces = "".join(f'<a href="#{p[0]}" style="--c:{COULEURS[p[0]][0]}">{e(p[2])}</a>' for p in PRODUITS)
+    rayure = "".join(f'<span style="background:{COULEURS[p[0]][0]}"></span>' for p in PRODUITS)
     robots = "" if INDEXER else '<meta name="robots" content="noindex">\n'
     return f"""<!DOCTYPE html>
 <html lang="fr">
@@ -131,11 +133,11 @@ def page():
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
 <style>
 :root{{--sol:#FAFAF8;--carte:#FFFFFF;--encre:#17181A;--texte:#3A3D40;--gris:#6E7175;--filet:#E2E1DC;
-  --mauve:#6B4FBB;--action:#17181A;--action-txt:#FFFFFF;--vert:#0D7A6F;--vert-pale:#DCF2EF;--ambre:#B45309;--ambre-pale:#FBEEDC;--ecran:#EFEEEA}}
+  --mauve:#6B4FBB;--action:#17181A;--action-txt:#FFFFFF;--vert:#0D7A6F;--vert-pale:#DCF2EF;--ambre:#B45309;--ambre-pale:#FBEEDC;--ecran:#EFEEEA;--bande:#F4EFE6}}
 @media (prefers-color-scheme:dark){{:root:not([data-theme="light"]){{--sol:#151618;--carte:#1E2023;--encre:#F2F1EE;--texte:#C9CACC;--gris:#9A9DA1;--filet:#33363A;
-  --action:#F2F1EE;--action-txt:#17181A;--vert:#5CC6B8;--vert-pale:#173733;--ambre:#F0A55A;--ambre-pale:#3A2A17;--ecran:#2A2C30}}}}
+  --action:#F2F1EE;--action-txt:#17181A;--vert:#5CC6B8;--vert-pale:#173733;--ambre:#F0A55A;--ambre-pale:#3A2A17;--ecran:#2A2C30;--bande:#1E2023}}}}
 :root[data-theme="dark"]{{--sol:#151618;--carte:#1E2023;--encre:#F2F1EE;--texte:#C9CACC;--gris:#9A9DA1;--filet:#33363A;
-  --action:#F2F1EE;--action-txt:#17181A;--vert:#5CC6B8;--vert-pale:#173733;--ambre:#F0A55A;--ambre-pale:#3A2A17;--ecran:#2A2C30}}
+  --action:#F2F1EE;--action-txt:#17181A;--vert:#5CC6B8;--vert-pale:#173733;--ambre:#F0A55A;--ambre-pale:#3A2A17;--ecran:#2A2C30;--bande:#1E2023}}
 @media (prefers-color-scheme:dark){{:root:not([data-theme="light"]) .ecran{{background:color-mix(in srgb,var(--c) 30%,#1E2023)}}
   :root:not([data-theme="light"]) .langue{{color:color-mix(in srgb,var(--c) 45%,#FFFFFF)}}}}
 :root[data-theme="dark"] .ecran{{background:color-mix(in srgb,var(--c) 30%,#1E2023)}}
@@ -152,10 +154,20 @@ p,ul{{margin:0}}
 .trait{{width:1px;height:24px;background:var(--filet)}}
 .desc{{font-size:14px;color:var(--gris)}}
 .page{{max-width:1120px;margin:0 auto;padding:0 40px 90px}}
-.tete{{padding:56px 0 8px}}
+/* La bande de tête : un fond chaud, les six applications en puces à leur couleur, et une rayure
+   faite des six couleurs. Le mauve n'y entre pas : il reste au point de la marque. */
+.bandeau{{background:var(--bande)}}
+.tete{{max-width:1120px;margin:0 auto;padding:52px 40px 30px}}
+.puces{{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}}
+.puces a{{display:inline-block;padding:7px 14px;border-radius:999px;background:var(--c);color:#FFFFFF;font-weight:600;font-size:14px;text-decoration:none}}
+.puces a:hover{{filter:brightness(1.12)}}
+.puces a:focus-visible{{outline:3px solid var(--encre);outline-offset:2px}}
+.rayure{{display:flex;height:10px}}
+.rayure span{{flex:1}}
+.carte{{scroll-margin-top:16px}}
 .tete h1{{font-size:44px;font-weight:900;letter-spacing:-.025em;line-height:1.05}}
 .tete p{{font-size:18px;max-width:60ch;margin-top:14px}}
-.famille{{padding-top:52px}}
+.famille{{padding-top:44px}}
 .famille h2{{font-size:26px;font-weight:900;border-top:2px solid var(--encre);padding-top:12px}}
 .intro{{margin-top:8px;max-width:70ch;color:var(--gris)}}
 .grille{{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:22px;margin-top:22px}}
@@ -184,7 +196,7 @@ p,ul{{margin:0}}
 .pied a{{color:var(--gris)}}
 @media (max-width:640px){{
   .barre-in{{padding:12px 16px}} .trait,.desc{{display:none}}
-  .page{{padding:0 16px 64px}} .tete{{padding-top:32px}} .tete h1{{font-size:32px}} .tete p{{font-size:16px}}
+  .page{{padding:0 16px 64px}} .tete{{padding:30px 16px 22px}} .puces a{{font-size:13px;padding:6px 12px}} .tete h1{{font-size:32px}} .tete p{{font-size:16px}}
   .grille{{grid-template-columns:1fr}} .qr{{display:none}} .ecran{{height:250px}} .ecran img{{width:160px}}
 }}
 </style>
@@ -194,11 +206,15 @@ p,ul{{margin:0}}
   <a class="nom" href="/" aria-label="francis">franc<span class="fr-i">ı<span class="fr-point"></span></span>s</a>
   <span class="trait"></span><span class="desc">Aide à l'apprentissage des langues</span>
 </div></header>
-<main class="page">
+<section class="bandeau">
   <div class="tete">
     <h1>Nos applications</h1>
     <p>Des langues pour voyager et pour travailler, dans le téléphone. Sans compte, sans installation : on ouvre et on commence.</p>
+    <nav class="puces" aria-label="Aller à une application">{puces}</nav>
   </div>
+  <div class="rayure" aria-hidden="true">{rayure}</div>
+</section>
+<main class="page">
   {"".join(sections)}
   <footer class="pied">
     <span>Les conversations jouées se font avec un personnage, à l'aide de l'assistance ; le reste de chaque application est gratuit.</span>
