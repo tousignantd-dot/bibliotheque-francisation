@@ -1540,7 +1540,7 @@ async function afficherOffre(ouvrir){
     <div style="padding:0 14px 14px;font-size:15.5px">
      ${promo ? `<p class="promo-lancement">Prix de lancement : <b>${dollars(o.prix)}</b> au lieu de ${dollars(o.prixRegulier)}, pour un temps limité${o.promoFin ? ` — jusqu'au ${dateFr(o.promoFin)} inclusivement` : ''}.</p>` : ''}
      <p style="margin:0 0 8px"><b>${o.conversations} conversations</b> avec les gens du chemin, pendant <b>${Math.round(o.jours / 30.4)} mois</b> :
-     la même personne qu'à l'étape, qui vous répond vraiment, puis un bilan en français.</p>
+     la même personne qu'à l'étape, qui vous répond vraiment, puis un bilan en français. Une conversation : jusqu'à ${o.toursMax} échanges avec la personne, puis le bilan.</p>
      <p class="muted" style="font-size:14px;margin:0 0 10px">Les dix étapes, la trousse et le test restent gratuits. Paiement par carte chez Stripe ;
      nous ne recevons ni votre nom ni votre carte. Le code s'affiche ici tout de suite, et il est aussi écrit sur votre reçu.</p>
      <p class="muted" style="font-size:14px;margin:0 0 10px">Vendu par Boucledidactique. Carte de crédit seulement. Remboursable dans les 14 jours si 3 conversations au plus ont servi.

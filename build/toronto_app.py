@@ -1256,7 +1256,7 @@ async function afficherOffre(ouvrir){
     <div style="padding:0 14px 14px;font-size:15.5px">
      ${promo ? `<p>Prix de lancement : <b>${enDollars(o.prix)}</b> au lieu de ${enDollars(o.prixRegulier)}${o.promoFin ? `, jusqu'au ${dateFr(o.promoFin)} inclusivement` : ''}.</p>` : ''}
      <p style="margin:0 0 8px"><b>${o.conversations} conversations</b> avec les gens de Toronto, pendant <b>${Math.round(o.jours / 30.4)} mois</b> :
-     la personne du lieu, ou Maya, qui vous répond vraiment en anglais, puis un bilan en français. La relecture des cartes postales est comprise.</p>
+     la personne du lieu, ou Maya, qui vous répond vraiment en anglais, puis un bilan en français. La relecture des cartes postales est comprise. Une conversation : jusqu'à ${o.toursMax} échanges avec la personne, puis le bilan.</p>
      <p class="muted" style="font-size:14px;margin:0 0 10px">Les séances, les mots, les exercices et le test restent gratuits. Paiement par carte chez Stripe ;
      nous ne recevons ni votre nom ni votre carte. Le code s'affiche ici tout de suite, et il est aussi écrit sur votre reçu.</p>
      <p class="muted" style="font-size:14px;margin:0 0 10px">Vendu par Boucledidactique. Carte de crédit seulement. Remboursable dans les 14 jours si 3 conversations au plus ont servi.

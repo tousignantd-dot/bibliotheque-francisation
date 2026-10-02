@@ -24,7 +24,7 @@ TXT = {
         "lancement": "Prix de lancement : {prix} au lieu de {regulier}, pour un temps limité{fin}.",
         "jusqu": " — jusqu'au {date} inclusivement",
         "quoi": "<b>{n} conversations</b> avec les clients, pendant <b>{mois} mois</b> : ils vous répondent vraiment, "
-                "à voix haute, puis un bilan geste par geste.",
+                "à voix haute, puis un bilan geste par geste. Une conversation : jusqu'à {tours} échanges, puis le bilan.",
         "gratuit": "Les mots, les exercices, le test et la fiche restent gratuits. Paiement par carte chez Stripe ; "
                    "nous ne recevons ni votre nom ni votre carte. Le code s'affiche ici tout de suite, et il est aussi écrit sur votre reçu.",
         "legal": "Vendu par Boucledidactique. Carte de crédit seulement. Remboursable dans les 14 jours si 3 conversations au plus ont servi. "
@@ -62,7 +62,7 @@ TXT = {
         "lancement": "Launch price: {prix} instead of {regulier}, for a limited time{fin}.",
         "jusqu": " — until {date} inclusive",
         "quoi": "<b>{n} conversations</b> with guests, for <b>{mois} months</b>: they really answer you, "
-                "out loud, then a step-by-step review.",
+                "out loud, then a step-by-step review. One conversation: up to {tours} exchanges, then the review.",
         "gratuit": "The words, the exercises, the test and the pocket card stay free. Card payment with Stripe; "
                    "we never see your name or your card. The code shows up here right away, and it is also on your receipt.",
         "legal": "Sold by Boucledidactique. Credit card only. Refundable within 14 days if 3 conversations or fewer were used. "
@@ -100,7 +100,7 @@ TXT = {
         "lancement": "Precio de lanzamiento: {prix} en lugar de {regulier}, por tiempo limitado{fin}.",
         "jusqu": " — hasta el {date} inclusive",
         "quoi": "<b>{n} conversaciones</b> con los clientes, durante <b>{mois} meses</b>: le responden de verdad, "
-                "en voz alta, y luego un balance paso a paso.",
+                "en voz alta, y luego un balance paso a paso. Una conversación: hasta {tours} intercambios, y luego el balance.",
         "gratuit": "Las palabras, los ejercicios, la prueba y la ficha siguen gratis. Pago con tarjeta en Stripe; "
                    "no recibimos ni su nombre ni su tarjeta. El código aparece aquí enseguida, y también está en su recibo.",
         "legal": "Vendido por Boucledidactique. Solo tarjeta de crédito. Reembolsable en 14 días si se usaron 3 conversaciones o menos. "
@@ -172,7 +172,7 @@ async function venteOffre(el){
   el.innerHTML = `<details class="vente"><summary><span>${venteEsc(vt('pas_de_code'))}</span><span>${prix}</span></summary><div class="corps">
     ${promo ? `<p class="lancement">${venteEsc(vt('lancement', {prix: venteDollars(o.prix), regulier: venteDollars(o.prixRegulier),
         fin: o.promoFin ? vt('jusqu', {date: venteDate(o.promoFin)}) : ''}))}</p>` : ''}
-    <p>${vt('quoi', {n: o.conversations, mois: Math.round(o.jours / 30.4)})}</p>
+    <p>${vt('quoi', {n: o.conversations, mois: Math.round(o.jours / 30.4), tours: o.toursMax})}</p>
     <p class="petit">${venteEsc(vt('gratuit'))}</p>
     <p class="petit">${venteEsc(vt('legal'))} <a href="/conditions-de-vente.html" target="_blank" rel="noopener">${venteEsc(vt('conditions'))}</a></p>
     <button type="button" class="${VENTE.btn} vente-go">${venteEsc(vt('obtenir', {prix: venteDollars(o.prix)}))}</button>
