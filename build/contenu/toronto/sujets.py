@@ -88,7 +88,7 @@ SUJETS = {
     "dessert": ("objet", "a slice of chocolate cake on a small plate with a fork."),
     "tap_water": ("objet", "a clear glass carafe of water and a glass beside it, no bottle, no label."),
     "rare": ("objet", "three slices of steak side by side seen in cross-section: the first deep red inside, the second pink, the third brown all through."),
-    "nuts": ("objet", "a small bowl of mixed nuts with a few peanuts in their shell beside it."),
+    "broth": ("objet", "two small bowls of clear soup side by side: one golden chicken broth with a few pieces of chicken, one green vegetable broth with carrots and celery."),
     "server": ("geste", "a restaurant server in a black apron holding a small notepad, standing at a table and smiling, ready to take an order."),
     "the_bill": ("objet", "a small black folder for the restaurant bill, open, holding a paper slip covered with grey lines only, a pen beside it; no letters, no numbers."),
     "leftovers": ("objet", "a closed white take-away box next to a plate with a little food left on it."),

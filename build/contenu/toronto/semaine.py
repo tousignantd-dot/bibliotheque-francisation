@@ -74,7 +74,7 @@ LIEUX = [
      "a pharmacy counter seen from the customer's side: a white counter in the foreground with a small basket, behind it EMPTY space where the pharmacist will stand, then white shelves of boxes with blank fronts; no signs, no letters on any box.",
      "a long busy main street with shops and a crowd on the sidewalks, a big intersection with a pedestrian scramble crossing seen from above; no signs, no screens with text."),
     ("resto", 9, "Jour 6", "Le restaurant, Little Italy", "Le souper",
-     "avoir une table, commander, dire une allergie et comprendre la réponse, payer séparément, laisser le pourboire", "ada",
+     "avoir une table, commander, dire qu'on ne mange pas de viande et comprendre la réponse, payer séparément, laisser le pourboire", "ada",
      "a restaurant table for two seen from the seated guest's place: the table in the foreground with plates, glasses and a candle, an EMPTY space beside the table where the server will stand, warm lights and other tables behind; no menu text, no signs.",
      "a lively street of Italian restaurants at dusk, patios with string lights and red umbrellas, people dining outside; no signs, no letters."),
     ("depart", 10, "Jour 7", "Le départ", "Une erreur sur la facture",

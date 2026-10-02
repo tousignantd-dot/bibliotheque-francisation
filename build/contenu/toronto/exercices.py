@@ -132,12 +132,12 @@ REPONSES = [
       ("Sans ordonnance ; pas à jeun avec ce médicament.", "With alcohol : avec de l'alcool."),
       ("Il faut une ordonnance ; pas d'alcool avec ce médicament.", "You DON'T need a prescription : pas besoin d'ordonnance."),
       ("Il faut une ordonnance ; pas à jeun avec ce médicament.", "Pas d'ordonnance, et pas d'alcool.")]),
-    ("resto", "ada", "Vous dites que vous êtes allergique aux noix.",
-     "The pasta is fine, but the dessert has almonds, so I'd skip it.",
-     [("Les pâtes, ça va ; le dessert contient des amandes.", None),
-      ("Les pâtes, ça va ; le dessert est sans noix.", "The dessert HAS almonds : il en contient — évitez-le."),
-      ("Les pâtes contiennent des noix ; le dessert contient des amandes.", "The pasta is FINE : les pâtes, ça va."),
-      ("Les pâtes contiennent des noix ; le dessert est sans noix.", "C'est l'inverse : les pâtes, ça va ; le dessert, non.")]),
+    ("resto", "ada", "Vous dites que vous ne mangez pas de viande.",
+     "The penne is fine, but the soup is made with chicken broth, so I'd skip it.",
+     [("Les pâtes, ça va ; la soupe est au bouillon de poulet.", None),
+      ("Les pâtes, ça va ; la soupe est sans aucune viande.", "Made with CHICKEN BROTH : un bouillon de poulet, c'est de la viande — évitez-la."),
+      ("Les pâtes contiennent de la viande ; la soupe est au bouillon de poulet.", "The penne is FINE : les pâtes (des penne), ça va."),
+      ("Les pâtes contiennent de la viande ; la soupe est sans aucune viande.", "C'est l'inverse : les pâtes, ça va ; la soupe, non.")]),
     ("resto", "ada", "Vous demandez une table pour deux.",
      "It's about a twenty-minute wait, or you can sit at the bar right now.",
      [("Environ 20 minutes d'attente, ou le bar tout de suite.", None),
@@ -226,13 +226,14 @@ def total(prix, mal, pb, mot, inclus=""):
     return choix, calcul.replace(".", ",")
 
 
-# ── L'allergie (O3, éliminatoire) : la série JOUÉE EN ENTIER (bloquant du tour 1 : elle n'existait pas).
-# Carré (allergène ou non) × (elle en est sûre ou elle va vérifier), et un contre-exemple : le plat sans
-# danger qu'on peut commander (piège connu « seulement le geste prudent »). La règle est affichée avant.
+# ── Sans viande (O3, éliminatoire) : la série JOUÉE EN ENTIER. Elle remplace la série de l'allergie le
+# 2 oct. 2026 (décision de Daniel : responsabilité civile ; plus aucune allergie dans l'application), même
+# mécanique. Carré (viande ou non) × (elle en est sûre ou elle va vérifier), et un contre-exemple : le plat
+# sans viande qu'on peut commander (piège connu « seulement le geste prudent »). La règle est affichée avant.
 # Ce que dit le micro quand une GARDE rate (une clé vraie sur la phrase vide : elle refuse un geste faux).
-# Tour 4 (majeur) : « Presque. Il manque : I'll » répondait à qui commandait le saumon douteux.
-GARDES = {"La serveuse n'est pas sûre": "Vous commandez le saumon, et elle n'est pas sûre qu'il soit sans noix. Prenez autre chose.",
-          "Dites que vous êtes allergique": "Votre phrase dit que vous n'êtes PAS allergique.",
+# Tour 4 (majeur) : « Presque. Il manque : I'll » répondait à qui commandait le plat douteux.
+GARDES = {"La serveuse n'est pas sûre": "Elle n'est pas sûre pour le risotto, et vous ne mangez pas de viande : prenez un autre plat, sans viande.",
+          "Dites que vous ne mangez pas de viande": "Votre phrase dit que vous mangez de la viande.",
           "Dites que vous avez une réservation": "C'est vous qui avez la réservation : « I have a reservation… »."}
 
 
@@ -240,79 +241,80 @@ def garde(fr):
     return next((v for k, v in GARDES.items() if fr.startswith(k)), "")
 
 
-REGLE_ALLERGIE = ("Une allergie se dit avant de commander. On commande seulement si la réponse est sûre : pas "
-                  "d'allergène. S'il y en a, s'il peut y en avoir des traces, ou si la personne n'est pas sûre : on "
-                  "attend la vérification, ou on prend autre chose.")
+REGLE_VEGE = ("Vous êtes végétarien ou végétarienne : dites-le avant de commander (« I'm vegetarian, I don't eat "
+              "meat »). On commande seulement si la réponse est sûre : pas de viande. S'il y en a — même un bouillon "
+              "de poulet ou un peu de bacon — ou si la personne n'est pas sûre : on attend la vérification, ou on "
+              "prend autre chose.")
 # Les deux moitiés de même longueur dans chaque colonne : aucune ne se trahit par la taille.
-_SAUMON = ["Saumon sans noix ; elle en est tout à fait certaine.", "Saumon sans noix ; elle va vérifier en cuisine.",
-           "Saumon avec noix ; elle en est tout à fait certaine.", "Saumon avec noix ; elle va vérifier en cuisine."]
-# Le marché : un carré (traces ou non) × (on en prend ou non), les mêmes quatre choix pour les deux items.
-_MARCHE = ["Faits là où il y a des arachides : on n'en prend pas.", "Faits là où il y a des arachides : on peut en prendre.",
-           "Sans aucune arachide : on n'en prend pas.", "Sans aucune arachide : on peut en prendre."]
-ALLERGIE = [
-    ("ada", "Vous êtes allergique aux noix. Vous demandez si le saumon en contient.",
-     "The salmon is fine, there are no nuts in it.", 0, "Elle en est sûre : ici, vous pouvez commander le saumon.",
-     {1: "No nuts : aucune ; et elle n'a pas à vérifier, elle le sait.", 2: "There are NO nuts : il n'y en a pas.",
-      3: "The salmon is fine : pas de noix, et elle en est sûre."}),
-    ("ada", "Vous êtes allergique aux noix. Vous demandez si le saumon en contient.",
-     "I don't think there are pecans in the salmon, but let me check with the kitchen.", 1,
+_RISOTTO = ["Risotto sans viande ; elle en est tout à fait certaine.", "Risotto sans viande ; elle va vérifier en cuisine.",
+            "Risotto avec viande ; elle en est tout à fait certaine.", "Risotto avec viande ; elle va vérifier en cuisine."]
+# Le marché : un carré (bouillon de viande ou non) × (on en prend ou non), les mêmes quatre choix pour les deux items.
+_MARCHE = ["Faite avec un bouillon de poulet : on n'en prend pas.", "Faite avec un bouillon de poulet : on peut en prendre.",
+           "Faite avec un bouillon végétal : on n'en prend pas.", "Faite avec un bouillon végétal : on peut en prendre."]
+_DEMANDE_R = "Vous ne mangez pas de viande. Vous demandez si le risotto en contient."
+VEGE = [
+    ("ada", _DEMANDE_R,
+     "The risotto is fine, there's no meat in it.", 0, "Elle en est sûre : ici, vous pouvez commander le risotto.",
+     {1: "No meat : aucune ; et elle n'a pas à vérifier, elle le sait.", 2: "There's NO meat : il n'y en a pas.",
+      3: "The risotto is fine : pas de viande, et elle en est sûre."}),
+    ("ada", _DEMANDE_R,
+     "I don't think there's any meat in the risotto, but let me check with the kitchen.", 1,
      "Elle n'en est pas sûre : on attend la réponse de la cuisine, ou on prend autre chose.",
-     {0: "I don't THINK there are pecans, let me check : elle croit, mais elle va vérifier.", 2: "No pecans, I think : elle croit qu'il n'y en a pas.",
-      3: "I don't think there are pecans : elle croit qu'il n'y en a PAS."}),
-    ("ada", "Vous êtes allergique aux noix. Vous demandez si le saumon en contient.",
-     "The salmon has a pecan crust, so I wouldn't order it.", 2, "Des pacanes, ce sont des noix : on ne le commande pas.",
-     {0: "A pecan crust : une croûte de pacanes, ce sont des noix.", 1: "Elle est sûre : la croûte est faite de pacanes.",
-      3: "Elle n'a rien à vérifier : la croûte est aux pacanes."}),
-    # Tour 2 (majeur) : trois saumons aux mêmes choix, et la quatrième case jamais juste — le troisième se
-    # déduisait des deux autres. Six réponses couvrent les quatre cases ; la page en tire trois par série.
-    ("ada", "Vous êtes allergique aux noix. Vous demandez si le saumon en contient.",
-     "I think the sauce has pecans in it, but let me check with the kitchen.", 3,
+     {0: "I don't THINK there's any meat, let me check : elle croit, mais elle va vérifier.", 2: "No meat, I think : elle croit qu'il n'y en a pas.",
+      3: "I don't think there's any meat : elle croit qu'il n'y en a PAS."}),
+    ("ada", _DEMANDE_R,
+     "The risotto is made with chicken stock, so I wouldn't order it.", 2, "Un bouillon de poulet, c'est de la viande : on ne le commande pas.",
+     {0: "Chicken stock : du bouillon de poulet, c'est de la viande.", 1: "Elle est sûre : le risotto est fait au bouillon de poulet.",
+      3: "Elle n'a rien à vérifier : le bouillon est au poulet."}),
+    # Tour 2 (majeur, hérité de la série de l'allergie) : six réponses couvrent les quatre cases ; la page en
+    # tire trois par série, et la dernière ne se déduit plus des deux autres.
+    ("ada", _DEMANDE_R,
+     "I think the risotto has bacon in it, but let me check with the kitchen.", 3,
      "Elle croit qu'il y en a, et va vérifier : on ne le commande pas pour l'instant.",
-     {0: "I think the sauce HAS pecans : elle croit qu'il y en a.", 1: "Has pecans : elle croit qu'il y a des noix, pas l'inverse.",
+     {0: "I think the risotto HAS bacon : elle croit qu'il y en a.", 1: "Has bacon : elle croit qu'il y a de la viande, pas l'inverse.",
       2: "I think, let me check : elle n'en est pas sûre, elle va vérifier."}),
-    ("ada", "Vous êtes allergique aux noix. Vous demandez si le saumon en contient.",
-     "No almonds, no pecans in the salmon. The chef just told me.", 0, "Elle en est sûre, le chef vient de le lui dire : vous pouvez le commander.",
-     {1: "The chef just told me : elle n'a plus à vérifier, elle le sait.", 2: "No almonds, no pecans : aucune noix.",
-      3: "No pecans, the chef told me : aucune, et c'est certain."}),
-    ("ada", "Vous êtes allergique aux noix. Vous demandez si le saumon en contient.",
-     "Yes, the salmon comes with sliced almonds on top.", 2, "Des amandes, ce sont des noix : on ne le commande pas.",
-     {0: "Sliced almonds : des amandes tranchées, ce sont des noix.", 1: "Yes, it comes with almonds : elle en est sûre.",
-      3: "Elle n'a rien à vérifier : les amandes sont sur le saumon."}),
-    ("wei", "Au marché, vous êtes allergique aux arachides. Vous demandez pour les biscuits.",
-     "These cookies are made in a bakery that uses peanuts.", None,
-     "Uses peanuts : des traces sont possibles. La règle : un doute ou des traces, on n'en prend pas.",
+    ("ada", _DEMANDE_R,
+     "No meat, no chicken stock in the risotto. The chef just told me.", 0, "Elle en est sûre, le chef vient de le lui dire : vous pouvez le commander.",
+     {1: "The chef just told me : elle n'a plus à vérifier, elle le sait.", 2: "No meat, no chicken stock : aucune viande.",
+      3: "No meat, the chef told me : aucune, et c'est certain."}),
+    ("ada", _DEMANDE_R,
+     "Yes, the risotto comes with pieces of bacon on top.", 2, "Du bacon, c'est de la viande : on ne le commande pas.",
+     {0: "Pieces of bacon : des morceaux de bacon, c'est de la viande.", 1: "Yes, it comes with bacon : elle en est sûre.",
+      3: "Elle n'a rien à vérifier : le bacon est sur le risotto."}),
+    ("wei", "Au marché, vous ne mangez pas de viande. Vous demandez pour la soupe du jour.",
+     "This soup is made with chicken broth.", None,
+     "Chicken broth : un bouillon de poulet, c'est de la viande. La règle : de la viande ou un doute, on n'en prend pas.",
      [(_MARCHE[0], None),
-      (_MARCHE[1], "A bakery that USES peanuts : il peut y en avoir des traces."),
-      (_MARCHE[2], "That uses peanuts : la boulangerie en utilise ; les biscuits peuvent en contenir des traces."),
-      (_MARCHE[3], "Uses peanuts : il y en a là où on les fait.")]),
-    # Tour 3 (majeur) : le marché était toujours « on n'en prend pas » — seul le geste prudent. Un second
-    # marché où l'on PEUT en prendre ; la page tire un des deux par série. Deux saumons de plus : deux par case.
-    ("ada", "Vous êtes allergique aux noix. Vous demandez si le saumon en contient.",
-     "There shouldn't be any pecans in the salmon, but I'll ask the chef to be sure.", 1,
+      (_MARCHE[1], "Made with CHICKEN broth : un bouillon de poulet, c'est de la viande."),
+      (_MARCHE[2], "CHICKEN broth : du poulet, pas un bouillon végétal."),
+      (_MARCHE[3], "Chicken broth : il y a de la viande dans cette soupe.")]),
+    # Tour 3 (majeur, hérité) : un second marché où l'on PEUT en prendre ; la page tire un des deux par série.
+    ("ada", _DEMANDE_R,
+     "There shouldn't be any meat in the risotto, but I'll ask the chef to be sure.", 1,
      "Elle n'en est pas sûre : on attend la réponse du chef, ou on prend autre chose.",
      {0: "Shouldn't be, I'll ask : elle croit, mais elle va demander.", 2: "There SHOULDN'T be any : elle croit qu'il n'y en a pas.",
-      3: "Shouldn't be any pecans : elle croit qu'il n'y en a PAS."}),
-    ("ada", "Vous êtes allergique aux noix. Vous demandez si le saumon en contient.",
-     "I think the glaze has pecans on it, but I'll ask the chef.", 3,
+      3: "Shouldn't be any meat : elle croit qu'il n'y en a PAS."}),
+    ("ada", _DEMANDE_R,
+     "I think the risotto is made with chicken stock, but I'll ask the chef.", 3,
      "Elle croit qu'il y en a, et va demander : on ne le commande pas pour l'instant.",
-     {0: "I think the glaze HAS pecans : elle croit qu'il y en a.", 1: "Has pecans : elle croit qu'il y a des noix, pas l'inverse.",
+     {0: "I think it's made with chicken stock : elle croit qu'il y en a.", 1: "Chicken stock : elle croit qu'il y a de la viande, pas l'inverse.",
       2: "I think, I'll ask : elle n'en est pas sûre, elle va demander."}),
-    ("wei", "Au marché, vous êtes allergique aux arachides. Vous demandez pour les biscuits.",
-     "These come from our peanut-free bakery. No peanuts ever go in there.", None,
-     "Peanut-free : sans arachides, ni traces. Vous pouvez en prendre.",
+    ("wei", "Au marché, vous ne mangez pas de viande. Vous demandez pour la soupe du jour.",
+     "This one's made with vegetable broth. There's no meat in it at all.", None,
+     "Vegetable broth, no meat at all : aucune viande. Vous pouvez en prendre.",
      [(_MARCHE[3], None),
-      (_MARCHE[2], "Peanut-free, no peanuts ever : aucune arachide, rien n'empêche d'en prendre."),
-      (_MARCHE[1], "Peanut-free : la boulangerie n'en utilise jamais."),
-      (_MARCHE[0], "No peanuts EVER : aucune arachide, aucune trace.")]),
+      (_MARCHE[2], "No meat at all : aucune viande, rien n'empêche d'en prendre."),
+      (_MARCHE[1], "VEGETABLE broth : un bouillon végétal, pas de poulet."),
+      (_MARCHE[0], "No meat AT ALL : aucune viande, pas même le bouillon.")]),
 ]
 
 
-def choix_allergie(it):
-    """Les quatre choix d'un item d'allergie, la bonne d'abord."""
+def choix_vege(it):
+    """Les quatre choix d'un item « sans viande », la bonne d'abord."""
     qui, ctx, en, bon, apres, retro = it
     if bon is None:
         return retro
-    return [(_SAUMON[bon], None)] + [(_SAUMON[i], retro[i]) for i in range(4) if i != bon]
+    return [(_RISOTTO[bon], None)] + [(_RISOTTO[i], retro[i]) for i in range(4) if i != bon]
 
 
 # ── Où je vais : (qui, en, blocs, tourner) — on part de l'étoile, face au nord ; après le virage,
@@ -349,9 +351,9 @@ DIRE = [
     ("iles", "Demandez à quelle heure est le dernier traversier.", "What time is the last ferry?", ["what time|when", "last", "ferry|boat"]),
     ("pharmacie", "Dites que vous avez un coup de soleil.", "I have a sunburn.", [MAL, "~(^| )(sunburn|sunburns|sunburned|sunburnt|burn|burned|burnt)( |$)"]),
     ("pharmacie", "Demandez combien de fois par jour mettre la crème.", "How many times a day?", ["~(how many times|how often)"]),
-    ("resto", "Dites que vous êtes allergique aux noix.", "I'm allergic to nuts.", ["allergic|allergy|allergies", '~^(?!.*(^| )(not|n t|no|don t have|do not have|never)( (a|an|any))?( [a-z]+)? (allergic|allergy|allergies)( |$))', 'nuts|nut|tree nut|almond|walnut|cashew|pecan|hazelnut|pistachio']),
-    ("resto", "Demandez s'il y a des noix dans ce plat.", "Does this have any nuts in it?", ['~^(?!.*(^| )(i|we|my [a-z]+) (have|has|m|am|re|are|got)( |$))(?!.*(^| )(do you|you) (like|sell)( |$))(?=.*(^| )(does|do|is|are|any|contain|contains|safe)( |$))', 'nuts|nut|tree nut|almond|walnut|cashew|pecan|hazelnut|pistachio']),
-    ("resto", "La serveuse n'est pas sûre pour le saumon. Dites que vous prendrez autre chose.", "I'll have something else, then.", ['~(something else|something different|(^| )instead( |$)|(^| )other( |$)|skip|(^| )pass( on)?( |$)|(not|don t|do not|won t|will not) (take|have|order|get|want|eat)|(^| )avoid|no (thanks|thank you)|never mind|forget it|(^| )menu( |$)|(^| )not the|no salmon|(^| )(i ll|i will|i d|i would|let s|can i|could i|may i|give me|i want|i prefer|i d prefer|i d rather|i would rather|maybe|then|go for|go with)( [a-z]+){0,3} (the|a|an|some) (?!salmon( |$))[a-z]+|(^| )(the|a) (?!salmon( |$))[a-z]+ (instead|then|please)( |$))', '~^(?!.*(^| )(salmon|fish)( |$))|(^| )(no|not|don t|do not|skip|without|pass on|won t|will not|avoid|forget)( [a-z]+){0,2} (the )?(salmon|fish)( |$)|(^| )(instead of|rather than|other than|else than) (the )?(salmon|fish)( |$)|^(the )?(salmon|fish)( [a-z]+){0,2} (no thanks|no thank you)( |$)|(^| )the (salmon|fish) (is|s|might be|may be) (risky|not safe)( |$)']),
+    ("resto", "Dites que vous ne mangez pas de viande (vous êtes végétarien ou végétarienne).", "I'm vegetarian. I don't eat meat.", ['~(^| )(vegetarian|vegetarians|veggie|vegan)( |$)|(^| )(don t|do not|never|can t|cannot|won t) eat( any)? (meat|meats)( |$)|(^| )no meat( |$)', '~^(?!.*(^| )(i m|i am|we re|we are) not (a )?(vegetarian|veggie|vegan)( |$))(?!.*(^| )(i|we) (eat|like|love|do eat|can eat) (meat|chicken|beef|bacon|pork|ham)( |$))']),
+    ("resto", "Demandez s'il y a de la viande dans ce plat.", "Does this have any meat in it?", ['~^(?!.*(^| )(i|we|my [a-z]+) (have|has|m|am|re|are|got)( |$))(?!.*(^| )(do you|you) (like|sell)( |$))(?=.*(^| )(does|do|is|are|any|contain|contains|safe)( |$))', 'meat|chicken|beef|pork|bacon|ham|broth|stock|vegetarian|veggie']),
+    ("resto", "La serveuse n'est pas sûre pour le risotto. Dites que vous prendrez autre chose.", "I'll have something else, then.", ['~(something else|something different|(^| )instead( |$)|(^| )other( |$)|skip|(^| )pass( on)?( |$)|(not|don t|do not|won t|will not) (take|have|order|get|want|eat)|(^| )avoid|no (thanks|thank you)|never mind|forget it|(^| )menu( |$)|(^| )not the|no risotto|(^| )(i ll|i will|i d|i would|let s|can i|could i|may i|give me|i want|i prefer|i d prefer|i d rather|i would rather|maybe|then|go for|go with)( [a-z]+){0,3} (the|a|an|some) (?!risotto( |$))[a-z]+|(^| )(the|a) (?!risotto( |$))[a-z]+ (instead|then|please)( |$))', '~^(?!.*(^| )(risotto)( |$))|(^| )(no|not|don t|do not|skip|without|pass on|won t|will not|avoid|forget)( [a-z]+){0,2} (the )?(risotto)( |$)|(^| )(instead of|rather than|other than|else than) (the )?(risotto)( |$)|^(the )?(risotto)( [a-z]+){0,2} (no thanks|no thank you)( |$)|(^| )the (risotto) (is|s|might be|may be) (risky|not safe)( |$)', '~^(?!(.* )?(?!(no|not|without|skip|on|of|than) )(?!(the|a|some|any) )[a-z]+ (chicken|beef|steak|steaks|bacon|ham|pork|burger|burgers|sausage|sausages|meatball|meatballs|veal|lamb|turkey|duck|ribs|wings|meat)( |$))(?!(.* )?(?!(no|not|without|skip|on|of|than) )[a-z]+ (the|a|some|any) (chicken|beef|steak|steaks|bacon|ham|pork|burger|burgers|sausage|sausages|meatball|meatballs|veal|lamb|turkey|duck|ribs|wings|meat)( |$))(?!(the |a |some )?(chicken|beef|steak|steaks|bacon|ham|pork|burger|burgers|sausage|sausages|meatball|meatballs|veal|lamb|turkey|duck|ribs|wings|meat)( |$))']),
     ("resto", "Demandez des additions séparées.", "Can we get separate bills?", ["separate|split|separately", "~(bill|check|pay)"]),
     ("depart", "Dites poliment qu'il y a une erreur sur la facture.", "Sorry, I think there's a mistake on my bill.", ["mistake|error|wrong", "bill|invoice|charge"]),
     ("depart", "Demandez où prendre le train pour l'aéroport.", "Where can I take the train to the airport?", ["~(^| )(where|which way|how (do|can) (i|we) get)", "airport|up express|train|pearson"]),
@@ -365,44 +367,50 @@ def _cle(fr_debut, i):
 
 REFUS = [
     (_cle("On vous demande « Anything", 0), "Yes, a muffin"),
-    (_cle("Dites que vous êtes allergique", 0), "I like nuts"),
-    (_cle("Dites que vous êtes allergique", 1), "I'm not allergic to nuts"),
     (_cle("Demandez si c'est loin", 0), "I want to walk"),
     (_cle("Demandez si c'est loin", 0), "How long is the movie?"),
     (_cle("Dites que vous avez une réservation", 2), "Do you have a reservation for Tremblay?"),
     (_cle("Demandez deux billets", 1), "Two tickets for kids"),
     (_cle("Demandez où est le métro", 0), "I'd like to go somewhere by subway"),
     (_cle("Commandez un grand café", 3), "Can I get a large coffee for here?"),
-    (_cle("Demandez s'il y a des noix", 1), "I like it"),
-    (_cle("La serveuse n'est pas sûre", 0), "I'll take it"),
-    (_cle("La serveuse n'est pas sûre", 0), "I'll take the salmon."),
-    (_cle("La serveuse n'est pas sûre", 0), "I'll have the salmon, please."),
     (_cle("On vous demande « Anything", 0), "Nothing, but a muffin please"),
-    (_cle("Demandez s'il y a des noix", 0), "Do you like nuts?"),
-    # Tour 3 : le saumon avec un adjectif, l'arachide prise pour la noix, les négations, les affirmations.
-    (_cle("La serveuse n'est pas sûre", 1), "Never mind, I'll take the salmon."),
-    (_cle("La serveuse n'est pas sûre", 1), "I'll have the grilled salmon, please."),
-    (_cle("La serveuse n'est pas sûre", 1), "No thanks, I'll have the salmon."),
-    (_cle("La serveuse n'est pas sûre", 1), "I'll have the smoked salmon."),
-    (_cle("La serveuse n'est pas sûre", 1), "I'll have the salmon instead"),
-    (_cle("La serveuse n'est pas sûre", 1), "I'd rather have the salmon"),
-    (_cle("La serveuse n'est pas sûre", 1), "Give me the salmon"),
-    (_cle("La serveuse n'est pas sûre", 1), "Instead of the pasta, I'll have the salmon."),
     (_cle("On vous demande « Anything", 0), "No, a muffin"),
-    (_cle("Dites que vous êtes allergique", 2), "I'm allergic to peanuts."),
-    (_cle("Dites que vous êtes allergique", 1), "I don't have a nut allergy."),
-    (_cle("Dites que vous êtes allergique", 1), "I have no nut allergy."),
-    (_cle("Demandez s'il y a des noix", 0), "I have a nut allergy."),
-    (_cle("Demandez s'il y a des noix", 0), "Do you sell nuts?"),
-    (_cle("Demandez s'il y a des noix", 1), "Are there any peanuts in it?"),
     (_cle("On vous demande « Anything", 0), "An orange juice, and that's all."),
     (_cle("On vous demande « Anything", 0), "Yes please, a lemonade, that's it."),
+    # Le végétarien (2 oct. 2026, remplace l'allergie) : l'affirmation contraire, le plat douteux sous toutes ses formes,
+    # et le plat de viande commandé à la place (la même faute éliminatoire).
+    (_cle("Dites que vous ne mangez pas de viande", 0), 'I like vegetables'),
+    (_cle("Dites que vous ne mangez pas de viande", 0), 'I eat vegetables'),
+    (_cle("Dites que vous ne mangez pas de viande", 1), "I'm not vegetarian"),
+    (_cle("Dites que vous ne mangez pas de viande", 1), "I'm not a vegetarian, I eat meat."),
+    (_cle("Dites que vous ne mangez pas de viande", 1), 'I eat meat.'),
+    (_cle("Dites que vous ne mangez pas de viande", 1), "I like chicken, I'm veggie"),
+    (_cle("Demandez s'il y a de la viande", 1), 'I like it'),
+    (_cle("Demandez s'il y a de la viande", 0), 'Do you like meat?'),
+    (_cle("Demandez s'il y a de la viande", 0), "I'm vegetarian."),
+    (_cle("Demandez s'il y a de la viande", 0), 'Do you sell meat?'),
+    (_cle("Demandez s'il y a de la viande", 1), 'Is it spicy?'),
+    (_cle("La serveuse n'est pas sûre", 0), "I'll take it"),
+    (_cle("La serveuse n'est pas sûre", 0), "I'll take the risotto."),
+    (_cle("La serveuse n'est pas sûre", 0), "I'll have the risotto, please."),
+    (_cle("La serveuse n'est pas sûre", 1), "Never mind, I'll take the risotto."),
+    (_cle("La serveuse n'est pas sûre", 1), "I'll have the mushroom risotto, please."),
+    (_cle("La serveuse n'est pas sûre", 1), "No thanks, I'll have the risotto."),
+    (_cle("La serveuse n'est pas sûre", 1), "I'll have the risotto instead"),
+    (_cle("La serveuse n'est pas sûre", 1), "I'd rather have the risotto"),
+    (_cle("La serveuse n'est pas sûre", 1), 'Give me the risotto'),
+    (_cle("La serveuse n'est pas sûre", 1), "Instead of the pasta, I'll have the risotto."),
+    (_cle("La serveuse n'est pas sûre", 2), "I'll have the chicken instead."),
+    (_cle("La serveuse n'est pas sûre", 2), 'I prefer the chicken.'),
+    (_cle("La serveuse n'est pas sûre", 2), 'Give me the steak, then.'),
+    (_cle("La serveuse n'est pas sûre", 2), "I'll have the chicken instead of the risotto."),
+    (_cle("La serveuse n'est pas sûre", 2), 'The chicken, please.'),
+    (_cle("La serveuse n'est pas sûre", 2), "I'll take the grilled chicken."),
 ]
 ACCEPTE = [
     (_cle("On vous demande « Anything", 0), "No thanks, that's all"),
     (_cle("On vous demande « Anything", 0), "Nothing, thanks"),
     (_cle("On vous demande « Anything", 0), "Nope, all good"),
-    (_cle("Dites que vous êtes allergique", 2), "I have an allergy to almonds"),
     (_cle("Demandez des additions", 0), "Can we pay separately?"),
     (_cle("Demandez si c'est loin", 0), "Is it close?"),
     (_cle("Demandez si c'est loin", 0), "Is it near here?"),
@@ -410,32 +418,42 @@ ACCEPTE = [
     (_cle("Demandez s'il y a un rabais", 0), "Senior price?"),
     (_cle("Demandez à louer un vélo", 0), "I want a bike for two hours"),
     (_cle("Demandez où prendre le train", 1), "How can we get to Pearson?"),
-    (_cle("Demandez s'il y a des noix", 0), "Are there any almonds in it?"),
-    (_cle("Demandez s'il y a des noix", 0), "Is it nut-free?"),
-    (_cle("Demandez s'il y a des noix", 0), "Is it safe for a nut allergy?"),
-    (_cle("La serveuse n'est pas sûre", 0), "I'll have something else"),
-    (_cle("La serveuse n'est pas sûre", 0), "I don't want it"),
-    (_cle("La serveuse n'est pas sûre", 0), "Never mind, I'll have the pasta"),
     (_cle("On vous demande « Anything", 0), "That's everything"),
     (_cle("On vous demande « Anything", 0), "I'm all set."),
     (_cle("On vous demande « Anything", 0), "Just the coffee, thanks."),
     (_cle("On vous demande « Anything", 0), "No, that's fine."),
-    (_cle("La serveuse n'est pas sûre", 0), "I'd like the pasta."),
-    (_cle("La serveuse n'est pas sûre", 0), "I prefer the chicken."),
-    (_cle("La serveuse n'est pas sûre", 0), "Give me the pasta."),
-    (_cle("La serveuse n'est pas sûre", 1), "I'll pass on the salmon."),
-    (_cle("La serveuse n'est pas sûre", 1), "I won't take the salmon."),
-    (_cle("La serveuse n'est pas sûre", 1), "I'll have the chicken instead of the salmon."),
-    (_cle("La serveuse n'est pas sûre", 1), "Rather than the salmon, the pasta please"),
     (_cle("On vous demande « Anything", 0), "Nope."),
-    (_cle("La serveuse n'est pas sûre", 0), "I'll skip the salmon."),
-    (_cle("La serveuse n'est pas sûre", 1), "No salmon for me, then."),
+    (_cle("Dites que vous ne mangez pas de viande", 0), "I'm a vegetarian."),
+    (_cle("Dites que vous ne mangez pas de viande", 0), "I don't eat meat."),
+    (_cle("Dites que vous ne mangez pas de viande", 0), 'I am vegan'),
+    (_cle("Dites que vous ne mangez pas de viande", 1), "I'm vegetarian, no meat please"),
+    (_cle("Demandez s'il y a de la viande", 0), 'Is there any meat in it?'),
+    (_cle("Demandez s'il y a de la viande", 0), 'Is it vegetarian?'),
+    (_cle("Demandez s'il y a de la viande", 1), 'Is this dish meat-free?'),
+    (_cle("Demandez s'il y a de la viande", 1), 'Does it have chicken broth?'),
+    (_cle("La serveuse n'est pas sûre", 0), "I'll have something else"),
+    (_cle("La serveuse n'est pas sûre", 0), "I don't want it"),
+    (_cle("La serveuse n'est pas sûre", 0), "Never mind, I'll have the pasta"),
+    (_cle("La serveuse n'est pas sûre", 0), "I'd like the pasta."),
+    (_cle("La serveuse n'est pas sûre", 0), 'I prefer the penne.'),
+    (_cle("La serveuse n'est pas sûre", 0), 'Give me the pasta.'),
+    (_cle("La serveuse n'est pas sûre", 0), "I'll skip the risotto."),
+    (_cle("La serveuse n'est pas sûre", 1), "I'll pass on the risotto."),
+    (_cle("La serveuse n'est pas sûre", 1), "I won't take the risotto."),
+    (_cle("La serveuse n'est pas sûre", 1), 'Rather than the risotto, the pasta please'),
+    (_cle("La serveuse n'est pas sûre", 1), 'No risotto for me, then.'),
+    (_cle("La serveuse n'est pas sûre", 1), "I'll have the pasta instead of the risotto."),
+    (_cle("La serveuse n'est pas sûre", 2), "I'll have the pasta instead of the chicken."),
+    (_cle("La serveuse n'est pas sûre", 2), 'No chicken for me, the pasta please.'),
+    (_cle("La serveuse n'est pas sûre", 2), 'Rather than the chicken, the pasta please'),
+    (_cle("La serveuse n'est pas sûre", 2), 'Something without meat, please.'),
+    (_cle("La serveuse n'est pas sûre", 2), "I'll have something else, then."),
 ]
 # Les voisins trop proches, exclus des familles « entendre » et « souvenir » : deux choix vrais à la fois
 # (bloc et coin, médicament et comprimé), ou un choix qui se trouve sans comprendre (le nom propre, le prix).
 PROCHES = [{"block", "corner", "intersection"}, {"drug", "pill", "pharmacy"}, {"museum", "gallery"},
            {"coffee", "double_double"}, {"room", "double_bed", "two_beds"}, {"cash", "change"},
-           {"check_in", "reservation"}, {"to_go", "bag"}]
+           {"check_in", "reservation"}, {"to_go", "bag"}, {"vegetarian", "no_meat"}]
 HORS_SERIE = {"intersection", "hockey", "price_four99", "thirteen", "fifteen", "peameal"}
 
 
@@ -460,15 +478,15 @@ def verifier(lieux, voix, gens):
     # Tour 2 : la règle tenue n'ajoute pas toujours — la bonne n'est pas toujours la plus grande de sa paire.
     assert any(total(*it[4:])[0][0][0] < total(*it[4:])[0][2][0] for it in TOTAL), "la bonne est toujours la plus grande de sa paire"
     from collections import Counter as _C
-    assert _C(it[3] for it in ALLERGIE if it[0] == "ada") == {0: 2, 1: 2, 2: 2, 3: 2}, "deux saumons par case"
-    marches = [choix_allergie(it) for it in ALLERGIE if it[0] == "wei"]
+    assert _C(it[3] for it in VEGE if it[0] == "ada") == {0: 2, 1: 2, 2: 2, 3: 2}, "deux risottos par case"
+    marches = [choix_vege(it) for it in VEGE if it[0] == "wei"]
     assert len(marches) == 2 and {m[0][0] for m in marches} == {_MARCHE[0], _MARCHE[3]}, "un marché pour chaque geste"
     for m in marches:
         assert sorted(c for c, _ in m) == sorted(_MARCHE), "les mêmes quatre choix au marché"
     longs = [len(ch[0][0]) < min(len(c) for c, _ in ch[1:]) for _, _, _, _, ch in REPONSES]
     assert sum(longs) <= len(REPONSES) // 4, ("la bonne est trop souvent la plus courte", sum(longs))
-    for it in ALLERGIE:
-        ch = choix_allergie(it)
+    for it in VEGE:
+        ch = choix_vege(it)
         assert it[0] in gens, it[0]
         _choix(ch, it[2], carre=True)
     for q, en, blocs, tourner in CHEMIN:

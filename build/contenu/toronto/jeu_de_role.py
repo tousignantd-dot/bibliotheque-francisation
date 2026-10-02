@@ -12,9 +12,11 @@ Trois sortes de cas, dans un seul scénario « toronto-en » :
 - « carte-<lieu> » : la relecture des deux lignes écrites au dos de la carte
   postale (un bilan seul, sans conversation).
 
-L'allergie (O3) reste ÉLIMINATOIRE au restaurant : la carte ne se gagne pas si
-l'allergie n'a pas été dite avant de commander, ou si le plat incertain a été
-commandé quand même. La règle est la même que dans les exercices (exercices.py).
+Le régime végétarien (O3) est ÉLIMINATOIRE au restaurant et au marché : la carte
+ne se gagne pas si le touriste n'a pas dit qu'il ne mange pas de viande avant de
+commander, ou s'il a commandé un plat qui en contient ou dont on n'est pas sûr. La
+règle est la même que dans les exercices (exercices.py). Il remplace l'allergie le
+2 oct. 2026 (décision de Daniel : responsabilité civile).
 
     python3 build/contenu/toronto/jeu_de_role.py   # vérifie et montre une consigne
 """
@@ -54,7 +56,8 @@ FAITS = {
     "marche": ["Peameal bacon sandwich $10, plus tax. Cheese is sold by the pound.",
                "This counter is cash only; there is a cash machine by the door.",
                "The market is closed on Mondays.",
-               "The cookies by the register are made in a bakery that uses peanuts. You never mention it unless the customer mentions an allergy or asks."],
+               "Grilled cheese sandwich $8, plus tax: no meat at all.",
+               "The soup of the day, by the register, is split pea soup made with ham. You never mention the ham unless the customer says they don't eat meat or asks."],
     "kensington": ["The Spadina streetcar is two blocks east; take it southbound to get back downtown.",
                    "It is a five-minute walk. You are a retired man who loves to give directions."],
     "iles": ["The ferry is $9.57 return for an adult. Bikes are $15 an hour and you need a piece of ID.",
@@ -62,10 +65,10 @@ FAITS = {
     "pharmacie": ["For a sunburn: an after-sun cream, twice a day, and stay out of the sun for a couple of days.",
                   "For a headache: ibuprofen or acetaminophen, no prescription needed; not with alcohol.",
                   "If there is a fever or blisters, go to a walk-in clinic."],
-    "resto": ["Tonight: the pasta (no nuts at all), the pecan-crusted salmon (nuts!), the chicken (no nuts). When you list the dishes, name them as on the menu; just don't add allergy warnings.",
-              "Dessert: an almond tart (nuts!) or ice cream (made in a kitchen that also uses nuts: you are not sure).",
-              "You never mention nuts or allergens unless the customer mentions an allergy or asks. If a customer orders a dish, you take the order as asked.",
-              "If a customer says they have a nut allergy, you answer honestly; if you are not sure, you say you will check with the kitchen.",
+    "resto": ["Tonight: the penne with tomato sauce (no meat at all), the mushroom risotto (made with chicken stock: it has meat), the chicken parmigiana (meat). When you list the dishes, name them as on the menu; just don't add any warning about meat or broth.",
+              "Soup of the day: minestrone (you are not sure whether the broth is vegetable or chicken). Dessert: tiramisu or ice cream.",
+              "You never mention meat, broth or vegetarian options unless the customer says they don't eat meat or asks. If a customer orders a dish, you take the order as asked.",
+              "If a customer says they are vegetarian, you answer honestly; if you are not sure, you say you will check with the kitchen.",
               "Separate bills are fine. Tip is not included."],
     "depart": ["The bill is $512.40 and includes a $14 minibar charge. Show the total; do not mention the minibar unless the guest does. It is a mistake if the guest says they did not use the minibar; you remove it.",
                "The UP Express to the airport leaves from Union Station, upper level, every 15 minutes; about 25 minutes to Pearson."],
@@ -77,25 +80,27 @@ GESTES = {
     "hotel": ["épeler lui-même son nom, lettre par lettre", "comprendre le dépôt ou l'heure de la chambre", "demander une information (déjeuner ou wifi)"],
     "cafe": ["commander une boisson avec sa grandeur", "répondre à « for here or to go? » ou à « anything else? »"],
     "tour": ["demander des billets", "comprendre l'heure de montée"],
-    "marche": ["commander", "comprendre comment payer (comptant seulement)", "demander si les biscuits contiennent des arachides, et ne pas en prendre"],
+    "marche": ["commander", "comprendre comment payer (comptant seulement)", "demander si la soupe contient de la viande, et ne pas en prendre"],
     "kensington": ["demander son chemin", "comprendre la direction (est, sud, à pied)"],
     "iles": ["louer un vélo ou acheter le passage", "comprendre l'heure du dernier traversier"],
     "pharmacie": ["décrire son problème", "comprendre comment prendre le produit"],
-    "resto": ["dire son allergie aux noix AVANT de commander", "ne pas commander un plat qui contient des noix ou dont la serveuse n'est pas sûre", "commander un plat"],
+    "resto": ["dire en anglais « I'm vegetarian » ou « I don't eat meat » AVANT de commander", "ne pas commander un plat qui contient de la viande ou dont la serveuse n'est pas sûre", "commander un plat"],
     "depart": ["signaler poliment l'erreur sur la facture", "comprendre ce qu'on fait de la somme", "demander comment aller à l'aéroport (UP Express)"],
 }
-# La formule modèle du bilan, propre à chaque allergène (tour 2 : « nuts » servi au marché, où c'est l'arachide).
-FORMULE = {"resto": "Before I order: I'm allergic to nuts.",
-           "marche": "I'm allergic to peanuts. Do the cookies have peanuts?"}
+# La formule modèle du bilan, propre à chaque lieu (tour 2 : la formule du restaurant ne vaut pas au marché).
+FORMULE = {"resto": "Before I order: I'm vegetarian, I don't eat meat.",
+           "marche": "I'm vegetarian. Does the soup have any meat in it?"}
 # La règle affichée avant de jouer, par lieu (la règle du restaurant ne vaut pas au marché).
-REGLE_ELIM = {"resto": "dites-la en anglais avant de commander, et ne demandez rien qui contient des noix ou dont on n’est pas sûr.",
-              "marche": "demandez en anglais si les biscuits contiennent des arachides, et n’en prenez pas s’il y a un doute ou des traces."}
+REGLE_ELIM = {"resto": "dites en anglais que vous ne mangez pas de viande avant de commander, et ne demandez aucun plat qui en contient (même un bouillon de poulet) ou dont on n’est pas sûr.",
+              "marche": "demandez en anglais si la soupe contient de la viande, et n’en prenez pas s’il y en a ou s’il y a un doute ; ne commandez rien qui contient de la viande."}
 ELIMINATOIRE = {
-    "resto": ("l'allergie aux noix n'a pas été dite EN ANGLAIS avant la première commande d'un plat, ou le touriste a "
-              "DEMANDÉ un plat avec des noix ou dont la serveuse n'est pas sûre — même si la serveuse l'a ensuite refusé "
-              "ou si le touriste s'est repris"),
-    "marche": ("le touriste a pris ou demandé des biscuits sans avoir demandé EN ANGLAIS s'ils contiennent des "
-               "arachides, ou les a pris après avoir appris qu'ils sont faits là où on utilise des arachides"),
+    "resto": ("le touriste n'a pas dit EN ANGLAIS qu'il ne mange pas de viande (« I'm vegetarian ») avant la première "
+              "commande d'un plat, ou il a DEMANDÉ un plat qui contient de la viande (y compris un bouillon de viande, "
+              "comme le risotto au bouillon de poulet, ou le poulet) ou dont la serveuse n'est pas sûre — même si le "
+              "touriste s'est repris ensuite"),
+    "marche": ("le touriste a pris ou demandé de la soupe sans avoir demandé EN ANGLAIS si elle contient de la viande, "
+               "ou l'a prise après avoir appris qu'elle est faite avec du jambon, ou a commandé un plat qui contient de "
+               "la viande (comme le sandwich au bacon de dos)"),
 }
 # Ce que la carte du touriste lui dit avant d'entrer (en français).
 CONSIGNE = {
@@ -103,11 +108,11 @@ CONSIGNE = {
     "hotel": "Vous arrivez à l'hôtel, rue King. Vous avez une réservation à votre nom. Faites-vous enregistrer.",
     "cafe": "C'est le matin, au café. Commandez à boire (et à manger si vous voulez), puis payez.",
     "tour": "Au guichet de la tour CN. Achetez deux billets pour cet après-midi.",
-    "marche": "Au marché St. Lawrence, au comptoir. Vous êtes allergique aux arachides. Commandez un sandwich, voyez si les biscuits près de la caisse sont sans danger, et payez.",
+    "marche": "Au marché St. Lawrence, au comptoir. Vous êtes végétarien ou végétarienne : vous ne mangez pas de viande. Commandez un sandwich, voyez si la soupe du jour près de la caisse est sans viande, et payez.",
     "kensington": "Vous ne trouvez plus votre chemin dans Kensington. Demandez comment rejoindre le tramway de Spadina pour rentrer au centre-ville.",
     "iles": "Au quai du traversier. Vous voulez aller sur les îles, et louer un vélo là-bas.",
     "pharmacie": "Lendemain des îles : un coup de soleil sur les épaules, et un mal de tête. Allez à la pharmacie.",
-    "resto": "Au restaurant, le soir. Vous êtes allergique aux noix. Commandez votre souper.",
+    "resto": "Au restaurant, le soir. Vous êtes végétarien ou végétarienne : vous ne mangez pas de viande. Commandez votre souper.",
     "depart": "Dernier jour, à la réception. Il y a 14 $ de minibar sur votre facture ; vous n'avez rien pris. Puis demandez comment aller à l'aéroport.",
 }
 # Le bavardage avec Maya : (cas, jour, lieu où on la croise, sujet).
@@ -266,7 +271,7 @@ def _bilan(cas_id):
                "« conseil ».\n" if elim else "")
             + "« reussi » vaut true si tous les gestes sont accomplis" + (" et que l'éliminatoire est évité" if elim else "")
             + ". Écris toujours « reussi », true ou false.\n"
-            + (f"Formule modèle pour l'allergie : « {FORMULE[cas_id]} »\n" if cas_id in FORMULE else "")
+            + (f"Formule modèle pour dire qu'on ne mange pas de viande : « {FORMULE[cas_id]} »\n" if cas_id in FORMULE else "")
             + "Réponds UNIQUEMENT en JSON : {\"compris\": [\"…\"], \"phrases\": [{\"dit\": \"…\", \"mieux\": \"…\"}], "
             "\"gestes\": [{\"geste\": \"…\", \"fait\": true}], \"conseil\": \"…\", \"resume\": \"…\", \"reussi\": true}.")
 
@@ -308,7 +313,8 @@ def verifier():
     assert set(FAITS) == set(LIEUX) == set(GESTES) == set(CONSIGNE), "un lieu sans faits, gestes ou consigne"
     for k in LIEUX:
         assert GESTES[k], k
-    assert "noix" in CONSIGNE["resto"] and "resto" in ELIMINATOIRE, "l'allergie reste éliminatoire au restaurant"
+    assert "viande" in CONSIGNE["resto"] and "resto" in ELIMINATOIRE, "la viande reste éliminatoire au restaurant"
+    assert "marche" in ELIMINATOIRE and "viande" in CONSIGNE["marche"], "et au marché"
     for c in [*LIEUX, *("carte-" + k for k in LIEUX), *(m[0] for m in MAYA)]:
         assert bilan(c), c
     for c in [*LIEUX, *(m[0] for m in MAYA)]:

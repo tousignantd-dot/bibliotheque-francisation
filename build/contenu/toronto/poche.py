@@ -7,7 +7,11 @@ listes sont propres à la poche :
 - URGENCES : elles ne se jouent dans aucune scène, et c'est pour ça qu'il faut les
   avoir sous la main ;
 - A_MONTRER : les phrases qu'on TEND à quelqu'un, en grand (« plus lentement »,
-  l'allergie) — le plan les promettait (« un écran à montrer »).
+  « je ne mange pas de viande ») — le plan les promettait (« un écran à montrer »).
+
+2 oct. 2026 : plus aucune allergie dans l'application (décision de Daniel :
+responsabilité civile). La réaction allergique cède sa place à la pharmacie la
+plus proche, les deux cartes d'allergie à une seule phrase végétarienne.
 
 (id, en, fr). Les sons : poche/<id>.mp3, voix de la narratrice (toronto_commun.py).
 """
@@ -16,7 +20,7 @@ URGENCES = [
     ("help", "Help! Please call 911!", "À l'aide ! Appelez le 911, s'il vous plaît !"),
     ("doctor", "I need a doctor, please.", "J'ai besoin d'un médecin, s'il vous plaît."),
     ("hospital", "Where is the nearest hospital?", "Où est l'hôpital le plus proche ?"),
-    ("reaction", "I'm having an allergic reaction.", "Je fais une réaction allergique."),
+    ("pharmacy", "Where is the nearest pharmacy?", "Où est la pharmacie la plus proche ?"),
     ("lost", "I'm lost. Can you show me on the map?", "Je ne trouve plus mon chemin. Pouvez-vous me montrer sur la carte ?"),
     ("passport", "I lost my passport.", "J'ai perdu mon passeport."),
     ("stolen", "Someone stole my wallet.", "On m'a volé mon portefeuille."),
@@ -26,8 +30,7 @@ URGENCES = [
 A_MONTRER = [
     ("slowly", "Could you say that again, more slowly, please?", "Pourriez-vous répéter, plus lentement, s'il vous plaît ?"),
     ("write", "Sorry, my English is not very good. Could you write it down?", "Excusez-moi, mon anglais n'est pas très bon. Pourriez-vous l'écrire ?"),
-    ("nuts", "I'm allergic to nuts. Please check with the kitchen.", "Je suis allergique aux noix. Vérifiez auprès de la cuisine, s'il vous plaît."),
-    ("peanuts", "I'm allergic to peanuts. Does this have peanuts?", "Je suis allergique aux arachides. Est-ce que ça en contient ?"),
+    ("vegetarian", "I'm vegetarian. I don't eat meat, fish or chicken broth.", "Je suis végétarien ou végétarienne. Je ne mange pas de viande, de poisson ni de bouillon de poulet."),
     ("french", "Do you speak French?", "Parlez-vous français ?"),
 ]
 

@@ -28,7 +28,7 @@ import toronto_commun as C  # noqa: E402
 
 SORTIE = RACINE / "modules-autonomes" / "toronto" / "index.html"
 MEDIA = RACINE / "assets" / "interactive" / "toronto"
-MEDIA_V = "6"  # 6 : tour 3 des exercices (allergie, nombres, totaux refaits, mêmes noms) ; 5 : tour 2 des exercices (totaux et allergie refaits, mêmes noms) ; 4 : exercices refaits au tour 1 (numéros décalés, même nom, autre son) ; 3 : test 0-5 refait (fin coupée) ; 2 : cinq extraits refaits après le tour 3 (même nom, autre son) ; 1 : première production
+MEDIA_V = "7"  # 7 : l'allergie retirée, la série « Sans viande » (exos/veg-*), la poche et une réponse du restaurant refaites (2 oct. 2026) ; 6 : tour 3 des exercices (allergie, nombres, totaux refaits, mêmes noms) ; 5 : tour 2 des exercices (totaux et allergie refaits, mêmes noms) ; 4 : exercices refaits au tour 1 (numéros décalés, même nom, autre son) ; 3 : test 0-5 refait (fin coupée) ; 2 : cinq extraits refaits après le tour 3 (même nom, autre son) ; 1 : première production
 
 
 def plan_ville():
@@ -93,8 +93,8 @@ def donnees():
             "totaux": totaux,
             "chemins": [{"qui": q, "en": en, "blocs": b, "tourner": t} for q, en, b, t in EX.CHEMIN],
             "dire": [{"lieu": nom_lieu[l], "fr": fr, "en": en, "cles": cles, "garde": EX.garde(fr)} for l, fr, en, cles in EX.DIRE],
-            "allergie": {"regle": EX.REGLE_ALLERGIE, "items": [{"qui": it[0], "ctx": it[1], "en": it[2], "apres": it[4],
-                         "choix": EX.choix_allergie(it)} for it in EX.ALLERGIE]},
+            "vege": {"regle": EX.REGLE_VEGE, "items": [{"qui": it[0], "ctx": it[1], "en": it[2], "apres": it[4],
+                     "choix": EX.choix_vege(it)} for it in EX.VEGE]},
             "proches": [sorted(g) for g in EX.PROCHES], "horsSerie": sorted(EX.HORS_SERIE)}
     semaine = [{"id": l[0], "n": l[1], "jour": l[2], "lieu": l[3], "situation": l[4], "geste": l[5], "qui": l[6],
                 "carte": (MEDIA / "cartes" / f"{l[0]}.jpg").exists()} for l in SE.LIEUX]
@@ -974,8 +974,8 @@ function vueCarte(id){
 /* ---------- étape 5 : la semaine jouée, avec l'assistance ---------- */
 /* /api/jeu-de-role, scénario « toronto-en » (build/contenu/toronto/jeu_de_role.py) :
    la personne du lieu vous répond en anglais, avec sa voix (/api/voix, rôles toronto_*).
-   Le bilan, en français, dit les gestes accomplis ; au restaurant, l'allergie est
-   éliminatoire. Une situation réussie donne la carte postale du lieu, qu'on écrit
+   Le bilan, en français, dit les gestes accomplis ; au restaurant et au marché, la
+   viande est éliminatoire (le touriste est végétarien). Une situation réussie donne la carte postale du lieu, qu'on écrit
    ensuite en deux lignes, relues par l'assistance. Un code ouvre l'assistance. */
 const CLE_CODE = 'toronto:code';
 // Un accord au masculin quand aucun genre n'est choisi (« vous vous êtes débrouillé », « vous êtes allé »).
@@ -1011,8 +1011,8 @@ const aRepondu = (citees, dits) => { const qs = (citees || []).map(q => plat(q))
 const COMPTE_Q = /(\d+|une|deux|trois|aucune|plusieurs|pas assez de|assez de|toutes? (ses|les|vos)|une seule) questions?/i;
 const sansCompte = t => String(t || '').split(/(?<=[.!?])\s+/).filter(x => !COMPTE_Q.test(x)).join(' ');
 // Une correction garde le sens : on compare les mots PLEINS (contractions dépliées, radical de 5 lettres) ;
-// rejetée si elle en ajoute plus qu'elle n'en garde, plus un (tour 3 : « allergy at the peanuts → allergic
-// to peanuts » était jeté ; « OK bye → I haven't eaten yet, bye » reste rejeté).
+// rejetée si elle en ajoute plus qu'elle n'en garde, plus un (tour 3 : « I am vegetarian person → I'm a
+// vegetarian » doit passer ; « OK bye → I haven't eaten yet, bye » reste rejeté).
 const VIDES = new Set('a an the to please do does did is are am was were will would it i you me my we us of at in on for and so ok okay yes no not be have has had can could i m s ll d re ve t'.split(' '));
 const deplie = t => plat(t).replace(/\bi m\b/g, 'i am').replace(/\b(\w+) t\b/g, '$1 not').replace(/\b(\w+) ll\b/g, '$1 will').replace(/\b(\w+) re\b/g, '$1 are');
 const pleins = t => deplie(t).split(' ').filter(w => w && !VIDES.has(w)).map(w => w.slice(0, 5));
@@ -1022,11 +1022,12 @@ const fideleA = (dit, mieux) => { const d = new Set(pleins(dit)), m = pleins(mie
 // Une réplique en français : un pronom, ou deux marqueurs (« Do you like Les Misérables? » reste anglaise).
 const FRANCAIS = { test: t => /(^| )(je|j|tu|toi|vous|nous|ca va|hein|pis|merci|bonjour|oui)( |$)/.test(t)
   || (t.match(/(^| )(est|et|le|la|les|des|ou|aussi|comment|quoi|avec|pour|dans)(?= |$)/g) || []).length >= 2 };
-// Ce qui touche le produit dangereux, dans un lieu à éliminatoire : on ne le peaufine jamais.
-// Tour 5 : le produit en mots entiers (« start » contenait « tart »), dans une réplique qui n'est ni une question
-// ni un refus (« The salmon, please » commande ; « Are there nuts in the tart? » demande).
-const PRODUIT = /(^| )(salmon|pecans?|almonds?|tart|ice cream|walnuts?|hazelnuts?|cookies?|biscuits?|peanuts?)( |$)/;
-const QUESTION_REFUS = /^(is|are|does|do|has|have|any|what|which|can you|could you)( |$)|(^| )(no|not|don t|do not|without|allerg[a-z]*|nut free|peanut free)( |$)/;
+// Ce qui touche le plat interdit, dans un lieu à éliminatoire : on ne le peaufine jamais.
+// Tour 5 : le plat en mots entiers (« start » contenait « tart »), dans une réplique qui n'est ni une question
+// ni un refus (« The risotto, please » commande ; « Is there meat in the soup? » demande).
+// 2 oct. 2026 : le touriste est végétarien — le risotto au bouillon de poulet, la soupe au jambon, le poulet.
+const PRODUIT = /(^| )(risotto|soup|minestrone|chicken|parmigiana|bacon|peameal|ham|beef|steak|pork|meatballs?|sausages?)( |$)/;
+const QUESTION_REFUS = /^(is|are|does|do|has|have|any|what|which|can you|could you)( |$)|(^| )(no|not|don t|do not|without|vegetarian|vegan|veggie|meat free)( |$)/;
 const DANGER = { test: t => PRODUIT.test(t) && !QUESTION_REFUS.test(t) };
 const PALIERS = [['lent', 'Lentement'], ['normal', 'Normalement'], ['rapide', 'Vite, comme à Toronto']];
 const estCode = c => /^PC[A-Z2-9]{6}$/.test(c || '');
@@ -1066,7 +1067,7 @@ function vueJouer(cas){
     app.innerHTML = `${retour(c.retour, titreRetour)}<p class="surtitre">${E(c.jour)} · avec l'assistance</p><h1>${E(c.titre)}</h1>
       <div class="objectif">${c.maya ? `Vous croisez Maya ${E(c.ou)}. Elle vous parle, vous répondez — et vous lui posez au moins deux questions à votre tour (And you? What about you?).`
         : E(D.jeu.consigne[c.cas])}</div>
-      ${c.maya ? '' : `<p class="muted" style="font-size:15px">Pour gagner la carte : ${D.jeu.gestes[c.cas].map(E).join(' · ')}.${D.jeu.elim.includes(c.cas) ? ' <b>L’allergie est éliminatoire :</b> ' + E(D.jeu.regle[c.cas]) : ''}</p>`}
+      ${c.maya ? '' : `<p class="muted" style="font-size:15px">Pour gagner la carte : ${D.jeu.gestes[c.cas].map(E).join(' · ')}.${D.jeu.elim.includes(c.cas) ? ' <b>Vous ne mangez pas de viande, et c’est éliminatoire :</b> ' + E(D.jeu.regle[c.cas]) : ''}</p>`}
       <p class="muted">${E(g.nom)} vous répond vraiment, en anglais : dites ce que vous voulez, comme vous pouvez. Il faut du réseau.</p>
       <h3>Comment on vous parle</h3><div class="rangee" id="pal">${choixPal()}</div>
       <h3>Le bilan, en français, s'accorde au</h3><div class="rangee" id="genre">${choixGenre()}</div>
@@ -1159,7 +1160,7 @@ function vueJouer(cas){
         // « dit » doit venir d'une réplique du touriste : sinon le bilan corrige ce qu'il n'a pas dit.
         const dits = hist.filter(m => m.role === 'user').map(m => plat(m.contenu)).join(' | ');
         b.phrases = (b.phrases || []).filter(x => x && x.dit && x.mieux && dits.includes(plat(x.dit)) && plat(x.dit) !== plat(x.mieux) && fideleA(x.dit, x.mieux)
-          && !(D.jeu.elim.includes(c.cas) && !gagne && DANGER.test(plat(x.dit)) && !/allerg/i.test(x.mieux)));
+          && !(D.jeu.elim.includes(c.cas) && !gagne && DANGER.test(plat(x.dit)) && !/vegetarian|meat/i.test(x.mieux)));
         if (gagne) { S.cartes = S.cartes || {}; if (!S.cartes[c.cas]) S.cartes[c.cas] = aujourdhui(); }
         if (c.maya && b.reussi === true) { S.maya = S.maya || {}; S.maya[c.cas] = aujourdhui(); }
         sauver();
@@ -1169,7 +1170,7 @@ function vueJouer(cas){
             return `<div class="geste"><b>${f ? '✓' : '—'}</b><span>${E(g)}${f ? '' : ' <span class="muted">(pas encore)</span>'}</span></div>`; }).join('')}` : ''}
           ${c.maya ? (b.reussi === true ? `<div class="retro ok">✓ Vous avez répondu et posé ${relances} questions à Maya.</div>`
                                         : `<div class="retro no">— Pas encore : ${!repondu ? 'répondez à ses questions en anglais, même brièvement' + (relances < 2 ? `, et posez-lui au moins deux questions (${relances} pour l’instant)` : '') : `vous lui avez posé ${relances} question${relances > 1 ? 's' : ''} ; il en faut au moins deux (And you? What about you?)`}.</div>`) : ''}
-          ${!c.maya && !gagne && D.jeu.elim.includes(c.cas) && att.some((g, i) => /allerg|arachide|noix/i.test(g) && !(b.gestes && b.gestes[i] && b.gestes[i].fait === true))
+          ${!c.maya && !gagne && D.jeu.elim.includes(c.cas) && att.some((g, i) => /viande|vegetarian/i.test(g) && !(b.gestes && b.gestes[i] && b.gestes[i].fait === true))
             ? `<div class="retro no"><b>Éliminatoire :</b> ${E(D.jeu.regle[c.cas])}</div>` : ''}
           ${(b.compris || []).length ? `<h3>Ce que vous avez obtenu</h3><ul>${b.compris.map(x => `<li>${E(x)}</li>`).join('')}</ul>` : ''}
           ${(b.phrases || []).length ? `<h3>À dire autrement</h3>${b.phrases.map(x => `<div class="carte" style="margin:6px 0"><div class="muted">${E(x.dit)}</div><div style="font-size:18px;font-weight:800;color:var(--text-strong)">${E(x.mieux)}</div></div>`).join('')}` : ''}
@@ -1312,7 +1313,7 @@ function vueAchatAnnule(){
    boucle de l'étape 1). Le contenu : build/contenu/toronto/exercices.py. */
 const FAMILLES = [
   ['reponses', 'Ce qu’on me répond', 'Une vraie réponse, dite vite : que veut-elle dire ?'],
-  ['allergie', 'L’allergie', 'Comprendre la réponse, et savoir quand ne pas commander'],
+  ['vege', 'Sans viande', 'Comprendre la réponse, et savoir quand ne pas commander'],
   ['nombres', 'Les prix et les heures', 'Fourteen ou forty ? Quarter past ou quarter to ?'],
   ['totaux', 'Le total à payer', 'Le prix entendu, la taxe, le pourboire : combien, vraiment ?'],
   ['chemins', 'Où je vais', 'Suivez les indications sur le plan'],
@@ -1339,12 +1340,12 @@ function itemsDe(fam){
   if (fam === 'totaux') return melange(X.totaux.map((it, k) => ({k, it}))).map(({k, it}) => ({
     son: `exos/tot-${k}.mp3`, haut: `<p class="consigne"><b>${E(it.lieu)}.</b> ${E(it.ctx)}</p>`, q: 'Combien payez-vous en tout ?',
     en: it.en, apresTexte: it.calcul, choix: it.choix}));
-  // Tour 2 : trois réponses tirées sur les six du saumon (les quatre cases y sont), plus le marché ;
+  // Tour 2 : trois réponses tirées sur les six du risotto (les quatre cases y sont), plus le marché ;
   // la série change à chaque fois, et la dernière ne se déduit plus des deux autres.
-  if (fam === 'allergie') { const tous = X.allergie.items.map((it, k) => ({k, it}));
-    const saumon = melange(tous.filter(x => x.it.qui === 'ada')).slice(0, 3), autres = melange(tous.filter(x => x.it.qui !== 'ada')).slice(0, 1);
-    return melange([...saumon, ...autres]).map(({k, it}) => ({
-    son: `exos/all-${k}.mp3`, qui: D.gens[it.qui], haut: `<p class="consigne">${E(it.ctx)}</p>`, q: 'Que vous répond-on ?',
+  if (fam === 'vege') { const tous = X.vege.items.map((it, k) => ({k, it}));
+    const risottos = melange(tous.filter(x => x.it.qui === 'ada')).slice(0, 3), autres = melange(tous.filter(x => x.it.qui !== 'ada')).slice(0, 1);
+    return melange([...risottos, ...autres]).map(({k, it}) => ({
+    son: `exos/veg-${k}.mp3`, qui: D.gens[it.qui], haut: `<p class="consigne">${E(it.ctx)}</p>`, q: 'Que vous répond-on ?',
     en: it.en, apresTexte: it.apres, choix: it.choix})); }
   if (fam === 'chemins') return melange(X.chemins.map((it, k) => ({k, it}))).map(({k, it}) => {
     // Les quatre points du carré (2 ou 3 coins de rue) × (gauche ou droite) ; les lettres tirées au hasard.
@@ -1381,10 +1382,10 @@ function planChemin(pts){
 function vueFamille(fam){
   const nom = (FAMILLES.find(f => f[0] === fam) || [])[1]; if (!nom) return vueExos();
   if (fam === 'dire') return serieDire();
-  if (fam === 'allergie' && !vueFamille.regleVue) {
-    app.innerHTML = `${retour('exos', 'Les exercices')}<p class="surtitre">L'allergie</p><h1>Avant de commencer</h1>
-      <div class="regle"><b>La règle.</b> ${E(D.exos.allergie.regle)}</div>
-      <p>Les noix portent souvent leur nom : <b lang="en">pecans</b> (pacanes), <b lang="en">almonds</b> (amandes), <b lang="en">walnuts</b> (noix de Grenoble), <b lang="en">hazelnuts</b> (noisettes). Les arachides, ce sont les <b lang="en">peanuts</b>.</p>
+  if (fam === 'vege' && !vueFamille.regleVue) {
+    app.innerHTML = `${retour('exos', 'Les exercices')}<p class="surtitre">Sans viande</p><h1>Avant de commencer</h1>
+      <div class="regle"><b>La règle.</b> ${E(D.exos.vege.regle)}</div>
+      <p>La viande se cache souvent : <b lang="en">chicken broth</b> ou <b lang="en">chicken stock</b> (bouillon de poulet), <b lang="en">beef broth</b> (bouillon de bœuf), <b lang="en">bacon</b>, <b lang="en">ham</b> (jambon). Un bouillon de viande, c'est de la viande. Sans viande : <b lang="en">vegetable broth</b> (bouillon de légumes), <b lang="en">no meat</b>.</p>
       <p>Quatre réponses de serveuse ou de marchand. Comprenez ce qu'on vous dit ; la décision s'affiche ensuite. Au marché, c'est vous qui décidez.</p>
       <button class="btn btn--pri btn--large" id="go">Commencer</button>`;
     $('#go').onclick = () => { vueFamille.regleVue = true; vueFamille(fam); vueFamille.regleVue = false; }; return;
