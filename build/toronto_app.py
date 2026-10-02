@@ -176,6 +176,9 @@ body{margin:0;background:var(--surface-page,#F7F7F5);color:var(--text-body,#2B2D
 main{max-width:760px;margin:0 auto;padding:14px 16px 90px}
 h1{font-size:28px;line-height:1.15;margin:6px 0 6px;color:var(--text-strong)}
 h2{font-size:21px;line-height:1.2;margin:22px 0 10px;color:var(--text-strong)}
+/* Les intertitres d'un écran (« Comment on vous parle », « Votre code ») : sans taille propre, ils prenaient
+   celle du système de design, plus grande que le h2, collés aux boutons (vu par Daniel le 2 oct. 2026). */
+h3{font-size:17px;line-height:1.25;margin:20px 0 8px;color:var(--text-strong)}
 p{margin:0 0 10px}
 .muted{color:var(--text-muted)}
 .surtitre{font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin:0}
