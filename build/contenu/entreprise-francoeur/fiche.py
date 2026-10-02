@@ -20,8 +20,9 @@ français seul pour ces lignes, et le dit.
 # chose de simple ») : une question, qui décide, l'exception. Avant : « Mettre de
 # côté sans argent : vous, avec le nom et le numéro. Argent, remboursement,
 # exception : la gérante. »
-REGLE_RELAIS = ("Qui décide ? S'il y a de l'argent, un remboursement, une plainte ou une exception, "
-                "c'est la gérante. Une mise de côté sans argent, c'est vous : prenez le nom et le numéro.")
+# Espaces insécables avant « ? » et « : » : sur la fiche, le deux-points tombait seul en début de ligne.
+REGLE_RELAIS = ("Qui décide\u00a0? S'il y a de l'argent, un remboursement, une plainte ou une exception, "
+                "c'est la gérante. Une mise de côté sans argent, c'est vous\u00a0: prenez le nom et le numéro.")
 
 # (id, la phrase à dire, quand s'en servir)
 PHRASES = [
