@@ -239,12 +239,18 @@ UI = {
                     "Part A adjusts: if it gets too hard, it stops by itself.",
                     "Cuatro partes, en el idioma que aprende. No hay verde ni rojo: no es un examen. "
                     "La parte A se ajusta: si es demasiado difícil, se detiene sola."),
-    "regle_c": R("À savoir avant de commencer : dans la partie C, accorder vous-même ce qui revient au gérant, "
-                 "ou ce que personne ne peut accorder, fait échouer la partie — comme au comptoir.",
-                 "Know this before you start: in part C, granting yourself what belongs to the manager, "
-                 "or what no one can grant, fails the part — just like at the desk.",
-                 "Antes de empezar: en la parte C, conceder usted mismo lo que le toca al gerente, "
-                 "o lo que nadie puede conceder, hace fallar la parte, como en el mostrador."),
+    # Reformulée le 2 oct. 2026 (Daniel : « faut que cela soit plus clair ») : l'ancienne phrase disait
+    # « accorder ce qui revient au gérant… comme au comptoir » — abstraite, et le comptoir n'est pas encore joué.
+    # Celle-ci nomme le bouton à ne pas choisir et la conséquence, en phrases courtes.
+    "regle_c": R("Partie C : pour chaque demande, choisissez qui décide. Attention : si c'est le gérant qui décide, "
+                 "ou si personne n'a le droit de le faire, ne choisissez pas « Je le fais moi-même ». "
+                 "Une seule erreur de ce genre, et la partie C est ratée.",
+                 "Part C: for each request, choose who decides. Careful: if the manager decides, or if no one is "
+                 "allowed to do it, do not choose \u201cI do it myself.\u201d "
+                 "Just one mistake like this, and you fail part C.",
+                 "Parte C: para cada solicitud, elija quién decide. Atención: si decide el gerente, o si nadie tiene "
+                 "permiso para hacerlo, no elija «Lo hago yo mismo». "
+                 "Un solo error de este tipo, y la parte C no se aprueba."),
     "passation": R("Passation", "Attempt", "Intento"),
     "forme": R("forme", "form", "forma"),
     "commencer_test": R("Commencer le test", "Start the test", "Empezar la prueba"),
