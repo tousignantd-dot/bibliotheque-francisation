@@ -239,18 +239,14 @@ UI = {
                     "Part A adjusts: if it gets too hard, it stops by itself.",
                     "Cuatro partes, en el idioma que aprende. No hay verde ni rojo: no es un examen. "
                     "La parte A se ajusta: si es demasiado difícil, se detiene sola."),
-    # Reformulée le 2 oct. 2026 (Daniel : « faut que cela soit plus clair ») : l'ancienne phrase disait
-    # « accorder ce qui revient au gérant… comme au comptoir » — abstraite, et le comptoir n'est pas encore joué.
-    # Celle-ci nomme le bouton à ne pas choisir et la conséquence, en phrases courtes.
-    "regle_c": R("Partie C : pour chaque demande, choisissez qui décide. Attention : si c'est le gérant qui décide, "
-                 "ou si personne n'a le droit de le faire, ne choisissez pas « Je le fais moi-même ». "
-                 "Une seule erreur de ce genre, et la partie C est ratée.",
-                 "Part C: for each request, choose who decides. Careful: if the manager decides, or if no one is "
-                 "allowed to do it, do not choose \u201cI do it myself.\u201d "
-                 "Just one mistake like this, and you fail part C.",
-                 "Parte C: para cada solicitud, elija quién decide. Atención: si decide el gerente, o si nadie tiene "
-                 "permiso para hacerlo, no elija «Lo hago yo mismo». "
-                 "Un solo error de este tipo, y la parte C no se aprueba."),
+    # Reformulée deux fois le 2 oct. 2026 (Daniel : « plus clair », puis « fais quelque chose de simple ») :
+    # une question, le bouton à ne pas choisir, la conséquence. Rien d'autre.
+    "regle_c": R("Partie C : qui décide ? Si ce n'est pas vous, ne choisissez pas « Je le fais moi-même ». "
+                 "Si vous le choisissez quand même, la partie C est ratée.",
+                 "Part C: who decides? If it's not you, do not choose \u201cI do it myself.\u201d "
+                 "If you choose it anyway, you fail part C.",
+                 "Parte C: ¿quién decide? Si no es usted, no elija «Lo hago yo mismo». "
+                 "Si lo elige de todos modos, la parte C no se aprueba."),
     "passation": R("Passation", "Attempt", "Intento"),
     "forme": R("forme", "form", "forma"),
     "commencer_test": R("Commencer le test", "Start the test", "Empezar la prueba"),
