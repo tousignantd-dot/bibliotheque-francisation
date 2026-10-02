@@ -314,6 +314,9 @@ ol.chaine li{margin:6px 0}
 <p class="eyebrow">Une semaine à Toronto &middot; qualité</p>
 <h1>La boucle didactique d'« Une semaine à Toronto »</h1>
 <p class="chapeau">Trois boucles, un regard extérieur à chaque tour, jusqu'à zéro bloquant et zéro majeur.</p>
+<p class="chapeau"><b>Note du 2 oct. 2026.</b> L'allergie dont parlent les constats ci-dessous a été retirée de l'application
+(décision de Daniel : responsabilité civile) et remplacée par le régime végétarien, avec la même mécanique (carré sûr / à
+vérifier × viande / pas de viande, contre-exemple, rotation). La série « Sans viande » n'a pas encore repassé la boucle.</p>
 <p class="sommaire"><a href="#prep">« Avant de partir » — {E(suite)}</a><a href="#exos">Les exercices — {E(suite_de(TOURS_EXOS))}</a><a href="#jeu">La semaine jouée — {E(suite_de(TOURS_JEU))}</a></p>
 <h2 class="partie" id="prep">1. « Avant de partir »</h2>
 <p class="chapeau">Les huit séances et le test « Prêt à partir ? », passés à la grille de 23 critères par un regard qui ne les a

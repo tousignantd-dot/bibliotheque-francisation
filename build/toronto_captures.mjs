@@ -25,16 +25,16 @@ const ETAT = `localStorage.setItem('toronto:v1', JSON.stringify({lent:false, aid
         p4:{faits:{ecoute:1,quiz:1,dire:1},fin:'1'},p5:{faits:{ecoute:1,quiz:1,dire:1},fin:'1'}},
   cartes:{union:'1er oct. 2026', hotel:'1er oct. 2026', cafe:'2 oct. 2026'},
   ecrits:{cafe:"Hi Léa! This morning I had a coffee in a small café on King Street. The muffins here are huge!"},
-  exos:{totaux:'5 sur 6', allergie:'4 sur 4'}})); localStorage.setItem('toronto:code', 'PCDEMO24');`;
+  exos:{totaux:'5 sur 6', vege:'4 sur 4'}})); localStorage.setItem('toronto:code', 'PCDEMO24');`;
 
 // Le faux serveur du restaurant : deux tours, puis le bilan.
 const FAUX = `(() => { let k = 0; const R = [
   "Hi there, welcome in! Table for one tonight?",
-  "Thanks for telling me. The pasta and the chicken are nut-free; the salmon has a pecan crust, so I'd skip it.",
-  "Great choice, the pasta it is. Anything to drink?"];
-  const bilan = {resume:"Vous avez dit votre allergie avant de commander et choisi un plat sans noix.",
-    compris:["Vous avez dit votre allergie aux noix avant de commander.","Vous avez commandé les pâtes, un plat sans noix."],
-    phrases:[{dit:"I take the pasta please.", mieux:"I'll have the pasta, please."}],
+  "Thanks for telling me. The penne has no meat at all; the risotto is made with chicken stock, so I'd skip it.",
+  "Great choice, the penne it is. Anything to drink?"];
+  const bilan = {resume:"Vous avez dit que vous ne mangez pas de viande avant de commander, et choisi un plat sans viande.",
+    compris:["Vous avez dit en anglais que vous ne mangez pas de viande, avant de commander.","Vous avez commandé les penne, un plat sans viande."],
+    phrases:[{dit:"I take the penne please.", mieux:"I'll have the penne, please."}],
     gestes:[{geste:"a",fait:true},{geste:"b",fait:true},{geste:"c",fait:true}],
     conseil:"Pour commander, « I'll have… » est la formule la plus naturelle.", reussi:true};
   window.fetch = async (u, o) => { const b = o && o.body ? JSON.parse(o.body) : {};
@@ -51,11 +51,11 @@ const ECRANS = [
   ['semaine', '#semaine', ''],
   ['situation', '#semaine/resto/jouer', ''],
   ['conversation', '#semaine/resto/jouer', `${FAUX} document.querySelector('#go').click(); await p(700);
-     const t = document.querySelector('#txt'); t.value = 'Just me. I am allergic to nuts.'; document.querySelector('#env').click(); await p(700);
-     t.value = 'I take the pasta please.'; document.querySelector('#env').click(); await p(700);`],
+     const t = document.querySelector('#txt'); t.value = 'Just me. I am vegetarian. I do not eat meat.'; document.querySelector('#env').click(); await p(700);
+     t.value = 'I take the penne please.'; document.querySelector('#env').click(); await p(700);`],
   ['bilan', '#semaine/resto/jouer', `${FAUX} document.querySelector('#go').click(); await p(700);
-     const t = document.querySelector('#txt'); t.value = 'Just me. I am allergic to nuts.'; document.querySelector('#env').click(); await p(700);
-     t.value = 'I take the pasta please.'; document.querySelector('#env').click(); await p(700);
+     const t = document.querySelector('#txt'); t.value = 'Just me. I am vegetarian. I do not eat meat.'; document.querySelector('#env').click(); await p(700);
+     t.value = 'I take the penne please.'; document.querySelector('#env').click(); await p(700);
      document.querySelector('#fin').click(); await p(1200); document.querySelector('#saisie').scrollIntoView(); window.scrollBy(0, -10);`],
   ['carte', '#semaine/cafe', ''],
   ['exercice', '#exos/totaux', ''],

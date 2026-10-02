@@ -38,14 +38,14 @@ def main():
 
     msg_fr = f"""Bonjour !
 
-Je prépare une application pour apprendre l'anglais qu'il faut à un touriste francophone pour une semaine à Toronto : le métro, l'hôtel, commander, payer, le restaurant (avec une allergie), la pharmacie, et bavarder avec les gens.
+Je prépare une application pour apprendre l'anglais qu'il faut à un touriste francophone pour une semaine à Toronto : le métro, l'hôtel, commander, payer, le restaurant (sans viande, quand on est végétarien), la pharmacie, et bavarder avec les gens.
 
 J'aimerais ton avis avant de la lancer. Elle s'ouvre dans le navigateur du téléphone, sans compte ni mot de passe :
 {APP}
 
 Ce qui m'aiderait (environ 45 minutes, en deux fois si tu veux) :
 - le test « Prêt à partir ? » (un quart d'heure) ;
-- une série d'exercices, par exemple « Le total à payer » ou « L'allergie » ;
+- une série d'exercices, par exemple « Le total à payer » ou « Sans viande » ;
 - deux situations de « La semaine » : le café, puis le restaurant (il faut un code, plus bas) ;
 - un coup d'œil à « Ma trousse ».
 
@@ -58,7 +58,7 @@ Daniel"""
 
     msg_en = f"""Hi!
 
-I'm building a phone app that teaches French-speaking tourists from Quebec the English they need for a week in Toronto: the subway, the hotel, ordering, paying, a restaurant with a food allergy, the pharmacy, and small talk.
+I'm building a phone app that teaches French-speaking tourists from Quebec the English they need for a week in Toronto: the subway, the hotel, ordering, paying, a restaurant meal for a vegetarian, the pharmacy, and small talk.
 
 Before launch, I'd love a Canadian English speaker to check it. It opens in the phone's browser, no account needed:
 {APP}
@@ -131,7 +131,7 @@ sont gratuits. Un bouton <strong>« Donner mon avis »</strong> est au bas de ch
   <h2>Qui fait l'essai</h2>
   <ol class="etapes">
     <li><b>Cinq faux débutants francophones, observés.</b> Vous êtes à côté ; ils pensent à voix haute ; vous notez où ils hésitent, sans aider.
-      Le parcours : le test (15 min), une série « L'allergie », une série « Le total à payer », puis le café et le restaurant dans « La semaine ».
+      Le parcours : le test (15 min), une série « Sans viande », une série « Le total à payer », puis le café et le restaurant dans « La semaine ».
       Cinq suffisent pour voir la plupart des défauts d'usage ; au-delà, on revoit les mêmes.</li>
     <li><b>Un relecteur anglophone canadien</b> (le message en anglais plus bas). La boucle didactique juge la didactique, pas l'anglais :
       c'est lui qui dit si une phrase « ne se dit pas à Toronto ».</li>
@@ -160,7 +160,7 @@ sont gratuits. Un bouton <strong>« Donner mon avis »</strong> est au bas de ch
   <ul class="simple">
     <li>Chaque hésitation de plus de dix secondes, et l'écran où elle arrive.</li>
     <li>Chaque fois qu'on répond <b>sans écouter</b> (au hasard, à la longueur, par élimination) : c'est le défaut que cinq tours d'audit ont chassé.</li>
-    <li>Au restaurant : dit-on l'allergie <b>avant</b> de commander, et en anglais ? Le bilan a-t-il jugé juste ?</li>
+    <li>Au restaurant : dit-on qu'on ne mange pas de viande <b>avant</b> de commander, et en anglais ? Le bilan a-t-il jugé juste ?</li>
     <li>Le micro : comprend-il ? À quel moment passe-t-on au clavier ?</li>
     <li>Le temps réel d'une séance (prévu : 15 min) et d'une situation jouée.</li>
   </ul>
@@ -173,7 +173,7 @@ sont gratuits. Un bouton <strong>« Donner mon avis »</strong> est au bas de ch
     <li><b>Un bilan que l'observateur contredit est une donnée</b> : on le note avec la conversation (le bilan est un modèle, il se trompe).</li>
     <li><b>Une phrase anglaise contestée par le relecteur</b> se change, et son son se refait (le feu vert des voix vaut pour ces reprises).</li>
     <li><b>Une hésitation chez trois personnes sur cinq</b> au même écran : la consigne change.</li>
-    <li><b>L'allergie</b> : un seul essayeur qui commande le plat douteux sans être arrêté par le bilan, et c'est un bloquant.</li>
+    <li><b>Sans viande</b> : un seul essayeur qui commande le plat douteux sans être arrêté par le bilan, et c'est un bloquant.</li>
   </ul>
   <div class="garde" style="margin-top:12px"><b>Avant d'envoyer :</b> écrivez-vous un avis d'essai par « Donner mon avis » pour vérifier que
   support@edufrancis.ca reçoit bien. Les avis, transférez-les-moi : je les trie selon ces règles et je corrige, comme un tour de boucle.</div>

@@ -33,9 +33,9 @@ OBJECTIFS = [
      "au comptoir, au guichet, à la réception : demander, faire répéter ou épeler au besoin, sans passer au "
      "français ni montrer son téléphone",
      "8 situations jouées sur 10 réussies, selon les gestes de leur bilan"),
-    ("O3", "Dire une allergie et vérifier la réponse",
-     "au restaurant et au comptoir du marché : la dire avant de commander, comprendre la réponse, refuser un plat "
-     "dont on n'est pas sûr",
+    ("O3", "Dire qu'on ne mange pas de viande et vérifier la réponse",
+     "au restaurant et au comptoir du marché : le dire avant de commander, comprendre la réponse, refuser un plat "
+     "qui contient de la viande (même un bouillon) ou dont on n'est pas sûr — remplace l'allergie le 2 oct. 2026",
      "toutes — une seule erreur fait échouer (éliminatoire, dit d'avance)"),
     ("O4", "Tenir deux minutes de bavardage",
      "avec la Torontoise qui revient : répondre à « Where are you from? », « What have you seen? », et relancer",
@@ -46,8 +46,8 @@ ALIGNEMENT = [
      "Partie B · la réponse entendue", "Le café · La tour CN · Le marché · Les îles"),
     ("O2", "Je le dis · Où je vais · les planches de mots",
      "Partie A · les mots ; Partie D · je le dis", "Union · L'hôtel · Kensington · La pharmacie · Le départ"),
-    ("O3", "La série de l'allergie (un contre-exemple par série)",
-     "Partie C · l'allergie", "Le restaurant (et le comptoir du marché)"),
+    ("O3", "La série « Sans viande » (un contre-exemple par série)",
+     "Partie C · sans viande", "Le restaurant (et le comptoir du marché)"),
     ("O4", "Le petit bavardage (planche et « Je le dis ») · J'écris ma carte postale",
      "Partie D · une question de bavardage", "La Torontoise, chaque jour"),
 ]
@@ -258,8 +258,9 @@ le renverse. Restent pour vous : écouter les voix, et passer les <b>{n} mots</b
   <p style="margin-top:14px"><b>L'alignement</b> : chaque objectif a son exercice, sa question de test et sa situation.</p>
   <table class="cmp"><thead><tr><th></th><th>Exercice</th><th>Test « Prêt à partir ? »</th><th>Situation jouée</th></tr></thead><tbody>{ali}</tbody></table>
   <div class="reserve"><p><strong>L'éliminatoire est dit avant</strong>, en une phrase affichée au début de la série, du
-  test et du restaurant : « Une allergie se dit avant de commander. Si la réponse n'est pas claire, on ne mange pas le
-  plat. » Chaque série garde un contre-exemple, où la question du serveur ne porte pas sur l'allergie.</p></div>
+  test et du restaurant : « Vous ne mangez pas de viande : dites-le avant de commander. Si la réponse n'est pas sûre, on ne
+  commande pas le plat. » Chaque série garde un contre-exemple, où l'on peut commander. (Jusqu'au 2 oct. 2026, cette règle
+  portait sur une allergie ; elle a été remplacée par le régime végétarien, pour une question de responsabilité civile.)</p></div>
   <div class="opts2" style="margin-top:12px">
     {option("objectifs", "oui", "Ces objectifs", "On aligne les exercices et le test dessus.", True)}
     {option("objectifs", "ajuster", "À ajuster", "Dites quoi dans « Ce qui manque », en bas.", False)}

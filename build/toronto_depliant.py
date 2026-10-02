@@ -135,7 +135,7 @@ h2{{font-size:clamp(26px,3.6vw,36px);line-height:1.1;margin:0 0 8px;color:#1d1b1
     <p class="sur">L'anglais du voyage, dans votre téléphone</p>
     <h1>Une semaine à Toronto</h1>
     <p class="chapeau">Arriver à Union Station, prendre le métro, s'installer à l'hôtel, commander un café, manger au restaurant
-    avec une allergie, trouver une pharmacie, bavarder avec les gens : l'anglais qu'il faut à un francophone pour une semaine
+    sans viande quand on est végétarien, trouver une pharmacie, bavarder avec les gens : l'anglais qu'il faut à un francophone pour une semaine
     à Toronto. Quinze minutes à la fois, à préparer chez vous, puis dans la trousse une fois sur place.</p>
     <a class="cta" href="{APP}">Ouvrir l'application</a>
     <p style="font-size:14.5px;color:var(--doux);margin-top:10px">Dans le navigateur du téléphone, sans compte ni mot de passe.</p>
@@ -173,14 +173,14 @@ h2{{font-size:clamp(26px,3.6vw,36px);line-height:1.1;margin:0 0 8px;color:#1d1b1
   vous répondez au micro ou au clavier. À la fin, le bilan coche les gestes accomplis et reprend jusqu'à trois phrases.</p>
   <div class="trois">
     <div class="ecran">{tel("situation", "La situation du restaurant")}<span class="etiq">1 · La situation</span>
-      <h3>Ce qu'il faut réussir</h3><p>La consigne en français, les gestes qui font gagner la carte, et la règle de l'allergie.</p></div>
+      <h3>Ce qu'il faut réussir</h3><p>La consigne en français, les gestes qui font gagner la carte, et la règle du repas sans viande.</p></div>
     <div class="ecran">{tel("conversation", "La conversation avec la serveuse")}<span class="etiq">2 · En anglais</span>
       <h3>On vous répond vraiment</h3><p>Ada, la serveuse, ne parle pas français : si vous changez de langue, elle vous le dit gentiment.</p></div>
     <div class="ecran">{tel("bilan", "Le bilan en français")}<span class="etiq">3 · Le bilan</span>
       <h3>En français, geste par geste</h3><p>Ce que vous avez obtenu, ce qui manque, et la phrase à dire autrement.</p></div>
   </div>
-  <div class="garde"><b>L'allergie ne se rate pas.</b> Au restaurant et au marché, dire son allergie en anglais avant de
-  commander, et ne rien prendre dont on n'est pas sûr, sont éliminatoires : la carte ne se gagne pas autrement. C'est ce qu'on
+  <div class="garde"><b>Le repas sans viande ne se rate pas.</b> Au restaurant et au marché, dire en anglais qu'on ne mange pas de viande
+  avant de commander, et ne rien prendre qui en contient ou dont on n'est pas sûr, sont éliminatoires : la carte ne se gagne pas autrement. C'est ce qu'on
   pratique le plus, parce que c'est ce qui compte le plus.</div>
   <ul class="lieux">{lieux}</ul>
 </section>
@@ -197,7 +197,7 @@ h2{{font-size:clamp(26px,3.6vw,36px);line-height:1.1;margin:0 0 8px;color:#1d1b1
 <section>
   <div class="duo">{tel("exercice", "Un exercice : le total à payer")}
     <div><h2>S'exercer, autant qu'il faut</h2>
-    <p class="intro">Neuf familles d'exercices, en séries courtes qui changent à chaque fois : ce qu'on me répond, l'allergie,
+    <p class="intro">Neuf familles d'exercices, en séries courtes qui changent à chaque fois : ce qu'on me répond, sans viande,
     les prix et les heures (fourteen ou forty ?), le total à payer, suivre un chemin sur le plan, les mots entendus, les mots
     retrouvés, les {n_pieges} faux amis qui trompent un francophone, et « je le dis » au micro.</p>
     <p>Chaque mauvais choix dit pourquoi ; la bonne réponse change de place à chaque fois.</p></div></div>
