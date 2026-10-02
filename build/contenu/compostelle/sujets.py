@@ -56,7 +56,6 @@ SUJETS = {
     "pulpo": ("objet", "Galician-style octopus: slices of cooked octopus on a round wooden plate, sprinkled with red paprika, a small wooden toothpick."),
     "pan": ("objet", "a rustic round loaf of bread with a crusty top."),
     "vaso": ("objet", "an empty plain drinking glass, a simple tumbler."),
-    "frutos_secos": ("objet", "a small bowl of mixed nuts: walnuts, almonds and hazelnuts."),
     # --- acheter
     "cajero": ("objet", "a cash machine set in a wall, seen at a three-quarter angle; the screen is a plain blank blue glow, the keypad has blank keys, no text or logo anywhere."),
     "efectivo": ("objet", "a few coins and two folded banknotes, the banknotes shown from the edge so that no printing is readable."),
@@ -123,7 +122,6 @@ SUJETS = {
     "pescado": ("objet", "a whole fresh fish, silvery, lying on a plate with a lemon slice."),
     "huevo": ("objet", "two brown eggs, one whole and one cracked open in a small bowl showing the yolk."),
     "leche": ("objet", "a glass bottle of milk next to a full glass of milk; no label."),
-    "cacahuetes": ("objet", "a small heap of peanuts, some in their shells and some shelled, on a little dish."),
     "sesamo": ("objet", "a small wooden spoon full of pale sesame seeds, a few seeds scattered, and a bread roll covered in sesame seeds."),
     "lleva": ("geste", "a pilgrim at a bar counter pointing at one sandwich in the glass display case, with a questioning look at the barman, who is about to answer."),
     "a_que_hora": ("geste", "a pilgrim with a backpack pointing to a round wall clock (hands and tick marks only, no numbers) while looking questioningly at a hostel volunteer."),

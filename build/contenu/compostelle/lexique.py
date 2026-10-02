@@ -112,12 +112,10 @@ LEXIQUE = [
      "croquis", "PIÈGE : la propina n'a rien de propre : c'est le pourboire."),
     ("sin_gluten", "comer", "sin gluten", "sans gluten", "croquis", ""),
     ("vegetariano", "comer", "vegetariano, vegetariana", "végétarien, végétarienne", "croquis", ""),
-    ("frutos_secos", "comer", "los frutos secos", "les noix (les fruits à coque)", "croquis", ""),
     ("marisco", "comer", "el marisco", "les fruits de mer", "croquis", ""),
     ("pescado", "comer", "el pescado", "le poisson", "croquis", ""),
     ("huevo", "comer", "el huevo", "l'œuf", "croquis", ""),
     ("leche", "comer", "la leche", "le lait", "croquis", ""),
-    ("cacahuetes", "comer", "los cacahuetes", "les arachides", "croquis", ""),
     ("sesamo", "comer", "el sésamo", "le sésame", "croquis", ""),
     ("lleva", "comer", "¿Lleva…? — lleva, no lleva", "Ça contient… ? — ça en contient, ça n'en contient pas", "croquis", ""),
 

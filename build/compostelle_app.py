@@ -43,7 +43,7 @@ MEDIA = RACINE / "assets" / "interactive" / "compostelle"
 # le jeu de rôle »). L'accès : un code d'élève du groupe « Pilote Compostelle ».
 # Remettre False retire le temps sans toucher au serveur.
 JEU_LIBRE = True
-MEDIA_V = "7"  # 7 : allergie retirée, León réécrit (28 sept. 2026) ; 6 : révision 4 ; 5 : 5 : révision 3 (allergie à Pamplona, variantes de León, test) ; 4 : 4 : allergie choisie dans la scène de León et le test ; 2 : sons à 48 kbit/s (27 → 9 Mo) ; 3 : 25 répliques corrigées après relecture, 25 sept. 2026
+MEDIA_V = "8"  # 8 : noix et arachides retirées, sarria/ecoute-4 refait (2 oct. 2026) ; 7 : allergie retirée, León réécrit (28 sept. 2026) ; 6 : révision 4 ; 5 : 5 : révision 3 (allergie à Pamplona, variantes de León, test) ; 4 : 4 : allergie choisie dans la scène de León et le test ; 2 : sons à 48 kbit/s (27 → 9 Mo) ; 3 : 25 répliques corrigées après relecture, 25 sept. 2026
 
 
 def verifier(ET):

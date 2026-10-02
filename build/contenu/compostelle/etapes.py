@@ -876,10 +876,11 @@ ETAPES = [
     [("C'est 6,80 €. Vous avez de la monnaie ?", None),
      ("C'est 7,80 €. Vous avez de la monnaie ?", "Seis = 6. Siete = 7."),
      ("C'est 6,80 €. Vous avez un sac ?", "Suelto : de la petite monnaie.")]),
-   ("Cuidado, este queso lleva nueces por dentro.",
-    [("Attention, ce fromage contient des noix à l'intérieur.", None),
-     ("Attention, ce fromage ne contient pas de noix.", "« Lleva » : il en contient. Il n'en contient pas : no lleva."),
-     ("Attention, ce fromage est très cher.", "Nueces = noix. Cuidado = attention.")]),
+   # 2 oct. 2026 : les noix et les arachides sortent de Compostelle (risque d'allergie, décision de Daniel).
+   ("Cuidado, este queso es muy fuerte.",
+    [("Attention, ce fromage est très fort.", None),
+     ("Attention, ce fromage est très doux.", "Fuerte = fort. Doux, ce serait suave."),
+     ("Attention, ce fromage est très cher.", "Fuerte = fort, de goût. Cher, ce serait caro.")]),
  ],
  "dire": [
    ("Vous demandez le prix des bananes.", "¿Cuánto cuestan los plátanos?", ["cuánto|cuanto", "plátanos|platanos"]),
