@@ -15,9 +15,13 @@ Sans réponse, la carte dit seulement « Conversations jouées : payantes ».
 
 Le vocabulaire de l'apprenant : « assistance », jamais « IA ».
 """
-import html, pathlib
+import html, pathlib, sys
 
 RACINE = pathlib.Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(RACINE))
+import qr  # noqa: E402  (le générateur maison, bibliothèque standard)
+
+DOMAINE = "https://portail.edufrancis.ca"
 SORTIE = RACINE / "modules-autonomes" / "galerie" / "index.html"
 INDEXER = False   # passe à True au lancement, avec les applications (liste de mise en service)
 
@@ -73,6 +77,8 @@ def e(s):
 
 def carte(p):
     pid, _, nom, langue, accroche, points, image, adresse, depliant, etat = p
+    url = DOMAINE + "/modules-autonomes/" + adresse.strip("./") + "/"
+    code = qr.svg(url, cote=96).replace("Code QR de la séance", "Code QR : " + nom)
     lis = "".join(f"<li>{e(x)}</li>" for x in points)
     prix = f'<p class="prix" data-prix="{pid}">{e(ETATS[etat])}</p>'
     liens = f'<a class="btn" href="{e(adresse)}">Ouvrir l\'application</a>'
@@ -87,7 +93,10 @@ def carte(p):
     <ul>{lis}</ul>
     <p class="etat etat-{etat}">{e(ETATS[etat]) if etat != "vente" else ""}</p>
     {prix if etat == "vente" else ""}
-    <div class="liens">{liens}</div>
+    <div class="bas">
+      <div class="liens">{liens}</div>
+      <figure class="qr">{code}<figcaption>Scannez pour l'ouvrir sur votre téléphone</figcaption></figure>
+    </div>
   </div>
 </article>"""
 
@@ -146,7 +155,11 @@ p,ul{{margin:0}}
 .etat,.prix{{font-size:13px;font-weight:600;border-radius:8px;padding:6px 10px;align-self:flex-start}}
 .etat-gratuit,.prix{{background:var(--vert-pale);color:var(--vert)}}
 .etat-preparation{{background:var(--ambre-pale);color:var(--ambre)}}
-.liens{{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto;padding-top:6px}}
+.bas{{margin-top:auto;padding-top:6px;display:flex;align-items:flex-end;justify-content:space-between;gap:14px}}
+.liens{{display:flex;flex-direction:column;align-items:flex-start;gap:10px}}
+.qr{{margin:0;display:flex;flex-direction:column;align-items:center;gap:4px;flex:none}}
+.qr svg{{display:block;width:96px;height:96px;border-radius:6px}}
+.qr figcaption{{font-size:11px;line-height:1.3;color:var(--gris);text-align:center;max-width:110px}}
 .btn{{display:inline-block;padding:10px 16px;border-radius:10px;background:var(--action);color:var(--action-txt);font-weight:600;font-size:14px;text-decoration:none}}
 .btn.sec{{background:transparent;color:var(--encre);border:1px solid var(--filet)}}
 .btn:focus-visible{{outline:3px solid var(--mauve);outline-offset:2px}}
@@ -155,7 +168,7 @@ p,ul{{margin:0}}
 @media (max-width:640px){{
   .barre{{padding:12px 16px}} .trait,.desc{{display:none}}
   .page{{padding:0 16px 64px}} .tete{{padding-top:32px}} .tete h1{{font-size:32px}} .tete p{{font-size:16px}}
-  .grille{{grid-template-columns:1fr}} .ecran{{height:250px}} .ecran img{{width:160px}}
+  .grille{{grid-template-columns:1fr}} .qr{{display:none}} .ecran{{height:250px}} .ecran img{{width:160px}}
 }}
 </style>
 </head>
